@@ -2,6 +2,7 @@
 <launchConfiguration type="org.tizen.nativecommon.launch.TizenLaunchConfigurationType">
 <booleanAttribute key="org.eclipse.cdt.debug.mi.core.AUTO_SOLIB" value="false"/>
 <stringAttribute key="org.eclipse.cdt.debug.mi.core.commandFactory" value="org.tizen.nativecommon.launch.TizenCommandFactory"/>
+<intAttribute key="org.eclipse.cdt.launch.ATTR_BUILD_BEFORE_LAUNCH_ATTR" value="2"/>
 <stringAttribute key="org.eclipse.cdt.launch.DEBUGGER_ID" value="org.tizen.nativecommon.launch.TizenDebugger"/>
 <stringAttribute key="org.eclipse.cdt.launch.DEBUGGER_START_MODE" value="run"/>
 <booleanAttribute key="org.eclipse.cdt.launch.DEBUGGER_STOP_AT_MAIN" value="true"/>
@@ -17,5 +18,6 @@
 <listEntry value="4"/>
 </listAttribute>
 <stringAttribute key="org.tizen.nativeapp.launch.PROJECT_BUILD_CONFIG_NAME_ATTR" value="Debug-Tizen-Emulator"/>
+<booleanAttribute key="org.tizen.nativecommon.ATTR_LAUNCH_VERBOSE_CONSOLE" value="true"/>
 <stringAttribute key="org.tizen.nativecommon.launch.device.serialNumber" value="emulator-26100"/>
 </launchConfiguration>
