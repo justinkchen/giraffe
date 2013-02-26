@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<BuildInfo>
+<BcVersionInfo>
+<XmlVersion>1.0</XmlVersion>
+<SDKVersion>2.0.0</SDKVersion>
+<OspVersion>2.0</OspVersion>
+<PlatformVersion>2.0</PlatformVersion>
+<LLVMVersion>3.1</LLVMVersion>
+</BcVersionInfo>
+<BcProject>
+<ProjectName>HelloWorld</ProjectName>
+<FileName>HelloWorld.pexe</FileName>
+<OutputType>Executable</OutputType>
+<CompileOption>-D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\HelloWorld\inc" -O0 -g3 -Wall -fmessage-length=0       -D_APP_LOG</CompileOption>
+<LinkOption>-L"C:\Users\Justin\Dropbox\CS210\unsamsung\HelloWorld\lib"    -L"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/lib" -L"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/lib/osp"                       -core </LinkOption>
+</BcProject>
+</BuildInfo>
