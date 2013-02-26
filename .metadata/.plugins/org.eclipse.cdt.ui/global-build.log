@@ -1,0 +1,238 @@
+
+**** Build of configuration Debug-Tizen-Emulator for project HelloWorld ****
+
+C:\tizen-sdk\tools\smart-build-interface\bin\sbi.exe action tizen-emulator-2.0.cpp_llvm31.i386.cpp.app -- make -options="all" -cliinclude="" -clicflags="" -clilflags="" -cliprojpath="" -clisdkpath="" 
+'Building file: ../src/HelloWorld.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\HelloWorld\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/HelloWorld.d" -MT"src/HelloWorld.d" -o "src/HelloWorld.o" "../src/HelloWorld.cpp"
+'Finished building: ../src/HelloWorld.cpp'
+' '
+'Building file: ../src/HelloWorldEntry.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\HelloWorld\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/HelloWorldEntry.d" -MT"src/HelloWorldEntry.d" -o "src/HelloWorldEntry.o" "../src/HelloWorldEntry.cpp"
+'Finished building: ../src/HelloWorldEntry.cpp'
+' '
+'Building file: ../src/HelloWorldFormFactory.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\HelloWorld\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/HelloWorldFormFactory.d" -MT"src/HelloWorldFormFactory.d" -o "src/HelloWorldFormFactory.o" "../src/HelloWorldFormFactory.cpp"
+'Finished building: ../src/HelloWorldFormFactory.cpp'
+' '
+'Building file: ../src/HelloWorldFrame.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\HelloWorld\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/HelloWorldFrame.d" -MT"src/HelloWorldFrame.d" -o "src/HelloWorldFrame.o" "../src/HelloWorldFrame.cpp"
+'Finished building: ../src/HelloWorldFrame.cpp'
+' '
+'Building file: ../src/HelloWorldMainForm.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\HelloWorld\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/HelloWorldMainForm.d" -MT"src/HelloWorldMainForm.d" -o "src/HelloWorldMainForm.o" "../src/HelloWorldMainForm.cpp"
+'Finished building: ../src/HelloWorldMainForm.cpp'
+' '
+'Building file: ../src/HelloWorldPanelFactory.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\HelloWorld\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/HelloWorldPanelFactory.d" -MT"src/HelloWorldPanelFactory.d" -o "src/HelloWorldPanelFactory.o" "../src/HelloWorldPanelFactory.cpp"
+'Finished building: ../src/HelloWorldPanelFactory.cpp'
+' '
+'Building target: HelloWorld.exe'
+'Invoking: C++ Linker'
+clang++.exe -o"HelloWorld.exe"  ./src/HelloWorld.o ./src/HelloWorldEntry.o ./src/HelloWorldFormFactory.o ./src/HelloWorldFrame.o ./src/HelloWorldMainForm.o ./src/HelloWorldPanelFactory.o    -L"C:\Users\Justin\Dropbox\CS210\unsamsung\HelloWorld\lib" -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Xlinker --as-needed -pie -lpthread -Xlinker -rpath=$ORIGIN/.. -Xlinker -rpath=$ORIGIN/../lib -Xlinker -rpath=/home/developer/sdk_tools/lib --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -L"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/lib" -L"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/lib/osp" -losp-appfw -losp-uifw -losp-image -losp-json -losp-ime -losp-net -lpthread -losp-content -losp-locations -losp-telephony -losp-uix -losp-media -losp-messaging -losp-web -losp-social -losp-wifi -losp-bluetooth -losp-nfc -losp-face -losp-speech-tts -losp-speech-stt -losp-shell -losp-shell-core -lxml2
+'Finished building target: HelloWorld.exe'
+' '
+
+**** Build Finished ****
+
+**** Build of configuration Debug-Tizen-Emulator for project HelloWorld ****
+
+C:\tizen-sdk\tools\smart-build-interface\bin\sbi.exe action tizen-emulator-2.0.cpp_llvm31.i386.cpp.app -- make -options="all" -cliinclude="" -clicflags="" -clilflags="" -cliprojpath="" -clisdkpath="" 
+mingw32-make.exe: Nothing to be done for 'all'.
+
+**** Build Finished ****
+
+**** Build of configuration Debug-Tizen-Emulator for project HelloWorld ****
+
+C:\tizen-sdk\tools\smart-build-interface\bin\sbi.exe action tizen-emulator-2.0.cpp_llvm31.i386.cpp.app -- make -options="all" -cliinclude="" -clicflags="" -clilflags="" -cliprojpath="" -clisdkpath="" 
+mingw32-make.exe: Nothing to be done for 'all'.
+
+**** Build Finished ****
+
+**** Build of configuration Debug-Tizen-Emulator for project UiControlsSample ****
+
+C:\tizen-sdk\tools\smart-build-interface\bin\sbi.exe action tizen-emulator-2.0.cpp_llvm31.i386.cpp.app -- make -options="all" -cliinclude="" -clicflags="" -clilflags="" -cliprojpath="" -clisdkpath="" 
+'Building file: ../src/AnimationForm.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/AnimationForm.d" -MT"src/AnimationForm.d" -o "src/AnimationForm.o" "../src/AnimationForm.cpp"
+'Finished building: ../src/AnimationForm.cpp'
+' '
+'Building file: ../src/BaseForm.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/BaseForm.d" -MT"src/BaseForm.d" -o "src/BaseForm.o" "../src/BaseForm.cpp"
+'Finished building: ../src/BaseForm.cpp'
+' '
+'Building file: ../src/ButtonForm.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/ButtonForm.d" -MT"src/ButtonForm.d" -o "src/ButtonForm.o" "../src/ButtonForm.cpp"
+'Finished building: ../src/ButtonForm.cpp'
+' '
+'Building file: ../src/CheckButtonForm.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/CheckButtonForm.d" -MT"src/CheckButtonForm.d" -o "src/CheckButtonForm.o" "../src/CheckButtonForm.cpp"
+'Finished building: ../src/CheckButtonForm.cpp'
+' '
+'Building file: ../src/ColorPickerForm.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/ColorPickerForm.d" -MT"src/ColorPickerForm.d" -o "src/ColorPickerForm.o" "../src/ColorPickerForm.cpp"
+'Finished building: ../src/ColorPickerForm.cpp'
+' '
+'Building file: ../src/CustomButton.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/CustomButton.d" -MT"src/CustomButton.d" -o "src/CustomButton.o" "../src/CustomButton.cpp"
+'Finished building: ../src/CustomButton.cpp'
+' '
+'Building file: ../src/CustomButtonForm.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/CustomButtonForm.d" -MT"src/CustomButtonForm.d" -o "src/CustomButtonForm.o" "../src/CustomButtonForm.cpp"
+'Finished building: ../src/CustomButtonForm.cpp'
+' '
+'Building file: ../src/DateTimeForm.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/DateTimeForm.d" -MT"src/DateTimeForm.d" -o "src/DateTimeForm.o" "../src/DateTimeForm.cpp"
+'Finished building: ../src/DateTimeForm.cpp'
+' '
+'Building file: ../src/EditForm.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/EditForm.d" -MT"src/EditForm.d" -o "src/EditForm.o" "../src/EditForm.cpp"
+'Finished building: ../src/EditForm.cpp'
+' '
+'Building file: ../src/EnrichedTextForm.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/EnrichedTextForm.d" -MT"src/EnrichedTextForm.d" -o "src/EnrichedTextForm.o" "../src/EnrichedTextForm.cpp"
+'Finished building: ../src/EnrichedTextForm.cpp'
+' '
+'Building file: ../src/ExpandableEditAreaForm.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/ExpandableEditAreaForm.d" -MT"src/ExpandableEditAreaForm.d" -o "src/ExpandableEditAreaForm.o" "../src/ExpandableEditAreaForm.cpp"
+'Finished building: ../src/ExpandableEditAreaForm.cpp'
+' '
+'Building file: ../src/FormFactory.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/FormFactory.d" -MT"src/FormFactory.d" -o "src/FormFactory.o" "../src/FormFactory.cpp"
+'Finished building: ../src/FormFactory.cpp'
+' '
+'Building file: ../src/GalleryForm.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/GalleryForm.d" -MT"src/GalleryForm.d" -o "src/GalleryForm.o" "../src/GalleryForm.cpp"
+'Finished building: ../src/GalleryForm.cpp'
+' '
+'Building file: ../src/GroupedListViewForm.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/GroupedListViewForm.d" -MT"src/GroupedListViewForm.d" -o "src/GroupedListViewForm.o" "../src/GroupedListViewForm.cpp"
+'Finished building: ../src/GroupedListViewForm.cpp'
+' '
+'Building file: ../src/IconListViewForm.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/IconListViewForm.d" -MT"src/IconListViewForm.d" -o "src/IconListViewForm.o" "../src/IconListViewForm.cpp"
+'Finished building: ../src/IconListViewForm.cpp'
+' '
+'Building file: ../src/ListViewForm.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/ListViewForm.d" -MT"src/ListViewForm.d" -o "src/ListViewForm.o" "../src/ListViewForm.cpp"
+'Finished building: ../src/ListViewForm.cpp'
+' '
+'Building file: ../src/MainForm.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/MainForm.d" -MT"src/MainForm.d" -o "src/MainForm.o" "../src/MainForm.cpp"
+'Finished building: ../src/MainForm.cpp'
+' '
+'Building file: ../src/MenuForm.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/MenuForm.d" -MT"src/MenuForm.d" -o "src/MenuForm.o" "../src/MenuForm.cpp"
+'Finished building: ../src/MenuForm.cpp'
+' '
+'Building file: ../src/MsgBoxPopupForm.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/MsgBoxPopupForm.d" -MT"src/MsgBoxPopupForm.d" -o "src/MsgBoxPopupForm.o" "../src/MsgBoxPopupForm.cpp"
+'Finished building: ../src/MsgBoxPopupForm.cpp'
+' '
+'Building file: ../src/NavigationForm.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/NavigationForm.d" -MT"src/NavigationForm.d" -o "src/NavigationForm.o" "../src/NavigationForm.cpp"
+'Finished building: ../src/NavigationForm.cpp'
+' '
+'Building file: ../src/OverlayKeypadForm.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/OverlayKeypadForm.d" -MT"src/OverlayKeypadForm.d" -o "src/OverlayKeypadForm.o" "../src/OverlayKeypadForm.cpp"
+'Finished building: ../src/OverlayKeypadForm.cpp'
+' '
+'Building file: ../src/PanelForm.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/PanelForm.d" -MT"src/PanelForm.d" -o "src/PanelForm.o" "../src/PanelForm.cpp"
+'Finished building: ../src/PanelForm.cpp'
+' '
+'Building file: ../src/ProgressForm.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/ProgressForm.d" -MT"src/ProgressForm.d" -o "src/ProgressForm.o" "../src/ProgressForm.cpp"
+'Finished building: ../src/ProgressForm.cpp'
+' '
+'Building file: ../src/QuickPanelFrameForm.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/QuickPanelFrameForm.d" -MT"src/QuickPanelFrameForm.d" -o "src/QuickPanelFrameForm.o" "../src/QuickPanelFrameForm.cpp"
+'Finished building: ../src/QuickPanelFrameForm.cpp'
+' '
+'Building file: ../src/SceneRegister.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/SceneRegister.d" -MT"src/SceneRegister.d" -o "src/SceneRegister.o" "../src/SceneRegister.cpp"
+'Finished building: ../src/SceneRegister.cpp'
+' '
+'Building file: ../src/SearchBarForm.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/SearchBarForm.d" -MT"src/SearchBarForm.d" -o "src/SearchBarForm.o" "../src/SearchBarForm.cpp"
+'Finished building: ../src/SearchBarForm.cpp'
+' '
+'Building file: ../src/SliderForm.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/SliderForm.d" -MT"src/SliderForm.d" -o "src/SliderForm.o" "../src/SliderForm.cpp"
+'Finished building: ../src/SliderForm.cpp'
+' '
+'Building file: ../src/SplitPanelForm.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/SplitPanelForm.d" -MT"src/SplitPanelForm.d" -o "src/SplitPanelForm.o" "../src/SplitPanelForm.cpp"
+'Finished building: ../src/SplitPanelForm.cpp'
+' '
+'Building file: ../src/TabBarForm.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/TabBarForm.d" -MT"src/TabBarForm.d" -o "src/TabBarForm.o" "../src/TabBarForm.cpp"
+'Finished building: ../src/TabBarForm.cpp'
+' '
+'Building file: ../src/TableViewForm.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/TableViewForm.d" -MT"src/TableViewForm.d" -o "src/TableViewForm.o" "../src/TableViewForm.cpp"
+'Finished building: ../src/TableViewForm.cpp'
+' '
+'Building file: ../src/TextBoxForm.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/TextBoxForm.d" -MT"src/TextBoxForm.d" -o "src/TextBoxForm.o" "../src/TextBoxForm.cpp"
+'Finished building: ../src/TextBoxForm.cpp'
+' '
+'Building file: ../src/UiControls.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/UiControls.d" -MT"src/UiControls.d" -o "src/UiControls.o" "../src/UiControls.cpp"
+'Finished building: ../src/UiControls.cpp'
+' '
+'Building file: ../src/UiControlsEntry.cpp'
+'Invoking: C++ Compiler'
+clang++.exe -I"pch" -D_DEBUG -I"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\inc" -O0 -g3 -Wall -c -fmessage-length=0 -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu -fPIE --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/libxml2" -I"C:\tizen-sdk\library" -I"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/include/osp" -D_APP_LOG -MMD -MP -MF"src/UiControlsEntry.d" -MT"src/UiControlsEntry.d" -o "src/UiControlsEntry.o" "../src/UiControlsEntry.cpp"
+'Finished building: ../src/UiControlsEntry.cpp'
+' '
+'Building target: UiControlsSample.exe'
+'Invoking: C++ Linker'
+clang++.exe -o"UiControlsSample.exe"  ./src/AnimationForm.o ./src/BaseForm.o ./src/ButtonForm.o ./src/CheckButtonForm.o ./src/ColorPickerForm.o ./src/CustomButton.o ./src/CustomButtonForm.o ./src/DateTimeForm.o ./src/EditForm.o ./src/EnrichedTextForm.o ./src/ExpandableEditAreaForm.o ./src/FormFactory.o ./src/GalleryForm.o ./src/GroupedListViewForm.o ./src/IconListViewForm.o ./src/ListViewForm.o ./src/MainForm.o ./src/MenuForm.o ./src/MsgBoxPopupForm.o ./src/NavigationForm.o ./src/OverlayKeypadForm.o ./src/PanelForm.o ./src/ProgressForm.o ./src/QuickPanelFrameForm.o ./src/SceneRegister.o ./src/SearchBarForm.o ./src/SliderForm.o ./src/SplitPanelForm.o ./src/TabBarForm.o ./src/TableViewForm.o ./src/TextBoxForm.o ./src/UiControls.o ./src/UiControlsEntry.o    -L"C:\Users\Justin\Dropbox\CS210\unsamsung\UiControlsSample\lib" -target i386-tizen-linux-gnueabi -gcc-toolchain C:/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Xlinker --as-needed -pie -lpthread -Xlinker -rpath=$ORIGIN/.. -Xlinker -rpath=$ORIGIN/../lib -Xlinker -rpath=/home/developer/sdk_tools/lib --sysroot="C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp" -L"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/lib" -L"C:/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-emulator-2.0.cpp/usr/lib/osp" -losp-appfw -losp-uifw -losp-image -losp-json -losp-ime -losp-net -lpthread -losp-content -losp-locations -losp-telephony -losp-uix -losp-media -losp-messaging -losp-web -losp-social -losp-wifi -losp-bluetooth -losp-nfc -losp-face -losp-speech-tts -losp-speech-stt -losp-shell -losp-shell-core -lxml2
+'Finished building target: UiControlsSample.exe'
+' '
+
+**** Build Finished ****
+
+**** Build of configuration Debug-Tizen-Emulator for project UiControlsSample ****
+
+C:\tizen-sdk\tools\smart-build-interface\bin\sbi.exe action tizen-emulator-2.0.cpp_llvm31.i386.cpp.app -- make -options="all" -cliinclude="" -clicflags="" -clilflags="" -cliprojpath="" -clisdkpath="" 
+mingw32-make.exe: Nothing to be done for 'all'.
+
+**** Build Finished ****

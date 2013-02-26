@@ -1,0 +1,7 @@
+
+**** Build of configuration Debug-Tizen-Emulator for project HelloWorld ****
+
+C:\tizen-sdk\tools\smart-build-interface\bin\sbi.exe action tizen-emulator-2.0.cpp_llvm31.i386.cpp.app -- make -options="all" -cliinclude="" -clicflags="" -clilflags="" -cliprojpath="" -clisdkpath="" 
+mingw32-make.exe: Nothing to be done for 'all'.
+
+**** Build Finished ****
