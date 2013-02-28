@@ -3,10 +3,10 @@
     <Id>COzf272l5M</Id>
     <Version>1.0.0</Version>
     <Type>C++App</Type>
-    <Author/>
     <Descriptions/>
+    <Url/>
     <Requirements>
-        <Feature Name="http://tizen.org/feature/platform.core.cpu.arch.x86">true</Feature>
+        <Feature Name="http://tizen.org/feature/platform.core.cpu.arch.armv7">true</Feature>
         <Feature Name="http://tizen.org/feature/platform.core.fpu.arch.vfpv3">true</Feature>
     </Requirements>
     <Apps>

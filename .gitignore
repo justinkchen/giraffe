@@ -19,7 +19,17 @@ local.properties
 .classpath
 .metadata
 
+*.sdk_delta*
+
 # Mac files
 *.DS_Store
+
+# Tizen Builds
+Debug-Tizen-Emulator/
+Debug-Tizen-Device/
+DA-Tizen-Emulator/
+DA-Tizen-Device/
+Release/
+
 
 *~
