@@ -2997,3 +2997,27 @@ org.eclipse.core.runtime.CoreException: No property tester contributes a propert
 
 !ENTRY org.tizen.common.connection.debugtools.OnDemandInstall 1 0 2013-02-25 16:32:22.071
 !MESSAGE [OnDemandInstall][413] Verifying: dacustom,tar,i386
+
+!ENTRY org.tizen.common.connection.debugtools.OnDemandInstall 1 0 2013-02-25 16:32:22.748
+!MESSAGE [OnDemandInstall][413] Deploying: dacustom,tar,i386
+
+!ENTRY org.tizen.common.connection.debugtools.OnDemandInstall 1 0 2013-02-25 16:32:23.820
+!MESSAGE [OnDemandInstall][413] Deployed: dacustom,tar,i386
+
+!ENTRY org.tizen.common.connection.debugtools.OnDemandInstall 1 0 2013-02-25 16:32:23.820
+!MESSAGE [OnDemandInstall][413] Verifying: valgrind,tar,i386
+
+!ENTRY org.tizen.common.connection.debugtools.OnDemandInstall 1 0 2013-02-25 16:32:24.232
+!MESSAGE [OnDemandInstall][413] Verifying failed (already installed): valgrind,tar,i386
+
+!ENTRY org.tizen.common.connection.debugtools.OnDemandInstall 1 0 2013-02-25 16:32:24.232
+!MESSAGE [OnDemandInstall][413] Verifying: oprofile,tar,i386
+
+!ENTRY org.tizen.common.connection.debugtools.OnDemandInstall 1 0 2013-02-25 16:32:24.918
+!MESSAGE [OnDemandInstall][413] Verifying failed (already installed): oprofile,tar,i386
+
+!ENTRY org.tizen.common.connection.debugtools.OnDemandInstall 1 0 2013-02-25 16:32:24.918
+!MESSAGE [OnDemandInstall][413] Verifying: gtest,tar,i386
+
+!ENTRY org.tizen.common.connection.debugtools.OnDemandInstall 1 0 2013-02-25 16:32:25.754
+!MESSAGE [OnDemandInstall][413] Verifying failed (already installed): gtest,tar,i386

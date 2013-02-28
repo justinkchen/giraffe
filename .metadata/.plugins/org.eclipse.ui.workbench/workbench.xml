@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<workbench progressCount="60" version="2.0">
+<workbench progressCount="58" version="2.0">
 <workbenchAdvisor/>
-<window height="768" width="1414" x="43" y="59">
+<window height="911" width="1530" x="2158" y="57">
 <fastViewData fastViewLocation="1024"/>
 <perspectiveBar>
 <itemSize x="160"/>
@@ -36,14 +36,15 @@
 <part id="0"/>
 <part id="1"/>
 <part id="2"/>
+<part id="3"/>
+<part id="4"/>
+<part id="5"/>
+<part id="6"/>
+<part id="7"/>
 </presentation>
 </folder>
 </info>
 </editorArea>
-<editor activePart="true" focus="true" id="org.tizen.nativeappcommon.contentassist.SLPCEditor" name="HelloWorld.cpp" partName="HelloWorld.cpp" path="C:/Users/Justin/Dropbox/CS210/unsamsung/HelloWorld/src/HelloWorld.cpp" title="HelloWorld.cpp" tooltip="HelloWorld/src/HelloWorld.cpp" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/HelloWorld/src/HelloWorld.cpp"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="142" selectionTopPixel="360"/>
-</editor>
 <editor id="org.eclipse.cdt.make.editor" name="makefile" partName="makefile" path="C:/Users/Justin/Dropbox/CS210/unsamsung/HelloWorld/Debug-Tizen-Emulator/makefile" title="makefile" tooltip="HelloWorld/Debug-Tizen-Emulator/makefile" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/HelloWorld/Debug-Tizen-Emulator/makefile"/>
 <editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="665" selectionTopPixel="0"/>
@@ -52,10 +53,37 @@
 <input factoryID="org.eclipse.cdt.ui.ExternalEditorInputFactory" path="C:\tizen-sdk\platforms\tizen2.0\rootstraps\tizen-emulator-2.0.cpp\usr\include\osp\FBaseLog.h" project="HelloWorld"/>
 <editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="889" selectionTopPixel="810"/>
 </editor>
+<editor id="org.tizen.nativeappcommon.contentassist.SLPCEditor" name="ProjectGiraffeFormFactory.cpp" partName="ProjectGiraffeFormFactory.cpp" path="C:/Users/Justin/Dropbox/CS210/unsamsung/ProjectGiraffe/src/ProjectGiraffeFormFactory.cpp" title="ProjectGiraffeFormFactory.cpp" tooltip="ProjectGiraffe/src/ProjectGiraffeFormFactory.cpp" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/ProjectGiraffe/src/ProjectGiraffeFormFactory.cpp"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="387" selectionTopPixel="14"/>
+</editor>
+<editor id="org.tizen.nativeappcommon.contentassist.SLPCEditor" name="ProjectGiraffeFrame.cpp" partName="ProjectGiraffeFrame.cpp" path="C:/Users/Justin/Dropbox/CS210/unsamsung/ProjectGiraffe/src/ProjectGiraffeFrame.cpp" title="ProjectGiraffeFrame.cpp" tooltip="ProjectGiraffe/src/ProjectGiraffeFrame.cpp" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/ProjectGiraffe/src/ProjectGiraffeFrame.cpp"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="881" selectionTopPixel="194"/>
+</editor>
+<editor id="org.tizen.nativeappcommon.contentassist.SLPCEditor" name="ProjectGiraffeMainForm.cpp" partName="ProjectGiraffeMainForm.cpp" path="C:/Users/Justin/Dropbox/CS210/unsamsung/ProjectGiraffe/src/ProjectGiraffeMainForm.cpp" title="ProjectGiraffeMainForm.cpp" tooltip="ProjectGiraffe/src/ProjectGiraffeMainForm.cpp" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/ProjectGiraffe/src/ProjectGiraffeMainForm.cpp"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1306" selectionTopPixel="704"/>
+</editor>
+<editor id="org.tizen.nativeappcommon.contentassist.SLPCEditor" name="ProjectGiraffeTab1.cpp" partName="ProjectGiraffeTab1.cpp" path="C:/Users/Justin/Dropbox/CS210/unsamsung/ProjectGiraffe/src/ProjectGiraffeTab1.cpp" title="ProjectGiraffeTab1.cpp" tooltip="ProjectGiraffe/src/ProjectGiraffeTab1.cpp" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/ProjectGiraffe/src/ProjectGiraffeTab1.cpp"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="384" selectionTopPixel="180"/>
+</editor>
+<editor id="org.tizen.nativeappcommon.contentassist.SLPCEditor" name="ProjectGiraffePanelFactory.cpp" partName="ProjectGiraffePanelFactory.cpp" path="C:/Users/Justin/Dropbox/CS210/unsamsung/ProjectGiraffe/src/ProjectGiraffePanelFactory.cpp" title="ProjectGiraffePanelFactory.cpp" tooltip="ProjectGiraffe/src/ProjectGiraffePanelFactory.cpp" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/ProjectGiraffe/src/ProjectGiraffePanelFactory.cpp"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="947" selectionTopPixel="149"/>
+</editor>
+<editor activePart="true" focus="true" id="org.tizen.nativeappcommon.contentassist.SLPCEditor" name="ProjectGiraffeTab2.cpp" partName="ProjectGiraffeTab2.cpp" path="C:/Users/Justin/Dropbox/CS210/unsamsung/ProjectGiraffe/src/ProjectGiraffeTab2.cpp" title="ProjectGiraffeTab2.cpp" tooltip="ProjectGiraffe/src/ProjectGiraffeTab2.cpp" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/ProjectGiraffe/src/ProjectGiraffeTab2.cpp"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1693" selectionTopPixel="629"/>
+</editor>
 </editors>
 <views>
 <view id="%tizenunittestExplorerViewId" partName="Test Explorer"/>
 <view id="org.tizen.common.connection.ui.LogView" partName="Log">
+<viewState/>
+</view>
+<view id="org.eclipse.ui.views.ProgressView" partName="Progress">
 <viewState/>
 </view>
 <view id="org.tizen.common.connection.ui.ConnectionExplorer" partName="Connection Explorer">
@@ -85,14 +113,15 @@
 <view id="org.eclipse.ui.navigator.ProjectExplorer" partName="Project Explorer">
 <viewState CommonNavigator.LINKING_ENABLED="0" org.eclipse.cdt.ui.cview.groupincludes="false" org.eclipse.cdt.ui.cview.groupmacros="false" org.eclipse.cdt.ui.editor.CUChildren="true" org.eclipse.ui.navigator.resources.workingSets.showTopLevelWorkingSets="0"/>
 </view>
-<view id="org.cfeclipse.cfml.snippets.views.SnippetsView" partName="Snippet Tree View"/>
+<view id="org.cfeclipse.cfml.snippets.views.SnippetsView" partName="Snippet Tree View">
+<viewState/>
+</view>
 <view id="org.eclipse.ui.views.PropertySheet" partName="Properties">
 <viewState/>
 </view>
 <view id="org.eclipse.ui.views.ProblemView" partName="Problems">
 <viewState PRIMARY_SORT_FIELD="org.eclipse.ui.ide.severityAndDescriptionField" categoryGroup="org.eclipse.ui.ide.severity" markerContentGenerator="org.eclipse.ui.ide.problemsGenerator" partName="Problems">
 <expanded>
-<category IMemento.internal.id="Errors"/>
 <category IMemento.internal.id="Errors (3 items)"/>
 </expanded>
 <columnWidths org.eclipse.ui.ide.locationField="90" org.eclipse.ui.ide.markerType="90" org.eclipse.ui.ide.pathField="120" org.eclipse.ui.ide.resourceField="90" org.eclipse.ui.ide.severityAndDescriptionField="300"/>
@@ -226,6 +255,7 @@
 <view id="org.eclipse.ui.views.ContentOutline"/>
 <view id="org.cfeclipse.cfml.snippets.views.SnippetsView"/>
 <view id="org.tizen.injector.view.InjectorView"/>
+<view id="org.eclipse.ui.views.ProgressView"/>
 <view id="org.eclipse.ui.views.ProblemView"/>
 <view id="org.eclipse.ui.views.TaskList"/>
 <view id="org.eclipse.ui.console.ConsoleView"/>
@@ -254,21 +284,23 @@
 <page content="org.eclipse.ui.cheatsheets.views.CheatSheetView" label="LabelNotFound"/>
 </folder>
 </info>
-<info part="org.eclipse.ui.editorss" ratio="0.24964029" ratioLeft="347" ratioRight="1043" relationship="2" relative="topLeft"/>
-<info folder="true" part="topRight" ratio="0.7497603" ratioLeft="782" ratioRight="261" relationship="2" relative="org.eclipse.ui.editorss">
+<info part="org.eclipse.ui.editorss" ratio="0.18429807" ratioLeft="277" ratioRight="1226" relationship="2" relative="topLeft"/>
+<info folder="true" part="topRight" ratio="0.741619" ratioLeft="907" ratioRight="316" relationship="2" relative="org.eclipse.ui.editorss">
 <folder activePageID="org.eclipse.ui.views.ContentOutline" appearance="2" expanded="2">
 <page content="org.eclipse.ui.views.ContentOutline" label="Outline"/>
 <page content="org.cfeclipse.cfml.snippets.views.SnippetsView" label="Snippet Tree View"/>
 <page content="org.tizen.injector.view.InjectorView" label="Event Injector"/>
+<page content="org.eclipse.ui.views.ProgressView" label="Progress"/>
 <presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
 <part id="0"/>
 <part id="1"/>
 <part id="2"/>
+<part id="3"/>
 </presentation>
 </folder>
 </info>
-<info folder="true" part="bottom" ratio="0.7496136" ratioLeft="485" ratioRight="162" relationship="4" relative="org.eclipse.ui.editorss">
-<folder activePageID="org.eclipse.ui.views.ProblemView" appearance="2" expanded="2">
+<info folder="true" part="bottom" ratio="0.66963154" ratioLeft="527" ratioRight="260" relationship="4" relative="org.eclipse.ui.editorss">
+<folder activePageID="org.eclipse.ui.console.ConsoleView" appearance="2" expanded="2">
 <page content="org.eclipse.ui.views.ProblemView" label="Problems"/>
 <page content="org.eclipse.ui.views.TaskList" label="Tasks"/>
 <page content="org.eclipse.ui.console.ConsoleView" label="Console"/>
@@ -307,6 +339,17 @@
 <editor factoryID="org.eclipse.cdt.ui.ExternalEditorInputFactory" id="org.tizen.nativeappcommon.contentassist.SLPCEditor" path="C:\tizen-sdk\platforms\tizen2.0\rootstraps\tizen-emulator-2.0.cpp\usr\include\osp\FBaseLog.h" project="HelloWorld"/>
 <editor factoryID="org.eclipse.cdt.ui.ExternalEditorInputFactory" id="org.tizen.nativeappcommon.contentassist.SLPCEditor" path="C:\tizen-sdk\platforms\tizen2.0\rootstraps\tizen-emulator-2.0.cpp\usr\include\osp\FBaseLog.h" project="HelloWorld"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.tizen.nativeappcommon.contentassist.SLPCEditor" path="/HelloWorld/src/HelloWorld.cpp"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.tizen.nativeappcommon.contentassist.SLPCEditor" path="/HelloWorld/src/HelloWorldFrame.cpp"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.tizen.nativeappcommon.contentassist.SLPCEditor" path="/HelloWorld/src/HelloWorldMainForm.cpp"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.tizen.nativeappcommon.contentassist.SLPCEditor" path="/HelloWorld/src/HelloWorldFormFactory.cpp"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.tizen.nativeappcommon.contentassist.SLPCEditor" path="/HelloWorld/src/HelloWorldEntry.cpp"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.tizen.nativeappcommon.contentassist.SLPCEditor" path="/HelloWorld/src/HelloWorldPanelFactory.cpp"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.tizen.nativeappcommon.contentassist.SLPCEditor" path="/ProjectGiraffe/src/ProjectGiraffeFormFactory.cpp"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.tizen.nativeappcommon.contentassist.SLPCEditor" path="/ProjectGiraffe/src/ProjectGiraffeFrame.cpp"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.tizen.nativeappcommon.contentassist.SLPCEditor" path="/ProjectGiraffe/src/ProjectGiraffeMainForm.cpp"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.tizen.nativeappcommon.contentassist.SLPCEditor" path="/ProjectGiraffe/src/ProjectGiraffeTab1.cpp"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.tizen.nativeappcommon.contentassist.SLPCEditor" path="/ProjectGiraffe/src/ProjectGiraffePanelFactory.cpp"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.tizen.nativeappcommon.contentassist.SLPCEditor" path="/ProjectGiraffe/src/ProjectGiraffeTab2.cpp"/>
 </editors>
 <item historyLabel="HelloWorld.cpp" index="0">
 <position info="not_deleted" x="0" y="0"/>
@@ -335,8 +378,86 @@
 <item historyLabel="FBaseLog.h" index="4">
 <position info="not_deleted" x="914" y="0"/>
 </item>
-<item active="true" historyLabel="HelloWorld.cpp" index="5">
-<position info="not_deleted" x="680" y="0"/>
+<item historyLabel="HelloWorld.cpp" index="5">
+<position info="not_deleted" x="1112" y="0"/>
+</item>
+<item historyLabel="HelloWorldFrame.cpp" index="6">
+<position info="not_deleted" x="442" y="0"/>
+</item>
+<item historyLabel="HelloWorldMainForm.cpp" index="7">
+<position info="not_deleted" x="361" y="0"/>
+</item>
+<item historyLabel="HelloWorld.cpp" index="5">
+<position info="not_deleted" x="1337" y="0"/>
+</item>
+<item historyLabel="HelloWorldFrame.cpp" index="6">
+<position info="not_deleted" x="974" y="0"/>
+</item>
+<item historyLabel="HelloWorldFormFactory.cpp" index="8">
+<position info="not_deleted" x="492" y="0"/>
+</item>
+<item historyLabel="HelloWorldFrame.cpp" index="6">
+<position info="not_deleted" x="905" y="0"/>
+</item>
+<item historyLabel="HelloWorldEntry.cpp" index="9">
+<position info="not_deleted" x="433" y="0"/>
+</item>
+<item historyLabel="HelloWorld.cpp" index="5">
+<position info="not_deleted" x="1258" y="0"/>
+</item>
+<item historyLabel="HelloWorldFrame.cpp" index="6">
+<position info="not_deleted" x="363" y="0"/>
+</item>
+<item historyLabel="HelloWorldFormFactory.cpp" index="8">
+<position info="not_deleted" x="523" y="0"/>
+</item>
+<item historyLabel="HelloWorldPanelFactory.cpp" index="10">
+<position info="not_deleted" x="557" y="0"/>
+</item>
+<item historyLabel="HelloWorldMainForm.cpp" index="7">
+<position info="not_deleted" x="361" y="0"/>
+</item>
+<item historyLabel="HelloWorldMainForm.cpp" index="7">
+<position info="not_deleted" x="1620" y="0"/>
+</item>
+<item historyLabel="HelloWorldMainForm.cpp" index="7">
+<position info="not_deleted" x="1237" y="0"/>
+</item>
+<item historyLabel="ProjectGiraffeFormFactory.cpp" index="11">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="ProjectGiraffeFrame.cpp" index="12">
+<position info="not_deleted" x="424" y="0"/>
+</item>
+<item historyLabel="ProjectGiraffeMainForm.cpp" index="13">
+<position info="not_deleted" x="1306" y="0"/>
+</item>
+<item historyLabel="ProjectGiraffeTab1.cpp" index="14">
+<position info="not_deleted" x="384" y="0"/>
+</item>
+<item historyLabel="ProjectGiraffePanelFactory.cpp" index="15">
+<position info="not_deleted" x="456" y="0"/>
+</item>
+<item historyLabel="ProjectGiraffeMainForm.cpp" index="13">
+<position info="not_deleted" x="1306" y="0"/>
+</item>
+<item historyLabel="ProjectGiraffePanelFactory.cpp" index="15">
+<position info="not_deleted" x="733" y="0"/>
+</item>
+<item historyLabel="ProjectGiraffeFormFactory.cpp" index="11">
+<position info="not_deleted" x="387" y="0"/>
+</item>
+<item historyLabel="ProjectGiraffeFrame.cpp" index="12">
+<position info="not_deleted" x="881" y="0"/>
+</item>
+<item historyLabel="ProjectGiraffeMainForm.cpp" index="13">
+<position info="not_deleted" x="1306" y="0"/>
+</item>
+<item historyLabel="ProjectGiraffePanelFactory.cpp" index="15">
+<position info="not_deleted" x="947" y="0"/>
+</item>
+<item active="true" historyLabel="ProjectGiraffeTab2.cpp" index="16">
+<position info="not_deleted" x="0" y="0"/>
 </item>
 </navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
@@ -356,17 +477,32 @@
 </trimLayout>
 </window>
 <mruList>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.tizen.nativeappcommon.contentassist.SLPCEditor" name="ProjectGiraffeTab2.cpp" tooltip="ProjectGiraffe/src/ProjectGiraffeTab2.cpp">
+<persistable path="/ProjectGiraffe/src/ProjectGiraffeTab2.cpp"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.tizen.nativecpp.uibuilder.resourceexplorer.Workflow" name="workflow.xml" tooltip="ProjectGiraffe/res/screen-size-normal/workflow.xml">
+<persistable path="/ProjectGiraffe/res/screen-size-normal/workflow.xml"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.tizen.nativeappcommon.contentassist.SLPCEditor" name="ProjectGiraffePanelFactory.cpp" tooltip="ProjectGiraffe/src/ProjectGiraffePanelFactory.cpp">
+<persistable path="/ProjectGiraffe/src/ProjectGiraffePanelFactory.cpp"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.tizen.nativeappcommon.contentassist.SLPCEditor" name="ProjectGiraffeTab1.cpp" tooltip="ProjectGiraffe/src/ProjectGiraffeTab1.cpp">
+<persistable path="/ProjectGiraffe/src/ProjectGiraffeTab1.cpp"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.tizen.nativeappcommon.contentassist.SLPCEditor" name="ProjectGiraffeMainForm.cpp" tooltip="ProjectGiraffe/src/ProjectGiraffeMainForm.cpp">
+<persistable path="/ProjectGiraffe/src/ProjectGiraffeMainForm.cpp"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.tizen.nativeappcommon.contentassist.SLPCEditor" name="ProjectGiraffeFrame.cpp" tooltip="ProjectGiraffe/src/ProjectGiraffeFrame.cpp">
+<persistable path="/ProjectGiraffe/src/ProjectGiraffeFrame.cpp"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.tizen.nativeappcommon.contentassist.SLPCEditor" name="ProjectGiraffeFormFactory.cpp" tooltip="ProjectGiraffe/src/ProjectGiraffeFormFactory.cpp">
+<persistable path="/ProjectGiraffe/src/ProjectGiraffeFormFactory.cpp"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.tizen.nativecpp.uibuilder.resourceexplorer.FormEditor" name="IDF_FORM.xml" tooltip="ProjectGiraffe/res/screen-size-normal/IDF_FORM.xml">
+<persistable path="/ProjectGiraffe/res/screen-size-normal/IDF_FORM.xml"/>
+</file>
 <file factoryID="org.eclipse.cdt.ui.ExternalEditorInputFactory" id="org.tizen.nativeappcommon.contentassist.SLPCEditor" name="FBaseLog.h" tooltip="C:\tizen-sdk\platforms\tizen2.0\rootstraps\tizen-emulator-2.0.cpp\usr\include\osp\FBaseLog.h">
 <persistable path="C:\tizen-sdk\platforms\tizen2.0\rootstraps\tizen-emulator-2.0.cpp\usr\include\osp\FBaseLog.h" project="HelloWorld"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.tizen.nativeappcommon.contentassist.SLPCEditor" name="HelloWorld.h" tooltip="HelloWorld/inc/HelloWorld.h">
-<persistable path="/HelloWorld/inc/HelloWorld.h"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.make.editor" name="makefile" tooltip="HelloWorld/Debug-Tizen-Emulator/makefile">
-<persistable path="/HelloWorld/Debug-Tizen-Emulator/makefile"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.tizen.nativeappcommon.contentassist.SLPCEditor" name="HelloWorld.cpp" tooltip="HelloWorld/src/HelloWorld.cpp">
-<persistable path="/HelloWorld/src/HelloWorld.cpp"/>
 </file>
 </mruList>
 </workbench>
