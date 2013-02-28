@@ -31,5 +31,7 @@ DA-Tizen-Emulator/
 DA-Tizen-Device/
 Release/
 
+# Pem files
+*.pem
 
 *~
