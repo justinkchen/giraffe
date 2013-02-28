@@ -17,8 +17,9 @@ local.properties
 
 # Eclipse project files
 .classpath
+.metadata
 
-# Misc files
+# Mac files
 *.DS_Store
 
 *~
