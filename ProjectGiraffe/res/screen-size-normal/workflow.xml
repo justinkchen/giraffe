@@ -3,8 +3,12 @@
     <Scene Form="IDF_FORM" Id="TabScene1" Panel="IDC_PANEL1"/>
     <Scene Form="IDF_FORM" Id="TabScene2" Panel="IDC_PANEL2"/>
     <Scene Form="IDF_FORM" Id="TabScene3" Panel="IDC_PANEL3"/>
+    <Scene Form="IDF_FORM" Id="TabScene4" Panel="IDC_PANEL4"/>
+    <Scene Form="IDF_FORM" Id="TabScene5" Panel="IDC_PANEL5"/>
     <SceneTransition AnimationType="none" DestroyOption="keep" DirectionType="forward" HistoryOption="no" Id="ID_SCNT_START" Method="" SourceId="" SourceResourceType="" TargetId="TabScene1"/>
-    <SceneTransition AnimationType="none" DestroyOption="keep" DirectionType="forward" HistoryOption="no" Id="ID_SCNT_3" Method="OnActionPerformed" SourceId="TabScene1" SourceResourceType="IDF_FORM" TargetId="TabScene3"/>
+    <SceneTransition AnimationType="none" DestroyOption="keep" DirectionType="forward" HistoryOption="add" Id="ID_SCNT_5" Method="OnActionPerformed" SourceId="TabScene1" SourceResourceType="IDF_FORM" TargetId="TabScene5"/>
     <SceneTransition AnimationType="none" DestroyOption="keep" DirectionType="forward" HistoryOption="no" Id="ID_SCNT_1" Method="OnActionPerformed" SourceId="TabScene2" SourceResourceType="IDF_FORM" TargetId="TabScene1"/>
     <SceneTransition AnimationType="none" DestroyOption="keep" DirectionType="forward" HistoryOption="no" Id="ID_SCNT_2" Method="OnActionPerformed" SourceId="TabScene3" SourceResourceType="IDF_FORM" TargetId="TabScene2"/>
+    <SceneTransition AnimationType="none" DestroyOption="keep" DirectionType="forward" HistoryOption="add" Id="ID_SCNT_3" Method="OnActionPerformed" SourceId="TabScene4" SourceResourceType="IDF_FORM" TargetId="TabScene3"/>
+    <SceneTransition AnimationType="none" DestroyOption="keep" DirectionType="forward" HistoryOption="add" Id="ID_SCNT_4" Method="OnActionPerformed" SourceId="TabScene5" SourceResourceType="IDF_FORM" TargetId="TabScene4"/>
 </Workflow>

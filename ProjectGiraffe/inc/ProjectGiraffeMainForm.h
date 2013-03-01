@@ -8,7 +8,8 @@
 class ProjectGiraffeMainForm
 	: public Tizen::Ui::Controls::Form
 	, public Tizen::Ui::IActionEventListener
-	, public Tizen::Ui::Controls::IFormBackEventListener
+	, public Tizen::Ui::Controls::IFormBackEventListener,
+ 	public Tizen::Ui::Scenes::ISceneEventListener
 {
 public:
 	ProjectGiraffeMainForm(void);
@@ -25,9 +26,14 @@ protected:
 	static const int ID_FOOTER_ITEM1 = 101;
 	static const int ID_FOOTER_ITEM2 = 102;
 	static const int ID_FOOTER_ITEM3 = 103;
-	static const int ID_HEADER_BUTTON = 104;
+	static const int ID_FOOTER_ITEM4 = 104;
+	static const int ID_FOOTER_ITEM5 = 105;
 
-	int toggleButtonStatus;
+
+	virtual void OnSceneActivatedN(const Tizen::Ui::Scenes::SceneId& previousSceneId,
+								   const Tizen::Ui::Scenes::SceneId& currentSceneId, Tizen::Base::Collection::IList* pArgs);
+	virtual void OnSceneDeactivated(const Tizen::Ui::Scenes::SceneId& currentSceneId,
+									const Tizen::Ui::Scenes::SceneId& nextSceneId);
 };
 
 #endif	//_PROJECTGIRAFFE_MAIN_FORM_H_

@@ -12,17 +12,17 @@
         <layout mode="Landscape" style="FORM_STYLE_INDICATOR|FORM_STYLE_HEADER|FORM_STYLE_FOOTER" type="LAYOUT_RELATIVE"/>
     </Form>
     <Footer>
-        <property backgroundBitmapPath="" color="" colorOpacity="0" disabledButtonColor="" disabledButtonColorOpacity="0" disabledButtonTextColor="" disabledItemColor="" disabledItemColorOpacity="0" disabledItemTextColor="" footerStyle="FOOTER_STYLE_TAB" highlightedButtonColor="" highlightedButtonColorOpacity="0" highlightedButtonTextColor="" highlightedItemColor="" highlightedItemColorOpacity="0" highlightedItemTextColor="" normalButtonColor="" normalButtonColorOpacity="0" normalButtonTextColor="" normalItemColor="" normalItemColorOpacity="0" normalItemTextColor="" pressedButtonColor="" pressedButtonColorOpacity="0" pressedButtonTextColor="" pressedItemColor="" pressedItemColorOpacity="0" pressedItemTextColor="" selectedItemColor="" selectedItemColorOpacity="0" selectedItemTextColor="" showBackButton="false"/>
+        <property backgroundBitmapPath="" color="" colorOpacity="0" disabledButtonColor="" disabledButtonColorOpacity="0" disabledButtonTextColor="" disabledItemColor="" disabledItemColorOpacity="0" disabledItemTextColor="" footerStyle="FOOTER_STYLE_BUTTON_ICON_TEXT" highlightedButtonColor="" highlightedButtonColorOpacity="0" highlightedButtonTextColor="" highlightedItemColor="" highlightedItemColorOpacity="0" highlightedItemTextColor="" normalButtonColor="" normalButtonColorOpacity="0" normalButtonTextColor="" normalItemColor="" normalItemColorOpacity="0" normalItemTextColor="" pressedButtonColor="" pressedButtonColorOpacity="0" pressedButtonTextColor="" pressedItemColor="" pressedItemColorOpacity="0" pressedItemTextColor="" selectedItemColor="" selectedItemColorOpacity="0" selectedItemTextColor="" showBackButton="false"/>
         <itemSet>
-            <footerItem actionId="101" disabledIconPath="" highlightedIconPath="" normalIconPath="" pressedIconPath="" selectedIconPath="" text="Map"/>
-            <footerItem actionId="102" disabledIconPath="" highlightedIconPath="" normalIconPath="" pressedIconPath="" selectedIconPath="" text="Tag"/>
-            <footerItem actionId="103" disabledIconPath="" highlightedIconPath="" normalIconPath="" pressedIconPath="" selectedIconPath="" text="Profile"/>
+            <footerItem actionId="101" disabledIconPath="" highlightedIconPath="" normalIconPath="74-location.png" pressedIconPath="" selectedIconPath="" text=""/>
+            <footerItem actionId="102" disabledIconPath="" highlightedIconPath="" normalIconPath="73-radar.png" pressedIconPath="" selectedIconPath="" text=""/>
+            <footerItem actionId="103" disabledIconPath="" highlightedIconPath="" normalIconPath="bluespraycan.png" pressedIconPath="" selectedIconPath="" text=""/>
+            <footerItem actionId="104" disabledIconPath="" highlightedIconPath="" normalIconPath="111-user.png" pressedIconPath="" selectedIconPath="" text=""/>
+            <footerItem actionId="105" disabledIconPath="" highlightedIconPath="" normalIconPath="19-gear.png" pressedIconPath="" selectedIconPath="" text=""/>
         </itemSet>
     </Footer>
     <Header>
         <property backgroundBitmapPath="" color="" colorOpacity="0" descriptionText="" descriptionTextColor="" disabledButtonColor="" disabledButtonColorOpacity="0" disabledButtonTextColor="" disabledItemColor="" disabledItemColorOpacity="0" disabledItemTextColor="" headerStyle="HEADER_STYLE_TITLE" highlightedButtonColor="" highlightedButtonColorOpacity="0" highlightedButtonTextColor="" highlightedItemColor="" highlightedItemColorOpacity="100" highlightedItemTextColor="" normalButtonColor="" normalButtonColorOpacity="0" normalButtonTextColor="" normalItemColor="" normalItemColorOpacity="100" normalItemTextColor="" pressedButtonColor="" pressedButtonColorOpacity="0" pressedButtonTextColor="" pressedItemColor="" pressedItemColorOpacity="100" pressedItemTextColor="" selectedItemColor="" selectedItemColorOpacity="100" selectedItemTextColor="" titleIconPath="" titleText="Nearby Graffiti" titleTextColor=""/>
-        <itemSet>
-            <buttonItem actionId="104" disabledBGBitmapPath="" disabledIconPath="" highlightedBGBitmapPath="" highlightedIconPath="" normalBGBitmapPath="" normalIconPath="1362151558_Black_Settings.png" position="BUTTON_POSITION_RIGHT" pressedBGBitmapPath="" pressedIconPath="" style="BUTTON_ITEM_STYLE_ICON" text="" type="right"/>
-        </itemSet>
+        <itemSet/>
     </Header>
 </Scene>

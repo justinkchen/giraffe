@@ -2,6 +2,8 @@
 #include "ProjectGiraffeTab1.h"
 #include "ProjectGiraffeTab2.h"
 #include "ProjectGiraffeTab3.h"
+#include "ProjectGiraffeTab5.h"
+#include "ProjectGiraffeTab4.h"
 
 using namespace Tizen::Ui::Scenes;
 
@@ -44,6 +46,20 @@ ProjectGiraffePanelFactory::CreatePanelN(const Tizen::Base::String& panelId, con
 		pSceneManager->AddSceneEventListener(sceneId, *pPanel);
 		pNewPanel = pPanel;
 	}
+	else if (panelId == L"IDC_PANEL4")
+	{
+		ProjectGiraffeTab4* pPanel = new ProjectGiraffeTab4();
+		pPanel->Initialize();
+		pNewPanel = pPanel;
+	}
+	else if (panelId == L"IDC_PANEL5")
+	{
+		ProjectGiraffeTab5* pPanel = new ProjectGiraffeTab5();
+		pPanel->Initialize();
+		pNewPanel = pPanel;
+	}
+
+
 	// TODO:
 	// Add your panel creation code here
 	return pNewPanel;
