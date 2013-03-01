@@ -22,9 +22,12 @@ public:
 	virtual void OnActionPerformed(const Tizen::Ui::Control& source, int actionId);
 
 protected:
-	static const int ID_HEADER_ITEM1 = 101;
-	static const int ID_HEADER_ITEM2 = 102;
-	static const int ID_HEADER_ITEM3 = 103;
+	static const int ID_FOOTER_ITEM1 = 101;
+	static const int ID_FOOTER_ITEM2 = 102;
+	static const int ID_FOOTER_ITEM3 = 103;
+	static const int ID_HEADER_BUTTON = 104;
+
+	int toggleButtonStatus;
 };
 
 #endif	//_PROJECTGIRAFFE_MAIN_FORM_H_

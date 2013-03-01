@@ -32,14 +32,22 @@ ProjectGiraffeMainForm::OnInitializing(void)
 	// TODO:
 	// Add your initialization code here
 	Header* pHeader = GetHeader();
+	Footer* pFooter = GetFooter();
 	if (pHeader)
 	{
 		pHeader->AddActionEventListener(*this);
 	}
 
+	// Initialize footer event listener
+	if (pFooter)
+	{
+		pFooter->AddActionEventListener(*this);
+	}
+
 	// Setup back event listener
 	SetFormBackEventListener(this);
 
+	toggleButtonStatus = 0;
 	return r;
 }
 
@@ -61,17 +69,38 @@ ProjectGiraffeMainForm::OnActionPerformed(const Tizen::Ui::Control& source, int 
 
 	switch(actionId)
 	{
-	case ID_HEADER_ITEM1:
-		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_1"));
-		break;
-	case ID_HEADER_ITEM2:
-		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_2"));
-		break;
-	case ID_HEADER_ITEM3:
-		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_3"));
-		break;
-	default:
-		break;
+		case ID_FOOTER_ITEM1:
+		{
+			FooterItem toggleButton;
+			Footer* pFooter = GetFooter();
+			toggleButton.Construct(actionId);
+			if (toggleButtonStatus == 0){
+				toggleButton.SetText(L"List");
+				toggleButtonStatus = 1;
+				AppLog("Switching to List View");
+			} else if (toggleButtonStatus == 1){
+				toggleButton.SetText("Map");
+				toggleButtonStatus = 0;
+				AppLog("Switching to Map View");
+			}
+			pFooter->SetItemAt(0,toggleButton);
+			pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_1"));
+			break;
+		}
+		case ID_FOOTER_ITEM2:
+		{
+			pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_2"));
+			break;
+		}
+		case ID_FOOTER_ITEM3:
+		{
+			pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_3"));
+			break;
+		}
+		default:
+		{
+			break;
+		}
 	}
 }
 
