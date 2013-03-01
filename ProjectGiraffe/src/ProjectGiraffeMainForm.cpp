@@ -63,23 +63,29 @@ ProjectGiraffeMainForm::OnActionPerformed(const Tizen::Ui::Control& source, int 
 {
 	SceneManager* pSceneManager = SceneManager::GetInstance();
 	AppAssert(pSceneManager);
+	Header* pHeader = GetHeader();
 
 	switch(actionId)
 	{
 	case ID_FOOTER_ITEM1:
 		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_1"));
+		pHeader->SetTitleText(L"Nearby Graffiti");
 		break;
 	case ID_FOOTER_ITEM2:
 		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_2"));
+		pHeader->SetTitleText(L"Graffiti Map");
 		break;
 	case ID_FOOTER_ITEM3:
 		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_3"));
+		pHeader->SetTitleText(L"Post Graffiti");
 		break;
 	case ID_FOOTER_ITEM4:
 		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_4"));
+		pHeader->SetTitleText(L"Profile");
 		break;
 	case ID_FOOTER_ITEM5:
 		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_5"));
+		pHeader->SetTitleText(L"Settings");
 		break;
 	default:
 		break;
