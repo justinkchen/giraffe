@@ -103,54 +103,54 @@ ProjectGiraffeMainForm::OnActionPerformed(const Tizen::Ui::Control& source, int 
 	switch(actionId)
 	{
 	case ID_FOOTER_ITEM1:
-		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_1"));
-		pHeader->SetTitleText(L"Nearby Graffiti");
 		pFooter->SetItemColor(FOOTER_ITEM_STATUS_DISABLED, Tizen::Graphics::Color(0x00, 128, 255));
 		pFooter->SetItemEnabled(0,false);
 		pFooter->SetItemEnabled(1,true);
 		pFooter->SetItemEnabled(2,true);
 		pFooter->SetItemEnabled(3,true);
 		pFooter->SetItemEnabled(4,true);
+		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_1"));
+		pHeader->SetTitleText(L"Nearby Graffiti");
 		break;
 	case ID_FOOTER_ITEM2:
-		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_2"));
-		pHeader->SetTitleText(L"Graffiti Map");
 		pFooter->SetItemColor(FOOTER_ITEM_STATUS_DISABLED, Tizen::Graphics::Color(0x00, 128, 255));
 		pFooter->SetItemEnabled(0,true);
 		pFooter->SetItemEnabled(1,false);
 		pFooter->SetItemEnabled(2,true);
 		pFooter->SetItemEnabled(3,true);
 		pFooter->SetItemEnabled(4,true);
+		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_2"));
+		pHeader->SetTitleText(L"Graffiti Map");
 		break;
 	case ID_FOOTER_ITEM3:
-		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_3"));
-		pHeader->SetTitleText(L"Post Graffiti");
 		pFooter->SetItemColor(FOOTER_ITEM_STATUS_DISABLED, Tizen::Graphics::Color(0x00, 128, 255));
 		pFooter->SetItemEnabled(0,true);
 		pFooter->SetItemEnabled(1,true);
 		pFooter->SetItemEnabled(2,false);
 		pFooter->SetItemEnabled(3,true);
 		pFooter->SetItemEnabled(4,true);
+		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_3"));
+		pHeader->SetTitleText(L"Post Graffiti");
 		break;
 	case ID_FOOTER_ITEM4:
-		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_4"));
-		pHeader->SetTitleText(L"Profile");
 		pFooter->SetItemColor(FOOTER_ITEM_STATUS_DISABLED, Tizen::Graphics::Color(0x00, 128, 255));
 		pFooter->SetItemEnabled(0,true);
 		pFooter->SetItemEnabled(1,true);
 		pFooter->SetItemEnabled(2,true);
 		pFooter->SetItemEnabled(3,false);
 		pFooter->SetItemEnabled(4,true);
+		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_4"));
+		pHeader->SetTitleText(L"Profile");
 		break;
 	case ID_FOOTER_ITEM5:
-		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_5"));
-		pHeader->SetTitleText(L"Settings");
 		pFooter->SetItemColor(FOOTER_ITEM_STATUS_DISABLED, Tizen::Graphics::Color(0x00, 128, 255));
 		pFooter->SetItemEnabled(0,true);
 		pFooter->SetItemEnabled(1,true);
 		pFooter->SetItemEnabled(2,true);
 		pFooter->SetItemEnabled(3,true);
 		pFooter->SetItemEnabled(4,false);
+		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_5"));
+		pHeader->SetTitleText(L"Settings");
 		break;
 	default:
 		break;
