@@ -8,9 +8,10 @@ using namespace Tizen::Ui::Scenes;
 using namespace Tizen::Locations;
 
 ProjectGiraffeTab2::ProjectGiraffeTab2(void)
-: __pLocationManagerThread(null)
-, __pLocProvider(null)
-, __regionId(-1)
+: __pLocProvider(null),
+__pLocationManagerThread(null),
+__regionId(-1),
+pLabel1(null)
 {
 
 }
@@ -46,18 +47,18 @@ ProjectGiraffeTab2::OnInitializing(void)
 	pRelativeLayout->SetVerticalFitPolicy(*this, FIT_POLICY_PARENT);
 	delete pRelativeLayout;
 
-	Label *pLabel1 = static_cast<Label *>(GetControl(L"IDC_LABEL1"));  
+	pLabel1 = static_cast<Label *>(GetControl(L"IDC_LABEL1"));
 	if(pLabel1)
 	{
 		pLabel1->AddTouchEventListener(*this);
 	}
 
 	__pLocationManagerThread =  new (std::nothrow) LocationManagerThread();
-	res = __pLocationManagerThread->Construct(*this);
-	if (IsFailed(res))
+	r = __pLocationManagerThread->Construct(*this);
+	if (IsFailed(r))
 	{
 		AppLog("Thread Construct failed.");
-		return res;
+		return r;
 	}
 
 
@@ -132,13 +133,12 @@ ProjectGiraffeTab2::OnTouchPressed(const Tizen::Ui::Control& source, const Tizen
 {
 	// TODO: Add your implementation codes here
 	AppLog("It got pressed");
-	Label *pLabel1 = static_cast<Label *>(GetControl(L"IDC_LABEL1"));
 	Tizen::Base::String output = pLabel1->GetText();
 	Tizen::Base::String str = L"test";
 	AppLog("String: %ls", output.GetPointer());
+	result r = __pLocationManagerThread->Start();
 
-
-	pLabel1->SetText(L"DID I CLICK?");
+	//pLabel1->SetText(L"ERROR");
 	pLabel1->Draw();
 
 }
@@ -185,4 +185,31 @@ void
 ProjectGiraffeTab2::OnAccuracyChanged(LocationAccuracy accuracy)
 {
 
+}
+
+void
+ProjectGiraffeTab2::OnUserEventReceivedN(RequestId requestId, Tizen::Base::Collection::IList* pArgs)
+{
+	AppLog("We got to here!");
+	if (requestId == 101)
+	{
+		Location* pLocation = static_cast<Location*> (pArgs->GetAt(0));
+
+		if (pLocation->IsValid())
+		{
+			pLabel1->SetText("Got location!");
+			pLabel1->Draw();
+		}
+
+	}
+	else if(requestId == 102)
+	{
+
+	}
+
+	if(pArgs)
+	{
+		pArgs->RemoveAll(true);
+		delete pArgs;
+	}
 }

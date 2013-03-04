@@ -40,12 +40,14 @@ public:
 	virtual void OnRegionEntered (Tizen::Locations::RegionId regionId);
 	virtual void OnRegionLeft (Tizen::Locations::RegionId regionId);
 	virtual void OnRegionMonitoringStatusChanged (Tizen::Locations::LocationServiceStatus status);
+	virtual void OnUserEventReceivedN(RequestId requestId, Tizen::Base::Collection::IList* pArgs);
 
 private:
 		Tizen::Locations::LocationProvider* __pLocProvider;
 		LocationManagerThread* __pLocationManagerThread;
 		Tizen::Locations::RegionId __regionId;
 		Tizen::Locations::Coordinates __regionCenter;
+		Tizen::Ui::Controls::Label* pLabel1;
 
 };
 

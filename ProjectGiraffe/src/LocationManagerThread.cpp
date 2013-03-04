@@ -45,6 +45,7 @@ LocationManagerThread::Construct(const Tizen::Ui::Control& uiControl)
 Object*
 LocationManagerThread::Run(void)
 {
+
 	result lastResult = E_SUCCESS;
 	LocationCriteria locCriteria;
 
@@ -58,15 +59,15 @@ LocationManagerThread::Run(void)
 
 	if (lastResult == E_USER_NOT_CONSENTED)
 	{
-		//__pUiControl->SendUserEvent(LocationManagerMainForm::LOC_MGR_NOTIFY_ERROR, null);
+		__pUiControl->SendUserEvent(102, null);
 	}
 
 	ArrayList* pList = new (std::nothrow) ArrayList();
 	Location* pLocation = new (std::nothrow) Location(location);
-
 	pList->Construct();
 	pList->Add(*pLocation);
-	//__pUiControl->SendUserEvent(LocationManagerMainForm::LOC_MGR_DRAW_SYNC_LOC_UPDATE, pList);
+
+	__pUiControl->SendUserEvent(101, pList);
 
 	return null;
 }
