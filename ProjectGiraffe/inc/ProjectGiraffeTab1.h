@@ -27,6 +27,8 @@ public:
 public:
 	virtual result OnInitializing(void);
 	virtual result OnTerminating(void);
+
+	// ISceneEventListener
 	virtual void OnSceneActivatedN(const Tizen::Ui::Scenes::SceneId& previousSceneId,
 								   const Tizen::Ui::Scenes::SceneId& currentSceneId, Tizen::Base::Collection::IList* pArgs);
 	virtual void OnSceneDeactivated(const Tizen::Ui::Scenes::SceneId& currentSceneId,
@@ -44,7 +46,7 @@ public:
     virtual void UpdateItem(int itemIndex, Tizen::Ui::Controls::TableViewItem* pItem);
     virtual int GetDefaultItemHeight(void);
 
-public:
+    // IHttpTransactionEventListener
 	virtual void OnTransactionAborted(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, result r);
 	virtual void OnTransactionCertVerificationRequiredN(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, Tizen::Base::String *pCert);
 	virtual void OnTransactionCompleted(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction);
