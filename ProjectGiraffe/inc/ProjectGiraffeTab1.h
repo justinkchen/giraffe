@@ -3,18 +3,26 @@
 
 #include <FBase.h>
 #include <FUi.h>
+#include <FWebJson.h>
+#include <Fnet.h>
+#include <FWeb.h>
 #include "GraffitiCell.h"
+
+using namespace Tizen::Web::Json;
 
 class ProjectGiraffeTab1
 	: public Tizen::Ui::Controls::Panel
 	, public Tizen::Ui::Scenes::ISceneEventListener
 	, public Tizen::Ui::Controls::ITableViewItemProvider
 	, public Tizen::Ui::Controls::ITableViewItemEventListener
+	, public Tizen::Net::Http::IHttpTransactionEventListener
 	{
 public:
 	ProjectGiraffeTab1(void);
 	virtual ~ProjectGiraffeTab1(void);
 	bool Initialize(void);
+	void TraverseFunction(IJsonValue* pValue);
+	void ParseAndDisplay(void);
 
 public:
 	virtual result OnInitializing(void);
@@ -36,9 +44,22 @@ public:
     virtual void UpdateItem(int itemIndex, Tizen::Ui::Controls::TableViewItem* pItem);
     virtual int GetDefaultItemHeight(void);
 
-private:
+public:
+	virtual void OnTransactionAborted(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, result r);
+	virtual void OnTransactionCertVerificationRequiredN(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, Tizen::Base::String *pCert);
+	virtual void OnTransactionCompleted(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction);
+	virtual void OnTransactionHeaderCompleted(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int headerLen, bool bAuthRequired);
+	virtual void OnTransactionReadyToRead(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int availableBodyLen);
+	virtual void OnTransactionReadyToWrite(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int recommendedChunkSize);
+
+protected:
+	Tizen::Base::Collection::IList* _pValueList;
+	Tizen::Base::Collection::ArrayList* _pJsonKeyList;
     Tizen::Ui::Controls::TableView* tableView;
     Tizen::Ui::Controls::TableViewContextItem* tableViewContextItem;
+    int _isArray;
+
+private:
 
     unsigned int itemCount;
     //GraffitiCell **itemCells;
