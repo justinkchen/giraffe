@@ -3,13 +3,16 @@
 
 #include <FBase.h>
 #include <FUi.h>
+#include <FLocations.h>
 
+class LocationManagerThread;
 
 class ProjectGiraffeMainForm
 	: public Tizen::Ui::Controls::Form
 	, public Tizen::Ui::IActionEventListener
 	, public Tizen::Ui::Controls::IFormBackEventListener,
- 	public Tizen::Ui::Scenes::ISceneEventListener
+ 	public Tizen::Ui::Scenes::ISceneEventListener,
+ 	public Tizen::Locations::ILocationProviderListener
 {
 public:
 	ProjectGiraffeMainForm(void);
@@ -21,6 +24,13 @@ public:
 	virtual result OnTerminating(void);
 	virtual void OnFormBackRequested(Tizen::Ui::Controls::Form& source);
 	virtual void OnActionPerformed(const Tizen::Ui::Control& source, int actionId);
+	virtual void OnAccuracyChanged (Tizen::Locations::LocationAccuracy accuracy);
+	virtual void OnLocationUpdated (const Tizen::Locations::Location &location);
+	virtual void OnLocationUpdateStatusChanged (Tizen::Locations::LocationServiceStatus status);
+	virtual void OnRegionEntered (Tizen::Locations::RegionId regionId);
+	virtual void OnRegionLeft (Tizen::Locations::RegionId regionId);
+	virtual void OnRegionMonitoringStatusChanged (Tizen::Locations::LocationServiceStatus status);
+	virtual void OnUserEventReceivedN(RequestId requestId, Tizen::Base::Collection::IList* pArgs);
 
 protected:
 	static const int ID_FOOTER_ITEM1 = 101;
@@ -34,6 +44,12 @@ protected:
 								   const Tizen::Ui::Scenes::SceneId& currentSceneId, Tizen::Base::Collection::IList* pArgs);
 	virtual void OnSceneDeactivated(const Tizen::Ui::Scenes::SceneId& currentSceneId,
 									const Tizen::Ui::Scenes::SceneId& nextSceneId);
+
+private:
+		Tizen::Locations::LocationProvider* __pLocProvider;
+		LocationManagerThread* __pLocationManagerThread;
+		Tizen::Locations::RegionId __regionId;
+		Tizen::Locations::Coordinates __regionCenter;
 };
 
 #endif	//_PROJECTGIRAFFE_MAIN_FORM_H_

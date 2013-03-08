@@ -3,15 +3,15 @@
 
 #include <FBase.h>
 #include <FUi.h>
-#include <FLocations.h>
+
 
 class LocationManagerThread;
 
 class ProjectGiraffeTab2
 	: public Tizen::Ui::Controls::Panel
 	, public Tizen::Ui::Scenes::ISceneEventListener,
- 	public Tizen::Ui::ITouchEventListener,
- 	public Tizen::Locations::ILocationProviderListener
+ 	public Tizen::Ui::ITouchEventListener
+
 {
 public:
 	ProjectGiraffeTab2(void);
@@ -34,20 +34,9 @@ public:
 	virtual void OnTouchMoved(const Tizen::Ui::Control& source, const Tizen::Graphics::Point& currentPosition, const Tizen::Ui::TouchEventInfo& touchInfo);
 	virtual void OnTouchPressed(const Tizen::Ui::Control& source, const Tizen::Graphics::Point& currentPosition, const Tizen::Ui::TouchEventInfo& touchInfo);
 	virtual void OnTouchReleased(const Tizen::Ui::Control& source, const Tizen::Graphics::Point& currentPosition, const Tizen::Ui::TouchEventInfo& touchInfo);
-	virtual void OnAccuracyChanged (Tizen::Locations::LocationAccuracy accuracy);
-	virtual void OnLocationUpdated (const Tizen::Locations::Location &location);
-	virtual void OnLocationUpdateStatusChanged (Tizen::Locations::LocationServiceStatus status);
-	virtual void OnRegionEntered (Tizen::Locations::RegionId regionId);
-	virtual void OnRegionLeft (Tizen::Locations::RegionId regionId);
-	virtual void OnRegionMonitoringStatusChanged (Tizen::Locations::LocationServiceStatus status);
-	virtual void OnUserEventReceivedN(RequestId requestId, Tizen::Base::Collection::IList* pArgs);
 
-private:
-		Tizen::Locations::LocationProvider* __pLocProvider;
-		LocationManagerThread* __pLocationManagerThread;
-		Tizen::Locations::RegionId __regionId;
-		Tizen::Locations::Coordinates __regionCenter;
-		Tizen::Ui::Controls::Label* pLabel1;
+
+
 
 };
 

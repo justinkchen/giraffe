@@ -45,7 +45,7 @@ LocationManagerThread::Construct(const Tizen::Ui::Control& uiControl)
 Object*
 LocationManagerThread::Run(void)
 {
-
+	AppLog("Starting to parse for location.");
 	result lastResult = E_SUCCESS;
 	LocationCriteria locCriteria;
 
@@ -53,19 +53,30 @@ LocationManagerThread::Run(void)
 
 	Location location = LocationProvider::GetLocation(locCriteria);
 
+
+	double longitude = location.GetCoordinates().GetLongitude();
+
+	AppLog("The longitude is: %f", longitude);
 	AppLog("Requested for current location in new thread.");
 
 	lastResult = GetLastResult();
 
-	if (lastResult == E_USER_NOT_CONSENTED)
+	if (lastResult == E_LOCATION_UNAVAILABLE)
 	{
-		__pUiControl->SendUserEvent(102, null);
+		AppLog("Location was unavailable.");
 	}
 
+	if (lastResult == E_USER_NOT_CONSENTED)
+	{
+		AppLog("User did not consent.");
+		__pUiControl->SendUserEvent(102, null);
+	}
+	AppLog("We got to here.");
 	ArrayList* pList = new (std::nothrow) ArrayList();
 	Location* pLocation = new (std::nothrow) Location(location);
 	pList->Construct();
 	pList->Add(*pLocation);
+
 
 	__pUiControl->SendUserEvent(101, pList);
 
