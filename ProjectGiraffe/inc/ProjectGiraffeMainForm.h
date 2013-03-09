@@ -46,7 +46,6 @@ protected:
 	static const int ID_FOOTER_ITEM4 = 104;
 	static const int ID_FOOTER_ITEM5 = 105;
 
-
 	virtual void OnSceneActivatedN(const Tizen::Ui::Scenes::SceneId& previousSceneId,
 								   const Tizen::Ui::Scenes::SceneId& currentSceneId, Tizen::Base::Collection::IList* pArgs);
 	virtual void OnSceneDeactivated(const Tizen::Ui::Scenes::SceneId& currentSceneId,
