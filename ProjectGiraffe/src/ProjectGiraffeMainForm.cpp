@@ -144,6 +144,7 @@ ProjectGiraffeMainForm::OnActionPerformed(const Tizen::Ui::Control& source, int 
 		pFooter->SetItemEnabled(4,true);
 		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_1"));
 		pHeader->SetTitleText(L"Nearby Graffiti");
+		AppLog("Tab1");
 		break;
 	case ID_FOOTER_ITEM2:
 		pFooter->SetItemColor(FOOTER_ITEM_STATUS_DISABLED, Tizen::Graphics::Color(0x00, 128, 255));
@@ -154,6 +155,7 @@ ProjectGiraffeMainForm::OnActionPerformed(const Tizen::Ui::Control& source, int 
 		pFooter->SetItemEnabled(4,true);
 		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_2"));
 		pHeader->SetTitleText(L"Graffiti Map");
+		AppLog("Tab2");
 		break;
 	case ID_FOOTER_ITEM3:
 		pFooter->SetItemColor(FOOTER_ITEM_STATUS_DISABLED, Tizen::Graphics::Color(0x00, 128, 255));
@@ -164,6 +166,7 @@ ProjectGiraffeMainForm::OnActionPerformed(const Tizen::Ui::Control& source, int 
 		pFooter->SetItemEnabled(4,true);
 		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_3"));
 		pHeader->SetTitleText(L"Post Graffiti");
+		AppLog("Tab3");
 		break;
 	case ID_FOOTER_ITEM4:
 		pFooter->SetItemColor(FOOTER_ITEM_STATUS_DISABLED, Tizen::Graphics::Color(0x00, 128, 255));
@@ -174,6 +177,7 @@ ProjectGiraffeMainForm::OnActionPerformed(const Tizen::Ui::Control& source, int 
 		pFooter->SetItemEnabled(4,true);
 		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_4"));
 		pHeader->SetTitleText(L"Profile");
+		AppLog("Tab4");
 		break;
 	case ID_FOOTER_ITEM5:
 		pFooter->SetItemColor(FOOTER_ITEM_STATUS_DISABLED, Tizen::Graphics::Color(0x00, 128, 255));
@@ -184,6 +188,7 @@ ProjectGiraffeMainForm::OnActionPerformed(const Tizen::Ui::Control& source, int 
 		pFooter->SetItemEnabled(4,false);
 		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_5"));
 		pHeader->SetTitleText(L"Settings");
+		AppLog("Tab5");
 		break;
 	default:
 		break;
@@ -288,10 +293,15 @@ ProjectGiraffeMainForm::OnUserEventReceivedN(RequestId requestId, Tizen::Base::C
 		{
 			currentLatitude = __currentLocation->GetCoordinates().GetLatitude();
 			currentLongitude = __currentLocation->GetCoordinates().GetLongitude();
+			SceneManager* pSceneManager = SceneManager::GetInstance();
+			Scene* pScene = pSceneManager->GetCurrentScene();
+			Panel* pPanel = pScene->GetPanel();
+			pPanel->SendUserEvent(101, null);
+			AppLog("The latitude is: %f", currentLatitude);
+			AppLog("The longitude is: %f", currentLongitude);
+		}else{
+			AppLog("Location not valid");
 		}
-
-		AppLog("The latitude is: %f", currentLatitude);
-
 	}
 	else if(requestId == 102)
 	{

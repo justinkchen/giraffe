@@ -47,11 +47,25 @@ ProjectGiraffeTab2::OnInitializing(void)
 	delete pRelativeLayout;
 
 
-	pLabel1 = static_cast<Label *>(GetControl(L"IDC_LABEL1"));
-	if(pLabel1)
-	{
-		pLabel1->AddTouchEventListener(*this);
-	}
+//	pLabel1 = static_cast<Label *>(GetControl(L"IDC_LABEL1"));
+//	if(pLabel1)
+//	{
+//		pLabel1->AddTouchEventListener(*this);
+//	}
+	// Creates an instance of Label
+	pLabellat = new Label();
+	pLabellat->Construct(Rectangle(0, 0, 500, 50), L"Obtaining Location...");
+	pLabellat->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
+	pLabellat->SetTextConfig(30, LABEL_TEXT_STYLE_BOLD);
+	pLabellong = new Label();
+	pLabellong->Construct(Rectangle(0, 50, 500, 50), L"");
+	pLabellong->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
+	pLabellong->SetTextConfig(30, LABEL_TEXT_STYLE_BOLD);
+
+	// Adds the label to the form
+	//AddControl(*__pLabel);
+	AddControl(*pLabellat);
+	AddControl(*pLabellong);
 	return r;
 }
 
@@ -73,6 +87,15 @@ ProjectGiraffeTab2::OnSceneActivatedN(const Tizen::Ui::Scenes::SceneId& previous
 {
 	// TODO:
 	// Add your scene activate code here
+//	double latitude = ProjectGiraffeMainForm::currentLatitude;
+//	double longitude = ProjectGiraffeMainForm::currentLongitude;
+//	AppLog("Latitude is now: %f", latitude);
+//	AppLog("Longitude is now: %f", longitude);
+//	Tizen::Base::Double* dublat = new Tizen::Base::Double(latitude);
+//	Tizen::Base::Double* dublong = new Tizen::Base::Double(longitude);
+//	pLabellat->SetText(dublat->ToString());
+//	pLabellong->SetText(dublong->ToString());
+
 	AppLog("OnSceneActivatedN");
 }
 
@@ -124,13 +147,6 @@ void
 ProjectGiraffeTab2::OnTouchPressed(const Tizen::Ui::Control& source, const Tizen::Graphics::Point& currentPosition, const Tizen::Ui::TouchEventInfo& touchInfo)
 {
 
-	//Location* loc = ProjectGiraffeMainForm::__currentLocation;
-	//double lat = loc->GetCoordinates().GetLatitude();
-	double lat = ProjectGiraffeMainForm::currentLatitude;
-	AppLog("Latitude is now: %f", lat);
-	Tizen::Base::Double* dub = new Tizen::Base::Double(lat);
-	pLabel1->SetText(dub->ToString());
-	pLabel1->Draw();
 }
 
 void
@@ -139,6 +155,36 @@ ProjectGiraffeTab2::OnTouchReleased(const Tizen::Ui::Control& source, const Tize
 	// TODO: Add your implementation codes here
 
 }
+
+void
+ProjectGiraffeTab2::OnUserEventReceivedN(RequestId requestId, Tizen::Base::Collection::IList* pArgs)
+{
+	AppLogDebug("We received an event.");
+	if (requestId == 101)
+	{
+		double latitude = ProjectGiraffeMainForm::currentLatitude;
+		double longitude = ProjectGiraffeMainForm::currentLongitude;
+		AppLog("Latitude is now: %f", latitude);
+		AppLog("Longitude is now: %f", longitude);
+		Tizen::Base::Double* dublat = new Tizen::Base::Double(latitude);
+		Tizen::Base::Double* dublong = new Tizen::Base::Double(longitude);
+		pLabellat->SetText(L"Location Found");
+		pLabellat->Draw();
+		pLabellong->SetText(dublat->ToString() + L", " + dublong->ToString());
+		pLabellong->Draw();
+	}
+	else if(requestId == 102)
+	{
+
+	}
+
+	if(pArgs)
+	{
+		pArgs->RemoveAll(true);
+		delete pArgs;
+	}
+}
+
 
 
 
