@@ -31,6 +31,8 @@ DA-Tizen-Emulator/
 DA-Tizen-Device/
 Release/
 
+crash-info/
+
 # Pem files
 *.pem
 
