@@ -3,6 +3,7 @@
 
 #include <FBase.h>
 #include <FUi.h>
+#include <FLocations.h>
 
 
 class LocationManagerThread;
@@ -35,7 +36,8 @@ public:
 	virtual void OnTouchPressed(const Tizen::Ui::Control& source, const Tizen::Graphics::Point& currentPosition, const Tizen::Ui::TouchEventInfo& touchInfo);
 	virtual void OnTouchReleased(const Tizen::Ui::Control& source, const Tizen::Graphics::Point& currentPosition, const Tizen::Ui::TouchEventInfo& touchInfo);
 
-
+private:
+	Tizen::Ui::Controls::Label* pLabel1;
 
 
 };

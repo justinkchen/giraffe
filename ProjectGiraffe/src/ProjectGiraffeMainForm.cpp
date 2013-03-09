@@ -9,6 +9,9 @@ using namespace Tizen::Ui::Controls;
 using namespace Tizen::Ui::Scenes;
 using namespace Tizen::Locations;
 
+Location* ProjectGiraffeMainForm::__currentLocation;
+double ProjectGiraffeMainForm::currentLatitude = 0;
+double ProjectGiraffeMainForm::currentLongitude = 0;
 
 ProjectGiraffeMainForm::ProjectGiraffeMainForm(void)
 : __pLocProvider(null),
@@ -67,10 +70,10 @@ ProjectGiraffeMainForm::OnInitializing(void)
 	{
 		AppLog("Location Provider construct failed.");
 	}
+	//__pLocProvider->StartLocationUpdatesByInterval(3);
 
-
-	AppLog("Everything went well.");
-
+	AppLog("Everything is initialized, Location updates started.");
+	MainFormParseLocation();
 	return r;
 }
 
@@ -78,9 +81,11 @@ result
 ProjectGiraffeMainForm::OnTerminating(void)
 {
 	result r = E_SUCCESS;
+	__pLocProvider->StopLocationUpdates();
 	delete __pLocProvider;
 	__pLocationManagerThread->Join();
 	delete __pLocationManagerThread;
+	//delete __currentLocation;
 	// TODO:
 	// Add your termination code here
 	return r;
@@ -147,13 +152,39 @@ ProjectGiraffeMainForm::OnSceneDeactivated(const Tizen::Ui::Scenes::SceneId& cur
 void
 ProjectGiraffeMainForm::OnLocationUpdated(const Tizen::Locations::Location& location)
 {
-	AppLog("LOCATION GOT UPDATED!");
+	AppLog("Location Updated.");
+	//__currentLocation = &location;
+	AppLog("Location Assigned.");
+	double d = __currentLocation->GetCoordinates().GetLatitude();
+	AppLog("Current Latitude: %f.", d);
 }
+
 
 void
 ProjectGiraffeMainForm::OnLocationUpdateStatusChanged(LocationServiceStatus status)
 {
-
+	AppLog("Location Status Updated.");
+	switch(status)
+	{
+	case LOC_SVC_STATUS_IDLE:
+		AppLog("Service is idle.");
+		break;
+	case LOC_SVC_STATUS_RUNNING:
+		AppLog("Service is running.");
+		break;
+	case LOC_SVC_STATUS_PAUSED :
+		AppLog("Service is paused.");
+		break;
+	case LOC_SVC_STATUS_DENIED :
+		AppLog("Service is denied.");
+		break;
+	case LOC_SVC_STATUS_NOT_FIXED:
+		AppLog("Service is not fixed");
+		break;
+	default:
+		AppLog("Service is undetermined.");
+		break;
+	}
 }
 
 void
@@ -186,12 +217,15 @@ ProjectGiraffeMainForm::OnUserEventReceivedN(RequestId requestId, Tizen::Base::C
 	AppLog("We received an event.");
 	if (requestId == 101)
 	{
-		Location* pLocation = static_cast<Location*> (pArgs->GetAt(0));
+		__currentLocation = static_cast<Location*> (pArgs->GetAt(0));
 
-		if (pLocation->IsValid())
+		if (__currentLocation->IsValid())
 		{
-
+			currentLatitude = __currentLocation->GetCoordinates().GetLatitude();
+			currentLongitude = __currentLocation->GetCoordinates().GetLongitude();
 		}
+
+		AppLog("The latitude is: %f", currentLatitude);
 
 	}
 	else if(requestId == 102)
@@ -205,22 +239,30 @@ ProjectGiraffeMainForm::OnUserEventReceivedN(RequestId requestId, Tizen::Base::C
 		delete pArgs;
 	}
 }
-/*
-// TODO: Add your implementation codes here
-	AppLog("It got pressed");
-	Tizen::Base::String output = pLabel1->GetText();
-	Tizen::Base::String str = L"test";
-	AppLog("String: %ls", output.GetPointer());
+
+void
+ProjectGiraffeMainForm::MainFormParseLocation()
+{
+	AppLog("Starting location parse");
+	__pLocationManagerThread->Start();
+	AppLog("Ended location parse");
+}
+
+double
+ProjectGiraffeMainForm::MainFormGetLatitude()
+{
+	//Location* loc =__currentLocation;
+	//AppLog("Returning latitude: %f", result);
+	return 0; //result;
+}
+
+bool
+ProjectGiraffeMainForm::TestFunction()
+{
+	return true;
+}
+
 	//result res = __pLocProvider->StartLocationUpdatesByInterval(3);
 	//Location loc = __pLocProvider->GetLastKnownLocation();
-	//double d = loc.GetCoordinates().GetLatitude();
-	//AppLog("In main thread d = %f", d);
-	//if (res == E_USER_NOT_CONSENTED)
-	//{
-		//AppLog("We don't have user consent.");
-	//}
-	result r = __pLocationManagerThread->Start();
-	AppLog("We get back to the main thread.");
-	pLabel1->SetText(L"ERROR");
-	pLabel1->Draw();
-*/
+
+

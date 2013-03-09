@@ -1,13 +1,16 @@
 #include "ProjectGiraffeTab2.h"
+#include "ProjectGiraffeMainForm.h"
 #include "LocationManagerThread.h"
 
 using namespace Tizen::Graphics;
 using namespace Tizen::Ui;
 using namespace Tizen::Ui::Controls;
 using namespace Tizen::Ui::Scenes;
+using namespace Tizen::Locations;
 
 
 ProjectGiraffeTab2::ProjectGiraffeTab2(void)
+: pLabel1(null)
 {
 
 }
@@ -44,6 +47,11 @@ ProjectGiraffeTab2::OnInitializing(void)
 	delete pRelativeLayout;
 
 
+	pLabel1 = static_cast<Label *>(GetControl(L"IDC_LABEL1"));
+	if(pLabel1)
+	{
+		pLabel1->AddTouchEventListener(*this);
+	}
 	return r;
 }
 
@@ -116,6 +124,13 @@ void
 ProjectGiraffeTab2::OnTouchPressed(const Tizen::Ui::Control& source, const Tizen::Graphics::Point& currentPosition, const Tizen::Ui::TouchEventInfo& touchInfo)
 {
 
+	//Location* loc = ProjectGiraffeMainForm::__currentLocation;
+	//double lat = loc->GetCoordinates().GetLatitude();
+	double lat = ProjectGiraffeMainForm::currentLatitude;
+	AppLog("Latitude is now: %f", lat);
+	Tizen::Base::Double* dub = new Tizen::Base::Double(lat);
+	pLabel1->SetText(dub->ToString());
+	pLabel1->Draw();
 }
 
 void

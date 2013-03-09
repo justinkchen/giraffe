@@ -31,6 +31,13 @@ public:
 	virtual void OnRegionLeft (Tizen::Locations::RegionId regionId);
 	virtual void OnRegionMonitoringStatusChanged (Tizen::Locations::LocationServiceStatus status);
 	virtual void OnUserEventReceivedN(RequestId requestId, Tizen::Base::Collection::IList* pArgs);
+	virtual void MainFormParseLocation();
+	static double MainFormGetLatitude();
+	bool TestFunction();
+	static Tizen::Locations::Location* __currentLocation;
+	static double currentLongitude;
+	static double currentLatitude;
+
 
 protected:
 	static const int ID_FOOTER_ITEM1 = 101;
@@ -50,6 +57,8 @@ private:
 		LocationManagerThread* __pLocationManagerThread;
 		Tizen::Locations::RegionId __regionId;
 		Tizen::Locations::Coordinates __regionCenter;
+
+
 };
 
 #endif	//_PROJECTGIRAFFE_MAIN_FORM_H_

@@ -71,7 +71,7 @@ LocationManagerThread::Run(void)
 		AppLog("User did not consent.");
 		__pUiControl->SendUserEvent(102, null);
 	}
-	AppLog("We got to here.");
+
 	ArrayList* pList = new (std::nothrow) ArrayList();
 	Location* pLocation = new (std::nothrow) Location(location);
 	pList->Construct();
