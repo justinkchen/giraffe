@@ -66,6 +66,7 @@ private:
     unsigned int itemCount;
     //GraffitiCell **itemCells;
     Tizen::Base::String *itemTitles;
+    Tizen::Ui::Controls::Label* pLabelHTTPStatus;
     virtual void updateItems();
 };
 

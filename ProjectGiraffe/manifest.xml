@@ -3,19 +3,18 @@
     <Id>i210nfM5xJ</Id>
     <Version>1.0.0</Version>
     <Type>C++App</Type>
+    <Author/>
     <Descriptions/>
-    <Url/>
     <Requirements>
-        <Feature Name="http://tizen.org/feature/location">true</Feature>
-        <Feature Name="http://tizen.org/feature/platform.core.cpu.arch.armv7">true</Feature>
+        <Feature Name="http://tizen.org/feature/platform.core.cpu.arch.x86">true</Feature>
         <Feature Name="http://tizen.org/feature/platform.core.fpu.arch.vfpv3">true</Feature>
     </Requirements>
     <Apps>
         <ApiVersion>2.0</ApiVersion>
         <Privileges>
             <Privilege>http://tizen.org/privilege/location</Privilege>
+            <Privilege>http://tizen.org/privilege/web.service</Privilege>
             <Privilege>http://tizen.org/privilege/http</Privilege>
-            <Privilege>http://tizen.org/privilege/power</Privilege>
         </Privileges>
         <UiApp Main="True" MenuIconVisible="True" Name="ProjectGiraffe">
             <UiScalability BaseScreenSize="Normal" CoordinateSystem="Logical" LogicalCoordinate="720"/>

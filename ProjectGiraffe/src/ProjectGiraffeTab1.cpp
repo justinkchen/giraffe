@@ -240,7 +240,15 @@ int ProjectGiraffeTab1::GetDefaultItemHeight(void)
 void
 ProjectGiraffeTab1::OnTransactionAborted (HttpSession &httpSession, HttpTransaction &httpTransaction, result r)
 {
+	AppLog("HTTP Transaction Aborted");
 
+	MessageBox msgBox;
+	msgBox.Construct(L"HTTP STATUS", L"HTTP Request Aborted", MSGBOX_STYLE_NONE, 3000);
+	int modalresult = 0;
+	msgBox.ShowAndWait(modalresult);
+
+	// Adds the label to the form
+	AddControl(*pLabelHTTPStatus);
 }
 
 void
@@ -252,7 +260,7 @@ ProjectGiraffeTab1::OnTransactionCertVerificationRequiredN (HttpSession &httpSes
 void
 ProjectGiraffeTab1::OnTransactionCompleted (HttpSession &httpSession, HttpTransaction &httpTransaction)
 {
-
+	AppLog("HTTP Transaction Completed");
 }
 
 void
@@ -269,6 +277,11 @@ ProjectGiraffeTab1::OnTransactionReadyToRead (HttpSession &httpSession, HttpTran
 	AppLog("Checking HTTP Status Code");
 	if (pHttpResponse->GetHttpStatusCode() == HTTP_STATUS_OK)
 	{
+//		MessageBox msgBox;
+//		msgBox.Construct(L"HTTP STATUS", L"HTTP Request OK", MSGBOX_STYLE_NONE, 3000);
+//		int modalresult = 0;
+//		msgBox.ShowAndWait(modalresult);
+
 		ByteBuffer* pBody = null;
 		String statusText = pHttpResponse->GetStatusText();
 		String version = pHttpResponse->GetVersion();

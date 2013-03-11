@@ -105,7 +105,7 @@ ProjectGiraffeMainForm::OnInitializing(void)
 	{
 		AppLog("Location Provider construct failed.");
 	}
-	//__pLocProvider->StartLocationUpdatesByInterval(3);
+	__pLocProvider->StartLocationUpdatesByInterval(10);
 
 	AppLog("Everything is initialized, Location updates started.");
 	MainFormParseLocation();
@@ -223,10 +223,24 @@ void
 ProjectGiraffeMainForm::OnLocationUpdated(const Tizen::Locations::Location& location)
 {
 	AppLog("Location Updated.");
-	//__currentLocation = &location;
-	AppLog("Location Assigned.");
-	double d = __currentLocation->GetCoordinates().GetLatitude();
-	AppLog("Current Latitude: %f.", d);
+//	__currentLocation = location;
+//	AppLog("Location Assigned.");
+//	double d = __currentLocation->GetCoordinates().GetLatitude();
+//	AppLog("Current Latitude: %f.", d);
+	if (location.IsValid())
+	{
+		currentLatitude = location.GetCoordinates().GetLatitude();
+		currentLongitude = location.GetCoordinates().GetLongitude();
+		SceneManager* pSceneManager = SceneManager::GetInstance();
+		Scene* pScene = pSceneManager->GetCurrentScene();
+		Panel* pPanel = pScene->GetPanel();
+		pPanel->SendUserEvent(101, null);
+		AppLog("The latitude is: %f", currentLatitude);
+		AppLog("The longitude is: %f", currentLongitude);
+	}else{
+		AppLog("Location not valid");
+	}
+
 }
 
 
