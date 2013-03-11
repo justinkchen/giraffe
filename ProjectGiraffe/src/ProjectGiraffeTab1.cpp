@@ -201,10 +201,10 @@ TableViewItem* ProjectGiraffeTab1::CreateItem(int itemIndex, int itemWidth)
 			TABLE_VIEW_ANNEX_STYLE_NORMAL);
 	item->SetContextItem(_tableViewContextItem);
 
-	GraffitiCellContentView contentView;
-	contentView.Construct(item->GetBounds());
-	item->AddControl(contentView);
-	contentView.setGraffiti(_items[itemIndex]);
+	GraffitiCellContentView *contentView = new GraffitiCellContentView();
+	contentView->Construct(Rectangle(0, 0, itemWidth, GetDefaultItemHeight()));
+	item->AddControl(*contentView);
+	contentView->setGraffiti(_items[itemIndex]);
 
 	return item;
 }

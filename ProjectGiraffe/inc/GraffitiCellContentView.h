@@ -16,11 +16,15 @@ class GraffitiCellContentView
     : public Tizen::Ui::Controls::Panel
 {
     public:
+
+    	GraffitiCellContentView();
+    	~GraffitiCellContentView();
+
+    	void sizeToFit();
+
 	    // Accessors
 	    Graffiti *graffiti() { return _graffiti; }
 	    void setGraffiti(Graffiti *graffiti);
-
-	    virtual result OnInitializing(void);
 
     private:
         Graffiti *_graffiti;
