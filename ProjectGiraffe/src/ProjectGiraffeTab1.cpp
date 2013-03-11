@@ -19,11 +19,6 @@ using namespace Tizen::Base::Utility;
 using namespace Tizen::Base::Collection;
 using namespace Tizen::Io;
 
-ProjectGiraffeTab1::ProjectGiraffeTab1(void)
-{
-
-}
-
 ProjectGiraffeTab1::~ProjectGiraffeTab1(void)
 {
 
@@ -246,9 +241,6 @@ ProjectGiraffeTab1::OnTransactionAborted (HttpSession &httpSession, HttpTransact
 	msgBox.Construct(L"HTTP STATUS", L"HTTP Request Aborted", MSGBOX_STYLE_NONE, 3000);
 	int modalresult = 0;
 	msgBox.ShowAndWait(modalresult);
-
-	// Adds the label to the form
-	AddControl(*pLabelHTTPStatus);
 }
 
 void
@@ -320,6 +312,8 @@ ProjectGiraffeTab1::OnTransactionReadyToRead (HttpSession &httpSession, HttpTran
 		delete pBody;
 		delete pValue;
 		tableView->ScrollToItem(0);
+	}else{
+		AppLog("HTTP Status not OK");
 	}
 }
 

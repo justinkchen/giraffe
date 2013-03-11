@@ -15,7 +15,11 @@ class ProjectGiraffeTab2
  	public Tizen::Web::Controls::ILoadingListener
 {
 public:
-	ProjectGiraffeTab2(void);
+	ProjectGiraffeTab2(void)
+	: pLabellong(null)
+	, pLabellat(null)
+	, __pWeb(null){}
+
 	virtual ~ProjectGiraffeTab2(void);
 	bool Initialize(void);
 
@@ -49,7 +53,6 @@ public:
 	virtual bool OnLoadingRequested(const Tizen::Base::String& url, Tizen::Web::Controls::WebNavigationType type);
 	virtual Tizen::Web::Controls::DecisionPolicy OnWebDataReceived(const Tizen::Base::String& mime, const Tizen::Net::Http::HttpHeader& header);
 private:
-	Tizen::Ui::Controls::Label* pLabel1;
 	Tizen::Ui::Controls::Label* pLabellat;
 	Tizen::Ui::Controls::Label* pLabellong;
 	Tizen::Web::Controls::Web *__pWeb;

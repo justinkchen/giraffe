@@ -18,7 +18,12 @@ class ProjectGiraffeTab1
 	, public Tizen::Net::Http::IHttpTransactionEventListener
 	{
 public:
-	ProjectGiraffeTab1(void);
+	ProjectGiraffeTab1(void)
+	: _pValueList(null)
+	, _pJsonKeyList(null)
+	, tableView(null)
+	, tableViewContextItem(null){}
+
 	virtual ~ProjectGiraffeTab1(void);
 	bool Initialize(void);
 	void TraverseFunction(IJsonValue* pValue);
@@ -66,7 +71,6 @@ private:
     unsigned int itemCount;
     //GraffitiCell **itemCells;
     Tizen::Base::String *itemTitles;
-    Tizen::Ui::Controls::Label* pLabelHTTPStatus;
     virtual void updateItems();
 };
 

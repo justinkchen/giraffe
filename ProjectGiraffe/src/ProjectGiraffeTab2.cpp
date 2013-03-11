@@ -11,13 +11,6 @@ using namespace Tizen::Web::Controls;
 using namespace Tizen::Base;
 using namespace Tizen::Base::Utility;
 
-
-ProjectGiraffeTab2::ProjectGiraffeTab2(void)
-: pLabel1(null)
-{
-
-}
-
 ProjectGiraffeTab2::~ProjectGiraffeTab2(void)
 {
 
@@ -193,7 +186,8 @@ ProjectGiraffeTab2::OnUserEventReceivedN(RequestId requestId, Tizen::Base::Colle
 			pLabellong->Draw();
 			locationFound = true;
 
-			String url = "http://ec2-54-243-69-6.compute-1.amazonaws.com/maps.html";
+			String url = "http://ec2-54-243-69-6.compute-1.amazonaws.com/graffitimap.html?latitude=" + dublat->ToString() + "&longitude=" + dublong->ToString();
+
 			__pWeb->LoadUrl(GetValidUrl(url));
 			SceneManager* pSceneManager = SceneManager::GetInstance();
 			Form* pForm = pSceneManager->GetCurrentScene()->GetForm();
