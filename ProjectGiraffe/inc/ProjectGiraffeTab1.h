@@ -6,7 +6,7 @@
 #include <FWebJson.h>
 #include <Fnet.h>
 #include <FWeb.h>
-#include "GraffitiCell.h"
+#include "Graffiti.h"
 
 using namespace Tizen::Web::Json;
 
@@ -63,14 +63,12 @@ protected:
 	Tizen::Base::Collection::IList* _pValueList;
 	Tizen::Base::Collection::ArrayList* _pJsonKeyList;
     Tizen::Ui::Controls::TableView* tableView;
-    Tizen::Ui::Controls::TableViewContextItem* tableViewContextItem;
+    Tizen::Ui::Controls::TableViewContextItem* _tableViewContextItem;
     int _isArray;
 
 private:
-
-    unsigned int itemCount;
-    //GraffitiCell **itemCells;
-    Tizen::Base::String *itemTitles;
+    unsigned int _itemCount;
+    Graffiti **_items;
     virtual void updateItems();
 };
 

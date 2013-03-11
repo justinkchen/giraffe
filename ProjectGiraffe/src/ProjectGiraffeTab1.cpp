@@ -1,4 +1,8 @@
 #include "ProjectGiraffeTab1.h"
+#include "User.h"
+#include "GraffitiCellContentView.h"
+#include <cstdlib>
+#include <time.h>
 
 using namespace Tizen::App;
 using namespace Tizen::Base;
@@ -28,38 +32,29 @@ bool
 ProjectGiraffeTab1::Initialize(void)
 {
 	result r = Construct(L"IDC_PANEL1");
+	srand (time(NULL));
 	if (IsFailed(r))
 		return false;
 
 	return true;
 }
 
-#define kDebugUseDummyItems 0
+#define kDebugUseDummyItems 1
 
 void
 ProjectGiraffeTab1::updateItems()
 {
 #if kDebugUseDummyItems
-	itemCount = 50;
-	/*
-    itemCells = new GraffitiCell*[itemCount];
-    for (int i = 0; i < itemCount; i++) {
-    	GraffitiCell *cell = new GraffitiCell();
-    	//cell->Initialize();
-    	cell->setUsername(L"Username");
-    	cell->setDistance(i);
-    	cell->setText(L"Graffiti!");
-    	itemCells[i] = cell;
-    }
-	 */
-
-
-	itemTitles = new String[itemCount];
-
-	for (int i = 0; i < itemCount; i++) {
-		String title;
-		title.Format(30, L"Item %d", i);
-		itemTitles[i] = title;
+	AppLog("Creating dummy items");
+	_itemCount = 50;
+	User *dummyUser = new User();
+	dummyUser->setUsername(L"Username");
+	_items = new Graffiti *[_itemCount];
+	for (int i = 0; i < _itemCount; i++) {
+		Graffiti *graffiti = new Graffiti();
+		graffiti->setUser(dummyUser);
+		graffiti->setText(L"dummy string");
+		_items[i] = graffiti;
 	}
 
 #else
@@ -121,8 +116,8 @@ ProjectGiraffeTab1::OnInitializing(void)
 	AddControl(*tableView);
 
 	// Create tableViewContextItem
-	tableViewContextItem = new TableViewContextItem();
-	tableViewContextItem->Construct(Dimension(720,100));
+	_tableViewContextItem = new TableViewContextItem();
+	_tableViewContextItem->Construct(Dimension(720,100));
 
 	_pValueList = new (std::nothrow) LinkedList();
 
@@ -176,12 +171,14 @@ ProjectGiraffeTab1::OnSceneDeactivated(const Tizen::Ui::Scenes::SceneId& current
 }
 
 // ITableViewItemEventListener
-void ProjectGiraffeTab1::OnTableViewItemStateChanged(Tizen::Ui::Controls::TableView& tableView, int itemIndex, Tizen::Ui::Controls::TableViewItem* pItem, Tizen::Ui::Controls::TableViewItemStatus status)
+void ProjectGiraffeTab1::OnTableViewItemStateChanged(Tizen::Ui::Controls::TableView& tableView,
+		int itemIndex, Tizen::Ui::Controls::TableViewItem* pItem, Tizen::Ui::Controls::TableViewItemStatus status)
 {
 
 }
 
-void ProjectGiraffeTab1::OnTableViewContextItemActivationStateChanged(Tizen::Ui::Controls::TableView& tableView, int itemIndex, Tizen::Ui::Controls::TableViewContextItem* pContextItem, bool activated)
+void ProjectGiraffeTab1::OnTableViewContextItemActivationStateChanged(Tizen::Ui::Controls::TableView& tableView, int itemIndex,
+		Tizen::Ui::Controls::TableViewContextItem* pContextItem, bool activated)
 {
 }
 
@@ -193,7 +190,7 @@ void ProjectGiraffeTab1::OnTableViewItemReordered(Tizen::Ui::Controls::TableView
 int ProjectGiraffeTab1::GetItemCount(void)
 {
 	AppLog("Counting Items");
-	return _pValueList->GetCount();
+	return _itemCount;
 }
 
 TableViewItem* ProjectGiraffeTab1::CreateItem(int itemIndex, int itemWidth)
@@ -202,16 +199,12 @@ TableViewItem* ProjectGiraffeTab1::CreateItem(int itemIndex, int itemWidth)
 	TableViewItem *item = new TableViewItem();
 	item->Construct(Dimension(itemWidth, GetDefaultItemHeight()),
 			TABLE_VIEW_ANNEX_STYLE_NORMAL);
-	Tizen::Base::String* key = static_cast< String* >(_pValueList->GetAt(itemIndex));
-	Label* label = new Label();
-	label->Construct(Rectangle(0,0,itemWidth,item->GetBounds().height), key->GetPointer());
-	item->AddControl(*label);
-	item->SetContextItem(tableViewContextItem);
+	item->SetContextItem(_tableViewContextItem);
 
-//	Label*label = new Label();
-//	label->Construct(Rectangle(0,0,itemWidth,item->GetBounds().height), itemTitles[itemIndex]);
-//	item->AddControl(*label);
-//	item->SetContextItem(tableViewContextItem);
+	GraffitiCellContentView contentView;
+	contentView.Construct(item->GetBounds());
+	item->AddControl(contentView);
+	contentView.setGraffiti(_items[itemIndex]);
 
 	return item;
 }
@@ -394,8 +387,12 @@ ProjectGiraffeTab1::TraverseFunction(IJsonValue* pValue)
 		{
 			IJsonValue* pValue = null;
 			pEnum->GetCurrent(pValue);
-			if ((pValue->GetType() == JSON_TYPE_STRING) || (pValue->GetType() == JSON_TYPE_NUMBER) || (pValue->GetType() == JSON_TYPE_BOOL) || (pValue->GetType() == JSON_TYPE_NULL))
-				_isArray = 1;
+			if ((pValue->GetType() == JSON_TYPE_STRING) ||
+				(pValue->GetType() == JSON_TYPE_NUMBER) ||
+				(pValue->GetType() == JSON_TYPE_BOOL)   ||
+				(pValue->GetType() == JSON_TYPE_NULL)) {
+					_isArray = 1;
+			}
 			TraverseFunction(pValue);
 		}
 		delete pEnum;
