@@ -46,7 +46,7 @@ ProjectGiraffeTab1::updateItems()
 {
 #if kDebugUseDummyItems
 	AppLog("Creating dummy items");
-	_itemCount = 50;
+	_itemCount = 5;
 	User *dummyUser = new User();
 	dummyUser->setUsername(L"Username");
 	_items = new Graffiti *[_itemCount];
@@ -108,12 +108,12 @@ ProjectGiraffeTab1::OnInitializing(void)
 	delete pRelativeLayout;
 
 	// Create tableView
-	tableView = new TableView();
-	tableView->Construct(Rectangle(0,0,formBounds.width, formBounds.height), \
+	_tableView = new TableView();
+	_tableView->Construct(Rectangle(0,0,formBounds.width, formBounds.height), \
 			true, TABLE_VIEW_SCROLL_BAR_STYLE_FADE_OUT);
-	tableView->SetItemProvider(this);
-	tableView->AddTableViewItemEventListener(*this);
-	AddControl(*tableView);
+	_tableView->SetItemProvider(this);
+	_tableView->AddTableViewItemEventListener(*this);
+	AddControl(*_tableView);
 
 	// Create tableViewContextItem
 	_tableViewContextItem = new TableViewContextItem();
@@ -280,7 +280,7 @@ ProjectGiraffeTab1::OnTransactionReadyToRead (HttpSession &httpSession, HttpTran
 
 		AppLog("Received HTTP response.");
 
-		AppLog("Before traverse %d", tableView->GetItemCount());
+		AppLog("Before traverse %d", _tableView->GetItemCount());
 		_pJsonKeyList->RemoveAll(true);
 		_pValueList->RemoveAll(true);
 		// Populate the panel
@@ -304,7 +304,7 @@ ProjectGiraffeTab1::OnTransactionReadyToRead (HttpSession &httpSession, HttpTran
 
 		delete pBody;
 		delete pValue;
-		tableView->ScrollToItem(0);
+		_tableView->ScrollToItem(0);
 	}else{
 		AppLog("HTTP Status not OK");
 	}
@@ -320,7 +320,7 @@ ProjectGiraffeTab1::OnTransactionReadyToWrite (HttpSession &httpSession, HttpTra
 void
 ProjectGiraffeTab1::TraverseFunction(IJsonValue* pValue)
 {
-	TryReturnVoid(tableView, "tableView is null");
+	TryReturnVoid(_tableView, "tableView is null");
 
 	TryReturnVoid(pValue, "input jsonvalue pointer is null");
 
@@ -433,6 +433,6 @@ ProjectGiraffeTab1::TraverseFunction(IJsonValue* pValue)
 	default:
 		break;
 	}
-	tableView->UpdateTableView();
+	_tableView->UpdateTableView();
 }
 

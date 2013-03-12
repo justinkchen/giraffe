@@ -21,8 +21,8 @@ public:
 	ProjectGiraffeTab1(void)
 	: _pValueList(null)
 	, _pJsonKeyList(null)
-	, tableView(null)
-	, tableViewContextItem(null){}
+	, _tableView(null)
+	, _tableViewContextItem(null){}
 
 	virtual ~ProjectGiraffeTab1(void);
 	bool Initialize(void);
@@ -62,7 +62,7 @@ public:
 protected:
 	Tizen::Base::Collection::IList* _pValueList;
 	Tizen::Base::Collection::ArrayList* _pJsonKeyList;
-    Tizen::Ui::Controls::TableView* tableView;
+    Tizen::Ui::Controls::TableView* _tableView;
     Tizen::Ui::Controls::TableViewContextItem* _tableViewContextItem;
     int _isArray;
 
