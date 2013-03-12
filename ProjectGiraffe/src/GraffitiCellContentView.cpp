@@ -26,7 +26,9 @@ GraffitiCellContentView::GraffitiCellContentView() :
 }
 
 GraffitiCellContentView::~GraffitiCellContentView() {
-	// TODO Auto-generated destructor stub
+	delete _nameLabel;
+	delete _distanceLabel;
+	delete _textLabel;
 }
 
 int GraffitiCellContentView::nameLabelFontSize() { return 16; }
@@ -38,35 +40,31 @@ void GraffitiCellContentView::layoutSubviews()
     Rectangle bounds = GetBounds();
 
 	// nameLabel
-	if (_nameLabel) {
-		RemoveControl(*_nameLabel);
-		delete _nameLabel;
-		_nameLabel = null;
-	}
-    _nameLabel = new Label();
-    _nameLabel->Construct(Rectangle(0, 0, bounds.width, bounds.height), _graffiti->user()->username());
-    _nameLabel->SetTextConfig(nameLabelFontSize(), LABEL_TEXT_STYLE_BOLD);
-    AddControl(*_nameLabel);
+    if (!_nameLabel) {
+        _nameLabel = new Label();
+        _nameLabel->Construct(Rectangle(0, 0, bounds.width, bounds.height), _graffiti->user()->username());
+        _nameLabel->SetTextConfig(nameLabelFontSize(), LABEL_TEXT_STYLE_BOLD);
+        AddControl(*_nameLabel);
+    }
+    _nameLabel->SetText(_graffiti->user()->username());
 
     // distanceLabel
-    if (_distanceLabel) {
-    	RemoveControl(*_distanceLabel);
-    	delete _distanceLabel;
+    if (!_distanceLabel) {
+        _distanceLabel = new Label();
+        _distanceLabel->Construct(Rectangle(bounds.width / 2, 0, bounds.width / 2, 20), _graffiti->text());
+        _distanceLabel->SetTextConfig(distanceLabelFontSize(), LABEL_TEXT_STYLE_NORMAL);
+        AddControl(*_distanceLabel);
     }
-    _distanceLabel = new Label();
-    _distanceLabel->Construct(Rectangle(bounds.width / 2, 0, bounds.width / 2, 20), _graffiti->text());
-    _distanceLabel->SetTextConfig(distanceLabelFontSize(), LABEL_TEXT_STYLE_NORMAL);
-    AddControl(*_distanceLabel);
+    _distanceLabel->SetText(_graffiti->text());
 
     // textLabel
-    if (_textLabel) {
-    	RemoveControl(*_textLabel);
-    	delete _textLabel;
+    if (!_textLabel) {
+        _textLabel = new Label();
+        _textLabel->Construct(Rectangle(0, 20, bounds.width, 40), distanceString());
+        _textLabel->SetTextConfig(textLabelFontSize(), LABEL_TEXT_STYLE_NORMAL);
+        AddControl(*_textLabel);
     }
-    _textLabel = new Label();
-    _textLabel->Construct(Rectangle(0, 20, bounds.width, 40), distanceString());
-    _textLabel->SetTextConfig(textLabelFontSize(), LABEL_TEXT_STYLE_NORMAL);
-    AddControl(*_textLabel);
+    _textLabel->SetText(distanceString());
 }
 
 void GraffitiCellContentView::sizeToFit()
