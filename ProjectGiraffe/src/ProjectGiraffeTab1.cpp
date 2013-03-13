@@ -331,7 +331,10 @@ ProjectGiraffeTab1::TraverseFunction(IJsonValue* pValue)
 	{
 	case JSON_TYPE_OBJECT:
 	{
+		User *dummyUser = new User();
+		dummyUser->setUsername(L"Username");
 		Graffiti *newGraffiti = new Graffiti();
+		newGraffiti->setUser(dummyUser);
 
 		JsonObject* pObject = static_cast< JsonObject* >(pValue);
 		IMapEnumeratorT< const String*, IJsonValue* >* pMapEnum = pObject->GetMapEnumeratorN();
