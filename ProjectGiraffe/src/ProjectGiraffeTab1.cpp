@@ -39,7 +39,7 @@ ProjectGiraffeTab1::Initialize(void)
 	return true;
 }
 
-#define kDebugUseDummyItems 1
+#define kDebugUseDummyItems 0
 
 void
 ProjectGiraffeTab1::updateItems()
@@ -145,6 +145,13 @@ ProjectGiraffeTab1::OnTerminating(void)
 		_pJsonKeyList = null;
 	}
 
+	if (_items)
+	{
+		_items->RemoveAll(true);
+		delete _items;
+		_items = null;
+	}
+
 	result r = E_SUCCESS;
 
 	// TODO: Add your termination code here
@@ -199,7 +206,7 @@ TableViewItem* ProjectGiraffeTab1::CreateItem(int itemIndex, int itemWidth)
 	TableViewItem *item = new TableViewItem();
 	item->Construct(Dimension(itemWidth, GetDefaultItemHeight()),
 			TABLE_VIEW_ANNEX_STYLE_NORMAL);
-	item->SetContextItem(_tableViewContextItem);
+//	item->SetContextItem(_tableViewContextItem);
 
 	GraffitiCellContentView *contentView = new GraffitiCellContentView();
 	contentView->Construct(Rectangle(0, 0, itemWidth, GetDefaultItemHeight()));
@@ -213,7 +220,9 @@ TableViewItem* ProjectGiraffeTab1::CreateItem(int itemIndex, int itemWidth)
 
 bool ProjectGiraffeTab1::DeleteItem(int itemIndex, Tizen::Ui::Controls::TableViewItem* pItem)
 {
-	delete pItem;
+	AppLog("Deleting item %d", itemIndex);
+// TODO: Figure out what is causing this to crash...seems to work fine without this, but would be good to fix I think.
+//	delete pItem;
 	return true;
 }
 
@@ -264,10 +273,10 @@ ProjectGiraffeTab1::OnTransactionReadyToRead (HttpSession &httpSession, HttpTran
 	AppLog("Checking HTTP Status Code");
 	if (pHttpResponse->GetHttpStatusCode() == HTTP_STATUS_OK)
 	{
-//		MessageBox msgBox;
-//		msgBox.Construct(L"HTTP STATUS", L"HTTP Request OK", MSGBOX_STYLE_NONE, 3000);
-//		int modalresult = 0;
-//		msgBox.ShowAndWait(modalresult);
+		//		MessageBox msgBox;
+		//		msgBox.Construct(L"HTTP STATUS", L"HTTP Request OK", MSGBOX_STYLE_NONE, 3000);
+		//		int modalresult = 0;
+		//		msgBox.ShowAndWait(modalresult);
 
 		ByteBuffer* pBody = null;
 		String statusText = pHttpResponse->GetStatusText();
@@ -327,15 +336,13 @@ ProjectGiraffeTab1::TraverseFunction(IJsonValue* pValue)
 
 	TryReturnVoid(pValue, "input jsonvalue pointer is null");
 
+	User *dummyUser = new User();
+	dummyUser->setUsername(L"CS210 Student");
+
 	switch (pValue->GetType())
 	{
 	case JSON_TYPE_OBJECT:
 	{
-		User *dummyUser = new User();
-		dummyUser->setUsername(L"Username");
-		Graffiti *newGraffiti = new Graffiti();
-		newGraffiti->setUser(dummyUser);
-
 		JsonObject* pObject = static_cast< JsonObject* >(pValue);
 		IMapEnumeratorT< const String*, IJsonValue* >* pMapEnum = pObject->GetMapEnumeratorN();
 		while (pMapEnum->MoveNext() == E_SUCCESS)
@@ -350,14 +357,17 @@ ProjectGiraffeTab1::TraverseFunction(IJsonValue* pValue)
 
 			if(pListKey->Equals("message",true)){
 				AppLog("Message received");
+				Graffiti *newGraffiti = new Graffiti();
+				newGraffiti->setUser(dummyUser);
 				pMapEnum->GetValue(value);
 				JsonString* pVal = static_cast< JsonString* >(value);
 				String* pListValue = new (std::nothrow) String(*pVal);
-				newGraffiti->setText(*pListValue);
-				_pValueList->Add(pListValue);
+				newGraffiti->setText(pListValue->GetPointer());
+//				_pValueList->Add(pListValue);
+				_items->Add(newGraffiti);
 			}
 		}
-		_items->Add(newGraffiti);
+
 		delete pMapEnum;
 	}
 	break;
@@ -383,10 +393,10 @@ ProjectGiraffeTab1::TraverseFunction(IJsonValue* pValue)
 			IJsonValue* pValue = null;
 			pEnum->GetCurrent(pValue);
 			if ((pValue->GetType() == JSON_TYPE_STRING) ||
-				(pValue->GetType() == JSON_TYPE_NUMBER) ||
-				(pValue->GetType() == JSON_TYPE_BOOL)   ||
-				(pValue->GetType() == JSON_TYPE_NULL)) {
-					_isArray = 1;
+					(pValue->GetType() == JSON_TYPE_NUMBER) ||
+					(pValue->GetType() == JSON_TYPE_BOOL)   ||
+					(pValue->GetType() == JSON_TYPE_NULL)) {
+				_isArray = 1;
 			}
 			TraverseFunction(pValue);
 		}

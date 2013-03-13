@@ -17,7 +17,6 @@ class GraffitiCellContentView
     : public Tizen::Ui::Controls::Panel
 {
     public:
-
     	GraffitiCellContentView();
     	~GraffitiCellContentView();
 

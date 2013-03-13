@@ -36,6 +36,7 @@ GraffitiCellContentView::GraffitiCellContentView() :
 }
 
 GraffitiCellContentView::~GraffitiCellContentView() {
+	delete _graffiti;
 	delete _nameLabel;
 	delete _distanceLabel;
 	delete _textLabel;
