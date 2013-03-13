@@ -24,7 +24,7 @@ EnrichedLabel::EnrichedLabel() :
 	_enrichedText->Construct(kDimConstruct);
 	_enrichedText->SetHorizontalAlignment(TEXT_ALIGNMENT_LEFT);
 	_enrichedText->SetVerticalAlignment(TEXT_ALIGNMENT_TOP);
-	_enrichedText->SetTextWrapStyle(TEXT_WRAP_CHARACTER_WRAP);
+	_enrichedText->SetTextWrapStyle(TEXT_WRAP_WORD_WRAP);
 	_enrichedText->SetTextAbbreviationEnabled(false);
 	_enrichedText->Add(*_textElement);
 }
@@ -57,17 +57,23 @@ void EnrichedLabel::OnBoundsChanged(const Tizen::Graphics::Rectangle& oldRect, c
 
 Dimension EnrichedLabel::sizeThatFitsInWidth(Tizen::Base::String text, Tizen::Graphics::Font *font, int maxWidth)
 {
-	int textLength = text.GetLength();
-	int prevLineCharIndex = 0;
-	int lineCount = 0;
+	int lineBeginIndex = 0;
+	int lastSpaceIndex = 0;
+	int lineCount = 1;
 	int maxNeededWidth = 0;
-	AppLog("maxWidth = %d", maxWidth);
-	for (int i = 0; i < textLength; i++) {
+	for (int i = 0; i < text.GetLength(); i++) {
 		AppLog("lineCount = %d", lineCount);
+
+		// Update prevSpaceIndex
+		wchar_t ch;
+		text.GetCharAt(i,ch);
+		if (ch == ' ') {
+			lastSpaceIndex = i;
+		}
 
 		// Calculate line substring
 		String substring;
-		text.SubString(prevLineCharIndex, i - prevLineCharIndex + 1, substring);
+		text.SubString(lineBeginIndex, i - lineBeginIndex + 1, substring);
 		AppLog("substring line: %ls", substring.GetPointer());
 
 		// Calculate size of line using font
@@ -78,13 +84,27 @@ Dimension EnrichedLabel::sizeThatFitsInWidth(Tizen::Base::String text, Tizen::Gr
 
 		// Update lineCount if necessary
 		if (dim.width > maxWidth) {
-			prevLineCharIndex = i;
+			if (lastSpaceIndex == 0) {
+				// The string begins with a word that requires more width than
+				// maxWidth, so it will be character line wrapped.  We just set
+				// it to the current index regardless of if it's the beginning of a word.
+				lineBeginIndex = i;
+			} else if (lineBeginIndex == lastSpaceIndex + 1) {
+				// If we haven't encountered any spaces since the last time we passed
+				// maxWidth, we also need to use use the current character despite the
+				// fact that it isn't the beginning of a word.
+				lineBeginIndex = i;
+			} else {
+				// The line's width is greater than maxWidth and we've encountered a
+				// space in the current line, so we begin the next line with the word
+				// following the last encountered space.
+				lineBeginIndex = lastSpaceIndex + 1;
+			}
 			lineCount++;
 		}
 	}
-	lineCount++;
 
-	// Resize the label
+	// Calculate size that fits
 	int newWidth = fmin(maxWidth, maxNeededWidth);
 	int newHeight = lineCount * font->GetMaxHeight();
 	return Dimension(newWidth, newHeight);
