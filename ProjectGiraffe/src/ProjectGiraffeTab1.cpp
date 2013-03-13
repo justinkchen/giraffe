@@ -205,6 +205,8 @@ TableViewItem* ProjectGiraffeTab1::CreateItem(int itemIndex, int itemWidth)
 	contentView->Construct(Rectangle(0, 0, itemWidth, GetDefaultItemHeight()));
 	item->AddControl(*contentView);
 	contentView->setGraffiti(_items[itemIndex]);
+	contentView->sizeToFit();
+	item->SetSize(contentView->GetSize());
 
 	return item;
 }
