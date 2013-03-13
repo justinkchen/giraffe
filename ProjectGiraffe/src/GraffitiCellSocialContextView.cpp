@@ -49,6 +49,7 @@ result GraffitiCellSocialContextView::OnDraw()
 		_flagButton = new Button();
 		_flagButton->Construct(Rectangle(0, 0, 200, 100), L"Button");
 		_flagButton->AddActionEventListener(*this);
+		_flagButton->SetColor(BUTTON_STATUS_NORMAL, Color::GetColor(COLOR_ID_RED));
 		AddControl(*_flagButton);
 	}
 	_flagButton->SetText(flagButtonText());
