@@ -62,7 +62,6 @@ Dimension EnrichedLabel::sizeThatFitsInWidth(Tizen::Base::String text, Tizen::Gr
 	int lineCount = 1;
 	int maxNeededWidth = 0;
 	for (int i = 0; i < text.GetLength(); i++) {
-		AppLog("lineCount = %d", lineCount);
 
 		// Update prevSpaceIndex
 		wchar_t ch;
@@ -74,13 +73,11 @@ Dimension EnrichedLabel::sizeThatFitsInWidth(Tizen::Base::String text, Tizen::Gr
 		// Calculate line substring
 		String substring;
 		text.SubString(lineBeginIndex, i - lineBeginIndex + 1, substring);
-		AppLog("substring line: %ls", substring.GetPointer());
 
 		// Calculate size of line using font
 		Dimension dim;
 		font->GetTextExtent(substring, substring.GetLength(), dim);
 		maxNeededWidth = fmax(maxNeededWidth, dim.width);
-		AppLog("line width: %d", dim.width);
 
 		// Update lineCount if necessary
 		if (dim.width > maxWidth) {

@@ -58,7 +58,6 @@ void GraffitiCellContentView::layoutSubviews()
     if (!_nameLabel) {
         _nameLabel = new EnrichedLabel();
         _nameLabel->Construct(kRectConstruct);
-    	AppLog("debug");
         _nameLabel->setFont(_nameLabelFont);
         _nameLabel->setTextColor(kTextColor);
         AddControl(*_nameLabel);
