@@ -38,6 +38,13 @@ void ControlUtil::setBoundsHeight(Tizen::Ui::Control *control, int height)
 	control->SetBounds(bounds);
 }
 
+void ControlUtil::centerInRect(Tizen::Ui::Control *controlToCenter, Tizen::Graphics::Rectangle rect)
+{
+	Rectangle centerBounds = controlToCenter->GetBounds();
+	setBoundsY(controlToCenter, rect.y + (rect.height - centerBounds.height) / 2);
+	setBoundsX(controlToCenter, rect.x + (rect.width - centerBounds.width) / 2);
+}
+
 void ControlUtil::centerVertically(Tizen::Ui::Control *controlToCenter, Tizen::Ui::Control *referenceControl)
 {
 	Rectangle referenceBounds = referenceControl->GetBounds();
