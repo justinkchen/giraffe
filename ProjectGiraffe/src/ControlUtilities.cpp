@@ -38,6 +38,28 @@ void ControlUtil::setBoundsHeight(Tizen::Ui::Control *control, int height)
 	control->SetBounds(bounds);
 }
 
+int ControlUtil::rightEdge(Tizen::Ui::Control *control)
+{
+	Rectangle bounds = control->GetBounds();
+	return bounds.x + bounds.width;
+}
+
+int ControlUtil::bottomEdge(Tizen::Ui::Control *control)
+{
+	Rectangle bounds = control->GetBounds();
+	return bounds.y + bounds.height;
+}
+
+void ControlUtil::setRightEdge(Tizen::Ui::Control *control, int rightEdge)
+{
+	setBoundsX(control, rightEdge - control->GetWidth());
+}
+
+void ControlUtil::setBottomEdge(Tizen::Ui::Control *control, int bottomEdge)
+{
+	setBoundsY(control, bottomEdge - control->GetHeight());
+}
+
 void ControlUtil::centerInRect(Tizen::Ui::Control *controlToCenter, Tizen::Graphics::Rectangle rect)
 {
 	Rectangle centerBounds = controlToCenter->GetBounds();
@@ -57,16 +79,4 @@ void ControlUtil::centerHorizontally(Tizen::Ui::Control *controlToCenter, Tizen:
 	Rectangle referenceBounds = referenceControl->GetBounds();
 	Rectangle centerBounds = controlToCenter->GetBounds();
 	setBoundsX(controlToCenter, referenceBounds.x + (referenceBounds.width - centerBounds.width) / 2);
-}
-
-int ControlUtil::rightEdge(Tizen::Ui::Control *control)
-{
-	Rectangle bounds = control->GetBounds();
-	return bounds.x + bounds.width;
-}
-
-int ControlUtil::bottomEdge(Tizen::Ui::Control *control)
-{
-	Rectangle bounds = control->GetBounds();
-	return bounds.y + bounds.height;
 }
