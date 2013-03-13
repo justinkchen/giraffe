@@ -10,7 +10,9 @@
 
 #include <FBase.h>
 
-class Date {
+class Date :
+	public Tizen::Base::Object
+{
 public:
 	Date();
 	virtual ~Date();

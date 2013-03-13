@@ -11,7 +11,9 @@
 #include <FBase.h>
 #include "Date.h"
 
-class User {
+class User :
+	public Tizen::Base::Object
+{
 public:
 	User();
 	virtual ~User();

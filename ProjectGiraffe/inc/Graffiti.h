@@ -12,7 +12,9 @@
 #include "Date.h"
 #include "User.h"
 
-class Graffiti {
+class Graffiti :
+	public Tizen::Base::Object
+{
 public:
 	Graffiti();
 	virtual ~Graffiti();
