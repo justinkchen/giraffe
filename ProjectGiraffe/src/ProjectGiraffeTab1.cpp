@@ -39,7 +39,7 @@ ProjectGiraffeTab1::Initialize(void)
 	return true;
 }
 
-#define kDebugUseDummyItems 1
+#define kDebugUseDummyItems 0
 
 void
 ProjectGiraffeTab1::updateItems()
@@ -119,6 +119,8 @@ ProjectGiraffeTab1::OnInitializing(void)
 	_tableViewContextItem = new TableViewContextItem();
 	_tableViewContextItem->Construct(Dimension(720,100));
 
+	_items = new (std::nothrow) ArrayList();
+
 	_pValueList = new (std::nothrow) LinkedList();
 
 	_pJsonKeyList = new (std::nothrow) ArrayList();
@@ -190,7 +192,7 @@ void ProjectGiraffeTab1::OnTableViewItemReordered(Tizen::Ui::Controls::TableView
 int ProjectGiraffeTab1::GetItemCount(void)
 {
 	AppLog("Counting Items");
-	return _itemCount;
+	return _items->GetCount();
 }
 
 TableViewItem* ProjectGiraffeTab1::CreateItem(int itemIndex, int itemWidth)
@@ -204,7 +206,7 @@ TableViewItem* ProjectGiraffeTab1::CreateItem(int itemIndex, int itemWidth)
 	GraffitiCellContentView *contentView = new GraffitiCellContentView();
 	contentView->Construct(Rectangle(0, 0, itemWidth, GetDefaultItemHeight()));
 	item->AddControl(*contentView);
-	contentView->setGraffiti(_items[itemIndex]);
+	contentView->setGraffiti(dynamic_cast<Graffiti *>(_items->GetAt(itemIndex)));
 	contentView->sizeToFit();
 	item->SetSize(contentView->GetSize());
 
@@ -285,6 +287,7 @@ ProjectGiraffeTab1::OnTransactionReadyToRead (HttpSession &httpSession, HttpTran
 		AppLog("Before traverse %d", _tableView->GetItemCount());
 		_pJsonKeyList->RemoveAll(true);
 		_pValueList->RemoveAll(true);
+		_items->RemoveAll(true);
 		// Populate the panel
 		TraverseFunction(pValue);
 
@@ -330,6 +333,8 @@ ProjectGiraffeTab1::TraverseFunction(IJsonValue* pValue)
 	{
 	case JSON_TYPE_OBJECT:
 	{
+		Graffiti *newGraffiti = new Graffiti();
+
 		JsonObject* pObject = static_cast< JsonObject* >(pValue);
 		IMapEnumeratorT< const String*, IJsonValue* >* pMapEnum = pObject->GetMapEnumeratorN();
 		while (pMapEnum->MoveNext() == E_SUCCESS)
@@ -347,24 +352,11 @@ ProjectGiraffeTab1::TraverseFunction(IJsonValue* pValue)
 				pMapEnum->GetValue(value);
 				JsonString* pVal = static_cast< JsonString* >(value);
 				String* pListValue = new (std::nothrow) String(*pVal);
+				newGraffiti->setText(*pListValue);
 				_pValueList->Add(pListValue);
 			}
-
-//			String* pStr = null;
-//			_isArray = 0;
-//			pMapEnum->GetValue(value);
-//			if (value->GetType() == JSON_TYPE_OBJECT)
-//			{
-//				pStr = new (std::nothrow) String("Value is an Object");
-//				_pValueList->Add(*pStr);
-//			}
-//			else if (value->GetType() == JSON_TYPE_ARRAY)
-//			{
-//				pStr = new (std::nothrow) String("Value is an Array");
-//				_pValueList->Add(*pStr);
-//			}
-//			TraverseFunction(value);
 		}
+		_items->Add(newGraffiti);
 		delete pMapEnum;
 	}
 	break;

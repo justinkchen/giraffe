@@ -62,13 +62,12 @@ public:
 protected:
 	Tizen::Base::Collection::IList* _pValueList;
 	Tizen::Base::Collection::ArrayList* _pJsonKeyList;
-    Tizen::Ui::Controls::TableView* _tableView;
-    Tizen::Ui::Controls::TableViewContextItem* _tableViewContextItem;
     int _isArray;
 
 private:
-    unsigned int _itemCount;
-    Graffiti **_items;
+    Tizen::Base::Collection::ArrayList *_items;
+    Tizen::Ui::Controls::TableView* _tableView;
+    Tizen::Ui::Controls::TableViewContextItem* _tableViewContextItem;
     virtual void updateItems();
 };
 
