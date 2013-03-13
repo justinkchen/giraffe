@@ -19,6 +19,17 @@ public:
 	Graffiti();
 	virtual ~Graffiti();
 
+	// Graffiti Listener
+	class GraffitiListener :
+		public Tizen::Base::Object
+	{
+	public:
+		virtual void onLikeCount() {}
+		virtual void onFlagged() {}
+	};
+	void addListener(GraffitiListener *listener);
+	void removeListener(GraffitiListener *listener);
+
 	// Accessors
     Tizen::Base::String text() { return _text; }
     void setText(Tizen::Base::String text) { _text = text; }
@@ -35,7 +46,9 @@ public:
     float directionZ() { return _directionZ; }
     void setDirectionZ(float directionZ) { _directionZ = directionZ; }
     int likeCount() { return _likeCount; }
-    void setLikeCount(int likeCount) { _likeCount = likeCount; }
+    void setLikeCount(int likeCount);
+    bool flagged() { return _flagged; }
+    void setFlagged(bool flagged);
     Date dateCreated() { return _dateCreated; }
     void setDateCreated(Date dateCreated) { _dateCreated = dateCreated; }
     User *user() { return _user; }
@@ -50,8 +63,11 @@ private:
     float _directionY;
     float _directionZ;
     int _likeCount;
+    bool _flagged;
     Date _dateCreated;
     User *_user;
+
+    Tizen::Base::Collection::ArrayList *_listeners;
 };
 
 #endif /* GRAFFITI_H_ */
