@@ -10,6 +10,7 @@
 
 #include <FBase.h>
 #include <FUi.h>
+#include "EnrichedLabel.h"
 #include "Graffiti.h"
 
 class GraffitiCellContentView
@@ -28,16 +29,15 @@ class GraffitiCellContentView
 
     private:
         Graffiti *_graffiti;
-
-        void layoutSubviews();
+        Tizen::Graphics::Font *_nameLabelFont;
+        Tizen::Graphics::Font *_distanceLabelFont;
+        Tizen::Graphics::Font *_textLabelFont;
+        EnrichedLabel *_nameLabel;
+        EnrichedLabel *_distanceLabel;
+        EnrichedLabel *_textLabel;
 
         Tizen::Base::String distanceString();
-        int nameLabelFontSize();
-        int distanceLabelFontSize();
-        int textLabelFontSize();
-        Tizen::Ui::Controls::Label *_nameLabel;
-        Tizen::Ui::Controls::Label *_distanceLabel;
-        Tizen::Ui::Controls::Label *_textLabel;
+        void layoutSubviews();
 };
 
 
