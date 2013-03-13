@@ -242,7 +242,7 @@ ProjectGiraffeTab1::OnTransactionAborted (HttpSession &httpSession, HttpTransact
 	AppLog("HTTP Transaction Aborted");
 
 	MessageBox msgBox;
-	msgBox.Construct(L"HTTP STATUS", L"HTTP Request Aborted", MSGBOX_STYLE_NONE, 3000);
+	msgBox.Construct(L"HTTP STATUS", L"HTTP Request Aborted, Check internet connection", MSGBOX_STYLE_NONE, 3000);
 	int modalresult = 0;
 	msgBox.ShowAndWait(modalresult);
 }
