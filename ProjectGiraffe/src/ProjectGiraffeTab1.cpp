@@ -1,6 +1,7 @@
 #include "ProjectGiraffeTab1.h"
 #include "User.h"
 #include "GraffitiCellContentView.h"
+#include "GraffitiCellSocialContextView.h"
 #include <cstdlib>
 #include <time.h>
 
@@ -113,10 +114,6 @@ ProjectGiraffeTab1::OnInitializing(void)
 	_tableView->AddTableViewItemEventListener(*this);
 	AddControl(*_tableView);
 
-	// Create tableViewContextItem
-	_tableViewContextItem = new TableViewContextItem();
-	_tableViewContextItem->Construct(Dimension(720,100));
-
 	_items = new (std::nothrow) ArrayList();
 
 	_pValueList = new (std::nothrow) LinkedList();
@@ -203,17 +200,33 @@ int ProjectGiraffeTab1::GetItemCount(void)
 TableViewItem* ProjectGiraffeTab1::CreateItem(int itemIndex, int itemWidth)
 {
 	AppLog("Creating Items");
+
+	// Fetch Graffiti object
+	Graffiti *graffiti = dynamic_cast<Graffiti *>(_items->GetAt(itemIndex));
+
+	// Create item
 	TableViewItem *item = new TableViewItem();
 	item->Construct(Dimension(itemWidth, GetDefaultItemHeight()),
 			TABLE_VIEW_ANNEX_STYLE_NORMAL);
-//	item->SetContextItem(_tableViewContextItem);
 
+	// Create content view for item
 	GraffitiCellContentView *contentView = new GraffitiCellContentView();
 	contentView->Construct(Rectangle(0, 0, itemWidth, GetDefaultItemHeight()));
 	item->AddControl(*contentView);
-	contentView->setGraffiti(dynamic_cast<Graffiti *>(_items->GetAt(itemIndex)));
+	contentView->setGraffiti(graffiti);
 	contentView->sizeToFit();
 	item->SetSize(contentView->GetSize());
+
+	// Create contextItem
+	TableViewContextItem *contextItem = new TableViewContextItem();
+	contextItem->Construct(item->GetSize());
+	item->SetContextItem(contextItem);
+
+	// Create social context view
+	GraffitiCellSocialContextView *socialContextView = new GraffitiCellSocialContextView();
+	socialContextView->Construct(item->GetBounds());
+	contextItem->AddControl(*socialContextView);
+	socialContextView->setGraffiti(graffiti);
 
 	return item;
 }
