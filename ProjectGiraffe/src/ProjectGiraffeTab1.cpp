@@ -39,22 +39,20 @@ ProjectGiraffeTab1::Initialize(void)
 	return true;
 }
 
-#define kDebugUseDummyItems 0
+#define kDebugUseDummyItems 1
 
 void
 ProjectGiraffeTab1::updateItems()
 {
 #if kDebugUseDummyItems
 	AppLog("Creating dummy items");
-	_itemCount = 5;
 	User *dummyUser = new User();
 	dummyUser->setUsername(L"Username");
-	_items = new Graffiti *[_itemCount];
-	for (int i = 0; i < _itemCount; i++) {
+	for (int i = 0; i < 10; i++) {
 		Graffiti *graffiti = new Graffiti();
 		graffiti->setUser(dummyUser);
 		graffiti->setText(L"dummy string");
-		_items[i] = graffiti;
+		_items->Add(graffiti);
 	}
 
 #else
