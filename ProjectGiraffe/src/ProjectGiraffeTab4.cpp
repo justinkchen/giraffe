@@ -41,6 +41,10 @@ ProjectGiraffeTab4::OnInitializing(void)
 	pRelativeLayout->SetVerticalFitPolicy(*this, FIT_POLICY_PARENT);
 	delete pRelativeLayout;
 
+	//
+	user = null;
+	// attempt to login??
+
 	return r;
 }
 
@@ -50,6 +54,8 @@ ProjectGiraffeTab4::OnTerminating(void)
 	result r = E_SUCCESS;
 
 	// TODO: Add your termination code here
+	if (user != null)
+		delete user;
 
 	return r;
 }

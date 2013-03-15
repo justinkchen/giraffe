@@ -5,6 +5,7 @@
 #include <FUi.h>
 #include <Fnet.h>
 #include <FWeb.h>
+#include "User.h"
 
 class ProjectGiraffeTab4
 	: public Tizen::Ui::Controls::Panel
@@ -32,6 +33,8 @@ public:
 	virtual void OnTransactionReadyToRead(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int availableBodyLen);
 	virtual void OnTransactionReadyToWrite(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int recommendedChunkSize);
 
+private:
+	User *_user;
 };
 
 #endif // _PROJECTGIRAFFE_TAB4_H_
