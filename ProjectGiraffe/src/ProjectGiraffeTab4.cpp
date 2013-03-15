@@ -71,3 +71,68 @@ ProjectGiraffeTab4::OnSceneDeactivated(const Tizen::Ui::Scenes::SceneId& current
 	// Add your scene deactivate code here
 	AppLog("OnSceneDeactivated");
 }
+
+void
+ProjectGiraffeTab1::OnTransactionAborted (HttpSession &httpSession, HttpTransaction &httpTransaction, result r)
+{
+	AppLog("HTTP Transaction Aborted");
+}
+
+void
+ProjectGiraffeTab1::OnTransactionCertVerificationRequiredN (HttpSession &httpSession, HttpTransaction &httpTransaction, Tizen::Base::String *pCert)
+{
+
+}
+
+void
+ProjectGiraffeTab1::OnTransactionCompleted (HttpSession &httpSession, HttpTransaction &httpTransaction)
+{
+	AppLog("HTTP Transaction Completed");
+}
+
+void
+ProjectGiraffeTab1::OnTransactionHeaderCompleted (HttpSession &httpSession, HttpTransaction &httpTransaction, int headerLen, bool bAuthRequired)
+{
+
+}
+
+void
+ProjectGiraffeTab1::OnTransactionReadyToRead (HttpSession &httpSession, HttpTransaction &httpTransaction, int availableBodyLen)
+{
+	HttpResponse* pHttpResponse = httpTransaction.GetResponse();
+	HttpHeader* pHttpHeader = null;
+	AppLog("Checking HTTP Status Code");
+	if (pHttpResponse->GetHttpStatusCode() == HTTP_STATUS_OK)
+	{
+		ByteBuffer* pBody = null;
+		String statusText = pHttpResponse->GetStatusText();
+		String version = pHttpResponse->GetVersion();
+
+		pHttpHeader = pHttpResponse->GetHeader();
+		pBody = pHttpResponse->ReadBodyN();
+		//delete pBody;
+
+		//Parses from ByteBuffer
+		IJsonValue* pValue = JsonParser::ParseN(*pBody);
+
+		// Converts the pValue to JsonObject
+		JsonObject* pJsonObject = static_cast<JsonObject*>(pValue);
+
+		AppLog("Received HTTP response.");
+
+		TraverseFunction(pValue);
+
+		pJsonObject->RemoveAll(true);
+		delete pJsonObject;
+		delete pBody;
+//		delete pValue;
+	}else{
+		AppLog("HTTP Status not OK");
+	}
+}
+
+void
+ProjectGiraffeTab1::OnTransactionReadyToWrite (HttpSession &httpSession, HttpTransaction &httpTransaction, int recommendedChunkSize)
+{
+
+}
