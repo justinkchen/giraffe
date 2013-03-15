@@ -107,6 +107,8 @@ ProjectGiraffeMainForm::OnInitializing(void)
 	}
 	__pLocProvider->StartLocationUpdatesByInterval(10);
 
+	// TODO: initialize userPopup
+
 	AppLog("Everything is initialized, Location updates started.");
 	MainFormParseLocation();
 	return r;
@@ -121,6 +123,8 @@ ProjectGiraffeMainForm::OnTerminating(void)
 	__pLocationManagerThread->Join();
 	delete __pLocationManagerThread;
 	//delete __currentLocation;
+	//TODO:??delete __pUserPopup;
+
 	// TODO:
 	// Add your termination code here
 	return r;

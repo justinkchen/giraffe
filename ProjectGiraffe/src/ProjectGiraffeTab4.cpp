@@ -79,31 +79,31 @@ ProjectGiraffeTab4::OnSceneDeactivated(const Tizen::Ui::Scenes::SceneId& current
 }
 
 void
-ProjectGiraffeTab1::OnTransactionAborted (HttpSession &httpSession, HttpTransaction &httpTransaction, result r)
+ProjectGiraffeTab4::OnTransactionAborted (HttpSession &httpSession, HttpTransaction &httpTransaction, result r)
 {
 	AppLog("HTTP Transaction Aborted");
 }
 
 void
-ProjectGiraffeTab1::OnTransactionCertVerificationRequiredN (HttpSession &httpSession, HttpTransaction &httpTransaction, Tizen::Base::String *pCert)
+ProjectGiraffeTab4::OnTransactionCertVerificationRequiredN (HttpSession &httpSession, HttpTransaction &httpTransaction, Tizen::Base::String *pCert)
 {
 
 }
 
 void
-ProjectGiraffeTab1::OnTransactionCompleted (HttpSession &httpSession, HttpTransaction &httpTransaction)
+ProjectGiraffeTab4::OnTransactionCompleted (HttpSession &httpSession, HttpTransaction &httpTransaction)
 {
 	AppLog("HTTP Transaction Completed");
 }
 
 void
-ProjectGiraffeTab1::OnTransactionHeaderCompleted (HttpSession &httpSession, HttpTransaction &httpTransaction, int headerLen, bool bAuthRequired)
+ProjectGiraffeTab4::OnTransactionHeaderCompleted (HttpSession &httpSession, HttpTransaction &httpTransaction, int headerLen, bool bAuthRequired)
 {
 
 }
 
 void
-ProjectGiraffeTab1::OnTransactionReadyToRead (HttpSession &httpSession, HttpTransaction &httpTransaction, int availableBodyLen)
+ProjectGiraffeTab4::OnTransactionReadyToRead (HttpSession &httpSession, HttpTransaction &httpTransaction, int availableBodyLen)
 {
 	HttpResponse* pHttpResponse = httpTransaction.GetResponse();
 	HttpHeader* pHttpHeader = null;

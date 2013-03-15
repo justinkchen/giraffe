@@ -1,29 +1,26 @@
-#ifndef _PROJECTGIRAFFE_TAB4_H_
-#define _PROJECTGIRAFFE_TAB4_H_
+/*
+ * UserPopup.h
+ *
+ *  Created on: Mar 15, 2013
+ *      Author: bryancheng
+ */
 
-#include <FBase.h>
-#include <FUi.h>
-#include <Fnet.h>
-#include <FWeb.h>
-#include "User.h"
+#ifndef USERPOPUP_H_
+#define USERPOPUP_H_
 
-class ProjectGiraffeTab4
-	: public Tizen::Ui::Controls::Panel
-	, public Tizen::Ui::Scenes::ISceneEventListener
+class UserPopup
+	: public Tizen::Ui::Controls::Popup
+    , public Tizen::Ui::IActionEventListener
 	, public Tizen::Net::Http::IHttpTransactionEventListener
 {
 public:
-	ProjectGiraffeTab4(void);
-	virtual ~ProjectGiraffeTab4(void);
-	bool Initialize(void);
+	UserPopup();
+	//: __pPopup(null){}
+	virtual ~UserPopup();
 
-public:
-	virtual result OnInitializing(void);
-	virtual result OnTerminating(void);
-	virtual void OnSceneActivatedN(const Tizen::Ui::Scenes::SceneId& previousSceneId,
-								   const Tizen::Ui::Scenes::SceneId& currentSceneId, Tizen::Base::Collection::IList* pArgs);
-	virtual void OnSceneDeactivated(const Tizen::Ui::Scenes::SceneId& currentSceneId,
-									const Tizen::Ui::Scenes::SceneId& nextSceneId);
+	void ShowPopup(void);
+	void HidePopup(void);
+	virtual void OnActionPerformed(const Tizen::Ui::Control& source, int actionId);
 
 	// IHttpTransactionEventListener
 	virtual void OnTransactionAborted(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, result r);
@@ -32,6 +29,14 @@ public:
 	virtual void OnTransactionHeaderCompleted(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int headerLen, bool bAuthRequired);
 	virtual void OnTransactionReadyToRead(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int availableBodyLen);
 	virtual void OnTransactionReadyToWrite(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int recommendedChunkSize);
+
+private:
+	static const int ID_BUTTON_LOG_IN = 501;
+	static const int ID_BUTTON_SIGN_UP = 502;
+	static const int ID_BUTTON_CLOSE_POPUP = 503;
+
+	void ShowLogin(void);
+	void ShowSignup(void);
 };
 
-#endif // _PROJECTGIRAFFE_TAB4_H_
+#endif /* USERPOPUP_H_ */
