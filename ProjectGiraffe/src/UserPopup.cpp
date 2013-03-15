@@ -10,11 +10,14 @@
 
 using namespace Tizen::Graphics;
 using namespace Tizen::Ui::Controls;
+using namespace Tizen::Base;
+using namespace Tizen::Net::Http;
+using namespace Tizen::Web::Json;
 
-UserPopup::UserPopup() {
-	// TODO Auto-generated constructor stub
-
-}
+//UserPopup::UserPopup() {
+//	// TODO Auto-generated constructor stub
+//
+//}
 
 UserPopup::~UserPopup() {
 	// TODO Auto-generated destructor stub
@@ -162,7 +165,7 @@ UserPopup::OnTransactionReadyToRead (HttpSession &httpSession, HttpTransaction &
 
 		AppLog("Received HTTP response.");
 
-		TraverseFunction(pValue);
+//		TraverseFunction(pValue);
 
 		pJsonObject->RemoveAll(true);
 		delete pJsonObject;
@@ -177,4 +180,11 @@ void
 UserPopup::OnTransactionReadyToWrite (HttpSession &httpSession, HttpTransaction &httpTransaction, int recommendedChunkSize)
 {
 
+}
+
+
+result
+UserPopup::OnTerminating(void)
+{
+	//TODO: Add terminating code
 }
