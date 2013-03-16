@@ -59,7 +59,7 @@ private:
 		Tizen::Locations::RegionId __regionId;
 		Tizen::Locations::Coordinates __regionCenter;
 
-		User* _user;
+//		User* _user;
 		UserPopup* __pUserPopup;
 };
 

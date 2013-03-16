@@ -8,14 +8,19 @@
 #ifndef USERPOPUP_H_
 #define USERPOPUP_H_
 
+#include <FBase.h>
+#include <FUi.h>
+#include <FWebJson.h>
+#include <Fnet.h>
+#include <FWeb.h>
+
 class UserPopup
 	: public Tizen::Ui::Controls::Popup
     , public Tizen::Ui::IActionEventListener
 	, public Tizen::Net::Http::IHttpTransactionEventListener
 {
 public:
-	UserPopup();
-	//: __pPopup(null){}
+	UserPopup(void);
 	virtual ~UserPopup();
 
 	void ShowPopup(void);
@@ -34,10 +39,14 @@ public:
 	virtual void OnTransactionReadyToRead(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int availableBodyLen);
 	virtual void OnTransactionReadyToWrite(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int recommendedChunkSize);
 
+
+
+
 private:
 	static const int ID_BUTTON_LOG_IN = 501;
 	static const int ID_BUTTON_SIGN_UP = 502;
 	static const int ID_BUTTON_CLOSE_POPUP = 503;
+	//TODO: toggle button
 
 	void ShowLogin(void);
 	void ShowSignup(void);

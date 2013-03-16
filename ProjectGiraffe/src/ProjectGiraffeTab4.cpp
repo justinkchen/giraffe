@@ -4,6 +4,9 @@ using namespace Tizen::Graphics;
 using namespace Tizen::Ui;
 using namespace Tizen::Ui::Controls;
 using namespace Tizen::Ui::Scenes;
+using namespace Tizen::Base;
+using namespace Tizen::Net::Http;
+using namespace Tizen::Web::Json;
 
 ProjectGiraffeTab4::ProjectGiraffeTab4(void)
 {
@@ -42,7 +45,7 @@ ProjectGiraffeTab4::OnInitializing(void)
 	delete pRelativeLayout;
 
 	//
-	user = null;
+//	_user = null;
 	// attempt to login??
 
 	return r;
@@ -54,8 +57,8 @@ ProjectGiraffeTab4::OnTerminating(void)
 	result r = E_SUCCESS;
 
 	// TODO: Add your termination code here
-	if (user != null)
-		delete user;
+//	if (_user != null)
+//		delete _user;
 
 	return r;
 }
@@ -126,7 +129,7 @@ ProjectGiraffeTab4::OnTransactionReadyToRead(HttpSession &httpSession, HttpTrans
 
 		AppLog("Received HTTP response.");
 
-		TraverseFunction(pValue);
+//		TraverseFunction(pValue);
 
 		pJsonObject->RemoveAll(true);
 		delete pJsonObject;
@@ -138,7 +141,7 @@ ProjectGiraffeTab4::OnTransactionReadyToRead(HttpSession &httpSession, HttpTrans
 }
 
 void
-ProjectGiraffeTab1::OnTransactionReadyToWrite(HttpSession &httpSession, HttpTransaction &httpTransaction, int recommendedChunkSize)
+ProjectGiraffeTab4::OnTransactionReadyToWrite (HttpSession &httpSession, HttpTransaction &httpTransaction, int recommendedChunkSize)
 {
 
 }

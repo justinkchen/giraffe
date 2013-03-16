@@ -10,19 +10,20 @@
 
 using namespace Tizen::Graphics;
 using namespace Tizen::Ui::Controls;
-
+using namespace Tizen::Base;
 using namespace Tizen::Net::Http;
 using namespace Tizen::Web::Json;
 
 UserPopup::UserPopup() {
 	// TODO Auto-generated constructor stub
 
+	Construct(true, Dimension(600,800));
 }
 
 UserPopup::~UserPopup() {
 	// TODO Auto-generated destructor stub
 }
-
+/*
 result
 UserPopup::OnInitializing(void)
 {
@@ -53,7 +54,7 @@ UserPopup::OnInitializing(void)
 
 	return r;
 }
-
+*/
 void
 UserPopup::ShowPopup(void)
 {
@@ -73,11 +74,12 @@ UserPopup::ShowLogin(void)
 {
 	RemoveAllControls();
 
+	SetTitleText(L"Log In");
 
 	// add username / email field EDIT_FIELD_STYLE_EMAIL	INPUT_STYLE_FULLSCREEN/INPUT_STYLE_OVERLAY
 	EditField* pEmailField = new EditField();
 	pEmailField->Construct(Rectangle(50, 100, 400, 150), EDIT_FIELD_STYLE_EMAIL, INPUT_STYLE_OVERLAY);
-	pEmailField->AddTextEventListener(*this);
+	//pEmailField->AddTextEventListener(*this);
 	AddControl(*pEmailField);
 	// add password field EDIT_FIELD_STYLE_PASSWORD
 	// add submit button
@@ -91,6 +93,7 @@ UserPopup::ShowSignup(void)
 {
 	RemoveAllControls();
 
+	SetTitleText(L"Sign Up");
 	// add name field?
 	// add username field
 	// add email field
@@ -131,15 +134,14 @@ UserPopup::SubmitLogin(void)
 	pHttpRequest->SetUri(uri);
 
 	// Create HTTP multipart entity
-	HttpMultipartEntity* pMultipartEntity = null;
-	pMultipartEntity = new HTTPMultiPartEntity();
+	HttpMultipartEntity* pMultipartEntity = new HttpMultipartEntity();
 	pMultipartEntity->Construct();
 	pMultipartEntity->AddStringPart(L"username", L"JoJo"); // TODO: get correct values
 	pMultipartEntity->AddStringPart(L"email", L"JoJo");
 	pMultipartEntity->AddStringPart(L"password", L"JoJo");
 
 
-	pHttpRequest->SetEntity(pMultiPartEntity);
+	pHttpRequest->SetEntity(*pMultipartEntity);
 
 	// Submit the request:
 	pHttpTransaction->Submit();
@@ -157,6 +159,7 @@ UserPopup::OnActionPerformed(const Control& source, int actionId)
 	//TODO: populate correctly
 	switch (actionId)
 	{
+	/*
 	case ID_BUTTON_OPEN_POPUP:
 		{
 			ShowPopup();
@@ -167,6 +170,7 @@ UserPopup::OnActionPerformed(const Control& source, int actionId)
 			HidePopup();
 		}
 		break;
+	*/
 	default:
 		break;
 	}
@@ -237,7 +241,7 @@ UserPopup::OnTransactionReadyToRead(HttpSession &httpSession, HttpTransaction &h
 
 		AppLog("Received HTTP response.");
 
-		TraverseFunction(pValue);
+//		TraverseFunction(pValue);
 
 		pJsonObject->RemoveAll(true);
 		delete pJsonObject;
