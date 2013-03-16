@@ -22,6 +22,10 @@ public:
 	void HidePopup(void);
 	virtual void OnActionPerformed(const Tizen::Ui::Control& source, int actionId);
 
+	// ITextEventListener
+	virtual void OnTextValueChanged(const Tizen::Ui::Control& source);
+	virtual void OnTextValueChangeCanceled(const Tizen::Ui::Control& source);
+
 	// IHttpTransactionEventListener
 	virtual void OnTransactionAborted(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, result r);
 	virtual void OnTransactionCertVerificationRequiredN(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, Tizen::Base::String *pCert);
@@ -37,6 +41,9 @@ private:
 
 	void ShowLogin(void);
 	void ShowSignup(void);
+
+	void SubmitLogin(void);
+	void SubmitSignup(void);
 };
 
 #endif /* USERPOPUP_H_ */

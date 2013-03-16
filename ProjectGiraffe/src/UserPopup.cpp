@@ -11,6 +11,9 @@
 using namespace Tizen::Graphics;
 using namespace Tizen::Ui::Controls;
 
+using namespace Tizen::Net::Http;
+using namespace Tizen::Web::Json;
+
 UserPopup::UserPopup() {
 	// TODO Auto-generated constructor stub
 
@@ -70,8 +73,13 @@ UserPopup::ShowLogin(void)
 {
 	RemoveAllControls();
 
-	// add username / email field
-	// add password field
+
+	// add username / email field EDIT_FIELD_STYLE_EMAIL	INPUT_STYLE_FULLSCREEN/INPUT_STYLE_OVERLAY
+	EditField* pEmailField = new EditField();
+	pEmailField->Construct(Rectangle(50, 100, 400, 150), EDIT_FIELD_STYLE_EMAIL, INPUT_STYLE_OVERLAY);
+	pEmailField->AddTextEventListener(*this);
+	AddControl(*pEmailField);
+	// add password field EDIT_FIELD_STYLE_PASSWORD
 	// add submit button
 
 	// add close/skip button
@@ -95,8 +103,58 @@ UserPopup::ShowSignup(void)
 }
 
 void
+UserPopup::SubmitLogin(void)
+{
+	HttpSession* pHttpSession = null;
+	HttpTransaction* pHttpTransaction = null;
+	String* pProxyAddr = null;
+	String hostAddr = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/";
+	String uri = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/login";
+
+	AppLog("Starting the HTTP Session");
+	pHttpSession = new HttpSession();
+
+	// HttpSession construction.
+	pHttpSession->Construct(NET_HTTP_SESSION_MODE_NORMAL, pProxyAddr, hostAddr, null);
+
+	// Open a new HttpTransaction.
+	pHttpTransaction = pHttpSession->OpenTransactionN(); //TODO: figure out NET_HTTP_AUTH_WWW_BASIC
+
+	// Add a listener.
+	pHttpTransaction->AddHttpTransactionListener(*this);
+
+	// Get an HTTP request.
+	HttpRequest* pHttpRequest = pHttpTransaction->GetRequest();
+
+	// Set the HTTP method and URI:
+	pHttpRequest->SetMethod(NET_HTTP_METHOD_POST);
+	pHttpRequest->SetUri(uri);
+
+	// Create HTTP multipart entity
+	HttpMultipartEntity* pMultipartEntity = null;
+	pMultipartEntity = new HTTPMultiPartEntity();
+	pMultipartEntity->Construct();
+	pMultipartEntity->AddStringPart(L"username", L"JoJo"); // TODO: get correct values
+	pMultipartEntity->AddStringPart(L"email", L"JoJo");
+	pMultipartEntity->AddStringPart(L"password", L"JoJo");
+
+
+	pHttpRequest->SetEntity(pMultiPartEntity);
+
+	// Submit the request:
+	pHttpTransaction->Submit();
+}
+
+void
+UserPopup::SubmitSignup(void)
+{
+
+}
+
+void
 UserPopup::OnActionPerformed(const Control& source, int actionId)
 {
+	//TODO: populate correctly
 	switch (actionId)
 	{
 	case ID_BUTTON_OPEN_POPUP:
@@ -115,31 +173,48 @@ UserPopup::OnActionPerformed(const Control& source, int actionId)
 }
 
 void
-UserPopup::OnTransactionAborted (HttpSession &httpSession, HttpTransaction &httpTransaction, result r)
+UserPopup::OnTextValueChanged(const Tizen::Ui::Control& source)
 {
 
 }
 
 void
-UserPopup::OnTransactionCertVerificationRequiredN (HttpSession &httpSession, HttpTransaction &httpTransaction, Tizen::Base::String *pCert)
+UserPopup::OnTextValueChangeCanceled(const Tizen::Ui::Control& source)
 {
 
 }
 
 void
-UserPopup::OnTransactionCompleted (HttpSession &httpSession, HttpTransaction &httpTransaction)
+UserPopup::OnTransactionAborted(HttpSession &httpSession, HttpTransaction &httpTransaction, result r)
 {
 
 }
 
 void
-UserPopup::OnTransactionHeaderCompleted (HttpSession &httpSession, HttpTransaction &httpTransaction, int headerLen, bool bAuthRequired)
+UserPopup::OnTransactionCertVerificationRequiredN(HttpSession &httpSession, HttpTransaction &httpTransaction, Tizen::Base::String *pCert)
 {
 
 }
 
 void
-UserPopup::OnTransactionReadyToRead (HttpSession &httpSession, HttpTransaction &httpTransaction, int availableBodyLen)
+UserPopup::OnTransactionCompleted(HttpSession &httpSession, HttpTransaction &httpTransaction)
+{
+	HttpMultipartEntity* pMultipartEntity = static_cast< HttpMultipartEntity* >(httpTransaction.GetUserObject());
+
+	if (pMultipartEntity)
+		delete pMultipartEntity;
+
+		delete &httpTransaction;
+}
+
+void
+UserPopup::OnTransactionHeaderCompleted(HttpSession &httpSession, HttpTransaction &httpTransaction, int headerLen, bool bAuthRequired)
+{
+
+}
+
+void
+UserPopup::OnTransactionReadyToRead(HttpSession &httpSession, HttpTransaction &httpTransaction, int availableBodyLen)
 {
 	HttpResponse* pHttpResponse = httpTransaction.GetResponse();
 	HttpHeader* pHttpHeader = null;
@@ -174,7 +249,7 @@ UserPopup::OnTransactionReadyToRead (HttpSession &httpSession, HttpTransaction &
 }
 
 void
-UserPopup::OnTransactionReadyToWrite (HttpSession &httpSession, HttpTransaction &httpTransaction, int recommendedChunkSize)
+UserPopup::OnTransactionReadyToWrite(HttpSession &httpSession, HttpTransaction &httpTransaction, int recommendedChunkSize)
 {
 
 }
