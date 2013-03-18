@@ -110,35 +110,10 @@ HTTPConnection::OnTransactionReadyToRead (HttpSession &httpSession, HttpTransact
 
     AppLog("Received HTTP response.");
 
-    AppLog("Before traverse %d", _tableView->GetItemCount());
-    _pJsonKeyList->RemoveAll(true);
-    _pValueList->RemoveAll(true);
-    _items->RemoveAll(true);
-    // Populate the panel
-    TraverseFunction(pValue);
-
-    AppLog("After traverse");
-
-    //clean up allocated jsonValues
-    if (pValue->GetType() == JSON_TYPE_OBJECT)
-    {
-      // Converts the pValue to JsonObject
-      JsonObject* pObject = static_cast< JsonObject* >(pValue);
-      pObject->RemoveAll(true);
-    }
-    else if (pValue->GetType() == JSON_TYPE_ARRAY)
-    {
-      // Converts the pValue to JsonArray
-      JsonArray* pArray = static_cast< JsonArray* >(pValue);
-      pArray->RemoveAll(true);
-    }
-
-    delete pBody;
-    delete pValue;
-    _tableView->ScrollToItem(0);
-  }else{
-    AppLog("HTTP Status not OK");
+    // Implement JSON parsing to return
+    // list of maps corresponding to json objects
   }
+
 }
 
 void
