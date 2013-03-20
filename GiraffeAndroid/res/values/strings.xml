@@ -7,5 +7,6 @@
     <string name="action_map">Map</string>
     <string name="action_addgraffiti">Add Graffiti</string>
     <string name="action_profile">Profile</string>
+    <string name="action_help">Help</string>
 
 </resources>
