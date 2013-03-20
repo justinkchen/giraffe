@@ -112,7 +112,7 @@ UserPopup::ShowLogin(void)
 	// Signup button to show signup page
 	// Don't have an account?
 	Button* signupLink = new Button();
-	signupLink->Construct(Rectangle(340, -75, 250, 50), L"Sign Up");
+	signupLink->Construct(Rectangle(310, -60, 250, 50), L"Sign Up");
 	Color *c = new Color(5555);
 	Bitmap *b = new Bitmap();
 	b->Construct(signupLink->GetBounds());
@@ -188,7 +188,7 @@ UserPopup::ShowSignup(void)
 	// Login button to show login page
 	// Already have an account?
 	Button* loginLink = new Button();
-	loginLink->Construct(Rectangle(340, -75, 250, 50), L"Log In");
+	loginLink->Construct(Rectangle(310, -60, 250, 50), L"Log In");
 	Color *c = new Color(5555);
 	Bitmap *b = new Bitmap();
 	b->Construct(loginLink->GetBounds());
