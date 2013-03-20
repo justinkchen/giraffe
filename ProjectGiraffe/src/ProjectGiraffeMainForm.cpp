@@ -17,6 +17,7 @@ ProjectGiraffeMainForm::ProjectGiraffeMainForm(void)
 	: __pLocProvider(null)
 	, __pLocationManagerThread(null)
 	, __regionId(-1)
+	, __sParser(null)
 	, __pUserPopup(null)
 {
 }
@@ -112,6 +113,8 @@ ProjectGiraffeMainForm::OnInitializing(void)
 	// Initialize UserPopup
 	__pUserPopup = new UserPopup();
 
+	__sParser = new SensorParser();
+
 	AppLog("Everything is initialized, Location updates started.");
 	MainFormParseLocation();
 	return r;
@@ -197,6 +200,9 @@ ProjectGiraffeMainForm::OnActionPerformed(const Tizen::Ui::Control& source, int 
 		pFooter->SetItemEnabled(4,false);
 		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_5"));
 		pHeader->SetTitleText(L"Settings");
+
+		AppLog("THIS IS A GOOD SPOT FOR SENSOR TESTING");
+		__sParser->CreateSensor();
 		AppLog("Tab5");
 		break;
 	default:

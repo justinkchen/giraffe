@@ -330,6 +330,7 @@ ProjectGiraffeTab1::OnTransactionReadyToRead (HttpSession &httpSession, HttpTran
 		delete pBody;
 		delete pValue;
 		_tableView->ScrollToItem(0);
+
 	}else{
 		AppLog("HTTP Status not OK");
 	}

@@ -6,6 +6,7 @@
 #include <FLocations.h>
 
 #include "UserPopup.h"
+#include "SensorParser.h"
 
 class LocationManagerThread;
 
@@ -58,6 +59,7 @@ private:
 		LocationManagerThread* __pLocationManagerThread;
 		Tizen::Locations::RegionId __regionId;
 		Tizen::Locations::Coordinates __regionCenter;
+		SensorParser* __sParser;
 
 //		User* _user;
 		UserPopup* __pUserPopup;
