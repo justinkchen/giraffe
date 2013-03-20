@@ -4,6 +4,9 @@ using namespace Tizen::Graphics;
 using namespace Tizen::Ui;
 using namespace Tizen::Ui::Controls;
 using namespace Tizen::Ui::Scenes;
+using namespace Tizen::Base;
+using namespace Tizen::Net::Http;
+using namespace Tizen::Web::Json;
 
 ProjectGiraffeTab4::ProjectGiraffeTab4(void)
 {
@@ -41,6 +44,10 @@ ProjectGiraffeTab4::OnInitializing(void)
 	pRelativeLayout->SetVerticalFitPolicy(*this, FIT_POLICY_PARENT);
 	delete pRelativeLayout;
 
+	//
+//	_user = null;
+	// attempt to login??
+
 	return r;
 }
 
@@ -50,6 +57,8 @@ ProjectGiraffeTab4::OnTerminating(void)
 	result r = E_SUCCESS;
 
 	// TODO: Add your termination code here
+//	if (_user != null)
+//		delete _user;
 
 	return r;
 }
@@ -70,4 +79,69 @@ ProjectGiraffeTab4::OnSceneDeactivated(const Tizen::Ui::Scenes::SceneId& current
 	// TODO:
 	// Add your scene deactivate code here
 	AppLog("OnSceneDeactivated");
+}
+
+void
+ProjectGiraffeTab4::OnTransactionAborted(HttpSession &httpSession, HttpTransaction &httpTransaction, result r)
+{
+	AppLog("HTTP Transaction Aborted");
+}
+
+void
+ProjectGiraffeTab4::OnTransactionCertVerificationRequiredN(HttpSession &httpSession, HttpTransaction &httpTransaction, Tizen::Base::String *pCert)
+{
+
+}
+
+void
+ProjectGiraffeTab4::OnTransactionCompleted(HttpSession &httpSession, HttpTransaction &httpTransaction)
+{
+	AppLog("HTTP Transaction Completed");
+}
+
+void
+ProjectGiraffeTab4::OnTransactionHeaderCompleted(HttpSession &httpSession, HttpTransaction &httpTransaction, int headerLen, bool bAuthRequired)
+{
+
+}
+
+void
+ProjectGiraffeTab4::OnTransactionReadyToRead(HttpSession &httpSession, HttpTransaction &httpTransaction, int availableBodyLen)
+{
+	HttpResponse* pHttpResponse = httpTransaction.GetResponse();
+	HttpHeader* pHttpHeader = null;
+	AppLog("Checking HTTP Status Code");
+	if (pHttpResponse->GetHttpStatusCode() == HTTP_STATUS_OK)
+	{
+		ByteBuffer* pBody = null;
+		String statusText = pHttpResponse->GetStatusText();
+		String version = pHttpResponse->GetVersion();
+
+		pHttpHeader = pHttpResponse->GetHeader();
+		pBody = pHttpResponse->ReadBodyN();
+		//delete pBody;
+
+		//Parses from ByteBuffer
+		IJsonValue* pValue = JsonParser::ParseN(*pBody);
+
+		// Converts the pValue to JsonObject
+		JsonObject* pJsonObject = static_cast<JsonObject*>(pValue);
+
+		AppLog("Received HTTP response.");
+
+//		TraverseFunction(pValue);
+
+		pJsonObject->RemoveAll(true);
+		delete pJsonObject;
+		delete pBody;
+//		delete pValue;
+	}else{
+		AppLog("HTTP Status not OK");
+	}
+}
+
+void
+ProjectGiraffeTab4::OnTransactionReadyToWrite (HttpSession &httpSession, HttpTransaction &httpTransaction, int recommendedChunkSize)
+{
+
 }
