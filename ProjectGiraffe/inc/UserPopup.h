@@ -14,10 +14,11 @@
 #include <Fnet.h>
 #include <FWeb.h>
 
-class UserPopup
-	: public Tizen::Ui::Controls::Popup
-    , public Tizen::Ui::IActionEventListener
-	, public Tizen::Net::Http::IHttpTransactionEventListener
+class UserPopup:
+	public Tizen::Ui::Controls::Popup,
+    public Tizen::Ui::IActionEventListener,
+    public Tizen::Ui::IKeypadEventListener,
+	public Tizen::Net::Http::IHttpTransactionEventListener
 {
 public:
 	UserPopup(void);
@@ -27,9 +28,12 @@ public:
 	void HidePopup(void);
 	virtual void OnActionPerformed(const Tizen::Ui::Control& source, int actionId);
 
-	// ITextEventListener
-	virtual void OnTextValueChanged(const Tizen::Ui::Control& source);
-	virtual void OnTextValueChangeCanceled(const Tizen::Ui::Control& source);
+	// IKeypadEventListener
+	virtual void OnKeypadActionPerformed(Tizen::Ui::Control &source, Tizen::Ui::KeypadAction keypadAction);
+	virtual void OnKeypadBoundsChanged(Tizen::Ui::Control &source);
+	virtual void OnKeypadClosed(Tizen::Ui::Control &source);
+	virtual void OnKeypadOpened(Tizen::Ui::Control &source);
+	virtual void OnKeypadWillOpen(Tizen::Ui::Control &source);
 
 	// IHttpTransactionEventListener
 	virtual void OnTransactionAborted(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, result r);
@@ -39,14 +43,12 @@ public:
 	virtual void OnTransactionReadyToRead(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int availableBodyLen);
 	virtual void OnTransactionReadyToWrite(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int recommendedChunkSize);
 
-
-
-
 private:
-	static const int ID_BUTTON_LOG_IN = 501;
-	static const int ID_BUTTON_SIGN_UP = 502;
-	static const int ID_BUTTON_CLOSE_POPUP = 503;
-	//TODO: toggle button
+	static const int ID_BUTTON_CLOSE_POPUP = 501;
+	static const int ID_BUTTON_LOGIN = 502;
+	static const int ID_BUTTON_SIGNUP = 503;
+	static const int ID_BUTTON_VIEW_LOGIN = 504;
+	static const int ID_BUTTON_VIEW_SIGNUP = 505;
 
 	void ShowLogin(void);
 	void ShowSignup(void);

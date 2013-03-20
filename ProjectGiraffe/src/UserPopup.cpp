@@ -9,6 +9,7 @@
 #include <FGraphics.h>
 
 using namespace Tizen::Graphics;
+using namespace Tizen::Ui;
 using namespace Tizen::Ui::Controls;
 using namespace Tizen::Base;
 using namespace Tizen::Net::Http;
@@ -34,7 +35,7 @@ UserPopup::OnInitializing(void)
 	// Creates an instance of Popup
 	__pPopup = new Popup();
 	__pPopup->Construct(true, Dimension(600,800));
-	__pPopup->SetTitleText(L"Log In");
+	__pPopup->SetTitleText(L"LogIn");
 
 	// Creates an instance of Button to close the popup.
 	Button* pCloseButton = new Button();
@@ -78,24 +79,57 @@ UserPopup::ShowLogin(void)
 
 	SetTitleText(L"Log In");
 
-	// add username / email field EDIT_FIELD_STYLE_EMAIL	INPUT_STYLE_FULLSCREEN/INPUT_STYLE_OVERLAY
-	EditField* pEmailField = new EditField();
-	pEmailField->Construct(Rectangle(50, 100, 400, 150), EDIT_FIELD_STYLE_EMAIL, INPUT_STYLE_OVERLAY);
-	//pEmailField->AddTextEventListener(*this);
-	AddControl(*pEmailField);
-	// add password field EDIT_FIELD_STYLE_PASSWORD
-	// add submit button
+	// Username / email edit field
+	EditField* usernameEmailField = new EditField();
+	usernameEmailField->Construct(Rectangle(0, 10, 580, 120), EDIT_FIELD_STYLE_EMAIL, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_TOP, true);
+	usernameEmailField->SetTitleText("Username or Email");
+	usernameEmailField->SetKeypadAction(KEYPAD_ACTION_DONE);
+	usernameEmailField->AddKeypadEventListener(*this);
+	AddControl(*usernameEmailField);
 
-	// add close/skip button
-	// Creates an instance of Button to close the popup.
-	Button* pCloseButton = new Button();
-	pCloseButton->Construct(Rectangle(10, 10, 250, 80), L"Close Popup");
-	pCloseButton->SetActionId(ID_BUTTON_CLOSE_POPUP);
-	pCloseButton->AddActionEventListener(*this);
+	// Password edit field
+	EditField* passwordField = new EditField();
+	passwordField->Construct(Rectangle(0, 140, 580, 120), EDIT_FIELD_STYLE_PASSWORD, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_TOP, true);
+	passwordField->SetTitleText("Password");
+	passwordField->SetKeypadAction(KEYPAD_ACTION_DONE);
+	passwordField->AddKeypadEventListener(*this);
+	AddControl(*passwordField);
 
-	// Adds the button to the popup
-	AddControl(*pCloseButton);
-	// add signup button
+	// Submit button to log in
+	Button* submitButton = new Button();
+	submitButton->Construct(Rectangle(130, 530, 300, 80), L"Log In");
+	submitButton->SetActionId(ID_BUTTON_LOGIN);
+	submitButton->AddActionEventListener(*this);
+	AddControl(*submitButton);
+
+	// Close button to close popup
+	Button* closeButton = new Button();
+	closeButton->Construct(Rectangle(130, 620, 300, 80), L"Close");
+	closeButton->SetActionId(ID_BUTTON_CLOSE_POPUP);
+	closeButton->AddActionEventListener(*this);
+	AddControl(*closeButton);
+
+	// Signup button to show signup page
+	// Don't have an account?
+	Button* signupLink = new Button();
+	signupLink->Construct(Rectangle(310, -60, 250, 50), L"Sign Up");
+	Color *c = new Color(5555);
+	Bitmap *b = new Bitmap();
+	b->Construct(signupLink->GetBounds());
+	b->SetAlphaConstant(255);
+	b->SetMaskingColor(c);
+//	signupLink->SetNormalBitmap(*b);
+	signupLink->SetNormalBackgroundBitmap(*b);
+//	signupLink->SetPressedBitmap();
+//	signedLink->SetPressedBackgorundBitmap();
+
+	signupLink->SetHighlightedTextColor(*c);
+//	signupLink->SetPressedTextColor(*c);
+	signupLink->SetActionId(ID_BUTTON_VIEW_SIGNUP);
+	signupLink->AddActionEventListener(*this);
+	AddControl(*signupLink);
+
+	Draw();
 }
 
 void
@@ -104,15 +138,74 @@ UserPopup::ShowSignup(void)
 	RemoveAllControls();
 
 	SetTitleText(L"Sign Up");
-	// add name field?
-	// add username field
-	// add email field
-	// add password field
-	// add confirm password field
-	// add submit field
 
-	// add close/skip button
-	// add login button
+	// Username edit field
+	EditField* usernameField = new EditField();
+	usernameField->Construct(Rectangle(0, 10, 580, 120), EDIT_FIELD_STYLE_NORMAL, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_TOP, true);
+	usernameField->SetTitleText("Username");
+	usernameField->SetKeypadAction(KEYPAD_ACTION_DONE);
+	usernameField->AddKeypadEventListener(*this);
+	AddControl(*usernameField);
+
+	// Email edit field
+	EditField* emailField = new EditField();
+	emailField->Construct(Rectangle(0, 140, 580, 120), EDIT_FIELD_STYLE_EMAIL, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_TOP, true);
+	emailField->SetTitleText("Email");
+	emailField->SetKeypadAction(KEYPAD_ACTION_DONE);
+	emailField->AddKeypadEventListener(*this);
+	AddControl(*emailField);
+
+	// Password edit field
+	EditField* passwordField = new EditField();
+	passwordField->Construct(Rectangle(0, 270, 580, 120), EDIT_FIELD_STYLE_PASSWORD, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_TOP, true);
+	passwordField->SetTitleText("Password");
+	passwordField->SetKeypadAction(KEYPAD_ACTION_DONE);
+	passwordField->AddKeypadEventListener(*this);
+	AddControl(*passwordField);
+
+	// Password confirmation edit field
+	EditField* passwordConfirmField = new EditField();
+	passwordConfirmField->Construct(Rectangle(0, 400, 580, 120), EDIT_FIELD_STYLE_PASSWORD, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_TOP, true);
+	passwordConfirmField->SetTitleText("Confirm Password");
+	passwordConfirmField->SetKeypadAction(KEYPAD_ACTION_DONE);
+	passwordConfirmField->AddKeypadEventListener(*this);
+	AddControl(*passwordConfirmField);
+
+	// Submit button to sign up
+	Button* submitButton = new Button();
+	submitButton->Construct(Rectangle(130, 530, 300, 80), L"Sign Up");
+	submitButton->SetActionId(ID_BUTTON_SIGNUP);
+	submitButton->AddActionEventListener(*this);
+	AddControl(*submitButton);
+
+	/// Close button to close popup
+	Button* closeButton = new Button();
+	closeButton->Construct(Rectangle(130, 620, 300, 80), L"Close");
+	closeButton->SetActionId(ID_BUTTON_CLOSE_POPUP);
+	closeButton->AddActionEventListener(*this);
+	AddControl(*closeButton);
+
+	// Login button to show login page
+	// Already have an account?
+	Button* loginLink = new Button();
+	loginLink->Construct(Rectangle(310, -60, 250, 50), L"Log In");
+	Color *c = new Color(5555);
+	Bitmap *b = new Bitmap();
+	b->Construct(loginLink->GetBounds());
+	b->SetAlphaConstant(255);
+	b->SetMaskingColor(c);
+	//	loginLink->SetNormalBitmap(*b);
+	loginLink->SetNormalBackgroundBitmap(*b);
+	//	loginLink->SetPressedBitmap();
+	//	loginLink->SetPressedBackgorundBitmap();
+
+	loginLink->SetHighlightedTextColor(*c);
+	//	loginLink->SetPressedTextColor(*c);
+	loginLink->SetActionId(ID_BUTTON_VIEW_LOGIN);
+	loginLink->AddActionEventListener(*this);
+	AddControl(*loginLink);
+
+	Draw();
 }
 
 void
@@ -177,9 +270,13 @@ UserPopup::OnActionPerformed(const Control& source, int actionId)
 		break;
 	*/
 	case ID_BUTTON_CLOSE_POPUP:
-		{
-			HidePopup();
-		}
+		HidePopup();
+		break;
+	case ID_BUTTON_VIEW_LOGIN:
+		ShowLogin();
+		break;
+	case ID_BUTTON_VIEW_SIGNUP:
+		ShowSignup();
 		break;
 	default:
 		break;
@@ -187,15 +284,51 @@ UserPopup::OnActionPerformed(const Control& source, int actionId)
 }
 
 void
-UserPopup::OnTextValueChanged(const Tizen::Ui::Control& source)
+UserPopup::OnKeypadActionPerformed(Control &source, KeypadAction keypadAction)
+{
+	// Hide keypad when the action button is clicked
+	if (keypadAction == KEYPAD_ACTION_DONE)
+	{
+		//Temp fix for this, hides keyboard by setting focus on popup
+		SetFocus();
+		//((EditField)source).HideKeypad();
+	}
+}
+
+void
+UserPopup::OnKeypadBoundsChanged(Control &source)
 {
 
 }
 
 void
-UserPopup::OnTextValueChangeCanceled(const Tizen::Ui::Control& source)
+UserPopup::OnKeypadClosed(Control &source)
 {
 
+}
+
+void
+UserPopup::OnKeypadOpened(Control &source)
+{
+	/* may need to resize ui?
+	Rectangle clientRect = GetClientAreaBounds();
+	Rectangle editRect = __pEditField->GetBounds();
+	editRect.y = clientRect.height - editRect.height - 50;
+	__pEditField->SetBounds(editRect); // Move EditField to avoid overlapping
+	*/
+}
+
+void
+UserPopup::OnKeypadWillOpen(Control &source)
+{
+	/*
+	Rectangle clientRect = GetClientAreaBounds();
+	Rectangle editRect = __pEditField->GetBounds();
+	editRect.y = clientRect.height - 500;
+	__pEditField->SetBounds(editRect); // Move back to original position
+
+	Invalidate(true);
+	*/
 }
 
 void
