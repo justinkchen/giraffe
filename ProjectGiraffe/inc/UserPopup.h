@@ -44,10 +44,11 @@ public:
 	virtual void OnTransactionReadyToWrite(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int recommendedChunkSize);
 
 private:
-	static const int ID_BUTTON_LOGIN = 501;
-	static const int ID_BUTTON_SIGNUP = 502;
-	static const int ID_BUTTON_CLOSE_POPUP = 503;
-	//TODO: toggle button
+	static const int ID_BUTTON_CLOSE_POPUP = 501;
+	static const int ID_BUTTON_LOGIN = 502;
+	static const int ID_BUTTON_SIGNUP = 503;
+	static const int ID_BUTTON_VIEW_LOGIN = 504;
+	static const int ID_BUTTON_VIEW_SIGNUP = 505;
 
 	void ShowLogin(void);
 	void ShowSignup(void);

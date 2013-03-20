@@ -111,6 +111,25 @@ UserPopup::ShowLogin(void)
 
 	// Signup button to show signup page
 	// Don't have an account?
+	Button* signupLink = new Button();
+	signupLink->Construct(Rectangle(340, -75, 250, 50), L"Sign Up");
+	Color *c = new Color(5555);
+	Bitmap *b = new Bitmap();
+	b->Construct(signupLink->GetBounds());
+	b->SetAlphaConstant(255);
+	b->SetMaskingColor(c);
+//	signupLink->SetNormalBitmap(*b);
+	signupLink->SetNormalBackgroundBitmap(*b);
+//	signupLink->SetPressedBitmap();
+//	signedLink->SetPressedBackgorundBitmap();
+
+	signupLink->SetHighlightedTextColor(*c);
+//	signupLink->SetPressedTextColor(*c);
+	signupLink->SetActionId(ID_BUTTON_VIEW_SIGNUP);
+	signupLink->AddActionEventListener(*this);
+	AddControl(*signupLink);
+
+	Draw();
 }
 
 void
@@ -168,6 +187,25 @@ UserPopup::ShowSignup(void)
 
 	// Login button to show login page
 	// Already have an account?
+	Button* loginLink = new Button();
+	loginLink->Construct(Rectangle(340, -75, 250, 50), L"Log In");
+	Color *c = new Color(5555);
+	Bitmap *b = new Bitmap();
+	b->Construct(loginLink->GetBounds());
+	b->SetAlphaConstant(255);
+	b->SetMaskingColor(c);
+	//	loginLink->SetNormalBitmap(*b);
+	loginLink->SetNormalBackgroundBitmap(*b);
+	//	loginLink->SetPressedBitmap();
+	//	loginLink->SetPressedBackgorundBitmap();
+
+	loginLink->SetHighlightedTextColor(*c);
+	//	loginLink->SetPressedTextColor(*c);
+	loginLink->SetActionId(ID_BUTTON_VIEW_LOGIN);
+	loginLink->AddActionEventListener(*this);
+	AddControl(*loginLink);
+
+	Draw();
 }
 
 void
@@ -232,9 +270,13 @@ UserPopup::OnActionPerformed(const Control& source, int actionId)
 		break;
 	*/
 	case ID_BUTTON_CLOSE_POPUP:
-		{
-			HidePopup();
-		}
+		HidePopup();
+		break;
+	case ID_BUTTON_VIEW_LOGIN:
+		ShowLogin();
+		break;
+	case ID_BUTTON_VIEW_SIGNUP:
+		ShowSignup();
 		break;
 	default:
 		break;
