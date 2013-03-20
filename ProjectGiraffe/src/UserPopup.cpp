@@ -18,6 +18,8 @@ UserPopup::UserPopup() {
 	// TODO Auto-generated constructor stub
 
 	Construct(true, Dimension(600,800));
+
+	ShowLogin();
 }
 
 UserPopup::~UserPopup() {
@@ -85,6 +87,14 @@ UserPopup::ShowLogin(void)
 	// add submit button
 
 	// add close/skip button
+	// Creates an instance of Button to close the popup.
+	Button* pCloseButton = new Button();
+	pCloseButton->Construct(Rectangle(10, 10, 250, 80), L"Close Popup");
+	pCloseButton->SetActionId(ID_BUTTON_CLOSE_POPUP);
+	pCloseButton->AddActionEventListener(*this);
+
+	// Adds the button to the popup
+	AddControl(*pCloseButton);
 	// add signup button
 }
 
@@ -165,12 +175,12 @@ UserPopup::OnActionPerformed(const Control& source, int actionId)
 			ShowPopup();
 		}
 		break;
+	*/
 	case ID_BUTTON_CLOSE_POPUP:
 		{
 			HidePopup();
 		}
 		break;
-	*/
 	default:
 		break;
 	}

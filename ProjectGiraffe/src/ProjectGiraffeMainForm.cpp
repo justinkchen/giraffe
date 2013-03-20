@@ -14,14 +14,16 @@ double ProjectGiraffeMainForm::currentLatitude = 0;
 double ProjectGiraffeMainForm::currentLongitude = 0;
 
 ProjectGiraffeMainForm::ProjectGiraffeMainForm(void)
-: __pLocProvider(null),
-__pLocationManagerThread(null),
-__regionId(-1)
+	: __pLocProvider(null)
+	, __pLocationManagerThread(null)
+	, __regionId(-1)
+	, __pUserPopup(null)
 {
 }
 
 ProjectGiraffeMainForm::~ProjectGiraffeMainForm(void)
 {
+
 }
 
 bool
@@ -107,7 +109,8 @@ ProjectGiraffeMainForm::OnInitializing(void)
 	}
 	__pLocProvider->StartLocationUpdatesByInterval(10);
 
-	// TODO: initialize userPopup
+	// Initialize UserPopup
+	__pUserPopup = new UserPopup();
 
 	AppLog("Everything is initialized, Location updates started.");
 	MainFormParseLocation();
@@ -123,7 +126,7 @@ ProjectGiraffeMainForm::OnTerminating(void)
 	__pLocationManagerThread->Join();
 	delete __pLocationManagerThread;
 	//delete __currentLocation;
-	//TODO:??delete __pUserPopup;
+	delete __pUserPopup;
 
 	// TODO:
 	// Add your termination code here
@@ -181,6 +184,8 @@ ProjectGiraffeMainForm::OnActionPerformed(const Tizen::Ui::Control& source, int 
 		pFooter->SetItemEnabled(4,true);
 		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_4"));
 		pHeader->SetTitleText(L"Profile");
+		__pUserPopup->ShowPopup();
+
 		AppLog("Tab4");
 		break;
 	case ID_FOOTER_ITEM5:
