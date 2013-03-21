@@ -143,6 +143,7 @@ ProjectGiraffeMainForm::OnActionPerformed(const Tizen::Ui::Control& source, int 
 	AppAssert(pSceneManager);
 	Header* pHeader = GetHeader();
 	Footer* pFooter = GetFooter();
+	__sParser->StopParsing();
 	switch(actionId)
 	{
 	case ID_FOOTER_ITEM1:
@@ -176,6 +177,7 @@ ProjectGiraffeMainForm::OnActionPerformed(const Tizen::Ui::Control& source, int 
 		pFooter->SetItemEnabled(4,true);
 		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_3"));
 		pHeader->SetTitleText(L"Post Graffiti");
+		__sParser->CreateSensor();
 		AppLog("Tab3");
 		break;
 	case ID_FOOTER_ITEM4:
@@ -200,9 +202,6 @@ ProjectGiraffeMainForm::OnActionPerformed(const Tizen::Ui::Control& source, int 
 		pFooter->SetItemEnabled(4,false);
 		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_5"));
 		pHeader->SetTitleText(L"Settings");
-
-		AppLog("THIS IS A GOOD SPOT FOR SENSOR TESTING");
-		__sParser->CreateSensor();
 		AppLog("Tab5");
 		break;
 	default:

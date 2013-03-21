@@ -28,6 +28,7 @@ void SensorParser::OnDataReceived(SensorType sensorType, SensorData& sensorData,
 		sensorData.GetValue(static_cast<SensorDataKey>(ACCELERATION_DATA_KEY_X), xAcc);
 		sensorData.GetValue(static_cast<SensorDataKey>(ACCELERATION_DATA_KEY_Y), yAcc);
 		sensorData.GetValue(static_cast<SensorDataKey>(ACCELERATION_DATA_KEY_Z), zAcc);
+		AppLog("Acceleration in X-coord: %f", xAcc);
 	}
 
 	if (sensorType == SENSOR_TYPE_TILT) {
@@ -93,4 +94,9 @@ bool SensorParser::CreateSensor(void)
 	}
 
 	return success;
+}
+
+void SensorParser::StopParsing(void)
+{
+	__sensorManager.RemoveSensorListener(*this);
 }

@@ -114,6 +114,8 @@ ProjectGiraffeTab1::OnInitializing(void)
 	_tableView->AddTableViewItemEventListener(*this);
 	AddControl(*_tableView);
 
+	_lPopup = new LoadingPopup();
+
 	_items = new (std::nothrow) ArrayList();
 
 	_pValueList = new (std::nothrow) LinkedList();
@@ -160,8 +162,10 @@ void
 ProjectGiraffeTab1::OnSceneActivatedN(const Tizen::Ui::Scenes::SceneId& previousSceneId,
 		const Tizen::Ui::Scenes::SceneId& currentSceneId, Tizen::Base::Collection::IList* pArgs)
 {
-	updateItems();
+	//Start load icon here.
+	_lPopup->ShowPopup();
 
+	updateItems();
 	AppLog("OnSceneActivatedN");
 }
 
@@ -331,9 +335,13 @@ ProjectGiraffeTab1::OnTransactionReadyToRead (HttpSession &httpSession, HttpTran
 		delete pValue;
 		_tableView->ScrollToItem(0);
 
+
+
 	}else{
 		AppLog("HTTP Status not OK");
 	}
+	//Remove load icon here.
+	_lPopup->HidePopup();
 }
 
 void

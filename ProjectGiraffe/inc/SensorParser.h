@@ -8,10 +8,10 @@ class SensorParser : public ISensorEventListener
 {
 	public:
 		SensorParser(void);
-			virtual ~SensorParser(void);
-			bool CreateSensor(void);
-
-			virtual void OnDataReceived(SensorType sensorType, SensorData& sensorData, result r);
+		virtual ~SensorParser(void);
+		bool CreateSensor(void);
+		void StopParsing(void);
+		virtual void OnDataReceived(SensorType sensorType, SensorData& sensorData, result r);
 
 	public:
 			float xAcc;
