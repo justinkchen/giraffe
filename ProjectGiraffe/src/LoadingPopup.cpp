@@ -18,7 +18,7 @@ LoadingPopup::LoadingPopup()
 	: __pAnimation(null)
 	, __pAnimationFrameList(null)
 	{
-	//Construct(L"IDC_LOAD");
+
 
 	Construct(false, Dimension(120,100));
 	AppResource* pAppResource = Application::GetInstance()->GetAppResource();
