@@ -14,6 +14,8 @@
 #include <Fnet.h>
 #include <FWeb.h>
 
+#include "JsonParser.h"
+
 class UserPopup:
 	public Tizen::Ui::Controls::Popup,
     public Tizen::Ui::IActionEventListener,
