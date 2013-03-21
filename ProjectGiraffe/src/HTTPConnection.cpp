@@ -53,7 +53,7 @@ HTTPConnection::HTTPConnection(HTTPConnectionListener *listener, const Tizen::Ba
 {
 	// Create session
 	_session = new HttpSession();
-	_session->Construct(NET_HTTP_SESSION_MODE_NORMAL, NULL, kHTTPHostURL, NULL);
+	_session->Construct(NET_HTTP_SESSION_MODE_NORMAL, NULL, kHTTPHostURL, NULL, NET_HTTP_COOKIE_FLAG_ALWAYS_AUTOMATIC);
 
 	_transaction = _session->OpenTransactionN();
 	_transaction->AddHttpTransactionListener(*this);

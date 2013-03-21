@@ -8,10 +8,11 @@
 #include "UserPopup.h"
 #include <FGraphics.h>
 
+using namespace Tizen::Base;
+using namespace Tizen::Base::Collection;
 using namespace Tizen::Graphics;
 using namespace Tizen::Ui;
 using namespace Tizen::Ui::Controls;
-using namespace Tizen::Base;
 using namespace Tizen::Net::Http;
 using namespace Tizen::Web::Json;
 
@@ -67,15 +68,17 @@ UserPopup::ShowLogin(void)
 	AddControl(*passwordField);
 
 	// Submit button to log in
-	Button* submitButton = new Button();
-	submitButton->Construct(Rectangle(130, 530, 300, 80), L"Log In");
-	submitButton->SetActionId(ID_BUTTON_LOGIN);
-	submitButton->AddActionEventListener(*this);
-	AddControl(*submitButton);
+	Button* loginButton = new Button();
+	loginButton->Construct(Rectangle(130, 530, 300, 80), L"Log In");
+	loginButton->SetName("loginButton");
+	loginButton->SetActionId(ID_BUTTON_LOGIN);
+	loginButton->AddActionEventListener(*this);
+	AddControl(*loginButton);
 
 	// Close button to close popup
 	Button* closeButton = new Button();
 	closeButton->Construct(Rectangle(130, 620, 300, 80), L"Close");
+	closeButton->SetName("closeButton");
 	closeButton->SetActionId(ID_BUTTON_CLOSE_POPUP);
 	closeButton->AddActionEventListener(*this);
 	AddControl(*closeButton);
@@ -99,6 +102,13 @@ UserPopup::ShowLogin(void)
 	signupLink->SetActionId(ID_BUTTON_VIEW_SIGNUP);
 	signupLink->AddActionEventListener(*this);
 	AddControl(*signupLink);
+
+	// Error Label
+	Label* errorLabel = new Label();
+	errorLabel->Construct(Rectangle(-10, -130, 600, 40), L"");
+	errorLabel->SetTextColor(Color(0xFF, 0x00, 0x00));
+	errorLabel->SetName("errorLabel");
+	AddControl(*errorLabel);
 
 	Draw();
 }
@@ -147,15 +157,17 @@ UserPopup::ShowSignup(void)
 	AddControl(*passwordConfirmField);
 
 	// Submit button to sign up
-	Button* submitButton = new Button();
-	submitButton->Construct(Rectangle(130, 530, 300, 80), L"Sign Up");
-	submitButton->SetActionId(ID_BUTTON_SIGNUP);
-	submitButton->AddActionEventListener(*this);
-	AddControl(*submitButton);
+	Button* signupButton = new Button();
+	signupButton->Construct(Rectangle(130, 530, 300, 80), L"Sign Up");
+	signupButton->SetName("signupButton");
+	signupButton->SetActionId(ID_BUTTON_SIGNUP);
+	signupButton->AddActionEventListener(*this);
+	AddControl(*signupButton);
 
 	/// Close button to close popup
 	Button* closeButton = new Button();
 	closeButton->Construct(Rectangle(130, 620, 300, 80), L"Close");
+	closeButton->SetName("closeButton");
 	closeButton->SetActionId(ID_BUTTON_CLOSE_POPUP);
 	closeButton->AddActionEventListener(*this);
 	AddControl(*closeButton);
@@ -180,12 +192,24 @@ UserPopup::ShowSignup(void)
 	loginLink->AddActionEventListener(*this);
 	AddControl(*loginLink);
 
+	// Error Label
+	Label* errorLabel = new Label();
+	errorLabel->Construct(Rectangle(-10, -130, 600, 40), L"");
+	errorLabel->SetTextColor(Color(0xFF, 0x00, 0x00));
+	errorLabel->SetName("errorLabel");
+	AddControl(*errorLabel);
+
 	Draw();
 }
 
 void
 UserPopup::SubmitLogin(void)
 {
+	// Disable login button
+	Button* loginButton = (Button *)GetControl("loginButton");
+	loginButton->SetEnabled(false);
+	loginButton->SetText("Logging in...");
+
 	HttpSession* pHttpSession = null;
 	HttpTransaction* pHttpTransaction = null;
 	String* pProxyAddr = null;
@@ -228,6 +252,11 @@ UserPopup::SubmitLogin(void)
 void
 UserPopup::SubmitSignup(void)
 {
+	// Disable signup button
+	Button* signupButton = (Button *)GetControl("signupButton");
+	signupButton->SetEnabled(false);
+	signupButton->SetText("Signing up...");
+
 	HttpSession* pHttpSession = null;
 	HttpTransaction* pHttpTransaction = null;
 	String* pProxyAddr = null;
@@ -322,30 +351,6 @@ UserPopup::OnKeypadClosed(Control &source)
 }
 
 void
-UserPopup::OnKeypadOpened(Control &source)
-{
-	/* may need to resize ui?
-	Rectangle clientRect = GetClientAreaBounds();
-	Rectangle editRect = __pEditField->GetBounds();
-	editRect.y = clientRect.height - editRect.height - 50;
-	__pEditField->SetBounds(editRect); // Move EditField to avoid overlapping
-	*/
-}
-
-void
-UserPopup::OnKeypadWillOpen(Control &source)
-{
-	/*
-	Rectangle clientRect = GetClientAreaBounds();
-	Rectangle editRect = __pEditField->GetBounds();
-	editRect.y = clientRect.height - 500;
-	__pEditField->SetBounds(editRect); // Move back to original position
-
-	Invalidate(true);
-	*/
-}
-
-void
 UserPopup::OnTransactionAborted(HttpSession &httpSession, HttpTransaction &httpTransaction, result r)
 {
 
@@ -371,6 +376,16 @@ UserPopup::OnTransactionCompleted(HttpSession &httpSession, HttpTransaction &htt
 void
 UserPopup::OnTransactionHeaderCompleted(HttpSession &httpSession, HttpTransaction &httpTransaction, int headerLen, bool bAuthRequired)
 {
+	HttpResponse* httpResponse = httpTransaction.GetResponse();
+//	HttpHeader* httpHeader = httpResponse->GetHeader();
+	IList* cookieList = httpResponse->GetCookies();
+
+	for (int i = 0; i < cookieList->GetCount(); i++) {
+		HttpCookie *cookie = static_cast<HttpCookie*>(cookieList->GetAt(0));
+
+		// TODO: save cookie somewhere
+	}
+
 	if (bAuthRequired)
 	{
 		AppLog("auth required");
@@ -390,33 +405,58 @@ UserPopup::OnTransactionHeaderCompleted(HttpSession &httpSession, HttpTransactio
 void
 UserPopup::OnTransactionReadyToRead(HttpSession &httpSession, HttpTransaction &httpTransaction, int availableBodyLen)
 {
-	HttpResponse* pHttpResponse = httpTransaction.GetResponse();
-	HttpHeader* pHttpHeader = null;
+	HttpResponse* httpResponse = httpTransaction.GetResponse();
+	HttpHeader* httpHeader = null;
 	AppLog("Checking HTTP Status Code");
-	if (pHttpResponse->GetHttpStatusCode() == HTTP_STATUS_OK)
+	if (httpResponse->GetHttpStatusCode() == HTTP_STATUS_OK)
 	{
-		ByteBuffer* pBody = null;
-		String statusText = pHttpResponse->GetStatusText();
-		String version = pHttpResponse->GetVersion();
+		ByteBuffer* body = null;
+		String statusText = httpResponse->GetStatusText();
+		String version = httpResponse->GetVersion();
 
-		pHttpHeader = pHttpResponse->GetHeader();
-		pBody = pHttpResponse->ReadBodyN();
-		//delete pBody;
+		httpHeader = httpResponse->GetHeader();
+		body = httpResponse->ReadBodyN();
 
 		//Parses from ByteBuffer
-		IJsonValue* pValue = JsonParser::ParseN(*pBody);
+		IJsonValue* jsonValue = JsonParser::ParseN(*body);
 
-		// Converts the pValue to JsonObject
-		JsonObject* pJsonObject = static_cast<JsonObject*>(pValue);
+		// Convert jsonValue to hashmap
+		HashMap* dict = JSONParser::dictionaryForJSONValue(jsonValue);
 
-		AppLog("Received HTTP response.");
+		String userKey("user");
+		String errorKey("error");
+		if (dict->ContainsKey(userKey)) {
+			HashMap *userDict = (HashMap *)dict->GetValue(userKey);
+			AppLogTag("cookie", "user");
 
-//		TraverseFunction(pValue);
+			//HidePopup();
+		} else if (dict->ContainsKey(errorKey)) {
+			String *errorMessage = (String *)dict->GetValue(errorKey);
 
-		pJsonObject->RemoveAll(true);
-		delete pJsonObject;
-		delete pBody;
-//		delete pValue;
+			// Enable login button
+			Button* loginButton = (Button *)GetControl("loginButton");
+			if (loginButton != NULL) {
+				loginButton->SetEnabled(true);
+				loginButton->SetText("Log In");
+			}
+
+			// Enable signup button
+			Button* signupButton = (Button *)GetControl("signupButton");
+			if (signupButton != NULL) {
+				signupButton->SetEnabled(true);
+				signupButton->SetText("Sign Up");
+			}
+
+			// Flash error message
+			Label* errorLabel = (Label* )GetControl("errorLabel");
+			errorLabel->SetText(*errorMessage);
+
+			Draw();
+		}
+
+		delete body;
+		delete jsonValue;
+		delete dict;
 	}else{
 		AppLog("HTTP Status not OK");
 	}
