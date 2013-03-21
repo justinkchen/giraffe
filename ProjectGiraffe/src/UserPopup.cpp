@@ -26,38 +26,7 @@ UserPopup::UserPopup() {
 UserPopup::~UserPopup() {
 	// TODO Auto-generated destructor stub
 }
-/*
-result
-UserPopup::OnInitializing(void)
-{
-	result r = E_SUCCESS;
 
-	// Creates an instance of Popup
-	__pPopup = new Popup();
-	__pPopup->Construct(true, Dimension(600,800));
-	__pPopup->SetTitleText(L"LogIn");
-
-	// Creates an instance of Button to close the popup.
-	Button* pCloseButton = new Button();
-	pCloseButton->Construct(Rectangle(10, 10, 250, 80), L"Close Popup");
-	pCloseButton->SetActionId(ID_BUTTON_CLOSE_POPUP);
-	pCloseButton->AddActionEventListener(*this);
-
-	// Adds the button to the popup
-	__pPopup->AddControl(*pCloseButton);
-
-	// Creates an instance of Button to open the popup.
-	Button* pOpenButton = new Button();
-	pOpenButton->Construct(Rectangle(10, 10, 250, 60), L"Open Popup");
-	pOpenButton->SetActionId(ID_BUTTON_OPEN_POPUP);
-	pOpenButton->AddActionEventListener(*this);
-
-	// Adds the button to the form
-	AddControl(*pOpenButton);
-
-	return r;
-}
-*/
 void
 UserPopup::ShowPopup(void)
 {
@@ -306,13 +275,6 @@ UserPopup::OnActionPerformed(const Control& source, int actionId)
 	//TODO: populate correctly
 	switch (actionId)
 	{
-	/*
-	case ID_BUTTON_OPEN_POPUP:
-		{
-			ShowPopup();
-		}
-		break;
-	*/
 	case ID_BUTTON_CLOSE_POPUP:
 		HidePopup();
 		break;
