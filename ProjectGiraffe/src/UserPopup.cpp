@@ -384,6 +384,30 @@ UserPopup::OnKeypadWillOpen(Control &source)
 }
 
 void
+UserPopup::OnKeypadOpened(Control &source)
+{
+	/* may need to resize ui?
+	Rectangle clientRect = GetClientAreaBounds();
+	Rectangle editRect = __pEditField->GetBounds();
+	editRect.y = clientRect.height - editRect.height - 50;
+	__pEditField->SetBounds(editRect); // Move EditField to avoid overlapping
+	*/
+}
+
+void
+UserPopup::OnKeypadWillOpen(Control &source)
+{
+	/*
+	Rectangle clientRect = GetClientAreaBounds();
+	Rectangle editRect = __pEditField->GetBounds();
+	editRect.y = clientRect.height - 500;
+	__pEditField->SetBounds(editRect); // Move back to original position
+
+	Invalidate(true);
+	*/
+}
+
+void
 UserPopup::OnTransactionAborted(HttpSession &httpSession, HttpTransaction &httpTransaction, result r)
 {
 
