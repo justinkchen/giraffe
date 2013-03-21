@@ -83,6 +83,7 @@ UserPopup::ShowLogin(void)
 	EditField* usernameEmailField = new EditField();
 	usernameEmailField->Construct(Rectangle(0, 10, 580, 120), EDIT_FIELD_STYLE_EMAIL, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_TOP, true);
 	usernameEmailField->SetTitleText("Username or Email");
+	usernameEmailField->SetName("usernameEmailField");
 	usernameEmailField->SetKeypadAction(KEYPAD_ACTION_DONE);
 	usernameEmailField->AddKeypadEventListener(*this);
 	AddControl(*usernameEmailField);
@@ -91,6 +92,7 @@ UserPopup::ShowLogin(void)
 	EditField* passwordField = new EditField();
 	passwordField->Construct(Rectangle(0, 140, 580, 120), EDIT_FIELD_STYLE_PASSWORD, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_TOP, true);
 	passwordField->SetTitleText("Password");
+	passwordField->SetName("passwordField");
 	passwordField->SetKeypadAction(KEYPAD_ACTION_DONE);
 	passwordField->AddKeypadEventListener(*this);
 	AddControl(*passwordField);
@@ -143,6 +145,7 @@ UserPopup::ShowSignup(void)
 	EditField* usernameField = new EditField();
 	usernameField->Construct(Rectangle(0, 10, 580, 120), EDIT_FIELD_STYLE_NORMAL, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_TOP, true);
 	usernameField->SetTitleText("Username");
+	usernameField->SetName("usernameField");
 	usernameField->SetKeypadAction(KEYPAD_ACTION_DONE);
 	usernameField->AddKeypadEventListener(*this);
 	AddControl(*usernameField);
@@ -151,6 +154,7 @@ UserPopup::ShowSignup(void)
 	EditField* emailField = new EditField();
 	emailField->Construct(Rectangle(0, 140, 580, 120), EDIT_FIELD_STYLE_EMAIL, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_TOP, true);
 	emailField->SetTitleText("Email");
+	emailField->SetName("emailField");
 	emailField->SetKeypadAction(KEYPAD_ACTION_DONE);
 	emailField->AddKeypadEventListener(*this);
 	AddControl(*emailField);
@@ -159,6 +163,7 @@ UserPopup::ShowSignup(void)
 	EditField* passwordField = new EditField();
 	passwordField->Construct(Rectangle(0, 270, 580, 120), EDIT_FIELD_STYLE_PASSWORD, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_TOP, true);
 	passwordField->SetTitleText("Password");
+	passwordField->SetName("passwordField");
 	passwordField->SetKeypadAction(KEYPAD_ACTION_DONE);
 	passwordField->AddKeypadEventListener(*this);
 	AddControl(*passwordField);
@@ -167,6 +172,7 @@ UserPopup::ShowSignup(void)
 	EditField* passwordConfirmField = new EditField();
 	passwordConfirmField->Construct(Rectangle(0, 400, 580, 120), EDIT_FIELD_STYLE_PASSWORD, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_TOP, true);
 	passwordConfirmField->SetTitleText("Confirm Password");
+	passwordConfirmField->SetName("passwordConfirmField");
 	passwordConfirmField->SetKeypadAction(KEYPAD_ACTION_DONE);
 	passwordConfirmField->AddKeypadEventListener(*this);
 	AddControl(*passwordConfirmField);
@@ -214,7 +220,7 @@ UserPopup::SubmitLogin(void)
 	HttpSession* pHttpSession = null;
 	HttpTransaction* pHttpTransaction = null;
 	String* pProxyAddr = null;
-	String hostAddr = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/";
+	String hostAddr = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/"; // TODO: convert to HTTPS
 	String uri = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/login";
 
 	AppLog("Starting the HTTP Session");
@@ -239,10 +245,10 @@ UserPopup::SubmitLogin(void)
 	// Create HTTP multipart entity
 	HttpMultipartEntity* pMultipartEntity = new HttpMultipartEntity();
 	pMultipartEntity->Construct();
-	pMultipartEntity->AddStringPart(L"username", L"JoJo"); // TODO: get correct values
-	pMultipartEntity->AddStringPart(L"email", L"JoJo");
-	pMultipartEntity->AddStringPart(L"password", L"JoJo");
-
+	String usernameEmail = ((EditField *)GetControl("usernameEmailField"))->GetText();
+	pMultipartEntity->AddStringPart(L"usernameEmail", usernameEmail);
+	String password = ((EditField *)GetControl("passwordField"))->GetText();
+	pMultipartEntity->AddStringPart(L"password", password);
 
 	pHttpRequest->SetEntity(*pMultipartEntity);
 
@@ -253,7 +259,45 @@ UserPopup::SubmitLogin(void)
 void
 UserPopup::SubmitSignup(void)
 {
+	HttpSession* pHttpSession = null;
+	HttpTransaction* pHttpTransaction = null;
+	String* pProxyAddr = null;
+	String hostAddr = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/";
+	String uri = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/signup";
 
+	AppLog("Starting the HTTP Session");
+	pHttpSession = new HttpSession();
+
+	// HttpSession construction.
+	pHttpSession->Construct(NET_HTTP_SESSION_MODE_NORMAL, pProxyAddr, hostAddr, null);
+
+	// Open a new HttpTransaction.
+	pHttpTransaction = pHttpSession->OpenTransactionN(); //TODO: figure out NET_HTTP_AUTH_WWW_BASIC
+
+	// Add a listener.
+	pHttpTransaction->AddHttpTransactionListener(*this);
+
+	// Get an HTTP request.
+	HttpRequest* pHttpRequest = pHttpTransaction->GetRequest();
+
+	// Set the HTTP method and URI:
+	pHttpRequest->SetMethod(NET_HTTP_METHOD_POST);
+	pHttpRequest->SetUri(uri);
+
+	// Create HTTP multipart entity
+	HttpMultipartEntity* pMultipartEntity = new HttpMultipartEntity();
+	pMultipartEntity->Construct();
+	String username = ((EditField *)GetControl("usernameField"))->GetText();
+	pMultipartEntity->AddStringPart(L"username", username);
+	String email = ((EditField *)GetControl("emailField"))->GetText();
+	pMultipartEntity->AddStringPart(L"email", email);
+	String password = ((EditField *)GetControl("passwordField"))->GetText();
+	pMultipartEntity->AddStringPart(L"password", password);
+
+	pHttpRequest->SetEntity(*pMultipartEntity);
+
+	// Submit the request:
+	pHttpTransaction->Submit();
 }
 
 void
@@ -271,6 +315,14 @@ UserPopup::OnActionPerformed(const Control& source, int actionId)
 	*/
 	case ID_BUTTON_CLOSE_POPUP:
 		HidePopup();
+		break;
+	case ID_BUTTON_LOGIN:
+		//ValidateForm(); // TODO: make sure fields are correct
+		SubmitLogin();
+		break;
+	case ID_BUTTON_SIGNUP:
+		//ValidateForm(); // TODO: make sure fields are correct
+		SubmitSignup();
 		break;
 	case ID_BUTTON_VIEW_LOGIN:
 		ShowLogin();
@@ -357,7 +409,20 @@ UserPopup::OnTransactionCompleted(HttpSession &httpSession, HttpTransaction &htt
 void
 UserPopup::OnTransactionHeaderCompleted(HttpSession &httpSession, HttpTransaction &httpTransaction, int headerLen, bool bAuthRequired)
 {
-
+	if (bAuthRequired)
+	{
+		AppLog("auth required");
+		HttpAuthentication* pAuth = httpTransaction.OpenAuthenticationInfoN();
+		String basicName("Name");
+		String basicpass("Pass");
+		HttpCredentials* pCredential = new HttpCredentials(basicName, basicpass);
+		String* pRealm = pAuth->GetRealmN();
+		NetHttpAuthScheme scheme = pAuth->GetAuthScheme();
+		if (scheme == NET_HTTP_AUTH_WWW_BASIC || scheme == NET_HTTP_AUTH_PROXY_BASIC)
+		{
+			HttpTransaction* pNewTransaction =  pAuth->SetCredentials(*pCredential);
+		}
+	}
 }
 
 void
