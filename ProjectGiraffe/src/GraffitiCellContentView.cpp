@@ -6,6 +6,7 @@
  */
 
 #include "GraffitiCellContentView.h"
+#include "User.h"
 #include "EnrichedLabel.h"
 #include "Macros.h"
 #include "ControlUtilities.h"

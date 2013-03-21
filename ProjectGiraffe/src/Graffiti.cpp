@@ -6,6 +6,9 @@
  */
 
 #include "Graffiti.h"
+#include "Date.h"
+#include "User.h"
+#include "HTTPConnection.h" // TODO: maybe find a better place for the parameter names to live.
 
 using namespace Tizen::Base;
 using namespace Tizen::Base::Collection;
@@ -19,15 +22,31 @@ Graffiti::Graffiti() :
 	_directionZ(0),
 	_likeCount(0),
 	_flagged(false),
-	_dateCreated(),
-	_user(null),
-	_listeners(null)
-{
-	// TODO Auto-generated constructor stub
+	_dateCreated(NULL),
+	_user(NULL),
+	_listeners(NULL) {}
+Graffiti::~Graffiti() {
+	delete _dateCreated;
+	delete _user;
+	delete _listeners;
 }
 
-Graffiti::~Graffiti() {
-	// TODO Auto-generated destructor stub
+HashMap *Graffiti::parameterDictionary()
+{
+	HashMap *parameters = new HashMap(SingleObjectDeleter);
+	parameters->Construct();
+	parameters->Add(new String(kHTTPParamNameText), new String(_text));
+	parameters->Add(new String(kHTTPParamNameImageURL), new String(_imageURL));
+	parameters->Add(new String(kHTTPParamNameLongitude), new Double(_longitude));
+	parameters->Add(new String(kHTTPParamNameLatitude), new Double(_latitude));
+	parameters->Add(new String(kHTTPParamNameDirectionX), new Double(_directionX));
+	parameters->Add(new String(kHTTPParamNameDirectionY), new Double(_directionY));
+	parameters->Add(new String(kHTTPParamNameDirectionZ), new Double(_directionZ));
+	parameters->Add(new String(kHTTPParamNameLikeCount), new Integer(_likeCount));
+	parameters->Add(new String(kHTTPParamNameFlagged), new Boolean(_flagged));
+	parameters->Add(new String(kHTTPParamNameDateCreated), _dateCreated->parameterDictionary());
+	parameters->Add(new String(kHTTPParamNameUserID), new Double(_user->id()));
+	return parameters;
 }
 
 void Graffiti::addListener(GraffitiListener *listener)

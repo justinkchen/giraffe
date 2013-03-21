@@ -6,8 +6,10 @@
  */
 
 #include "Date.h"
+#include "HTTPConnection.h" // TODO: maybe find a better place for the parameter names to live.
 
 using namespace Tizen::Base;
+using namespace Tizen::Base::Collection;
 
 Date::Date() {
 	// TODO Auto-generated constructor stub
@@ -77,3 +79,18 @@ String Date::timeString() {
 	timeString.Format(10, L"%d:%d %s", adjustedHour, _minute, shouldUseAM ? L"AM" : L"PM");
 	return timeString;
 }
+
+HashMap *Date::parameterDictionary()
+{
+	HashMap *parameters = new HashMap(SingleObjectDeleter);
+	parameters->Construct();
+	parameters->Add(new String(kHTTPParamNameLongitude), new Double(0.0));
+	parameters->Add(new String(kHTTPParamNameYear), new Double(_year));
+	parameters->Add(new String(kHTTPParamNameMonth), new Double(_month));
+	parameters->Add(new String(kHTTPParamNameDay), new Double(_day));
+	parameters->Add(new String(kHTTPParamNameHour), new Double(_hour));
+	parameters->Add(new String(kHTTPParamNameMinute), new Double(_minute));
+	parameters->Add(new String(kHTTPParamNameSecond), new Double(_second));
+	return parameters;
+}
+

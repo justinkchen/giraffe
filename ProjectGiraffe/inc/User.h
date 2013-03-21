@@ -9,7 +9,7 @@
 #define USER_H_
 
 #include <FBase.h>
-#include "Date.h"
+class Date;
 
 class User :
 	public Tizen::Base::Object
@@ -27,15 +27,16 @@ public:
 	void setUsername(Tizen::Base::String username) { _username = username; }
 	Tizen::Base::String email() { return _email; }
 	void setEmail(Tizen::Base::String email) { _email = email; }
-	Date dateCreated() { return _dateCreated; }
-	void setDateCreated(Date dateCreated) { _dateCreated = dateCreated; }
+	Date *dateCreated() { return _dateCreated; }
+	void setDateCreated(Date *dateCreated) { _dateCreated = dateCreated; }
+	Tizen::Base::Collection::HashMap *parameterDictionary();
 
 private:
 	unsigned int _id;
 	Tizen::Base::String _fullname;
 	Tizen::Base::String _username;
 	Tizen::Base::String _email;
-	Date _dateCreated;
+	Date *_dateCreated;
 };
 
 #endif /* USER_H_ */
