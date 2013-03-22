@@ -16,6 +16,17 @@ using namespace Tizen::Ui::Controls;
 using namespace Tizen::Net::Http;
 using namespace Tizen::Web::Json;
 
+UserPopup *userPopupSingleton = NULL;
+
+UserPopup *
+UserPopup::popup(void)
+{
+	if (!userPopupSingleton) {
+		userPopupSingleton = new UserPopup();
+	}
+	return userPopupSingleton;
+}
+
 UserPopup::UserPopup() {
 	Construct(true, Dimension(600,800));
 

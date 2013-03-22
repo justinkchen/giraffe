@@ -24,6 +24,8 @@ class UserPopup:
 	public Tizen::Net::Http::IHttpTransactionEventListener
 {
 public:
+	static UserPopup *popup(void);
+
 	UserPopup(void);
 	virtual ~UserPopup();
 

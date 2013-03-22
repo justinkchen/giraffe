@@ -95,6 +95,8 @@ ProjectGiraffeTab4::showProfile(void)
 
 	User *cUser = User::currentUser();
 
+	// logout button
+
 	// Avatar button? image?
 	// Full name
 
@@ -233,7 +235,7 @@ ProjectGiraffeTab4::OnActionPerformed(const Control& source, int actionId)
 	switch (actionId)
 		{
 		case ID_BUTTON_LOGIN:
-//			showPopup();
+			UserPopup::popup()->showPopup();
 			break;
 		case ID_BUTTON_AVATAR:
 			break;

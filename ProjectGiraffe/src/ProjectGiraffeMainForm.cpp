@@ -16,8 +16,7 @@ double ProjectGiraffeMainForm::currentLongitude = 0;
 ProjectGiraffeMainForm::ProjectGiraffeMainForm(void) :
 	__pLocProvider(null),
 	__pLocationManagerThread(null),
-	__regionId(-1),
-	_userPopup(null)
+	__regionId(-1)
 {
 }
 
@@ -109,9 +108,6 @@ ProjectGiraffeMainForm::OnInitializing(void)
 	}
 	__pLocProvider->StartLocationUpdatesByInterval(10);
 
-	// Initialize User and UserPopup
-	_userPopup = new UserPopup();
-
 	AppLog("Everything is initialized, Location updates started.");
 	MainFormParseLocation();
 	return r;
@@ -126,7 +122,6 @@ ProjectGiraffeMainForm::OnTerminating(void)
 	__pLocationManagerThread->Join();
 	delete __pLocationManagerThread;
 	//delete __currentLocation;
-	delete _userPopup;
 
 	// TODO:
 	// Add your termination code here
@@ -186,7 +181,7 @@ ProjectGiraffeMainForm::OnActionPerformed(const Tizen::Ui::Control& source, int 
 		pHeader->SetTitleText(L"Profile");
 
 		if (User::currentUser()->id() == 0) {
-			_userPopup->showPopup();
+			UserPopup::popup()->showPopup();
 		}
 
 		AppLog("Tab4");

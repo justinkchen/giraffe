@@ -6,6 +6,7 @@
 #include <Fnet.h>
 #include <FWeb.h>
 #include "User.h"
+#include "UserPopup.h"
 #include "UserListener.h"
 
 class ProjectGiraffeTab4 :

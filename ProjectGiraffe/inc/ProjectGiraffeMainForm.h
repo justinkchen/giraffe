@@ -58,8 +58,6 @@ private:
 		LocationManagerThread* __pLocationManagerThread;
 		Tizen::Locations::RegionId __regionId;
 		Tizen::Locations::Coordinates __regionCenter;
-
-		UserPopup* _userPopup;
 };
 
 #endif	//_PROJECTGIRAFFE_MAIN_FORM_H_
