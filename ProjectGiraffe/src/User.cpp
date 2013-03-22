@@ -35,7 +35,8 @@ User::~User() {
 	delete _listeners;
 }
 
-void User::updateFromDictionary(HashMap *dictionary)
+void
+User::updateFromDictionary(HashMap *dictionary)
 {
 	if (dictionary) {
 		Double *idValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameUserID));

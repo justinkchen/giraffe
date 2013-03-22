@@ -30,13 +30,12 @@ public:
 	void TraverseFunction(IJsonValue* pValue);
 	void ParseAndDisplay(void);
 
+	virtual result OnInitializing(void);
+	virtual result OnTerminating(void);
+
 	// HTTPConnectionListener
 	virtual void connectionDidFinish(HTTPConnection *connection, Tizen::Base::Collection::HashMap *response);
 	virtual void connectionDidFail(HTTPConnection *connection);
-
-public:
-	virtual result OnInitializing(void);
-	virtual result OnTerminating(void);
 
 	// ISceneEventListener
 	virtual void OnSceneActivatedN(const Tizen::Ui::Scenes::SceneId& previousSceneId,
