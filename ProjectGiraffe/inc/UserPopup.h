@@ -52,6 +52,8 @@ private:
 	static const int ID_BUTTON_VIEW_LOGIN = 504;
 	static const int ID_BUTTON_VIEW_SIGNUP = 505;
 
+	User *_user;
+
 	void showLogin(void);
 	void showSignup(void);
 
@@ -59,8 +61,6 @@ private:
 	void submitSignup(void);
 
 	void showError(const Tizen::Base::String &errorMessage);
-
-	User *_user;
 };
 
 #endif /* USERPOPUP_H_ */
