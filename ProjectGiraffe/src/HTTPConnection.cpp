@@ -24,6 +24,7 @@ const String kHTTPMethodNameNewGraffiti = L"addgraffiti";
 const String kHTTPMethodNameUserLogin = L"login";
 const String kHTTPMethodNameUserSignup = L"signup";
 
+const String kHTTPParamNameGraffiti = L"graffiti";
 const String kHTTPParamNameText = L"text";
 const String kHTTPParamNameImageURL = L"imageURL";
 const String kHTTPParamNameLongitude = L"longitude";

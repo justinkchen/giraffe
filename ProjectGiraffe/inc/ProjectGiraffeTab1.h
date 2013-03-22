@@ -6,16 +6,18 @@
 #include <FWebJson.h>
 #include <Fnet.h>
 #include <FWeb.h>
-#include "Graffiti.h"
+#include "HTTPConnection.h"
+class Graffiti;
 
 using namespace Tizen::Web::Json;
 
-class ProjectGiraffeTab1
-	: public Tizen::Ui::Controls::Panel
-	, public Tizen::Ui::Scenes::ISceneEventListener
-	, public Tizen::Ui::Controls::ITableViewItemProvider
-	, public Tizen::Ui::Controls::ITableViewItemEventListener
-	, public Tizen::Net::Http::IHttpTransactionEventListener
+class ProjectGiraffeTab1 :
+	public Tizen::Ui::Controls::Panel,
+	public Tizen::Ui::Scenes::ISceneEventListener,
+	public Tizen::Ui::Controls::ITableViewItemProvider,
+	public Tizen::Ui::Controls::ITableViewItemEventListener,
+	public Tizen::Net::Http::IHttpTransactionEventListener,
+	public HTTPConnection::HTTPConnectionListener
 	{
 public:
 	ProjectGiraffeTab1(void)
@@ -27,6 +29,10 @@ public:
 	bool Initialize(void);
 	void TraverseFunction(IJsonValue* pValue);
 	void ParseAndDisplay(void);
+
+	// HTTPConnectionListener
+	virtual void connectionDidFinish(HTTPConnection *connection, Tizen::Base::Collection::HashMap *response);
+	virtual void connectionDidFail(HTTPConnection *connection);
 
 public:
 	virtual result OnInitializing(void);
