@@ -205,6 +205,19 @@ UserPopup::ShowSignup(void)
 void
 UserPopup::SubmitLogin(void)
 {
+	// Validators
+	String usernameEmail = ((EditField *)GetControl("usernameEmailField"))->GetText();
+	String password = ((EditField *)GetControl("passwordField"))->GetText();
+	// Check not blank
+	String blank("");
+	if (usernameEmail.Equals(blank)) {
+		ShowError("Please enter a username or email.");
+		return;
+	} else if (password.Equals(blank)) {
+		ShowError("Please enter a password.");
+		return;
+	}
+
 	// Disable login button
 	Button* loginButton = (Button *)GetControl("loginButton");
 	loginButton->SetEnabled(false);
@@ -238,11 +251,8 @@ UserPopup::SubmitLogin(void)
 	// Create HTTP multipart entity
 	HttpMultipartEntity* pMultipartEntity = new HttpMultipartEntity();
 	pMultipartEntity->Construct();
-	String usernameEmail = ((EditField *)GetControl("usernameEmailField"))->GetText();
 	pMultipartEntity->AddStringPart(L"usernameEmail", usernameEmail);
-	String password = ((EditField *)GetControl("passwordField"))->GetText();
 	pMultipartEntity->AddStringPart(L"password", password);
-
 	pHttpRequest->SetEntity(*pMultipartEntity);
 
 	// Submit the request:
@@ -252,6 +262,33 @@ UserPopup::SubmitLogin(void)
 void
 UserPopup::SubmitSignup(void)
 {
+	// Validators
+	String username = ((EditField *)GetControl("usernameField"))->GetText();
+	String email = ((EditField *)GetControl("emailField"))->GetText();
+	String password = ((EditField *)GetControl("passwordField"))->GetText();
+	String passwordConfirm = ((EditField *)GetControl("passwordConfirmField"))->GetText();
+	// Check not blank
+	String blank("");
+	if (username.Equals(blank)) {
+		ShowError("Please enter a username.");
+		return;
+	} else if (email.Equals(blank)) {
+		ShowError("Please enter an email.");
+		return;
+	} else if (password.Equals(blank)) {
+		ShowError("Please enter a password.");
+		return;
+	} else if (passwordConfirm.Equals(blank)) {
+		ShowError("Please enter password confirmation.");
+		return;
+	}
+	// Check valid email - done in the backend
+	// Check passwords =
+	else if (!password.Equals(passwordConfirm)) {
+		ShowError("Passwords do not match.");
+		return;
+	}
+
 	// Disable signup button
 	Button* signupButton = (Button *)GetControl("signupButton");
 	signupButton->SetEnabled(false);
@@ -285,17 +322,22 @@ UserPopup::SubmitSignup(void)
 	// Create HTTP multipart entity
 	HttpMultipartEntity* pMultipartEntity = new HttpMultipartEntity();
 	pMultipartEntity->Construct();
-	String username = ((EditField *)GetControl("usernameField"))->GetText();
 	pMultipartEntity->AddStringPart(L"username", username);
-	String email = ((EditField *)GetControl("emailField"))->GetText();
 	pMultipartEntity->AddStringPart(L"email", email);
-	String password = ((EditField *)GetControl("passwordField"))->GetText();
 	pMultipartEntity->AddStringPart(L"password", password);
-
 	pHttpRequest->SetEntity(*pMultipartEntity);
 
 	// Submit the request:
 	pHttpTransaction->Submit();
+}
+
+void
+UserPopup::ShowError(const String &errorMessage)
+{
+	Label* errorLabel = (Label* )GetControl("errorLabel");
+	errorLabel->SetText(errorMessage);
+
+	Draw();
 }
 
 void
@@ -308,11 +350,9 @@ UserPopup::OnActionPerformed(const Control& source, int actionId)
 		HidePopup();
 		break;
 	case ID_BUTTON_LOGIN:
-		//ValidateForm(); // TODO: make sure fields are correct
 		SubmitLogin();
 		break;
 	case ID_BUTTON_SIGNUP:
-		//ValidateForm(); // TODO: make sure fields are correct
 		SubmitSignup();
 		break;
 	case ID_BUTTON_VIEW_LOGIN:
@@ -472,8 +512,7 @@ UserPopup::OnTransactionReadyToRead(HttpSession &httpSession, HttpTransaction &h
 			}
 
 			// Flash error message
-			Label* errorLabel = (Label* )GetControl("errorLabel");
-			errorLabel->SetText(*errorMessage);
+			ShowError(*errorMessage);
 
 			Draw();
 		}
