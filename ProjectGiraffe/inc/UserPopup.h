@@ -34,8 +34,8 @@ public:
 	virtual void OnKeypadActionPerformed(Tizen::Ui::Control &source, Tizen::Ui::KeypadAction keypadAction);
 	virtual void OnKeypadBoundsChanged(Tizen::Ui::Control &source);
 	virtual void OnKeypadClosed(Tizen::Ui::Control &source);
-	virtual void OnKeypadOpened(Tizen::Ui::Control &source) {}
-	virtual void OnKeypadWillOpen(Tizen::Ui::Control &source) {}
+	virtual void OnKeypadOpened(Tizen::Ui::Control &source);
+	virtual void OnKeypadWillOpen(Tizen::Ui::Control &source);
 
 	// IHttpTransactionEventListener
 	virtual void OnTransactionAborted(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, result r);
