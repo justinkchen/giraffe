@@ -6,13 +6,15 @@
 #include <Fnet.h>
 #include <FWeb.h>
 #include "User.h"
+#include "UserListener.h"
 
 class ProjectGiraffeTab4 :
-	public Tizen::Ui::Controls::ScrollPanel,
+	public Tizen::Ui::Controls::Panel,
 	public Tizen::Ui::Scenes::ISceneEventListener,
 	public Tizen::Ui::IActionEventListener,
 	public Tizen::Ui::IKeypadEventListener,
-	public Tizen::Net::Http::IHttpTransactionEventListener
+	public Tizen::Net::Http::IHttpTransactionEventListener,
+	public UserListener
 {
 public:
 	ProjectGiraffeTab4(void);
@@ -45,6 +47,9 @@ public:
 	virtual void OnTransactionHeaderCompleted(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int headerLen, bool bAuthRequired);
 	virtual void OnTransactionReadyToRead(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int availableBodyLen);
 	virtual void OnTransactionReadyToWrite(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int recommendedChunkSize);
+
+	// UserListener
+	virtual void onUserUpdate(User *user);
 
 private:
 	static const int ID_BUTTON_LOGIN = 401;

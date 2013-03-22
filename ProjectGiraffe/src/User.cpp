@@ -64,6 +64,21 @@ User::updateFromDictionary(HashMap *dictionary)
 	}
 }
 
+void
+User::update()
+{
+	AppLogTag("user", "update");
+	if (_listeners) {
+		AppLogTag("user", "listner");
+		IEnumerator *iter = _listeners->GetEnumeratorN();
+		while (iter->MoveNext() == E_SUCCESS) {
+			UserListener *listener = static_cast<UserListener *>(iter->GetCurrent());
+			listener->onUserUpdate(this);
+		}
+		delete iter;
+	}
+}
+
 HashMap *User::parameterDictionary()
 {
 	HashMap *parameters = new HashMap(SingleObjectDeleter);

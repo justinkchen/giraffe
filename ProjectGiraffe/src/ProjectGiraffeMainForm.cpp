@@ -185,9 +185,9 @@ ProjectGiraffeMainForm::OnActionPerformed(const Tizen::Ui::Control& source, int 
 		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_4"));
 		pHeader->SetTitleText(L"Profile");
 
-//		if (User::currentUser()->id() == 0) {
-//			_userPopup->showPopup();
-//		}
+		if (User::currentUser()->id() == 0) {
+			_userPopup->showPopup();
+		}
 
 		AppLog("Tab4");
 		break;

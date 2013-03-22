@@ -216,6 +216,15 @@ UserPopup::submitLogin(void)
 		return;
 	}
 
+	/* temp dummy login */
+	User *cUser = User::currentUser();
+	cUser->setId(3);
+	cUser->setUsername("bryan");
+	cUser->setEmail("bbch@stanford.edu");
+	cUser->update();
+	hidePopup();
+	return;
+
 	// Disable login button
 	Button* loginButton = (Button *)GetControl("loginButton");
 	loginButton->SetEnabled(false);

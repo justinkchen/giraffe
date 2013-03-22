@@ -47,6 +47,8 @@ ProjectGiraffeTab4::OnInitializing(void)
 	pRelativeLayout->SetVerticalFitPolicy(*this, FIT_POLICY_PARENT);
 	delete pRelativeLayout;
 
+	User::currentUser()->addListener(this);
+
 	return r;
 }
 
@@ -87,10 +89,11 @@ ProjectGiraffeTab4::showProfile(void)
 {
 	RemoveAllControls();
 
+	//add scroll panel
+	ScrollPanel *scrollPanel = new ScrollPanel();
+	scrollPanel->Construct(this->GetBounds());
+
 	User *cUser = User::currentUser();
-	// temporarily settin to test
-	cUser->setUsername("bryan");
-	cUser->setEmail("bbch@stanford.edu");
 
 	// Avatar button? image?
 	// Full name
@@ -102,7 +105,7 @@ ProjectGiraffeTab4::showProfile(void)
 	AppLogTag("user", "size %d", usernameLabel->GetTextSize());
 	usernameLabel->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
 	usernameLabel->SetName("usernameLabel");
-	AddControl(*usernameLabel);
+	scrollPanel->AddControl(*usernameLabel);
 
 	EditField* usernameField = new EditField();
 	usernameField->Construct(Rectangle(10, 310, this->GetBounds().width - 20, 80), EDIT_FIELD_STYLE_NORMAL, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_NONE, true);
@@ -110,7 +113,7 @@ ProjectGiraffeTab4::showProfile(void)
 	usernameField->SetName("usernameField");
 	usernameField->SetKeypadAction(KEYPAD_ACTION_DONE);
 	usernameField->AddKeypadEventListener(*this);
-	AddControl(*usernameField);
+	scrollPanel->AddControl(*usernameField);
 
 	Label* emailLabel = new Label();
 	emailLabel->Construct(Rectangle(10, 400, 300, 40), "Email:");
@@ -119,7 +122,7 @@ ProjectGiraffeTab4::showProfile(void)
 	emailLabel->SetTextConfig(32, LABEL_TEXT_STYLE_BOLD);
 	emailLabel->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
 	emailLabel->SetName("emailLabel");
-	AddControl(*emailLabel);
+	scrollPanel->AddControl(*emailLabel);
 
 	EditField* emailField = new EditField();
 	emailField->Construct(Rectangle(10, 450, this->GetBounds().width - 20, 80), EDIT_FIELD_STYLE_EMAIL, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_NONE, true);
@@ -127,7 +130,7 @@ ProjectGiraffeTab4::showProfile(void)
 	emailField->SetName("emailField");
 	emailField->SetKeypadAction(KEYPAD_ACTION_DONE);
 	emailField->AddKeypadEventListener(*this);
-	AddControl(*emailField);
+	scrollPanel->AddControl(*emailField);
 
 	Button* updateButton1 = new Button();
 	updateButton1->Construct(Rectangle(0, 540, 300, 80), "Update");
@@ -135,57 +138,64 @@ ProjectGiraffeTab4::showProfile(void)
 	updateButton1->SetName("updateButton1");
 	updateButton1->SetActionId(ID_BUTTON_UPDATE1);
 	updateButton1->AddActionEventListener(*this);
-	AddControl(*updateButton1);
+	scrollPanel->AddControl(*updateButton1);
 
 	Label* oldPasswordLabel = new Label();
 	oldPasswordLabel->Construct(Rectangle(10, 630, 300, 40), "Current password:");
 	oldPasswordLabel->SetTextConfig(32, LABEL_TEXT_STYLE_BOLD);
 	oldPasswordLabel->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
 	oldPasswordLabel->SetName("oldPassworldLabel");
-	AddControl(*oldPasswordLabel);
+	scrollPanel->AddControl(*oldPasswordLabel);
 
 	EditField* oldPasswordField = new EditField();
 	oldPasswordField->Construct(Rectangle(10, 680, this->GetBounds().width - 20, 80), EDIT_FIELD_STYLE_PASSWORD, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_NONE, true);
 	oldPasswordField->SetName("oldPasswordField");
 	oldPasswordField->SetKeypadAction(KEYPAD_ACTION_DONE);
 	oldPasswordField->AddKeypadEventListener(*this);
-	AddControl(*oldPasswordField);
+	scrollPanel->AddControl(*oldPasswordField);
 
 	Label* passwordLabel = new Label();
 	passwordLabel->Construct(Rectangle(10, 770, 300, 40), "New password:");
 	passwordLabel->SetTextConfig(32, LABEL_TEXT_STYLE_BOLD);
 	passwordLabel->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
 	passwordLabel->SetName("passwordLabel");
-	AddControl(*passwordLabel);
+	scrollPanel->AddControl(*passwordLabel);
 
 	EditField* passwordField = new EditField();
 	passwordField->Construct(Rectangle(10, 820, this->GetBounds().width - 20, 80), EDIT_FIELD_STYLE_PASSWORD, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_NONE, true);
 	passwordField->SetName("passwordField");
 	passwordField->SetKeypadAction(KEYPAD_ACTION_DONE);
 	passwordField->AddKeypadEventListener(*this);
-	AddControl(*passwordField);
+	scrollPanel->AddControl(*passwordField);
 
 	Label* confirmPasswordLabel = new Label();
 	confirmPasswordLabel->Construct(Rectangle(10, 910, 300, 40), "Confirm password:");
 	confirmPasswordLabel->SetTextConfig(32, LABEL_TEXT_STYLE_BOLD);
 	confirmPasswordLabel->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
 	confirmPasswordLabel->SetName("confirmPasswordLabel");
-	AddControl(*confirmPasswordLabel);
+	scrollPanel->AddControl(*confirmPasswordLabel);
 
 	EditField* confirmPasswordField = new EditField();
 	confirmPasswordField->Construct(Rectangle(10, 960, this->GetBounds().width - 20, 80), EDIT_FIELD_STYLE_PASSWORD, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_NONE, true);
 	confirmPasswordField->SetName("confirmPasswordField");
 	confirmPasswordField->SetKeypadAction(KEYPAD_ACTION_DONE);
 	confirmPasswordField->AddKeypadEventListener(*this);
-	AddControl(*confirmPasswordLabel);
+	scrollPanel->AddControl(*confirmPasswordField);
 
 	Button* updateButton2 = new Button();
-	updateButton2->Construct(Rectangle(0, 1000, 300, 80), "Change Password");
+	updateButton2->Construct(Rectangle(0, 1050, 300, 80), "Change Password");
 	centerHorizontally(updateButton2, this);
 	updateButton2->SetName("updateButton2");
 	updateButton2->SetActionId(ID_BUTTON_UPDATE2);
 	updateButton2->AddActionEventListener(*this);
-	AddControl(*updateButton2);
+	scrollPanel->AddControl(*updateButton2);
+
+	Label* spacer = new Label();
+	spacer->Construct(Rectangle(0, 1140, this->GetBounds().width, 10), "");
+	spacer->SetName("spacer");
+	scrollPanel->AddControl(*spacer);
+
+	AddControl(*scrollPanel);
 
 	Draw();
 }
@@ -199,7 +209,7 @@ ProjectGiraffeTab4::OnSceneActivatedN(const Tizen::Ui::Scenes::SceneId& previous
 	AppLog("OnSceneActivatedN");
 
 	// load user
-	if (User::currentUser()->id() != 0) {
+	if (User::currentUser()->id() == 0) {
 		AppLogTag("user", "no user");
 		showLoginButton();
 	} else {
@@ -347,4 +357,16 @@ void
 ProjectGiraffeTab4::OnTransactionReadyToWrite (HttpSession &httpSession, HttpTransaction &httpTransaction, int recommendedChunkSize)
 {
 
+}
+
+void
+ProjectGiraffeTab4::onUserUpdate(User *user)
+{
+	if (User::currentUser()->id() == 0) {
+		AppLogTag("user", "update no user");
+		showLoginButton();
+	} else {
+		AppLogTag("user", "update yes user");
+		showProfile();
+	}
 }
