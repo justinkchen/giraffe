@@ -12,15 +12,27 @@
 using namespace Tizen::Base;
 using namespace Tizen::Base::Collection;
 
+User *currentUserSingleton = NULL;
+
+User *User::currentUser()
+{
+	if (!currentUserSingleton) {
+		currentUserSingleton = new User();
+	}
+	return currentUserSingleton;
+}
+
 User::User() :
 	_id(0),
 	_fullname(L""),
 	_username(L""),
 	_email(L""),
-	_dateCreated(NULL) {}
+	_dateCreated(NULL),
+	_listeners(NULL) {}
 
 User::~User() {
 	delete _dateCreated;
+	delete _listeners;
 }
 
 void
@@ -40,6 +52,15 @@ User::updateFromDictionary(HashMap *dictionary)
 			_dateCreated = new Date();
 			_dateCreated->updateFromDictionary(dateDictionary);
 		}
+
+		if (_listeners) {
+			IEnumerator *iter = _listeners->GetEnumeratorN();
+			while (iter->MoveNext() == E_SUCCESS) {
+				UserListener *listener = static_cast<UserListener *>(iter->GetCurrent());
+				listener->onUserUpdate(this);
+			}
+			delete iter;
+		}
 	}
 }
 
@@ -55,4 +76,22 @@ HashMap *User::parameterDictionary()
 		parameters->Add(new String(kHTTPParamNameDateCreated), _dateCreated->parameterDictionary());
 	}
 	return parameters;
+}
+
+void User::addListener(UserListener *listener)
+{
+	if (listener) {
+		if (!_listeners) {
+			_listeners = new ArrayList(SingleObjectDeleter);
+			_listeners->Construct();
+		}
+		_listeners->Add(listener);
+	}
+}
+
+void User::removeListener(UserListener *listener)
+{
+	if (listener && _listeners) {
+		_listeners->Remove(*listener);
+	}
 }
