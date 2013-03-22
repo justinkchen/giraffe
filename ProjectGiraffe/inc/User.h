@@ -16,8 +16,9 @@ class User :
 {
 public:
 	User();
-	User(Tizen::Base::Collection::HashMap *dictionary);
 	virtual ~User();
+
+	void loadDictionary(Tizen::Base::Collection::HashMap *dictionary);
 
 	// Accessors
 	unsigned int id() { return _id; }

@@ -13,11 +13,12 @@ Location* ProjectGiraffeMainForm::__currentLocation;
 double ProjectGiraffeMainForm::currentLatitude = 0;
 double ProjectGiraffeMainForm::currentLongitude = 0;
 
-ProjectGiraffeMainForm::ProjectGiraffeMainForm(void)
-	: __pLocProvider(null)
-	, __pLocationManagerThread(null)
-	, __regionId(-1)
-	, _userPopup(null)
+ProjectGiraffeMainForm::ProjectGiraffeMainForm(void) :
+	__pLocProvider(null),
+	__pLocationManagerThread(null),
+	__regionId(-1),
+	_user(null),
+	_userPopup(null)
 {
 }
 
@@ -184,7 +185,7 @@ ProjectGiraffeMainForm::OnActionPerformed(const Tizen::Ui::Control& source, int 
 		pFooter->SetItemEnabled(4,true);
 		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_4"));
 		pHeader->SetTitleText(L"Profile");
-		_userPopup->ShowPopup();
+		_userPopup->showPopup();
 
 		AppLog("Tab4");
 		break;
