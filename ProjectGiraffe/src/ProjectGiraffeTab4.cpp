@@ -57,8 +57,6 @@ ProjectGiraffeTab4::OnTerminating(void)
 	result r = E_SUCCESS;
 
 	// TODO: Add your termination code here
-//	if (_user != null)
-//		delete _user;
 
 	return r;
 }

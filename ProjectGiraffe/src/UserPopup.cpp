@@ -227,7 +227,7 @@ UserPopup::SubmitLogin(void)
 	HttpTransaction* pHttpTransaction = null;
 	String* pProxyAddr = null;
 	String hostAddr = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/"; // TODO: convert to HTTPS
-	String uri = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/login";
+	String uri = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/user/login";
 
 	AppLog("Starting the HTTP Session");
 	pHttpSession = new HttpSession();
@@ -298,7 +298,7 @@ UserPopup::SubmitSignup(void)
 	HttpTransaction* pHttpTransaction = null;
 	String* pProxyAddr = null;
 	String hostAddr = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/";
-	String uri = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/signup";
+	String uri = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/user/signup";
 
 	AppLog("Starting the HTTP Session");
 	pHttpSession = new HttpSession();
@@ -388,6 +388,30 @@ void
 UserPopup::OnKeypadClosed(Control &source)
 {
 
+}
+
+void
+UserPopup::OnKeypadOpened(Control &source)
+{
+	/* may need to resize ui?
+	Rectangle clientRect = GetClientAreaBounds();
+	Rectangle editRect = __pEditField->GetBounds();
+	editRect.y = clientRect.height - editRect.height - 50;
+	__pEditField->SetBounds(editRect); // Move EditField to avoid overlapping
+	*/
+}
+
+void
+UserPopup::OnKeypadWillOpen(Control &source)
+{
+	/*
+	Rectangle clientRect = GetClientAreaBounds();
+	Rectangle editRect = __pEditField->GetBounds();
+	editRect.y = clientRect.height - 500;
+	__pEditField->SetBounds(editRect); // Move back to original position
+
+	Invalidate(true);
+	*/
 }
 
 void

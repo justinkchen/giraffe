@@ -60,7 +60,7 @@ private:
 		Tizen::Locations::Coordinates __regionCenter;
 
 //		User* _user;
-		UserPopup* __pUserPopup;
+		UserPopup* _userPopup;
 };
 
 #endif	//_PROJECTGIRAFFE_MAIN_FORM_H_
