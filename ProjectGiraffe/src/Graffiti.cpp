@@ -25,6 +25,36 @@ Graffiti::Graffiti() :
 	_dateCreated(NULL),
 	_user(NULL),
 	_listeners(NULL) {}
+
+Graffiti::Graffiti(HashMap *dictionary)
+{
+	if (dictionary) {
+		Double *dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameLongitude));
+		if (dblValue) _longitude = dblValue->ToDouble();
+		dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameLatitude));
+		if (dblValue) _latitude = dblValue->ToDouble();
+		dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameDirectionX));
+		if (dblValue) _directionX = dblValue->ToDouble();
+		dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameDirectionY));
+		if (dblValue) _directionY = dblValue->ToDouble();
+		dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameDirectionZ));
+		if (dblValue) _directionZ = dblValue->ToDouble();
+		dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameLikeCount));
+		if (dblValue) _likeCount = dblValue->ToInt();
+
+		String *textValue = static_cast<String *>(dictionary->GetValue(kHTTPParamNameText));
+		if (textValue) _text = *textValue;
+		String *imageURLValue = static_cast<String *>(dictionary->GetValue(kHTTPParamNameImageURL));
+		if (imageURLValue) _imageURL = *imageURLValue;
+		Boolean *flaggedValue = static_cast<Boolean *>(dictionary->GetValue(kHTTPParamNameFlagged));
+		if (flaggedValue) _flagged = flaggedValue->ToBool();
+		HashMap *dateDictionary = static_cast<HashMap *>(dictionary->GetValue(kHTTPParamNameDateCreated));
+		if (dateDictionary) _dateCreated = new Date(dateDictionary);
+		HashMap *userDictionary = static_cast<HashMap *>(dictionary->GetValue(kHTTPParamNameUser));
+		if (userDictionary) _user = new User(userDictionary);
+	}
+}
+
 Graffiti::~Graffiti() {
 	delete _dateCreated;
 	delete _user;

@@ -18,9 +18,27 @@ User::User() :
 	_username(L""),
 	_email(L""),
 	_dateCreated(NULL) {}
+
+User::User(HashMap *dictionary)
+{
+	if (dictionary) {
+		Double *idValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameUserID));
+		if (idValue) _id = idValue->ToInt();
+		String *fullnameValue = static_cast<String *>(dictionary->GetValue(kHTTPParamNameFullname));
+		if (fullnameValue) _fullname = *fullnameValue;
+		String *usernameValue = static_cast<String *>(dictionary->GetValue(kHTTPParamNameUsername));
+		if (usernameValue) _username = *usernameValue;
+		String *emailValue = static_cast<String *>(dictionary->GetValue(kHTTPParamNameEmail));
+		if (emailValue) _email = *emailValue;
+		HashMap *dateDictionary = static_cast<HashMap *>(dictionary->GetValue(kHTTPParamNameDateCreated));
+		if (dateDictionary) _dateCreated = new Date(dateDictionary);
+	}
+}
+
 User::~User() {
 	delete _dateCreated;
 }
+
 HashMap *User::parameterDictionary()
 {
 	HashMap *parameters = new HashMap(SingleObjectDeleter);

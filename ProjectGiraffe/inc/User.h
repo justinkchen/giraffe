@@ -16,6 +16,7 @@ class User :
 {
 public:
 	User();
+	User(Tizen::Base::Collection::HashMap *dictionary);
 	virtual ~User();
 
 	// Accessors

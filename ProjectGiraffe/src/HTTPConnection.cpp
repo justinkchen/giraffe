@@ -34,6 +34,7 @@ const String kHTTPParamNameDirectionZ = L"directionZ";
 const String kHTTPParamNameLikeCount = L"likeCount";
 const String kHTTPParamNameFlagged = L"flagged";
 const String kHTTPParamNameDateCreated = L"dateCreated";
+const String kHTTPParamNameUser = L"user";
 const String kHTTPParamNameUserID = L"userid";
 const String kHTTPParamNameFullname = L"fullname";
 const String kHTTPParamNameUsername = L"username";

@@ -15,6 +15,7 @@ class Date :
 {
 public:
 	Date();
+	Date(Tizen::Base::Collection::HashMap *dictionary);
 	virtual ~Date();
 
 	// Utility Functions
