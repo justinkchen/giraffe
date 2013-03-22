@@ -57,6 +57,8 @@ private:
 
 	void SubmitLogin(void);
 	void SubmitSignup(void);
+
+	void ShowError(const Tizen::Base::String &errorMessage);
 };
 
 #endif /* USERPOPUP_H_ */
