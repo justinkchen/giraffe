@@ -19,7 +19,9 @@ Date::Date() :
 		_minute(0),
 		_second(0) {}
 
-Date::Date(Tizen::Base::Collection::HashMap *dictionary)
+Date::~Date() {}
+
+void Date::updateFromDictionary(HashMap *dictionary)
 {
 	if (dictionary) {
 		Double *dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameYear));
@@ -36,8 +38,6 @@ Date::Date(Tizen::Base::Collection::HashMap *dictionary)
 		if (dblValue) _second = dblValue->ToInt();
 	}
 }
-
-Date::~Date() {}
 
 char *Date::monthString() {
 	char *monthString = null;

@@ -19,7 +19,11 @@ User::User() :
 	_email(L""),
 	_dateCreated(NULL) {}
 
-User::User(HashMap *dictionary)
+User::~User() {
+	delete _dateCreated;
+}
+
+void User::updateFromDictionary(HashMap *dictionary)
 {
 	if (dictionary) {
 		Double *idValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameUserID));
@@ -31,12 +35,11 @@ User::User(HashMap *dictionary)
 		String *emailValue = static_cast<String *>(dictionary->GetValue(kHTTPParamNameEmail));
 		if (emailValue) _email = *emailValue;
 		HashMap *dateDictionary = static_cast<HashMap *>(dictionary->GetValue(kHTTPParamNameDateCreated));
-		if (dateDictionary) _dateCreated = new Date(dateDictionary);
+		if (dateDictionary) {
+			_dateCreated = new Date();
+			_dateCreated->updateFromDictionary(dateDictionary);
+		}
 	}
-}
-
-User::~User() {
-	delete _dateCreated;
 }
 
 HashMap *User::parameterDictionary()

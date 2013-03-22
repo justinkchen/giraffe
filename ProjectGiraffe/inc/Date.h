@@ -15,8 +15,8 @@ class Date :
 {
 public:
 	Date();
-	Date(Tizen::Base::Collection::HashMap *dictionary);
 	virtual ~Date();
+	void updateFromDictionary(Tizen::Base::Collection::HashMap *dictionary);
 
 	// Utility Functions
 	Tizen::Base::String dayString(); // Return strings like "March 10, 2013"

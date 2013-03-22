@@ -26,7 +26,13 @@ Graffiti::Graffiti() :
 	_user(NULL),
 	_listeners(NULL) {}
 
-Graffiti::Graffiti(HashMap *dictionary)
+Graffiti::~Graffiti() {
+	delete _dateCreated;
+	delete _user;
+	delete _listeners;
+}
+
+void Graffiti::updateFromDictionary(HashMap *dictionary)
 {
 	if (dictionary) {
 		Double *dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameLongitude));
@@ -49,16 +55,16 @@ Graffiti::Graffiti(HashMap *dictionary)
 		Boolean *flaggedValue = static_cast<Boolean *>(dictionary->GetValue(kHTTPParamNameFlagged));
 		if (flaggedValue) _flagged = flaggedValue->ToBool();
 		HashMap *dateDictionary = static_cast<HashMap *>(dictionary->GetValue(kHTTPParamNameDateCreated));
-		if (dateDictionary) _dateCreated = new Date(dateDictionary);
+		if (dateDictionary) {
+			_dateCreated = new Date();
+			_dateCreated->updateFromDictionary(dateDictionary);
+		}
 		HashMap *userDictionary = static_cast<HashMap *>(dictionary->GetValue(kHTTPParamNameUser));
-		if (userDictionary) _user = new User(userDictionary);
+		if (userDictionary) {
+			_user = new User();
+			_user->updateFromDictionary(userDictionary);
+		}
 	}
-}
-
-Graffiti::~Graffiti() {
-	delete _dateCreated;
-	delete _user;
-	delete _listeners;
 }
 
 HashMap *Graffiti::parameterDictionary()
