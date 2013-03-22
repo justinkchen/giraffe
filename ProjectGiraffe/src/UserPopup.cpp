@@ -21,7 +21,7 @@ UserPopup::UserPopup() {
 
 	Construct(true, Dimension(600,800));
 
-	ShowLogin();
+	showLogin();
 }
 
 UserPopup::~UserPopup() {
@@ -29,21 +29,21 @@ UserPopup::~UserPopup() {
 }
 
 void
-UserPopup::ShowPopup(void)
+UserPopup::showPopup(void)
 {
 	SetShowState(true);
 	Show();
 }
 
 void
-UserPopup::HidePopup(void)
+UserPopup::hidePopup(void)
 {
 	SetShowState(false);
 	Invalidate(true);
 }
 
 void
-UserPopup::ShowLogin(void)
+UserPopup::showLogin(void)
 {
 	RemoveAllControls();
 
@@ -114,7 +114,7 @@ UserPopup::ShowLogin(void)
 }
 
 void
-UserPopup::ShowSignup(void)
+UserPopup::showSignup(void)
 {
 	RemoveAllControls();
 
@@ -203,7 +203,7 @@ UserPopup::ShowSignup(void)
 }
 
 void
-UserPopup::SubmitLogin(void)
+UserPopup::submitLogin(void)
 {
 	// Validators
 	String usernameEmail = ((EditField *)GetControl("usernameEmailField"))->GetText();
@@ -211,10 +211,10 @@ UserPopup::SubmitLogin(void)
 	// Check not blank
 	String blank("");
 	if (usernameEmail.Equals(blank)) {
-		ShowError("Please enter a username or email.");
+		showError("Please enter a username or email.");
 		return;
 	} else if (password.Equals(blank)) {
-		ShowError("Please enter a password.");
+		showError("Please enter a password.");
 		return;
 	}
 
@@ -260,7 +260,7 @@ UserPopup::SubmitLogin(void)
 }
 
 void
-UserPopup::SubmitSignup(void)
+UserPopup::submitSignup(void)
 {
 	// Validators
 	String username = ((EditField *)GetControl("usernameField"))->GetText();
@@ -270,22 +270,22 @@ UserPopup::SubmitSignup(void)
 	// Check not blank
 	String blank("");
 	if (username.Equals(blank)) {
-		ShowError("Please enter a username.");
+		showError("Please enter a username.");
 		return;
 	} else if (email.Equals(blank)) {
-		ShowError("Please enter an email.");
+		showError("Please enter an email.");
 		return;
 	} else if (password.Equals(blank)) {
-		ShowError("Please enter a password.");
+		showError("Please enter a password.");
 		return;
 	} else if (passwordConfirm.Equals(blank)) {
-		ShowError("Please enter password confirmation.");
+		showError("Please enter password confirmation.");
 		return;
 	}
 	// Check valid email - done in the backend
 	// Check passwords =
 	else if (!password.Equals(passwordConfirm)) {
-		ShowError("Passwords do not match.");
+		showError("Passwords do not match.");
 		return;
 	}
 
@@ -332,7 +332,7 @@ UserPopup::SubmitSignup(void)
 }
 
 void
-UserPopup::ShowError(const String &errorMessage)
+UserPopup::showError(const String &errorMessage)
 {
 	Label* errorLabel = (Label* )GetControl("errorLabel");
 	errorLabel->SetText(errorMessage);
@@ -347,19 +347,19 @@ UserPopup::OnActionPerformed(const Control& source, int actionId)
 	switch (actionId)
 	{
 	case ID_BUTTON_CLOSE_POPUP:
-		HidePopup();
+		hidePopup();
 		break;
 	case ID_BUTTON_LOGIN:
-		SubmitLogin();
+		submitLogin();
 		break;
 	case ID_BUTTON_SIGNUP:
-		SubmitSignup();
+		submitSignup();
 		break;
 	case ID_BUTTON_VIEW_LOGIN:
-		ShowLogin();
+		showLogin();
 		break;
 	case ID_BUTTON_VIEW_SIGNUP:
-		ShowSignup();
+		showSignup();
 		break;
 	default:
 		break;
@@ -512,8 +512,7 @@ UserPopup::OnTransactionReadyToRead(HttpSession &httpSession, HttpTransaction &h
 			}
 
 			// Flash error message
-			ShowError(*errorMessage);
-
+			showError(*errorMessage);
 			Draw();
 		}
 
