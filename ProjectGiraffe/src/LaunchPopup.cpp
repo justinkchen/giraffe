@@ -81,3 +81,9 @@ LaunchPopup::OnActionPerformed(const Control& source, int actionId)
         break;
     }
 }
+
+void
+LaunchPopup::OnUserEventReceivedN(RequestId requestId, Tizen::Base::Collection::IList* pArgs)
+{
+
+}
