@@ -1,1 +1,0 @@
-set sysroot /Users/bryancheng/tizen-sdk/platforms/tizen2.0/rootstraps/tizen-device-2.0.cpp
