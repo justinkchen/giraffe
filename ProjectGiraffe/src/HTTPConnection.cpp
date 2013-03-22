@@ -24,6 +24,7 @@ const String kHTTPMethodNameNewGraffiti = L"addgraffiti";
 const String kHTTPMethodNameUserLogin = L"login";
 const String kHTTPMethodNameUserSignup = L"signup";
 
+const String kHTTPParamNameGraffiti = L"graffiti";
 const String kHTTPParamNameText = L"text";
 const String kHTTPParamNameImageURL = L"imageURL";
 const String kHTTPParamNameLongitude = L"longitude";
@@ -34,6 +35,7 @@ const String kHTTPParamNameDirectionZ = L"directionZ";
 const String kHTTPParamNameLikeCount = L"likeCount";
 const String kHTTPParamNameFlagged = L"flagged";
 const String kHTTPParamNameDateCreated = L"dateCreated";
+const String kHTTPParamNameUser = L"user";
 const String kHTTPParamNameUserID = L"userid";
 const String kHTTPParamNameFullname = L"fullname";
 const String kHTTPParamNameUsername = L"username";
@@ -53,7 +55,7 @@ HTTPConnection::HTTPConnection(HTTPConnectionListener *listener, const Tizen::Ba
 {
 	// Create session
 	_session = new HttpSession();
-	_session->Construct(NET_HTTP_SESSION_MODE_NORMAL, NULL, kHTTPHostURL, NULL);
+	_session->Construct(NET_HTTP_SESSION_MODE_NORMAL, NULL, kHTTPHostURL, NULL, NET_HTTP_COOKIE_FLAG_ALWAYS_AUTOMATIC);
 
 	_transaction = _session->OpenTransactionN();
 	_transaction->AddHttpTransactionListener(*this);

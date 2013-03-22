@@ -14,6 +14,9 @@
 #include <Fnet.h>
 #include <FWeb.h>
 
+#include "User.h"
+#include "JsonParser.h"
+
 class UserPopup:
 	public Tizen::Ui::Controls::Popup,
     public Tizen::Ui::IActionEventListener,
@@ -24,8 +27,10 @@ public:
 	UserPopup(void);
 	virtual ~UserPopup();
 
-	void ShowPopup(void);
-	void HidePopup(void);
+	void showPopup(void);
+	void hidePopup(void);
+
+	// IActionEventListener
 	virtual void OnActionPerformed(const Tizen::Ui::Control& source, int actionId);
 
 	// IKeypadEventListener
@@ -50,11 +55,13 @@ private:
 	static const int ID_BUTTON_VIEW_LOGIN = 504;
 	static const int ID_BUTTON_VIEW_SIGNUP = 505;
 
-	void ShowLogin(void);
-	void ShowSignup(void);
+	void showLogin(void);
+	void showSignup(void);
 
-	void SubmitLogin(void);
-	void SubmitSignup(void);
+	void submitLogin(void);
+	void submitSignup(void);
+
+	void showError(const Tizen::Base::String &errorMessage);
 };
 
 #endif /* USERPOPUP_H_ */

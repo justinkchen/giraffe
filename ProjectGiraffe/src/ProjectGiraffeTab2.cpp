@@ -92,6 +92,7 @@ void
 ProjectGiraffeTab2::OnSceneActivatedN(const Tizen::Ui::Scenes::SceneId& previousSceneId,
 		const Tizen::Ui::Scenes::SceneId& currentSceneId, Tizen::Base::Collection::IList* pArgs)
 {
+	AppLog("OnSceneActivated");
 	// TODO:
 	// Add your scene activate code here
 	//	double latitude = ProjectGiraffeMainForm::currentLatitude;

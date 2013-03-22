@@ -15,8 +15,21 @@ class User :
 	public Tizen::Base::Object
 {
 public:
+	// Current user
+	static User *currentUser(void);
+
+	// UserListeners
+	class UserListener :
+		public Tizen::Base::Object
+	{
+	public:
+		virtual void onUserUpdate(User *user) {}
+	};
+
+	// Constructors
 	User();
 	virtual ~User();
+	void updateFromDictionary(Tizen::Base::Collection::HashMap *dictionary);
 
 	// Accessors
 	unsigned int id() { return _id; }
@@ -30,6 +43,8 @@ public:
 	Date *dateCreated() { return _dateCreated; }
 	void setDateCreated(Date *dateCreated) { _dateCreated = dateCreated; }
 	Tizen::Base::Collection::HashMap *parameterDictionary();
+	void addListener(UserListener *listener);
+	void removeListener(UserListener *listener);
 
 private:
 	unsigned int _id;
@@ -37,6 +52,7 @@ private:
 	Tizen::Base::String _username;
 	Tizen::Base::String _email;
 	Date *_dateCreated;
+	Tizen::Base::Collection::ArrayList *_listeners;
 };
 
 #endif /* USER_H_ */

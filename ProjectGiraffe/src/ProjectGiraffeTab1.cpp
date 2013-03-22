@@ -1,4 +1,5 @@
 #include "ProjectGiraffeTab1.h"
+#include "ProjectGiraffeMainForm.h"
 #include "User.h"
 #include "GraffitiCellContentView.h"
 #include "GraffitiCellSocialContextView.h"
@@ -41,6 +42,7 @@ ProjectGiraffeTab1::Initialize(void)
 }
 
 #define kDebugUseDummyItems 0
+#define kDebugUseHTTPConnection 0
 
 void
 ProjectGiraffeTab1::updateItems()
@@ -55,6 +57,15 @@ ProjectGiraffeTab1::updateItems()
 		graffiti->setText(L"dummy string");
 		_items->Add(graffiti);
 	}
+
+#else
+
+#if kDebugUseHTTPConnection
+
+	double latitude = ProjectGiraffeMainForm::currentLatitude;
+	double longitude = ProjectGiraffeMainForm::currentLongitude;
+	HTTPConnection *connection = HTTPConnection::nearbyGraffitiGetConnection(this,latitude,longitude);
+	connection->begin();
 
 #else
 	// Kick off http request for items based on location.
@@ -86,6 +97,8 @@ ProjectGiraffeTab1::updateItems()
 
 	// Submit the request:
 	pHttpTransaction->Submit();
+#endif
+
 #endif
 }
 
@@ -247,6 +260,40 @@ void ProjectGiraffeTab1::UpdateItem(int itemIndex, Tizen::Ui::Controls::TableVie
 int ProjectGiraffeTab1::GetDefaultItemHeight(void)
 {
 	return 150;
+}
+
+
+void ProjectGiraffeTab1::connectionDidFinish(HTTPConnection *connection, Tizen::Base::Collection::HashMap *response)
+{
+	AppLog("HTTPConnection finished");
+	if (response) {
+		ArrayList *graffitiList = static_cast<ArrayList *>(response->GetValue(kHTTPParamNameGraffiti));
+		if (graffitiList) {
+			_items->RemoveAll(true);
+			for (int i = 0; i < graffitiList->GetCount(); i++) {
+				HashMap *graffitiDictionary = static_cast<HashMap *>(graffitiList->GetAt(i));
+				if (graffitiDictionary) {
+					Graffiti *newGraffiti = new Graffiti();
+					newGraffiti->updateFromDictionary(graffitiDictionary);
+					_items->Add(newGraffiti);
+				}
+			}
+			_tableView->UpdateTableView();
+		}
+	} else {
+		connectionDidFail(connection);
+	}
+}
+
+void ProjectGiraffeTab1::connectionDidFail(HTTPConnection *connection)
+{
+	AppLog("HTTPConnection failed");
+
+	MessageBox msgBox;
+	msgBox.Construct(L"HTTP STATUS", L"HTTP Request Aborted, Check internet connection", MSGBOX_STYLE_NONE, 3000);
+	int modalresult = 0;
+	msgBox.ShowAndWait(modalresult);
+	delete connection;
 }
 
 void

@@ -14,6 +14,7 @@ extern const Tizen::Base::String kHTTPMethodNameNewGraffiti;
 extern const Tizen::Base::String kHTTPMethodNameUserLogin;
 extern const Tizen::Base::String kHTTPMethodNameUserSignup;
 
+extern const Tizen::Base::String kHTTPParamNameGraffiti;
 extern const Tizen::Base::String kHTTPParamNameText;
 extern const Tizen::Base::String kHTTPParamNameImageURL;
 extern const Tizen::Base::String kHTTPParamNameLongitude;
@@ -24,6 +25,7 @@ extern const Tizen::Base::String kHTTPParamNameDirectionZ;
 extern const Tizen::Base::String kHTTPParamNameLikeCount;
 extern const Tizen::Base::String kHTTPParamNameFlagged;
 extern const Tizen::Base::String kHTTPParamNameDateCreated;
+extern const Tizen::Base::String kHTTPParamNameUser;
 extern const Tizen::Base::String kHTTPParamNameUserID;
 extern const Tizen::Base::String kHTTPParamNameFullname;
 extern const Tizen::Base::String kHTTPParamNameUsername;
@@ -39,6 +41,9 @@ class HTTPConnection
   : public Tizen::Net::Http::IHttpTransactionEventListener
 {
 public:
+	  // Destructor
+	  virtual ~HTTPConnection();
+
 	  // Listener class
 	  class HTTPConnectionListener
 	  {
@@ -65,7 +70,6 @@ private:
 			  	  	 const Tizen::Base::String methodName,
 			  	  	 Tizen::Net::Http::NetHttpMethod methodType,
 			  	  	 Tizen::Net::Http::HttpMultipartEntity *parameters);
-	  virtual ~HTTPConnection();
 
 	  // Utility methods
 	  static Tizen::Net::Http::HttpMultipartEntity *parametersForDictionary(Tizen::Base::Collection::HashMap *dictionary);

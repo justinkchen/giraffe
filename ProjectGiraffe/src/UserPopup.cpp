@@ -8,41 +8,40 @@
 #include "UserPopup.h"
 #include <FGraphics.h>
 
+using namespace Tizen::Base;
+using namespace Tizen::Base::Collection;
 using namespace Tizen::Graphics;
 using namespace Tizen::Ui;
 using namespace Tizen::Ui::Controls;
-using namespace Tizen::Base;
 using namespace Tizen::Net::Http;
 using namespace Tizen::Web::Json;
 
 UserPopup::UserPopup() {
-	// TODO Auto-generated constructor stub
-
 	Construct(true, Dimension(600,800));
 
-	ShowLogin();
+	showLogin();
 }
 
 UserPopup::~UserPopup() {
-	// TODO Auto-generated destructor stub
+
 }
 
 void
-UserPopup::ShowPopup(void)
+UserPopup::showPopup(void)
 {
 	SetShowState(true);
 	Show();
 }
 
 void
-UserPopup::HidePopup(void)
+UserPopup::hidePopup(void)
 {
 	SetShowState(false);
 	Invalidate(true);
 }
 
 void
-UserPopup::ShowLogin(void)
+UserPopup::showLogin(void)
 {
 	RemoveAllControls();
 
@@ -67,15 +66,17 @@ UserPopup::ShowLogin(void)
 	AddControl(*passwordField);
 
 	// Submit button to log in
-	Button* submitButton = new Button();
-	submitButton->Construct(Rectangle(130, 530, 300, 80), L"Log In");
-	submitButton->SetActionId(ID_BUTTON_LOGIN);
-	submitButton->AddActionEventListener(*this);
-	AddControl(*submitButton);
+	Button* loginButton = new Button();
+	loginButton->Construct(Rectangle(130, 530, 300, 80), L"Log In");
+	loginButton->SetName("loginButton");
+	loginButton->SetActionId(ID_BUTTON_LOGIN);
+	loginButton->AddActionEventListener(*this);
+	AddControl(*loginButton);
 
 	// Close button to close popup
 	Button* closeButton = new Button();
 	closeButton->Construct(Rectangle(130, 620, 300, 80), L"Close");
+	closeButton->SetName("closeButton");
 	closeButton->SetActionId(ID_BUTTON_CLOSE_POPUP);
 	closeButton->AddActionEventListener(*this);
 	AddControl(*closeButton);
@@ -100,11 +101,18 @@ UserPopup::ShowLogin(void)
 	signupLink->AddActionEventListener(*this);
 	AddControl(*signupLink);
 
+	// Error Label
+	Label* errorLabel = new Label();
+	errorLabel->Construct(Rectangle(-10, -130, 600, 40), L"");
+	errorLabel->SetTextColor(Color(0xFF, 0x00, 0x00));
+	errorLabel->SetName("errorLabel");
+	AddControl(*errorLabel);
+
 	Draw();
 }
 
 void
-UserPopup::ShowSignup(void)
+UserPopup::showSignup(void)
 {
 	RemoveAllControls();
 
@@ -147,15 +155,17 @@ UserPopup::ShowSignup(void)
 	AddControl(*passwordConfirmField);
 
 	// Submit button to sign up
-	Button* submitButton = new Button();
-	submitButton->Construct(Rectangle(130, 530, 300, 80), L"Sign Up");
-	submitButton->SetActionId(ID_BUTTON_SIGNUP);
-	submitButton->AddActionEventListener(*this);
-	AddControl(*submitButton);
+	Button* signupButton = new Button();
+	signupButton->Construct(Rectangle(130, 530, 300, 80), L"Sign Up");
+	signupButton->SetName("signupButton");
+	signupButton->SetActionId(ID_BUTTON_SIGNUP);
+	signupButton->AddActionEventListener(*this);
+	AddControl(*signupButton);
 
 	/// Close button to close popup
 	Button* closeButton = new Button();
 	closeButton->Construct(Rectangle(130, 620, 300, 80), L"Close");
+	closeButton->SetName("closeButton");
 	closeButton->SetActionId(ID_BUTTON_CLOSE_POPUP);
 	closeButton->AddActionEventListener(*this);
 	AddControl(*closeButton);
@@ -180,17 +190,42 @@ UserPopup::ShowSignup(void)
 	loginLink->AddActionEventListener(*this);
 	AddControl(*loginLink);
 
+	// Error Label
+	Label* errorLabel = new Label();
+	errorLabel->Construct(Rectangle(-10, -130, 600, 40), L"");
+	errorLabel->SetTextColor(Color(0xFF, 0x00, 0x00));
+	errorLabel->SetName("errorLabel");
+	AddControl(*errorLabel);
+
 	Draw();
 }
 
 void
-UserPopup::SubmitLogin(void)
+UserPopup::submitLogin(void)
 {
+	// Validators
+	String usernameEmail = ((EditField *)GetControl("usernameEmailField"))->GetText();
+	String password = ((EditField *)GetControl("passwordField"))->GetText();
+	// Check not blank
+	String blank("");
+	if (usernameEmail.Equals(blank)) {
+		showError("Please enter a username or email.");
+		return;
+	} else if (password.Equals(blank)) {
+		showError("Please enter a password.");
+		return;
+	}
+
+	// Disable login button
+	Button* loginButton = (Button *)GetControl("loginButton");
+	loginButton->SetEnabled(false);
+	loginButton->SetText("Logging in...");
+
 	HttpSession* pHttpSession = null;
 	HttpTransaction* pHttpTransaction = null;
 	String* pProxyAddr = null;
 	String hostAddr = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/"; // TODO: convert to HTTPS
-	String uri = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/login";
+	String uri = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/user/login";
 
 	AppLog("Starting the HTTP Session");
 	pHttpSession = new HttpSession();
@@ -214,11 +249,8 @@ UserPopup::SubmitLogin(void)
 	// Create HTTP multipart entity
 	HttpMultipartEntity* pMultipartEntity = new HttpMultipartEntity();
 	pMultipartEntity->Construct();
-	String usernameEmail = ((EditField *)GetControl("usernameEmailField"))->GetText();
 	pMultipartEntity->AddStringPart(L"usernameEmail", usernameEmail);
-	String password = ((EditField *)GetControl("passwordField"))->GetText();
 	pMultipartEntity->AddStringPart(L"password", password);
-
 	pHttpRequest->SetEntity(*pMultipartEntity);
 
 	// Submit the request:
@@ -226,13 +258,45 @@ UserPopup::SubmitLogin(void)
 }
 
 void
-UserPopup::SubmitSignup(void)
+UserPopup::submitSignup(void)
 {
+	// Validators
+	String username = ((EditField *)GetControl("usernameField"))->GetText();
+	String email = ((EditField *)GetControl("emailField"))->GetText();
+	String password = ((EditField *)GetControl("passwordField"))->GetText();
+	String passwordConfirm = ((EditField *)GetControl("passwordConfirmField"))->GetText();
+	// Check not blank
+	String blank("");
+	if (username.Equals(blank)) {
+		showError("Please enter a username.");
+		return;
+	} else if (email.Equals(blank)) {
+		showError("Please enter an email.");
+		return;
+	} else if (password.Equals(blank)) {
+		showError("Please enter a password.");
+		return;
+	} else if (passwordConfirm.Equals(blank)) {
+		showError("Please enter password confirmation.");
+		return;
+	}
+	// Check valid email - done in the backend
+	// Check passwords =
+	else if (!password.Equals(passwordConfirm)) {
+		showError("Passwords do not match.");
+		return;
+	}
+
+	// Disable signup button
+	Button* signupButton = (Button *)GetControl("signupButton");
+	signupButton->SetEnabled(false);
+	signupButton->SetText("Signing up...");
+
 	HttpSession* pHttpSession = null;
 	HttpTransaction* pHttpTransaction = null;
 	String* pProxyAddr = null;
 	String hostAddr = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/";
-	String uri = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/signup";
+	String uri = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/user/signup";
 
 	AppLog("Starting the HTTP Session");
 	pHttpSession = new HttpSession();
@@ -256,17 +320,22 @@ UserPopup::SubmitSignup(void)
 	// Create HTTP multipart entity
 	HttpMultipartEntity* pMultipartEntity = new HttpMultipartEntity();
 	pMultipartEntity->Construct();
-	String username = ((EditField *)GetControl("usernameField"))->GetText();
 	pMultipartEntity->AddStringPart(L"username", username);
-	String email = ((EditField *)GetControl("emailField"))->GetText();
 	pMultipartEntity->AddStringPart(L"email", email);
-	String password = ((EditField *)GetControl("passwordField"))->GetText();
 	pMultipartEntity->AddStringPart(L"password", password);
-
 	pHttpRequest->SetEntity(*pMultipartEntity);
 
 	// Submit the request:
 	pHttpTransaction->Submit();
+}
+
+void
+UserPopup::showError(const String &errorMessage)
+{
+	Label* errorLabel = (Label* )GetControl("errorLabel");
+	errorLabel->SetText(errorMessage);
+
+	Draw();
 }
 
 void
@@ -276,21 +345,19 @@ UserPopup::OnActionPerformed(const Control& source, int actionId)
 	switch (actionId)
 	{
 	case ID_BUTTON_CLOSE_POPUP:
-		HidePopup();
+		hidePopup();
 		break;
 	case ID_BUTTON_LOGIN:
-		//ValidateForm(); // TODO: make sure fields are correct
-		SubmitLogin();
+		submitLogin();
 		break;
 	case ID_BUTTON_SIGNUP:
-		//ValidateForm(); // TODO: make sure fields are correct
-		SubmitSignup();
+		submitSignup();
 		break;
 	case ID_BUTTON_VIEW_LOGIN:
-		ShowLogin();
+		showLogin();
 		break;
 	case ID_BUTTON_VIEW_SIGNUP:
-		ShowSignup();
+		showSignup();
 		break;
 	default:
 		break;
@@ -304,8 +371,9 @@ UserPopup::OnKeypadActionPerformed(Control &source, KeypadAction keypadAction)
 	if (keypadAction == KEYPAD_ACTION_DONE)
 	{
 		//Temp fix for this, hides keyboard by setting focus on popup
-		SetFocus();
+//		SetFocus();
 		//((EditField)source).HideKeypad();
+		((EditField *)&source)->HideKeypad();
 	}
 }
 
@@ -371,6 +439,18 @@ UserPopup::OnTransactionCompleted(HttpSession &httpSession, HttpTransaction &htt
 void
 UserPopup::OnTransactionHeaderCompleted(HttpSession &httpSession, HttpTransaction &httpTransaction, int headerLen, bool bAuthRequired)
 {
+	/*
+	HttpResponse* httpResponse = httpTransaction.GetResponse();
+//	HttpHeader* httpHeader = httpResponse->GetHeader();
+	IList* cookieList = httpResponse->GetCookies();
+
+	for (int i = 0; i < cookieList->GetCount(); i++) {
+		HttpCookie *cookie = static_cast<HttpCookie*>(cookieList->GetAt(0));
+
+		// TODO: save cookie somewhere
+	}
+
+
 	if (bAuthRequired)
 	{
 		AppLog("auth required");
@@ -385,38 +465,64 @@ UserPopup::OnTransactionHeaderCompleted(HttpSession &httpSession, HttpTransactio
 			HttpTransaction* pNewTransaction =  pAuth->SetCredentials(*pCredential);
 		}
 	}
+	*/
 }
 
 void
 UserPopup::OnTransactionReadyToRead(HttpSession &httpSession, HttpTransaction &httpTransaction, int availableBodyLen)
 {
-	HttpResponse* pHttpResponse = httpTransaction.GetResponse();
-	HttpHeader* pHttpHeader = null;
+	HttpResponse* httpResponse = httpTransaction.GetResponse();
+	HttpHeader* httpHeader = null;
 	AppLog("Checking HTTP Status Code");
-	if (pHttpResponse->GetHttpStatusCode() == HTTP_STATUS_OK)
+	if (httpResponse->GetHttpStatusCode() == HTTP_STATUS_OK)
 	{
-		ByteBuffer* pBody = null;
-		String statusText = pHttpResponse->GetStatusText();
-		String version = pHttpResponse->GetVersion();
+		ByteBuffer* body = null;
+		String statusText = httpResponse->GetStatusText();
+		String version = httpResponse->GetVersion();
 
-		pHttpHeader = pHttpResponse->GetHeader();
-		pBody = pHttpResponse->ReadBodyN();
-		//delete pBody;
+		httpHeader = httpResponse->GetHeader();
+		body = httpResponse->ReadBodyN();
 
 		//Parses from ByteBuffer
-		IJsonValue* pValue = JsonParser::ParseN(*pBody);
+		IJsonValue* jsonValue = JsonParser::ParseN(*body);
 
-		// Converts the pValue to JsonObject
-		JsonObject* pJsonObject = static_cast<JsonObject*>(pValue);
+		// Convert jsonValue to hashmap
+		HashMap* dict = JSONParser::dictionaryForJSONValue(jsonValue);
 
-		AppLog("Received HTTP response.");
+		String userKey("user");
+		String errorKey("error");
+		if (dict->ContainsKey(userKey)) {
+			HashMap *userDict = (HashMap *)dict->GetValue(userKey);
+			AppLogTag("cookie", "user");
 
-//		TraverseFunction(pValue);
+			User::currentUser()->updateFromDictionary(userDict);
+			hidePopup();
+		} else if (dict->ContainsKey(errorKey)) {
+			String *errorMessage = (String *)dict->GetValue(errorKey);
 
-		pJsonObject->RemoveAll(true);
-		delete pJsonObject;
-		delete pBody;
-//		delete pValue;
+			// Enable login button
+			Button* loginButton = (Button *)GetControl("loginButton");
+			if (loginButton != NULL) {
+				loginButton->SetEnabled(true);
+				loginButton->SetText("Log In");
+			}
+
+			// Enable signup button
+			Button* signupButton = (Button *)GetControl("signupButton");
+			if (signupButton != NULL) {
+				signupButton->SetEnabled(true);
+				signupButton->SetText("Sign Up");
+			}
+
+			// Flash error message
+			showError(*errorMessage);
+
+			Draw();
+		}
+
+		delete body;
+		delete jsonValue;
+		delete dict;
 	}else{
 		AppLog("HTTP Status not OK");
 	}

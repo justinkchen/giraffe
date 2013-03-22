@@ -18,6 +18,7 @@ class Graffiti :
 public:
 	Graffiti();
 	virtual ~Graffiti();
+	void updateFromDictionary(Tizen::Base::Collection::HashMap *dictionary);
 
 	// Graffiti Listener
 	class GraffitiListener :

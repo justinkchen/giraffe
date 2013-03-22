@@ -11,13 +11,32 @@
 using namespace Tizen::Base;
 using namespace Tizen::Base::Collection;
 
-Date::Date() {
-	// TODO Auto-generated constructor stub
+Date::Date() :
+		_year(0),
+		_month(0),
+		_day(0),
+		_hour(0),
+		_minute(0),
+		_second(0) {}
 
-}
+Date::~Date() {}
 
-Date::~Date() {
-	// TODO Auto-generated destructor stub
+void Date::updateFromDictionary(HashMap *dictionary)
+{
+	if (dictionary) {
+		Double *dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameYear));
+		if (dblValue) _year = dblValue->ToInt();
+		dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameMonth));
+		if (dblValue) _month = dblValue->ToInt();
+		dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameDay));
+		if (dblValue) _day = dblValue->ToInt();
+		dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameHour));
+		if (dblValue) _hour = dblValue->ToInt();
+		dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameMinute));
+		if (dblValue) _minute = dblValue->ToInt();
+		dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameSecond));
+		if (dblValue) _second = dblValue->ToInt();
+	}
 }
 
 char *Date::monthString() {
