@@ -23,9 +23,10 @@ public:
 	virtual ~ProjectGiraffeTab2(void);
 	bool Initialize(void);
 
-public:
 	virtual result OnInitializing(void);
 	virtual result OnTerminating(void);
+
+	// ISceneEventListener
 	virtual void OnSceneActivatedN(const Tizen::Ui::Scenes::SceneId& previousSceneId,
 								   const Tizen::Ui::Scenes::SceneId& currentSceneId, Tizen::Base::Collection::IList* pArgs);
 	virtual void OnSceneDeactivated(const Tizen::Ui::Scenes::SceneId& currentSceneId,

@@ -14,6 +14,7 @@
 #include <Fnet.h>
 #include <FWeb.h>
 
+#include "User.h"
 #include "JsonParser.h"
 
 class UserPopup:
@@ -24,7 +25,11 @@ class UserPopup:
 {
 public:
 	UserPopup(void);
+	UserPopup(User *user);
 	virtual ~UserPopup();
+
+	User *user() { return _user; }
+	void setUser(User *user) { _user = user; };
 
 	void showPopup(void);
 	void hidePopup(void);

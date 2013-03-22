@@ -16,8 +16,15 @@ using namespace Tizen::Ui::Controls;
 using namespace Tizen::Net::Http;
 using namespace Tizen::Web::Json;
 
+UserPopup::UserPopup() {
+	_user = null;
+
+	Construct(true, Dimension(600,800));
+
+	showLogin();
+}
+
 UserPopup::UserPopup(User *user) {
-	// TODO Auto-generated constructor stub
 	_user = user;
 
 	Construct(true, Dimension(600,800));
@@ -26,7 +33,7 @@ UserPopup::UserPopup(User *user) {
 }
 
 UserPopup::~UserPopup() {
-	// TODO Auto-generated destructor stub
+
 }
 
 void
@@ -494,7 +501,8 @@ UserPopup::OnTransactionReadyToRead(HttpSession &httpSession, HttpTransaction &h
 			HashMap *userDict = (HashMap *)dict->GetValue(userKey);
 			AppLogTag("cookie", "user");
 
-			//HidePopup();
+			_user->updateFromDictionary(userDict);
+			hidePopup();
 		} else if (dict->ContainsKey(errorKey)) {
 			String *errorMessage = (String *)dict->GetValue(errorKey);
 

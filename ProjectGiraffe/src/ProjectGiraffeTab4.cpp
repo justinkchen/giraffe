@@ -68,6 +68,17 @@ ProjectGiraffeTab4::OnSceneActivatedN(const Tizen::Ui::Scenes::SceneId& previous
 	// TODO:
 	// Add your scene activate code here
 	AppLog("OnSceneActivatedN");
+
+	// load user
+	// if (user->id() == 0)
+	// draw signup box
+	// else
+	// draw profile controls
+	// Add picture box
+
+	// Add name box
+
+	//
 }
 
 void

@@ -110,8 +110,9 @@ ProjectGiraffeMainForm::OnInitializing(void)
 	}
 	__pLocProvider->StartLocationUpdatesByInterval(10);
 
-	// Initialize UserPopup
-	_userPopup = new UserPopup();
+	// Initialize User and UserPopup
+	_user = new User();
+	_userPopup = new UserPopup(_user);
 
 	AppLog("Everything is initialized, Location updates started.");
 	MainFormParseLocation();
@@ -127,6 +128,7 @@ ProjectGiraffeMainForm::OnTerminating(void)
 	__pLocationManagerThread->Join();
 	delete __pLocationManagerThread;
 	//delete __currentLocation;
+	delete _user;
 	delete _userPopup;
 
 	// TODO:
@@ -185,7 +187,10 @@ ProjectGiraffeMainForm::OnActionPerformed(const Tizen::Ui::Control& source, int 
 		pFooter->SetItemEnabled(4,true);
 		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_4"));
 		pHeader->SetTitleText(L"Profile");
-		_userPopup->showPopup();
+
+		if (_user->id() == 0) {
+			_userPopup->showPopup();
+		}
 
 		AppLog("Tab4");
 		break;

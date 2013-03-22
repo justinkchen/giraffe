@@ -28,7 +28,6 @@ public:
 	void TraverseFunction(IJsonValue* pValue);
 	void ParseAndDisplay(void);
 
-public:
 	virtual result OnInitializing(void);
 	virtual result OnTerminating(void);
 

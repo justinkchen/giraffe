@@ -7,17 +7,17 @@
 #include <FWeb.h>
 #include "User.h"
 
-class ProjectGiraffeTab4
-	: public Tizen::Ui::Controls::Panel
-	, public Tizen::Ui::Scenes::ISceneEventListener
-	, public Tizen::Net::Http::IHttpTransactionEventListener
+class ProjectGiraffeTab4 :
+	public Tizen::Ui::Controls::Panel,
+	public Tizen::Ui::Scenes::ISceneEventListener,
+	public Tizen::Net::Http::IHttpTransactionEventListener
 {
 public:
 	ProjectGiraffeTab4(void);
 	virtual ~ProjectGiraffeTab4(void);
 	bool Initialize(void);
 
-public:
+
 	virtual result OnInitializing(void);
 	virtual result OnTerminating(void);
 	virtual void OnSceneActivatedN(const Tizen::Ui::Scenes::SceneId& previousSceneId,
@@ -32,6 +32,10 @@ public:
 	virtual void OnTransactionHeaderCompleted(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int headerLen, bool bAuthRequired);
 	virtual void OnTransactionReadyToRead(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int availableBodyLen);
 	virtual void OnTransactionReadyToWrite(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int recommendedChunkSize);
+
+private:
+	void showLoginControls(void);
+	void showProfile(void);
 };
 
 #endif // _PROJECTGIRAFFE_TAB4_H_
