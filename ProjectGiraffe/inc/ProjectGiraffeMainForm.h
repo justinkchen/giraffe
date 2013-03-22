@@ -6,6 +6,7 @@
 #include <FLocations.h>
 
 #include "UserPopup.h"
+#include "LaunchPopup.h"
 
 class LocationManagerThread;
 
@@ -61,6 +62,8 @@ private:
 
 //		User* _user;
 		UserPopup* __pUserPopup;
+
+		LaunchPopup* _launchPopup;
 };
 
 #endif	//_PROJECTGIRAFFE_MAIN_FORM_H_
