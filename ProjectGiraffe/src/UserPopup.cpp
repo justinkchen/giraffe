@@ -16,8 +16,9 @@ using namespace Tizen::Ui::Controls;
 using namespace Tizen::Net::Http;
 using namespace Tizen::Web::Json;
 
-UserPopup::UserPopup() {
+UserPopup::UserPopup(User *user) {
 	// TODO Auto-generated constructor stub
+	_user = user;
 
 	Construct(true, Dimension(600,800));
 
@@ -513,6 +514,7 @@ UserPopup::OnTransactionReadyToRead(HttpSession &httpSession, HttpTransaction &h
 
 			// Flash error message
 			showError(*errorMessage);
+
 			Draw();
 		}
 

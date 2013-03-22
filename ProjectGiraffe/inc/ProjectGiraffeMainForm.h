@@ -9,12 +9,12 @@
 
 class LocationManagerThread;
 
-class ProjectGiraffeMainForm
-	: public Tizen::Ui::Controls::Form
-	, public Tizen::Ui::IActionEventListener
-	, public Tizen::Ui::Controls::IFormBackEventListener
- 	, public Tizen::Ui::Scenes::ISceneEventListener
- 	, public Tizen::Locations::ILocationProviderListener
+class ProjectGiraffeMainForm :
+	public Tizen::Ui::Controls::Form,
+	public Tizen::Ui::IActionEventListener,
+	public Tizen::Ui::Controls::IFormBackEventListener,
+ 	public Tizen::Ui::Scenes::ISceneEventListener,
+ 	public Tizen::Locations::ILocationProviderListener
 {
 public:
 	ProjectGiraffeMainForm(void);
@@ -59,7 +59,7 @@ private:
 		Tizen::Locations::RegionId __regionId;
 		Tizen::Locations::Coordinates __regionCenter;
 
-//		User* _user;
+		User* _user;
 		UserPopup* _userPopup;
 };
 

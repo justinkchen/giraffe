@@ -52,6 +52,8 @@ private:
 	static const int ID_BUTTON_VIEW_LOGIN = 504;
 	static const int ID_BUTTON_VIEW_SIGNUP = 505;
 
+	User *_user;
+
 	void showLogin(void);
 	void showSignup(void);
 
