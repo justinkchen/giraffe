@@ -25,14 +25,12 @@ class UserPopup:
 {
 public:
 	UserPopup(void);
-	UserPopup(User *user);
 	virtual ~UserPopup();
-
-	User *user() { return _user; }
-	void setUser(User *user) { _user = user; };
 
 	void showPopup(void);
 	void hidePopup(void);
+
+	// IActionEventListener
 	virtual void OnActionPerformed(const Tizen::Ui::Control& source, int actionId);
 
 	// IKeypadEventListener
@@ -56,8 +54,6 @@ private:
 	static const int ID_BUTTON_SIGNUP = 503;
 	static const int ID_BUTTON_VIEW_LOGIN = 504;
 	static const int ID_BUTTON_VIEW_SIGNUP = 505;
-
-	User *_user;
 
 	void showLogin(void);
 	void showSignup(void);

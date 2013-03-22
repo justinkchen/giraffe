@@ -51,12 +51,14 @@ ProjectGiraffePanelFactory::CreatePanelN(const Tizen::Base::String& panelId, con
 	{
 		ProjectGiraffeTab4* pPanel = new ProjectGiraffeTab4();
 		pPanel->Initialize();
+		pSceneManager->AddSceneEventListener(sceneId, *pPanel);
 		pNewPanel = pPanel;
 	}
 	else if (panelId == L"IDC_PANEL5")
 	{
 		ProjectGiraffeTab5* pPanel = new ProjectGiraffeTab5();
 		pPanel->Initialize();
+		pSceneManager->AddSceneEventListener(sceneId, *pPanel);
 		pNewPanel = pPanel;
 	}
 

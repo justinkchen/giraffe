@@ -16,7 +16,7 @@ class User :
 {
 public:
 	// Current user
-	static User *currentUser();
+	static User *currentUser(void);
 
 	// UserListeners
 	class UserListener :

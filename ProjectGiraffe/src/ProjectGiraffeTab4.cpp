@@ -1,5 +1,7 @@
 #include "ProjectGiraffeTab4.h"
 
+#include "ControlUtilities.h"
+
 using namespace Tizen::Graphics;
 using namespace Tizen::Ui;
 using namespace Tizen::Ui::Controls;
@@ -7,6 +9,7 @@ using namespace Tizen::Ui::Scenes;
 using namespace Tizen::Base;
 using namespace Tizen::Net::Http;
 using namespace Tizen::Web::Json;
+using namespace ControlUtil;
 
 ProjectGiraffeTab4::ProjectGiraffeTab4(void)
 {
@@ -44,10 +47,6 @@ ProjectGiraffeTab4::OnInitializing(void)
 	pRelativeLayout->SetVerticalFitPolicy(*this, FIT_POLICY_PARENT);
 	delete pRelativeLayout;
 
-	//
-//	_user = null;
-	// attempt to login??
-
 	return r;
 }
 
@@ -62,6 +61,136 @@ ProjectGiraffeTab4::OnTerminating(void)
 }
 
 void
+ProjectGiraffeTab4::showLoginButton(void)
+{
+	RemoveAllControls();
+
+	Label* loginLabel = new Label();
+	loginLabel->Construct(Rectangle(0, 0, 600, 80), "To view your profile, please log in first.");
+	centerHorizontally(loginLabel, this);
+	loginLabel->SetName("loginLabel");
+	AddControl(*loginLabel);
+
+	Button* loginButton = new Button();
+	loginButton->Construct(Rectangle(0, 100, 300, 80), "Log In");
+	centerHorizontally(loginButton, this);
+	loginButton->SetName("loginButton");
+	loginButton->SetActionId(ID_BUTTON_LOGIN);
+	loginButton->AddActionEventListener(*this);
+	AddControl(*loginButton);
+
+	Draw();
+}
+
+void
+ProjectGiraffeTab4::showProfile(void)
+{
+	RemoveAllControls();
+
+	User *cUser = User::currentUser();
+	// temporarily settin to test
+	cUser->setUsername("bryan");
+	cUser->setEmail("bbch@stanford.edu");
+
+	// Avatar button? image?
+	// Full name
+
+	Label* usernameLabel = new Label();
+	usernameLabel->Construct(Rectangle(10, 260, 300, 40), "Username:");
+	usernameLabel->SetTextConfig(32, LABEL_TEXT_STYLE_BOLD);
+	AppLogTag("user", "style %d", ALIGNMENT_MIDDLE == usernameLabel->GetTextVerticalAlignment());
+	AppLogTag("user", "size %d", usernameLabel->GetTextSize());
+	usernameLabel->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
+	usernameLabel->SetName("usernameLabel");
+	AddControl(*usernameLabel);
+
+	EditField* usernameField = new EditField();
+	usernameField->Construct(Rectangle(10, 310, this->GetBounds().width - 20, 80), EDIT_FIELD_STYLE_NORMAL, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_NONE, true);
+	usernameField->SetText(cUser->username());
+	usernameField->SetName("usernameField");
+	usernameField->SetKeypadAction(KEYPAD_ACTION_DONE);
+	usernameField->AddKeypadEventListener(*this);
+	AddControl(*usernameField);
+
+	Label* emailLabel = new Label();
+	emailLabel->Construct(Rectangle(10, 400, 300, 40), "Email:");
+	AppLogTag("user", "style %d", LABEL_TEXT_STYLE_BOLD == emailLabel->GetTextStyle());
+	AppLogTag("user", "size %d", emailLabel->GetTextSize());
+	emailLabel->SetTextConfig(32, LABEL_TEXT_STYLE_BOLD);
+	emailLabel->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
+	emailLabel->SetName("emailLabel");
+	AddControl(*emailLabel);
+
+	EditField* emailField = new EditField();
+	emailField->Construct(Rectangle(10, 450, this->GetBounds().width - 20, 80), EDIT_FIELD_STYLE_EMAIL, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_NONE, true);
+	emailField->SetText(cUser->email());
+	emailField->SetName("emailField");
+	emailField->SetKeypadAction(KEYPAD_ACTION_DONE);
+	emailField->AddKeypadEventListener(*this);
+	AddControl(*emailField);
+
+	Button* updateButton1 = new Button();
+	updateButton1->Construct(Rectangle(0, 540, 300, 80), "Update");
+	centerHorizontally(updateButton1, this);
+	updateButton1->SetName("updateButton1");
+	updateButton1->SetActionId(ID_BUTTON_UPDATE1);
+	updateButton1->AddActionEventListener(*this);
+	AddControl(*updateButton1);
+
+	Label* oldPasswordLabel = new Label();
+	oldPasswordLabel->Construct(Rectangle(10, 630, 300, 40), "Current password:");
+	oldPasswordLabel->SetTextConfig(32, LABEL_TEXT_STYLE_BOLD);
+	oldPasswordLabel->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
+	oldPasswordLabel->SetName("oldPassworldLabel");
+	AddControl(*oldPasswordLabel);
+
+	EditField* oldPasswordField = new EditField();
+	oldPasswordField->Construct(Rectangle(10, 680, this->GetBounds().width - 20, 80), EDIT_FIELD_STYLE_PASSWORD, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_NONE, true);
+	oldPasswordField->SetName("oldPasswordField");
+	oldPasswordField->SetKeypadAction(KEYPAD_ACTION_DONE);
+	oldPasswordField->AddKeypadEventListener(*this);
+	AddControl(*oldPasswordField);
+
+	Label* passwordLabel = new Label();
+	passwordLabel->Construct(Rectangle(10, 770, 300, 40), "New password:");
+	passwordLabel->SetTextConfig(32, LABEL_TEXT_STYLE_BOLD);
+	passwordLabel->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
+	passwordLabel->SetName("passwordLabel");
+	AddControl(*passwordLabel);
+
+	EditField* passwordField = new EditField();
+	passwordField->Construct(Rectangle(10, 820, this->GetBounds().width - 20, 80), EDIT_FIELD_STYLE_PASSWORD, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_NONE, true);
+	passwordField->SetName("passwordField");
+	passwordField->SetKeypadAction(KEYPAD_ACTION_DONE);
+	passwordField->AddKeypadEventListener(*this);
+	AddControl(*passwordField);
+
+	Label* confirmPasswordLabel = new Label();
+	confirmPasswordLabel->Construct(Rectangle(10, 910, 300, 40), "Confirm password:");
+	confirmPasswordLabel->SetTextConfig(32, LABEL_TEXT_STYLE_BOLD);
+	confirmPasswordLabel->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
+	confirmPasswordLabel->SetName("confirmPasswordLabel");
+	AddControl(*confirmPasswordLabel);
+
+	EditField* confirmPasswordField = new EditField();
+	confirmPasswordField->Construct(Rectangle(10, 960, this->GetBounds().width - 20, 80), EDIT_FIELD_STYLE_PASSWORD, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_NONE, true);
+	confirmPasswordField->SetName("confirmPasswordField");
+	confirmPasswordField->SetKeypadAction(KEYPAD_ACTION_DONE);
+	confirmPasswordField->AddKeypadEventListener(*this);
+	AddControl(*confirmPasswordLabel);
+
+	Button* updateButton2 = new Button();
+	updateButton2->Construct(Rectangle(0, 1000, 300, 80), "Change Password");
+	centerHorizontally(updateButton2, this);
+	updateButton2->SetName("updateButton2");
+	updateButton2->SetActionId(ID_BUTTON_UPDATE2);
+	updateButton2->AddActionEventListener(*this);
+	AddControl(*updateButton2);
+
+	Draw();
+}
+
+void
 ProjectGiraffeTab4::OnSceneActivatedN(const Tizen::Ui::Scenes::SceneId& previousSceneId,
 								const Tizen::Ui::Scenes::SceneId& currentSceneId, Tizen::Base::Collection::IList* pArgs)
 {
@@ -70,15 +199,13 @@ ProjectGiraffeTab4::OnSceneActivatedN(const Tizen::Ui::Scenes::SceneId& previous
 	AppLog("OnSceneActivatedN");
 
 	// load user
-	// if (user->id() == 0)
-	// draw signup box
-	// else
-	// draw profile controls
-	// Add picture box
-
-	// Add name box
-
-	//
+	if (User::currentUser()->id() != 0) {
+		AppLogTag("user", "no user");
+		showLoginButton();
+	} else {
+		AppLogTag("user", "yes user");
+		showProfile();
+	}
 }
 
 void
@@ -88,6 +215,73 @@ ProjectGiraffeTab4::OnSceneDeactivated(const Tizen::Ui::Scenes::SceneId& current
 	// TODO:
 	// Add your scene deactivate code here
 	AppLog("OnSceneDeactivated");
+}
+
+void
+ProjectGiraffeTab4::OnActionPerformed(const Control& source, int actionId)
+{
+	switch (actionId)
+		{
+		case ID_BUTTON_LOGIN:
+//			showPopup();
+			break;
+		case ID_BUTTON_AVATAR:
+			break;
+		case ID_BUTTON_UPDATE1:
+//			updateUser();
+			break;
+		case ID_BUTTON_UPDATE2:
+//			updateUser();
+			break;
+		default:
+			break;
+		}
+}
+
+void
+ProjectGiraffeTab4::OnKeypadActionPerformed(Control &source, KeypadAction keypadAction)
+{
+	// Hide keypad when the action button is clicked
+	if (keypadAction == KEYPAD_ACTION_DONE)
+	{
+		((EditField *)&source)->HideKeypad();
+	}
+}
+
+void
+ProjectGiraffeTab4::OnKeypadBoundsChanged(Control &source)
+{
+
+}
+
+void
+ProjectGiraffeTab4::OnKeypadClosed(Control &source)
+{
+
+}
+
+void
+ProjectGiraffeTab4::OnKeypadOpened(Control &source)
+{
+	/* may need to resize ui?
+	Rectangle clientRect = GetClientAreaBounds();
+	Rectangle editRect = __pEditField->GetBounds();
+	editRect.y = clientRect.height - editRect.height - 50;
+	__pEditField->SetBounds(editRect); // Move EditField to avoid overlapping
+	*/
+}
+
+void
+ProjectGiraffeTab4::OnKeypadWillOpen(Control &source)
+{
+	/*
+	Rectangle clientRect = GetClientAreaBounds();
+	Rectangle editRect = __pEditField->GetBounds();
+	editRect.y = clientRect.height - 500;
+	__pEditField->SetBounds(editRect); // Move back to original position
+
+	Invalidate(true);
+	*/
 }
 
 void

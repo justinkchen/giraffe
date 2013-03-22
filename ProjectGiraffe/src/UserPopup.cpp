@@ -17,16 +17,6 @@ using namespace Tizen::Net::Http;
 using namespace Tizen::Web::Json;
 
 UserPopup::UserPopup() {
-	_user = null;
-
-	Construct(true, Dimension(600,800));
-
-	showLogin();
-}
-
-UserPopup::UserPopup(User *user) {
-	_user = user;
-
 	Construct(true, Dimension(600,800));
 
 	showLogin();
@@ -381,8 +371,9 @@ UserPopup::OnKeypadActionPerformed(Control &source, KeypadAction keypadAction)
 	if (keypadAction == KEYPAD_ACTION_DONE)
 	{
 		//Temp fix for this, hides keyboard by setting focus on popup
-		SetFocus();
+//		SetFocus();
 		//((EditField)source).HideKeypad();
+		((EditField *)&source)->HideKeypad();
 	}
 }
 
@@ -448,6 +439,7 @@ UserPopup::OnTransactionCompleted(HttpSession &httpSession, HttpTransaction &htt
 void
 UserPopup::OnTransactionHeaderCompleted(HttpSession &httpSession, HttpTransaction &httpTransaction, int headerLen, bool bAuthRequired)
 {
+	/*
 	HttpResponse* httpResponse = httpTransaction.GetResponse();
 //	HttpHeader* httpHeader = httpResponse->GetHeader();
 	IList* cookieList = httpResponse->GetCookies();
@@ -457,6 +449,7 @@ UserPopup::OnTransactionHeaderCompleted(HttpSession &httpSession, HttpTransactio
 
 		// TODO: save cookie somewhere
 	}
+
 
 	if (bAuthRequired)
 	{
@@ -472,6 +465,7 @@ UserPopup::OnTransactionHeaderCompleted(HttpSession &httpSession, HttpTransactio
 			HttpTransaction* pNewTransaction =  pAuth->SetCredentials(*pCredential);
 		}
 	}
+	*/
 }
 
 void
@@ -501,7 +495,7 @@ UserPopup::OnTransactionReadyToRead(HttpSession &httpSession, HttpTransaction &h
 			HashMap *userDict = (HashMap *)dict->GetValue(userKey);
 			AppLogTag("cookie", "user");
 
-			_user->updateFromDictionary(userDict);
+			User::currentUser()->updateFromDictionary(userDict);
 			hidePopup();
 		} else if (dict->ContainsKey(errorKey)) {
 			String *errorMessage = (String *)dict->GetValue(errorKey);
