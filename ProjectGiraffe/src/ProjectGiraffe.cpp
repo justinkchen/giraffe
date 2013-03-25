@@ -59,7 +59,7 @@ ProjectGiraffeApp::OnAppInitialized(void)
 	// Create a Frame
 	ProjectGiraffeFrame* pProjectGiraffeFrame = new ProjectGiraffeFrame();
 	pProjectGiraffeFrame->Construct();
-	pProjectGiraffeFrame->SetName(L"ProjectGiraffe");
+	pProjectGiraffeFrame->SetName(L"GiraffeMainFrame");
 	AddFrame(*pProjectGiraffeFrame);
 
 	return true;

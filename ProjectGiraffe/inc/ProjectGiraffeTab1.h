@@ -20,10 +20,13 @@ class ProjectGiraffeTab1 :
 	public HTTPConnection::HTTPConnectionListener
 	{
 public:
-	ProjectGiraffeTab1(void)
-	: _pValueList(null)
-	, _pJsonKeyList(null)
-	, _tableView(null) {}
+	ProjectGiraffeTab1(void) :
+		_pValueList(NULL),
+		_pJsonKeyList(NULL),
+		_items(NULL),
+		_contentViews(NULL),
+		_contextViews(NULL),
+		_tableView(NULL) {}
 
 	virtual ~ProjectGiraffeTab1(void);
 	bool Initialize(void);
@@ -70,8 +73,12 @@ protected:
 
 private:
     Tizen::Base::Collection::ArrayList *_items;
+    Tizen::Base::Collection::ArrayList *_contentViews;
+    Tizen::Base::Collection::ArrayList *_contextViews;
     Tizen::Ui::Controls::TableView* _tableView;
-    virtual void updateItems();
+    void updateItems();
+    void updateViews();
+    void setItems(Tizen::Base::Collection::ArrayList *items);
 };
 
 #endif // _PROJECTGIRAFFE_TAB1_H_

@@ -6,6 +6,7 @@
 #include <FLocations.h>
 
 #include "UserPopup.h"
+#include "LaunchPopup.h"
 
 class LocationManagerThread;
 
@@ -58,6 +59,8 @@ private:
 		LocationManagerThread* __pLocationManagerThread;
 		Tizen::Locations::RegionId __regionId;
 		Tizen::Locations::Coordinates __regionCenter;
+
+		LaunchPopup* _launchPopup;
 };
 
 #endif	//_PROJECTGIRAFFE_MAIN_FORM_H_

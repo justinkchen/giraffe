@@ -108,6 +108,9 @@ ProjectGiraffeMainForm::OnInitializing(void)
 	}
 	__pLocProvider->StartLocationUpdatesByInterval(10);
 
+	_launchPopup = new LaunchPopup();
+	_launchPopup->ShowPopup();
+
 	AppLog("Everything is initialized, Location updates started.");
 	MainFormParseLocation();
 	return r;
@@ -242,6 +245,9 @@ ProjectGiraffeMainForm::OnLocationUpdated(const Tizen::Locations::Location& loca
 		Scene* pScene = pSceneManager->GetCurrentScene();
 		Panel* pPanel = pScene->GetPanel();
 		pPanel->SendUserEvent(101, null);
+
+		_launchPopup->SendUserEvent(101,null);
+
 		AppLog("The latitude is: %f", currentLatitude);
 		AppLog("The longitude is: %f", currentLongitude);
 	}else{

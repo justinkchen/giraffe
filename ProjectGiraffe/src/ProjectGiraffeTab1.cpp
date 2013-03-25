@@ -102,6 +102,61 @@ ProjectGiraffeTab1::updateItems()
 #endif
 }
 
+void ProjectGiraffeTab1::updateViews()
+{
+	// Remove all views if they exist
+	if (_contentViews) _contentViews->RemoveAll(true);
+	if (_contextViews) _contextViews->RemoveAll(true);
+	delete _contentViews;
+	delete _contextViews;
+
+	if (_items && _items->GetCount()) {
+		_contentViews = new ArrayList(SingleObjectDeleter);
+		_contentViews->Construct();
+		_contextViews = new ArrayList(SingleObjectDeleter);
+		_contextViews->Construct();
+
+		IEnumerator *iter = _items->GetEnumeratorN();
+		int width = GetSize().width;
+		while (iter->MoveNext() == E_SUCCESS) {
+			Graffiti *graffiti = static_cast<Graffiti *>(iter->GetCurrent());
+			if (graffiti) {
+				// Create content view
+				GraffitiCellContentView *contentView = new GraffitiCellContentView();
+				contentView->Construct(Rectangle(0, 0, width, GetDefaultItemHeight()));
+				contentView->setGraffiti(graffiti);
+				contentView->sizeToFit();
+				_contentViews->Add(contentView);
+
+				// Create social context view
+				GraffitiCellSocialContextView *socialContextView = new GraffitiCellSocialContextView();
+				socialContextView->Construct(contentView->GetBounds());
+				socialContextView->setGraffiti(graffiti);
+				_contextViews->Add((Panel *)socialContextView);
+			}
+		}
+	} else {
+		_contentViews = NULL;
+		_contextViews = NULL;
+	}
+}
+
+void ProjectGiraffeTab1::setItems(ArrayList *items)
+{
+	if (_items != items) {
+		// Deallocate old items
+		if (_items) _items->RemoveAll(true);
+		delete _items;
+		_items = items;
+
+		// Update views
+		updateViews();
+
+		// Use new items/views in table
+		_tableView->UpdateTableView();
+	}
+}
+
 result
 ProjectGiraffeTab1::OnInitializing(void)
 {
@@ -207,7 +262,7 @@ void ProjectGiraffeTab1::OnTableViewItemReordered(Tizen::Ui::Controls::TableView
 int ProjectGiraffeTab1::GetItemCount(void)
 {
 	AppLog("Counting Items");
-	return _items->GetCount();
+	return _items ? _items->GetCount() : 0;
 }
 
 TableViewItem* ProjectGiraffeTab1::CreateItem(int itemIndex, int itemWidth)
@@ -222,24 +277,39 @@ TableViewItem* ProjectGiraffeTab1::CreateItem(int itemIndex, int itemWidth)
 	item->Construct(Dimension(itemWidth, GetDefaultItemHeight()),
 			TABLE_VIEW_ANNEX_STYLE_NORMAL);
 
-	// Create content view for item
-	GraffitiCellContentView *contentView = new GraffitiCellContentView();
-	contentView->Construct(Rectangle(0, 0, itemWidth, GetDefaultItemHeight()));
-	item->AddControl(*contentView);
-	contentView->setGraffiti(graffiti);
-	contentView->sizeToFit();
-	item->SetSize(contentView->GetSize());
-
 	// Create contextItem
 	TableViewContextItem *contextItem = new TableViewContextItem();
 	contextItem->Construct(item->GetSize());
 	item->SetContextItem(contextItem);
 
+#if kDebugUseHTTPConnection
+	GraffitiCellContentView *contentView = static_cast<GraffitiCellContentView *>(_contentViews->GetAt(itemIndex));
+	if (contentView) {
+		item->AddControl(*contentView);
+		item->SetSize(contentView->GetSize());
+		contextItem->SetSize(contentView->GetSize());
+	}
+	GraffitiCellSocialContextView *contextView = static_cast<GraffitiCellSocialContextView *>(_contextViews->GetAt(itemIndex));
+	if (contextView) {
+		contextItem->AddControl(*contextView);
+	}
+#else
+	// Create content view
+	GraffitiCellContentView *contentView = new GraffitiCellContentView();
+	contentView->Construct(Rectangle(0, 0, itemWidth, GetDefaultItemHeight()));
+	contentView->setGraffiti(graffiti);
+	contentView->sizeToFit();
+	item->AddControl(*contentView);
+	item->SetSize(contentView->GetSize());
+	contextItem->SetSize(contentView->GetSize());
+
 	// Create social context view
 	GraffitiCellSocialContextView *socialContextView = new GraffitiCellSocialContextView();
-	socialContextView->Construct(item->GetBounds());
-	contextItem->AddControl(*socialContextView);
+	socialContextView->Construct(contentView->GetBounds());
 	socialContextView->setGraffiti(graffiti);
+	contextItem->AddControl(*socialContextView);
+#endif
+
 
 	return item;
 }
@@ -269,16 +339,18 @@ void ProjectGiraffeTab1::connectionDidFinish(HTTPConnection *connection, Tizen::
 	if (response) {
 		ArrayList *graffitiList = static_cast<ArrayList *>(response->GetValue(kHTTPParamNameGraffiti));
 		if (graffitiList) {
-			_items->RemoveAll(true);
+			ArrayList *newItems = new ArrayList(SingleObjectDeleter);
+			newItems->Construct();
+
 			for (int i = 0; i < graffitiList->GetCount(); i++) {
 				HashMap *graffitiDictionary = static_cast<HashMap *>(graffitiList->GetAt(i));
 				if (graffitiDictionary) {
 					Graffiti *newGraffiti = new Graffiti();
 					newGraffiti->updateFromDictionary(graffitiDictionary);
-					_items->Add(newGraffiti);
+					newItems->Add(newGraffiti);
 				}
 			}
-			_tableView->UpdateTableView();
+			setItems(newItems);
 		}
 	} else {
 		connectionDidFail(connection);

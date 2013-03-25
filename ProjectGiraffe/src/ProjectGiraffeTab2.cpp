@@ -42,6 +42,8 @@ ProjectGiraffeTab2::OnInitializing(void)
 	pRelativeLayout->SetVerticalFitPolicy(*this, FIT_POLICY_PARENT);
 	delete pRelativeLayout;
 
+	// Should have location already since launch page checks for it
+	this->SendUserEvent(101, null);
 
 	//	pLabel1 = static_cast<Label *>(GetControl(L"IDC_LABEL1"));
 	//	if(pLabel1)
