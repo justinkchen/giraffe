@@ -9,7 +9,6 @@
 #define USER_H_
 
 #include <FBase.h>
-#include "UserListener.h"
 class Date;
 
 class User :
@@ -26,6 +25,14 @@ public:
 
 	// TODO: delete later, temp function to test w/o internet
 	void update();
+
+	// User listener class
+	class UserListener :
+		public Tizen::Base::Object
+	{
+	public :
+		virtual void onUserUpdate(User *user) = 0;
+	};
 
 	// Accessors
 	unsigned int id() { return _id; }
