@@ -134,7 +134,7 @@ BitmapControl::Construct(String filePath, const Tizen::Graphics::Rectangle& rect
 	_srcFileSize = attr.GetFileSize();
 
 	AppLog("Testing: Decoding image %ls", _srcFilePath.GetPointer());
-	BitmapPixelFormat pixelFmt = BITMAP_PIXEL_FORMAT_RGB565;
+	BitmapPixelFormat pixelFmt = BITMAP_PIXEL_FORMAT_ARGB8888;
 	_srcBitmap = _img.DecodeN(_srcFilePath, pixelFmt);
 	TryReturn(r == E_SUCCESS, r, "[%s] Failed to construct image instance.", GetErrorMessage(r));
 	r = Container::Construct(rect, true);
