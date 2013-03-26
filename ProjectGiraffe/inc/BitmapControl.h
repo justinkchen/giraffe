@@ -19,8 +19,12 @@
 #ifndef _BITMAP_CONTROL_H_
 #define _BITMAP_CONTROL_H_
 
+#include <FBase.h>
 #include <FUi.h>
 #include <FGraphics.h>
+#include <FMedia.h>
+#include <FGraphics.h>
+#include <FApp.h>
 
 class BitmapControl
 	: public Tizen::Ui::Container
@@ -29,17 +33,26 @@ public:
 	BitmapControl(void);
 	virtual ~BitmapControl(void);
 
+	static BitmapControl* ConstructFromPath(Tizen::Base::String filePath, const Tizen::Graphics::Rectangle& rect, bool rescale = true);
 	static BitmapControl* ConstructN(Tizen::Ui::Control* pCtrl, bool rescale = true);
+	result Construct(Tizen::Base::String filePath, const Tizen::Graphics::Rectangle& rect, bool rescale);
 	result Construct(const Tizen::Graphics::Rectangle& rect, bool rescale);
 	result SetBitmap(const Tizen::Graphics::Bitmap& bmp);
 	result Clear(void);
+	void ResetFileAtrributes(void);
 
 protected:
 	virtual result OnDraw(void);
-	Tizen::Graphics::Bitmap* _pBmp;
 
 private:
-	bool __rescale;
+	bool _rescale;
+	Tizen::Base::String _srcFilePath;
+	Tizen::Graphics::Bitmap* _srcBitmap;
+	int _srcWidth;
+	int _srcHeight;
+	int _srcFileSize;
+	Tizen::Ui::Controls::Button* _ctrlButton;
+	Tizen::Media::Image _img;
 
 };
 

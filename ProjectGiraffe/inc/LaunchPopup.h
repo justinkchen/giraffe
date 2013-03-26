@@ -14,6 +14,8 @@
 #include <Fnet.h>
 #include <FApp.h>
 
+#include "BitmapControl.h"
+
 class LaunchPopup:
 	public Tizen::Ui::Controls::Popup,
 	public Tizen::Ui::IActionEventListener,
@@ -47,6 +49,7 @@ private:
 
 	Tizen::Base::Collection::ArrayList* _animationFrameList;
 	Tizen::Ui::Controls::Animation* _launchAnimation;
+	BitmapControl* _bitmapControl;
 };
 
 #endif /* LAUNCHPOPUP_H_ */

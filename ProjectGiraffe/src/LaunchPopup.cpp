@@ -200,10 +200,16 @@ LaunchPopup::OnInitializing(void)
 
     // Creates an instance of Button to close the popup.
     Button* closeButton = new Button();
-    closeButton->Construct(Rectangle(0, 3*GetClientAreaBounds().height/5, GetClientAreaBounds().width/2,100), L"Close Popup\n(in case location not found)");
+    closeButton->Construct(Rectangle(0, 2*GetClientAreaBounds().height/5, GetClientAreaBounds().width/2,100), L"Close Popup\n(in case location not found)");
     closeButton->SetActionId(ID_BUTTON_CLOSE_POPUP);
     closeButton->AddActionEventListener(*this);
     closeButton->SetTextSize(20);
+
+    // Adding logo
+    Tizen::Base::String filePath = App::GetInstance()->GetAppRootPath() + L"res/Image/tizen_logo.jpg";
+    _bitmapControl = BitmapControl::ConstructFromPath(filePath,Rectangle(0, 3*GetClientAreaBounds().height/5, 175,175), true);
+    _bitmapControl->Draw();
+    AddControl(*_bitmapControl);
 
 #if kDebugCloseButton
     AddControl(*closeButton);
@@ -213,6 +219,7 @@ LaunchPopup::OnInitializing(void)
 
     // Sets relations each label and button
     _popupLayout.SetCenterAligned(*_launchAnimation, CENTER_ALIGN_HORIZONTAL);
+    _popupLayout.SetCenterAligned(*_bitmapControl, CENTER_ALIGN_HORIZONTAL);
     _popupLayout.SetCenterAligned(*titleLabel, CENTER_ALIGN_HORIZONTAL);
     _popupLayout.SetCenterAligned(*subtitleLabel, CENTER_ALIGN_HORIZONTAL);
     _popupLayout.SetCenterAligned(*loadingLabel, CENTER_ALIGN_HORIZONTAL);

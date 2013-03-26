@@ -18,33 +18,45 @@
 
 #include "BitmapControl.h"
 #include "SafeMacros.h"
+#include <FAppApp.h>
+#include <FMediaImageBuffer.h>
 
 using namespace Tizen::Graphics;
+using namespace Tizen::Base;
+using namespace Tizen::Media;
+using namespace Tizen::Io;
+using namespace Tizen::App;
+using namespace Tizen::Base;
+using namespace Tizen::Ui;
+using namespace Tizen::Ui::Controls;
+using namespace Tizen::System;
 
 BitmapControl::BitmapControl(void)
-	:_pBmp(null),
-	__rescale(false)
+	:_srcBitmap(null),
+	_rescale(false)
+	// TODO: Add more initializations
 {
 }
 
 BitmapControl::~BitmapControl(void)
 {
-	SAFE_DELETE(_pBmp);
+	// TODO: ADD MORE MEMORY MANAGEMENT HERE
+	SAFE_DELETE(_srcBitmap);
 }
 
 BitmapControl*
-BitmapControl::ConstructN(Tizen::Ui::Control* pCtrl, bool rescale)
+BitmapControl::ConstructN(Tizen::Ui::Control* ctrl, bool rescale)
 {
 	result r = E_SUCCESS;
 	BitmapControl* pBmpCtrl = null;
 
-	TryCatch(pCtrl, r = E_SYSTEM, "pCtrl is null");
+	TryCatch(ctrl, r = E_SYSTEM, "ctrl is null");
 
-	pCtrl->SetShowState(false);
-	pCtrl->RequestRedraw(false);
+	ctrl->SetShowState(false);
+	ctrl->RequestRedraw(false);
 
 	pBmpCtrl = new (std::nothrow) BitmapControl();
-	r = pBmpCtrl->Construct(pCtrl->GetBounds(), rescale);
+	r = pBmpCtrl->Construct(ctrl->GetBounds(), rescale);
 	TryCatch(r == E_SUCCESS, , "pBmpCtrl->Construct failed:%s", GetErrorMessage(r));
 
 CATCH:
@@ -58,8 +70,77 @@ BitmapControl::Construct(const Tizen::Graphics::Rectangle& rect, bool rescale)
 	result r = E_SUCCESS;
 	r = Container::Construct(rect, true);
 	TryReturn(E_SUCCESS == r, r , "[%s] Propagated.", GetErrorMessage(r));
-	__rescale = rescale;
+	_rescale = rescale;
 
+	return r;
+}
+
+
+BitmapControl*
+BitmapControl::ConstructFromPath(String filePath, const Tizen::Graphics::Rectangle& rect, bool rescale)
+{
+	AppLog("Testing: Constructing Bitmap");
+	result r = E_SUCCESS;
+
+	BitmapControl* bmpCtrl = null;
+
+	bmpCtrl = new (std::nothrow) BitmapControl();
+	r = bmpCtrl->Construct(filePath, rect, rescale);
+	TryCatch(r == E_SUCCESS, , "bmpCtrl->Construct failed:%s", GetErrorMessage(r));
+
+CATCH:
+	SetLastResult(r);
+	return bmpCtrl;
+}
+
+result
+BitmapControl::Construct(String filePath, const Tizen::Graphics::Rectangle& rect, bool rescale)
+{
+	result r = E_SUCCESS;
+	AppLog("Testing: Constructing img");
+	r = _img.Construct();
+
+	AppLog("Testing: Constructing button");
+	_ctrlButton = new Button();
+	_ctrlButton->Construct(rect);
+
+	_srcFilePath = filePath;
+	AppLog("Testing: Resetting file attributes");
+	FileAttributes attr;
+	this->ResetFileAtrributes();
+
+	if (_srcBitmap != null)
+	{
+		delete _srcBitmap;
+		_srcBitmap = null;
+	}
+
+	AppLog("Testing: Getting file attributes");
+	r = Tizen::Io::File::GetAttributes(_srcFilePath, attr);
+
+	_ctrlButton->SetShowState(false);
+	_ctrlButton->RequestRedraw(false);
+	AppLog("Testing: Changing button status");
+
+	_srcFileSize = attr.GetFileSize();
+
+	AppLog("Testing: Decoding image %ls", _srcFilePath.GetPointer());
+	BitmapPixelFormat pixelFmt = BITMAP_PIXEL_FORMAT_RGB565;
+	_srcBitmap = _img.DecodeN(_srcFilePath, pixelFmt);
+	TryReturn(r == E_SUCCESS, r, "[%s] Failed to construct image instance.", GetErrorMessage(r));
+	_srcWidth = _srcBitmap->GetWidth();
+	_srcHeight = _srcBitmap->GetHeight();
+
+	AppLog("Testing: Constructing container");
+	r = Container::Construct(rect, true);
+	TryReturn(E_SUCCESS == r, r , "[%s] Propagated.", GetErrorMessage(r));
+	_rescale = rescale;
+
+	// Remember to ->Clear() before setting bitmap and calling ->Draw() afterwards
+	AppLog("Testing: Setting bitmap");
+//	this->SetBitmap(*_srcBitmap);
+
+	AppLog("Testing: Complete");
 	return r;
 }
 
@@ -76,11 +157,11 @@ BitmapControl::SetBitmap(const Tizen::Graphics::Bitmap& bmp)
 
 	rect = GetBounds();
 
-	SAFE_DELETE(_pBmp);
+	SAFE_DELETE(_srcBitmap);
 
-	if (__rescale == true)
+	if (_rescale == true)
 	{
-
+		AppLog("Testing: resize bitmap");
 		xratio = (float) bmp.GetWidth() / (float) rect.width;
 		yratio = (float) bmp.GetHeight() / (float) rect.height;
 
@@ -88,9 +169,9 @@ BitmapControl::SetBitmap(const Tizen::Graphics::Bitmap& bmp)
 		rect.width = bmp.GetWidth();
 		rect.height = bmp.GetHeight();
 
-		_pBmp = new (std::nothrow) Bitmap();
-		r = _pBmp->Construct(bmp, rect);
-		TryCatch(r == E_SUCCESS, , "pNewBitmap->Construct failed:%s", GetErrorMessage(r));
+		_srcBitmap = new (std::nothrow) Bitmap();
+		r = _srcBitmap->Construct(bmp, rect);
+		TryCatch(r == E_SUCCESS, , "_srcBitmap->Construct failed:%s", GetErrorMessage(r));
 
 		ratio = xratio > yratio ? xratio : yratio;
 		if (ratio > 1.0)
@@ -100,8 +181,8 @@ BitmapControl::SetBitmap(const Tizen::Graphics::Bitmap& bmp)
 			// make resized image and display.
 			width = (int) ((float) bmp.GetWidth() / ratio);
 			height = (int) ((float) bmp.GetHeight() / ratio);
-			r = _pBmp->Scale(Dimension(width, height));
-			TryCatch(r == E_SUCCESS, , "pBmp->Scale:%s %d %d", GetErrorMessage(r), width, height);
+			r = _srcBitmap->Scale(Dimension(width, height));
+			TryCatch(r == E_SUCCESS, , "_srcBitmap->Scale:%s %d %d", GetErrorMessage(r), width, height);
 		}
 	}
 	else
@@ -112,14 +193,14 @@ BitmapControl::SetBitmap(const Tizen::Graphics::Bitmap& bmp)
 		int x = (bmp.GetWidth() - width) / 2;
 		int y = (bmp.GetHeight() - height) / 2;
 
-		_pBmp = new (std::nothrow) Bitmap();
-		r = _pBmp->Construct(bmp, Rectangle(x, y, width, height));
-		TryCatch(r == E_SUCCESS, , "pBmp->Construct:%s %d %d %d %d", GetErrorMessage(r), x, y, width, height);
+		_srcBitmap = new (std::nothrow) Bitmap();
+		r = _srcBitmap->Construct(bmp, Rectangle(x, y, width, height));
+		TryCatch(r == E_SUCCESS, , "_srcBitmap->Construct:%s %d %d %d %d", GetErrorMessage(r), x, y, width, height);
 	}
 	return r;
 
 CATCH:
-	SAFE_DELETE(_pBmp);
+	SAFE_DELETE(_srcBitmap);
 	return r;
 }
 
@@ -153,12 +234,12 @@ BitmapControl::OnDraw(void)
 
 	pCanvas->Clear();
 
-	if (_pBmp != null)
+	if (_srcBitmap != null)
 	{
-		x = (rect.width - _pBmp->GetWidth()) / 2;
-		y = (rect.height - _pBmp->GetHeight()) / 2;
+		x = (rect.width - _srcBitmap->GetWidth()) / 2;
+		y = (rect.height - _srcBitmap->GetHeight()) / 2;
 
-		r = pCanvas->DrawBitmap(Tizen::Graphics::Point(x, y), *_pBmp);
+		r = pCanvas->DrawBitmap(Tizen::Graphics::Point(x, y), *_srcBitmap);
 	}
 
 	pCanvas->Show();
@@ -166,4 +247,13 @@ BitmapControl::OnDraw(void)
 CATCH:
 	SAFE_DELETE(pCanvas);
 	return r;
+}
+
+
+void
+BitmapControl::ResetFileAtrributes(void)
+{
+	_srcWidth = 0;
+	_srcHeight = 0;
+	_srcFileSize = 0;
 }
