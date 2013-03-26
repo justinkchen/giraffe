@@ -21,7 +21,7 @@ public:
 	// Constructors
 	User();
 	virtual ~User();
-	void updateFromDictionary(Tizen::Base::Collection::HashMap *dictionary);
+	result updateFromDictionary(Tizen::Base::Collection::HashMap *dictionary);
 
 	// TODO: delete later, temp function to test w/o internet
 	void update();
