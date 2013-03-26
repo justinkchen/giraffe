@@ -7,7 +7,6 @@
 #include <FWeb.h>
 #include "User.h"
 #include "UserPopup.h"
-#include "UserListener.h"
 
 class ProjectGiraffeTab4 :
 	public Tizen::Ui::Controls::Panel,
@@ -15,7 +14,7 @@ class ProjectGiraffeTab4 :
 	public Tizen::Ui::IActionEventListener,
 	public Tizen::Ui::IKeypadEventListener,
 	public Tizen::Net::Http::IHttpTransactionEventListener,
-	public UserListener
+	public User::UserListener
 {
 public:
 	ProjectGiraffeTab4(void);

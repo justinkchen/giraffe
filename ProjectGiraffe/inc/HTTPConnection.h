@@ -36,6 +36,7 @@ extern const Tizen::Base::String kHTTPParamNameDay;
 extern const Tizen::Base::String kHTTPParamNameHour;
 extern const Tizen::Base::String kHTTPParamNameMinute;
 extern const Tizen::Base::String kHTTPParamNameSecond;
+extern const Tizen::Base::String kHTTPParamNameError;
 
 class HTTPConnection 
   : public Tizen::Net::Http::IHttpTransactionEventListener

@@ -21,22 +21,48 @@ Date::Date() :
 
 Date::~Date() {}
 
-void Date::updateFromDictionary(HashMap *dictionary)
+result Date::updateFromDictionary(HashMap *dictionary)
 {
-	if (dictionary) {
+	result success = E_FAILURE;
+	if (dictionary && !dictionary->ContainsKey(kHTTPParamNameError)) {
 		Double *dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameYear));
-		if (dblValue) _year = dblValue->ToInt();
+		if (dblValue) {
+			_year = dblValue->ToInt();
+			success = E_SUCCESS;
+		}
+
 		dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameMonth));
-		if (dblValue) _month = dblValue->ToInt();
+		if (dblValue) {
+			_month = dblValue->ToInt();
+			success = E_SUCCESS;
+		}
+
 		dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameDay));
-		if (dblValue) _day = dblValue->ToInt();
+		if (dblValue) {
+			_day = dblValue->ToInt();
+			success = E_SUCCESS;
+		}
+
 		dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameHour));
-		if (dblValue) _hour = dblValue->ToInt();
+		if (dblValue) {
+			_hour = dblValue->ToInt();
+			success = E_SUCCESS;
+		}
+
 		dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameMinute));
-		if (dblValue) _minute = dblValue->ToInt();
+		if (dblValue) {
+			_minute = dblValue->ToInt();
+			success = E_SUCCESS;
+		}
+
 		dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameSecond));
-		if (dblValue) _second = dblValue->ToInt();
+		if (dblValue) {
+			_second = dblValue->ToInt();
+			success = E_SUCCESS;
+		}
 	}
+
+	return success;
 }
 
 char *Date::monthString() {

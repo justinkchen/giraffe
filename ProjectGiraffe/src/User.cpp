@@ -35,33 +35,59 @@ User::~User() {
 	delete _listeners;
 }
 
-void
-User::updateFromDictionary(HashMap *dictionary)
+result User::updateFromDictionary(HashMap *dictionary)
 {
-	if (dictionary) {
+	result success = E_FAILURE;
+	if (dictionary && !dictionary->ContainsKey(kHTTPParamNameError)) {
 		Double *idValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameUserID));
-		if (idValue) _id = idValue->ToInt();
+		if (idValue) {
+			_id = idValue->ToInt();
+			success = E_SUCCESS;
+		}
+
 		String *fullnameValue = static_cast<String *>(dictionary->GetValue(kHTTPParamNameFullname));
-		if (fullnameValue) _fullname = *fullnameValue;
+		if (fullnameValue) {
+			_fullname = *fullnameValue;
+			success = E_SUCCESS;
+		}
+
 		String *usernameValue = static_cast<String *>(dictionary->GetValue(kHTTPParamNameUsername));
-		if (usernameValue) _username = *usernameValue;
+		if (usernameValue) {
+			_username = *usernameValue;
+			success = E_SUCCESS;
+		}
+
 		String *emailValue = static_cast<String *>(dictionary->GetValue(kHTTPParamNameEmail));
-		if (emailValue) _email = *emailValue;
+		if (emailValue) {
+			_email = *emailValue;
+			success = E_SUCCESS;
+		}
+
 		HashMap *dateDictionary = static_cast<HashMap *>(dictionary->GetValue(kHTTPParamNameDateCreated));
 		if (dateDictionary) {
 			_dateCreated = new Date();
-			_dateCreated->updateFromDictionary(dateDictionary);
+			result dateSuccess = _dateCreated->updateFromDictionary(dateDictionary);
+			if (IsFailed(dateSuccess)) {
+				delete _dateCreated;
+				_dateCreated = NULL;
+			} else {
+				success = E_SUCCESS;
+			}
 		}
 
-		if (_listeners) {
-			IEnumerator *iter = _listeners->GetEnumeratorN();
-			while (iter->MoveNext() == E_SUCCESS) {
-				UserListener *listener = static_cast<UserListener *>(iter->GetCurrent());
-				listener->onUserUpdate(this);
+		if (!IsFailed(success)) {
+			if (_listeners) {
+				IEnumerator *iter = _listeners->GetEnumeratorN();
+				while (iter->MoveNext() == E_SUCCESS) {
+					UserListener *listener = static_cast<UserListener *>(iter->GetCurrent());
+					listener->onUserUpdate(this);
+				}
+				delete iter;
 			}
-			delete iter;
 		}
 	}
+
+	return success;
 }
 
 void

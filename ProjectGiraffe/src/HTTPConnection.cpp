@@ -46,6 +46,7 @@ const String kHTTPParamNameDay = L"day";
 const String kHTTPParamNameHour = L"hour";
 const String kHTTPParamNameMinute = L"minute";
 const String kHTTPParamNameSecond = L"second";
+const String kHTTPParamNameError = L"error";
 
 
 HTTPConnection::HTTPConnection(HTTPConnectionListener *listener, const Tizen::Base::String methodName, Tizen::Net::Http::NetHttpMethod methodType, Tizen::Net::Http::HttpMultipartEntity *parameters) :

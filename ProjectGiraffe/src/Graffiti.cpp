@@ -32,39 +32,90 @@ Graffiti::~Graffiti() {
 	delete _listeners;
 }
 
-void Graffiti::updateFromDictionary(HashMap *dictionary)
+result Graffiti::updateFromDictionary(HashMap *dictionary)
 {
-	if (dictionary) {
+	result success = E_FAILURE;
+	if (dictionary && !dictionary->ContainsKey(kHTTPParamNameError)) {
 		Double *dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameLongitude));
-		if (dblValue) _longitude = dblValue->ToDouble();
+		if (dblValue) {
+			_longitude = dblValue->ToDouble();
+			success = E_SUCCESS;
+		}
+
 		dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameLatitude));
-		if (dblValue) _latitude = dblValue->ToDouble();
+		if (dblValue) {
+			_latitude = dblValue->ToDouble();
+			success = E_SUCCESS;
+		}
+
 		dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameDirectionX));
-		if (dblValue) _directionX = dblValue->ToDouble();
+		if (dblValue) {
+			_directionX = dblValue->ToDouble();
+			success = E_SUCCESS;
+		}
+
 		dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameDirectionY));
-		if (dblValue) _directionY = dblValue->ToDouble();
+		if (dblValue) {
+			_directionY = dblValue->ToDouble();
+			success = E_SUCCESS;
+		}
+
 		dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameDirectionZ));
-		if (dblValue) _directionZ = dblValue->ToDouble();
+		if (dblValue) {
+			_directionZ = dblValue->ToDouble();
+			success = E_SUCCESS;
+		}
+
 		dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameLikeCount));
-		if (dblValue) _likeCount = dblValue->ToInt();
+		if (dblValue) {
+			_likeCount = dblValue->ToInt();
+			success = E_SUCCESS;
+		}
 
 		String *textValue = static_cast<String *>(dictionary->GetValue(kHTTPParamNameText));
-		if (textValue) _text = *textValue;
+		if (textValue) {
+			_text = *textValue;
+			success = E_SUCCESS;
+		}
+
 		String *imageURLValue = static_cast<String *>(dictionary->GetValue(kHTTPParamNameImageURL));
-		if (imageURLValue) _imageURL = *imageURLValue;
+		if (imageURLValue) {
+			_imageURL = *imageURLValue;
+			success = E_SUCCESS;
+		}
+
 		Boolean *flaggedValue = static_cast<Boolean *>(dictionary->GetValue(kHTTPParamNameFlagged));
-		if (flaggedValue) _flagged = flaggedValue->ToBool();
+		if (flaggedValue) {
+			_flagged = flaggedValue->ToBool();
+			success = E_SUCCESS;
+		}
+
 		HashMap *dateDictionary = static_cast<HashMap *>(dictionary->GetValue(kHTTPParamNameDateCreated));
 		if (dateDictionary) {
 			_dateCreated = new Date();
-			_dateCreated->updateFromDictionary(dateDictionary);
+			result dateSuccess = _dateCreated->updateFromDictionary(dateDictionary);
+			if (IsFailed(dateSuccess)) {
+				delete _dateCreated;
+				_dateCreated = NULL;
+			} else {
+				success = E_SUCCESS;
+			}
 		}
+
 		HashMap *userDictionary = static_cast<HashMap *>(dictionary->GetValue(kHTTPParamNameUser));
 		if (userDictionary) {
 			_user = new User();
-			_user->updateFromDictionary(userDictionary);
+			result userSuccess = _user->updateFromDictionary(userDictionary);
+			if (IsFailed(userSuccess)) {
+				delete _user;
+				_user = NULL;
+			} else {
+				success = E_SUCCESS;
+			}
 		}
 	}
+
+	return success;
 }
 
 HashMap *Graffiti::parameterDictionary()
