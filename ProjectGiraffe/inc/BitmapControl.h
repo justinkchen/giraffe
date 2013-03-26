@@ -33,13 +33,15 @@ public:
 	BitmapControl(void);
 	virtual ~BitmapControl(void);
 
-	static BitmapControl* ConstructFromPath(Tizen::Base::String filePath, const Tizen::Graphics::Rectangle& rect, bool rescale = true);
 	static BitmapControl* ConstructN(Tizen::Ui::Control* pCtrl, bool rescale = true);
-	result Construct(Tizen::Base::String filePath, const Tizen::Graphics::Rectangle& rect, bool rescale);
 	result Construct(const Tizen::Graphics::Rectangle& rect, bool rescale);
 	result SetBitmap(const Tizen::Graphics::Bitmap& bmp);
 	result Clear(void);
 	void ResetFileAtrributes(void);
+
+	// Custom construction functions
+	static BitmapControl* ConstructFromPath(Tizen::Base::String filePath, const Tizen::Graphics::Rectangle& rect, bool rescale = true);
+	result Construct(Tizen::Base::String filePath, const Tizen::Graphics::Rectangle& rect, bool rescale);
 
 protected:
 	virtual result OnDraw(void);

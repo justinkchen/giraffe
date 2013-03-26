@@ -18,18 +18,40 @@ using namespace Tizen::Base::Collection;
 
 #define kDebugCloseButton 1
 
-LaunchPopup::LaunchPopup() {
+LaunchPopup::LaunchPopup()
+	: _locationFound(false),
+	  _animationFrameList(null),
+	  _launchAnimation(null),
+	  _titleBitmapControl(null),
+	  _logoBitmapControl(null)
+{
 	UiApp* currentApp = UiApp::GetInstance();
 	Frame* mainFrame = currentApp->GetFrame(L"GiraffeMainFrame");
 
 	_popupLayout.Construct();
 	Construct(_popupLayout, false, Dimension(mainFrame->GetBounds().width,mainFrame->GetBounds().height));
 
-	_locationFound = false;
 }
 
 LaunchPopup::~LaunchPopup() {
-	// TODO Auto-generated destructor stub
+	RemoveAllControls();
+
+	if(_animationFrameList != null){
+		delete[] _animationFrameList;
+		_animationFrameList = null;
+	}
+	if(_launchAnimation != null){
+		delete _launchAnimation;
+		_launchAnimation = null;
+	}
+	if(_logoBitmapControl != null){
+		delete _logoBitmapControl;
+		_logoBitmapControl = null;
+	}
+	if(_titleBitmapControl != null){
+		delete _titleBitmapControl;
+		_titleBitmapControl = null;
+	}
 }
 
 result
@@ -172,19 +194,23 @@ LaunchPopup::OnInitializing(void)
 		delete bitmap29;
 	}
 
+    Tizen::Base::String titleFilePath = App::GetInstance()->GetAppRootPath() + L"res/Image/project_title.jpg";
+    _titleBitmapControl = BitmapControl::ConstructFromPath(titleFilePath,Rectangle(0,GetClientAreaBounds().height/4,7*GetClientAreaBounds().width/8,80), true);
+    _titleBitmapControl->Draw();
+    AddControl(*_titleBitmapControl);
+
+    // Adding logo
+    Tizen::Base::String logoFilePath = App::GetInstance()->GetAppRootPath() + L"res/Image/giraffe_graffiti-t2.jpg";
+    _logoBitmapControl = BitmapControl::ConstructFromPath(logoFilePath,Rectangle(0, 1*GetClientAreaBounds().height/2, 500,350), true);
+    _logoBitmapControl->Draw();
+    AddControl(*_logoBitmapControl);
+
     _launchAnimation = new Animation();
     _launchAnimation->Construct(Rectangle(0,5*GetClientAreaBounds().height/6,100,100), *_animationFrameList);
     _launchAnimation->SetRepeatCount(5);
     _launchAnimation->AddAnimationEventListener(*this);
     AddControl(*_launchAnimation);
     _launchAnimation->Play();
-
-    // Creates instances of Label and an instance of Button
-    Label* titleLabel = new Label();
-    titleLabel->Construct(Rectangle(0,GetClientAreaBounds().height/4,GetClientAreaBounds().width,100), L"Project Giraffe");
-    titleLabel->SetTextConfig(75, LABEL_TEXT_STYLE_BOLD);
-    titleLabel->SetBackgroundColor(Color(0x00, 0x00, 0x00, 0x00));
-    AddControl(*titleLabel);
 
     Label* subtitleLabel = new Label();
     subtitleLabel->Construct(Rectangle(0,0,GetClientAreaBounds().width,100), L"Keep moving!");
@@ -205,12 +231,6 @@ LaunchPopup::OnInitializing(void)
     closeButton->AddActionEventListener(*this);
     closeButton->SetTextSize(20);
 
-    // Adding logo
-    Tizen::Base::String filePath = App::GetInstance()->GetAppRootPath() + L"res/Image/tizen_logo.jpg";
-    _bitmapControl = BitmapControl::ConstructFromPath(filePath,Rectangle(0, 3*GetClientAreaBounds().height/5, 175,175), true);
-    _bitmapControl->Draw();
-    AddControl(*_bitmapControl);
-
 #if kDebugCloseButton
     AddControl(*closeButton);
 #else
@@ -219,13 +239,13 @@ LaunchPopup::OnInitializing(void)
 
     // Sets relations each label and button
     _popupLayout.SetCenterAligned(*_launchAnimation, CENTER_ALIGN_HORIZONTAL);
-    _popupLayout.SetCenterAligned(*_bitmapControl, CENTER_ALIGN_HORIZONTAL);
-    _popupLayout.SetCenterAligned(*titleLabel, CENTER_ALIGN_HORIZONTAL);
+    _popupLayout.SetCenterAligned(*_titleBitmapControl, CENTER_ALIGN_HORIZONTAL);
+    _popupLayout.SetCenterAligned(*_logoBitmapControl, CENTER_ALIGN_HORIZONTAL);
     _popupLayout.SetCenterAligned(*subtitleLabel, CENTER_ALIGN_HORIZONTAL);
     _popupLayout.SetCenterAligned(*loadingLabel, CENTER_ALIGN_HORIZONTAL);
     _popupLayout.SetCenterAligned(*closeButton, CENTER_ALIGN_HORIZONTAL);
 
-    _popupLayout.SetRelation(*subtitleLabel, *titleLabel, RECT_EDGE_RELATION_TOP_TO_BOTTOM);
+    _popupLayout.SetRelation(*subtitleLabel, *_titleBitmapControl, RECT_EDGE_RELATION_TOP_TO_BOTTOM);
     _popupLayout.SetMargin(*subtitleLabel, 10, 10, 10, 10);
 
     return r;
@@ -251,6 +271,7 @@ LaunchPopup::ShowPopup(void)
 void
 LaunchPopup::HidePopup(void)
 {
+	_launchAnimation->Pause();
     SetShowState(false);
     Invalidate(true);
 }

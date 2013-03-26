@@ -45,7 +45,7 @@ ProjectGiraffeTab3::OnInitializing(void)
 	__pButton = new Button();
 	int submitButtonW = 500;
 	int submitButtonH = 150;
-	__pButton->Construct(Rectangle((pForm->GetClientAreaBounds().width-submitButtonW)/2, 700, submitButtonW, submitButtonH), L"Submit Button");
+	__pButton->Construct(Rectangle((pForm->GetClientAreaBounds().width-submitButtonW)/2, 700, submitButtonW, submitButtonH), L"Post Graffiti");
 	__pButton->SetActionId(ID_BUTTON);
 	__pButton->AddActionEventListener(*this);
 	AddControl(*__pButton);

@@ -49,7 +49,8 @@ private:
 
 	Tizen::Base::Collection::ArrayList* _animationFrameList;
 	Tizen::Ui::Controls::Animation* _launchAnimation;
-	BitmapControl* _bitmapControl;
+	BitmapControl* _logoBitmapControl;
+	BitmapControl* _titleBitmapControl;
 };
 
 #endif /* LAUNCHPOPUP_H_ */
