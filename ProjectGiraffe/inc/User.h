@@ -24,9 +24,6 @@ public:
 	virtual ~User();
 	void updateFromDictionary(Tizen::Base::Collection::HashMap *dictionary);
 
-	// TODO: delete later, temp function to test w/o internet
-	void update();
-
 	// Accessors
 	unsigned int id() { return _id; }
 	void setId(unsigned int id) { _id = id; }
