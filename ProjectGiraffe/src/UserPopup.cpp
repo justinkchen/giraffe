@@ -16,6 +16,17 @@ using namespace Tizen::Ui::Controls;
 using namespace Tizen::Net::Http;
 using namespace Tizen::Web::Json;
 
+UserPopup *userPopupSingleton = NULL;
+
+UserPopup *
+UserPopup::popup(void)
+{
+	if (!userPopupSingleton) {
+		userPopupSingleton = new UserPopup();
+	}
+	return userPopupSingleton;
+}
+
 UserPopup::UserPopup() {
 	Construct(true, Dimension(600,800));
 
@@ -215,6 +226,15 @@ UserPopup::submitLogin(void)
 		showError("Please enter a password.");
 		return;
 	}
+
+	/* temp dummy login */
+	User *cUser = User::currentUser();
+	cUser->setId(3);
+	cUser->setUsername("bryan");
+	cUser->setEmail("bbch@stanford.edu");
+	cUser->update();
+	hidePopup();
+	return;
 
 	// Disable login button
 	Button* loginButton = (Button *)GetControl("loginButton");

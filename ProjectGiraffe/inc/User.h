@@ -9,6 +9,7 @@
 #define USER_H_
 
 #include <FBase.h>
+#include "UserListener.h"
 class Date;
 
 class User :
@@ -18,18 +19,13 @@ public:
 	// Current user
 	static User *currentUser(void);
 
-	// UserListeners
-	class UserListener :
-		public Tizen::Base::Object
-	{
-	public:
-		virtual void onUserUpdate(User *user) {}
-	};
-
 	// Constructors
 	User();
 	virtual ~User();
 	void updateFromDictionary(Tizen::Base::Collection::HashMap *dictionary);
+
+	// TODO: delete later, temp function to test w/o internet
+	void update();
 
 	// Accessors
 	unsigned int id() { return _id; }

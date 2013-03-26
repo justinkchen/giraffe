@@ -1,0 +1,18 @@
+
+
+app.get('/user/logout', function(req, res) {
+	// req.logout()?
+});
+
+app.post('/user/update', function(req, res) {
+	// select * from users where id = req.body.id
+	// use token?
+	if (req.body.username && req.body.email)
+	// UPDATE users WHERE id = ? SET username, email VALUES (?,?)
+	else if (req.body.oldPassword && req.body.password)
+	// SELECT password_hash FROM users WHERE id = ?
+	// check password bcrypt.checkPassword(password_hash, req.body.oldPassword)
+	   // UPDATE users WHERE id = ? SET password_hash VALUES (?) bcrypt.hash(req.body.password)
+	// else
+	   // res.send({error: "Password incorrect."})
+});
