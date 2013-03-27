@@ -227,15 +227,6 @@ UserPopup::submitLogin(void)
 		return;
 	}
 
-	/* temp dummy login */
-	User *cUser = User::currentUser();
-	cUser->setId(3);
-	cUser->setUsername("bryan");
-	cUser->setEmail("bbch@stanford.edu");
-	cUser->update();
-	hidePopup();
-	return;
-
 	// Disable login button
 	Button* loginButton = (Button *)GetControl("loginButton");
 	loginButton->SetEnabled(false);
@@ -251,7 +242,7 @@ UserPopup::submitLogin(void)
 	pHttpSession = new HttpSession();
 
 	// HttpSession construction.
-	pHttpSession->Construct(NET_HTTP_SESSION_MODE_NORMAL, pProxyAddr, hostAddr, null);
+	pHttpSession->Construct(NET_HTTP_SESSION_MODE_NORMAL, pProxyAddr, hostAddr, null, NET_HTTP_COOKIE_FLAG_ALWAYS_AUTOMATIC);
 
 	// Open a new HttpTransaction.
 	pHttpTransaction = pHttpSession->OpenTransactionN(); //TODO: figure out NET_HTTP_AUTH_WWW_BASIC
@@ -322,7 +313,7 @@ UserPopup::submitSignup(void)
 	pHttpSession = new HttpSession();
 
 	// HttpSession construction.
-	pHttpSession->Construct(NET_HTTP_SESSION_MODE_NORMAL, pProxyAddr, hostAddr, null);
+	pHttpSession->Construct(NET_HTTP_SESSION_MODE_NORMAL, pProxyAddr, hostAddr, null, NET_HTTP_COOKIE_FLAG_ALWAYS_AUTOMATIC);
 
 	// Open a new HttpTransaction.
 	pHttpTransaction = pHttpSession->OpenTransactionN(); //TODO: figure out NET_HTTP_AUTH_WWW_BASIC

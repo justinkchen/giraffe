@@ -7,6 +7,7 @@
 #include <FWeb.h>
 #include "User.h"
 #include "UserPopup.h"
+#include "JsonParser.h"
 
 class ProjectGiraffeTab4 :
 	public Tizen::Ui::Controls::Panel,
@@ -59,6 +60,11 @@ private:
 
 	void showLoginButton(void);
 	void showProfile(void);
+
+	void updateUser(void);
+	void updatePassword(void);
+
+	void showError(const Tizen::Base::String &errorMessage);
 };
 
 #endif // _PROJECTGIRAFFE_TAB4_H_

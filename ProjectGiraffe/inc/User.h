@@ -23,9 +23,6 @@ public:
 	virtual ~User();
 	result updateFromDictionary(Tizen::Base::Collection::HashMap *dictionary);
 
-	// TODO: delete later, temp function to test w/o internet
-	void update();
-
 	// User listener class
 	class UserListener :
 		public Tizen::Base::Object

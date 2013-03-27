@@ -7,6 +7,7 @@ using namespace Tizen::Ui;
 using namespace Tizen::Ui::Controls;
 using namespace Tizen::Ui::Scenes;
 using namespace Tizen::Base;
+using namespace Tizen::Base::Collection;
 using namespace Tizen::Net::Http;
 using namespace Tizen::Web::Json;
 using namespace ControlUtil;
@@ -103,8 +104,6 @@ ProjectGiraffeTab4::showProfile(void)
 	Label* usernameLabel = new Label();
 	usernameLabel->Construct(Rectangle(10, 260, 300, 40), "Username:");
 	usernameLabel->SetTextConfig(32, LABEL_TEXT_STYLE_BOLD);
-	AppLogTag("user", "style %d", ALIGNMENT_MIDDLE == usernameLabel->GetTextVerticalAlignment());
-	AppLogTag("user", "size %d", usernameLabel->GetTextSize());
 	usernameLabel->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
 	usernameLabel->SetName("usernameLabel");
 	scrollPanel->AddControl(*usernameLabel);
@@ -119,8 +118,6 @@ ProjectGiraffeTab4::showProfile(void)
 
 	Label* emailLabel = new Label();
 	emailLabel->Construct(Rectangle(10, 400, 300, 40), "Email:");
-	AppLogTag("user", "style %d", LABEL_TEXT_STYLE_BOLD == emailLabel->GetTextStyle());
-	AppLogTag("user", "size %d", emailLabel->GetTextSize());
 	emailLabel->SetTextConfig(32, LABEL_TEXT_STYLE_BOLD);
 	emailLabel->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
 	emailLabel->SetName("emailLabel");
@@ -196,10 +193,152 @@ ProjectGiraffeTab4::showProfile(void)
 	spacer->Construct(Rectangle(0, 1140, this->GetBounds().width, 10), "");
 	spacer->SetName("spacer");
 	scrollPanel->AddControl(*spacer);
+	scrollPanel->SetName("scrollPanel");
+
+	// Error label
+	/*
+	Label* errorLabel = new Label();
+	errorLabel->Construct(Rectangle(0, 0, this->GetBounds().width, 40), L"");
+	errorLabel->SetTextColor(Color(0xFF, 0x00, 0x00));
+	errorLabel->SetName("errorLabel");
+	AddControl(*errorLabel);
+	*/
 
 	AddControl(*scrollPanel);
 
 	Draw();
+}
+
+void
+ProjectGiraffeTab4::updateUser(void)
+{
+	// Validators
+	String username = ((EditField *)GetControl("usernameField", true))->GetText();
+	String email = ((EditField *)GetControl("emailField", true))->GetText();
+
+	// Check not blank
+	String blank("");
+	if (username.Equals(blank)) {
+		showError("Please enter a username.");
+		return;
+	} else if (email.Equals(blank)) {
+		showError("Please enter an email.");
+		return;
+	} else if (username.Equals(User::currentUser()->username()) && email.Equals(User::currentUser()->email())) {
+		showError("Username and email unchanged.");
+		return;
+	}
+
+	// Disable update button
+	Button* updateButton1 = (Button *)GetControl("updateButton1", true);
+	updateButton1->SetEnabled(false);
+	updateButton1->SetText("Updating...");
+
+	HttpSession* pHttpSession = null;
+	HttpTransaction* pHttpTransaction = null;
+	String* pProxyAddr = null;
+	String hostAddr = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/";
+	String uri = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/user/update";
+
+	AppLog("Starting the HTTP Session");
+	pHttpSession = new HttpSession();
+
+	// HttpSession construction.
+	pHttpSession->Construct(NET_HTTP_SESSION_MODE_NORMAL, pProxyAddr, hostAddr, null, NET_HTTP_COOKIE_FLAG_ALWAYS_AUTOMATIC);
+
+	// Open a new HttpTransaction.
+	pHttpTransaction = pHttpSession->OpenTransactionN(); //TODO: figure out NET_HTTP_AUTH_WWW_BASIC
+
+	// Add a listener.
+	pHttpTransaction->AddHttpTransactionListener(*this);
+
+	// Get an HTTP request.
+	HttpRequest* pHttpRequest = pHttpTransaction->GetRequest();
+
+	// Set the HTTP method and URI:
+	pHttpRequest->SetMethod(NET_HTTP_METHOD_PUT);
+	pHttpRequest->SetUri(uri);
+
+	// Create HTTP multipart entity
+	HttpMultipartEntity* pMultipartEntity = new HttpMultipartEntity();
+	pMultipartEntity->Construct();
+	pMultipartEntity->AddStringPart(L"username", username);
+	pMultipartEntity->AddStringPart(L"email", email);
+	pHttpRequest->SetEntity(*pMultipartEntity);
+
+	// Submit the request:
+	pHttpTransaction->Submit();
+}
+
+void
+ProjectGiraffeTab4::updatePassword(void)
+{
+	// Validators
+	String oldPassword = ((EditField *)GetControl("oldPasswordField", true))->GetText();
+	String password = ((EditField *)GetControl("passwordField", true))->GetText();
+	String confirmPassword = ((EditField *)GetControl("confirmPasswordField", true))->GetText();
+
+	// Check not blank
+	String blank("");
+	if (oldPassword.Equals(blank)) {
+		showError("Please enter current password.");
+		return;
+	} else if (password.Equals(blank)) {
+		showError("Please enter new password.");
+		return;
+	} else if (confirmPassword.Equals(blank)) {
+		showError("Please enter new password confirmation.");
+		return;
+	} else if (!password.Equals(confirmPassword)) {
+		showError("New passwords do not match.");
+		return;
+	}
+
+	// Disable update button
+	Button* updateButton2 = (Button *)GetControl("updateButton2", true);
+	updateButton2->SetEnabled(false);
+	updateButton2->SetText("Changing...");
+
+	HttpSession* pHttpSession = null;
+	HttpTransaction* pHttpTransaction = null;
+	String* pProxyAddr = null;
+	String hostAddr = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/";
+	String uri = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/user/update";
+
+	AppLog("Starting the HTTP Session");
+	pHttpSession = new HttpSession();
+
+	// HttpSession construction.
+	pHttpSession->Construct(NET_HTTP_SESSION_MODE_NORMAL, pProxyAddr, hostAddr, null, NET_HTTP_COOKIE_FLAG_ALWAYS_AUTOMATIC);
+
+	// Open a new HttpTransaction.
+	pHttpTransaction = pHttpSession->OpenTransactionN(); //TODO: figure out NET_HTTP_AUTH_WWW_BASIC
+
+	// Add a listener.
+	pHttpTransaction->AddHttpTransactionListener(*this);
+
+	// Get an HTTP request.
+	HttpRequest* pHttpRequest = pHttpTransaction->GetRequest();
+
+	// Set the HTTP method and URI:
+	pHttpRequest->SetMethod(NET_HTTP_METHOD_PUT);
+	pHttpRequest->SetUri(uri);
+
+	// Create HTTP multipart entity
+	HttpMultipartEntity* pMultipartEntity = new HttpMultipartEntity();
+	pMultipartEntity->Construct();
+	pMultipartEntity->AddStringPart(L"oldPassword", oldPassword);
+	pMultipartEntity->AddStringPart(L"password", password);
+	pHttpRequest->SetEntity(*pMultipartEntity);
+
+	// Submit the request:
+	pHttpTransaction->Submit();
+}
+
+void
+ProjectGiraffeTab4::showError(const String &errorMessage)
+{
+
 }
 
 void
@@ -240,10 +379,10 @@ ProjectGiraffeTab4::OnActionPerformed(const Control& source, int actionId)
 		case ID_BUTTON_AVATAR:
 			break;
 		case ID_BUTTON_UPDATE1:
-//			updateUser();
+			updateUser();
 			break;
 		case ID_BUTTON_UPDATE2:
-//			updateUser();
+			updatePassword();
 			break;
 		default:
 			break;
@@ -323,33 +462,57 @@ ProjectGiraffeTab4::OnTransactionHeaderCompleted(HttpSession &httpSession, HttpT
 void
 ProjectGiraffeTab4::OnTransactionReadyToRead(HttpSession &httpSession, HttpTransaction &httpTransaction, int availableBodyLen)
 {
-	HttpResponse* pHttpResponse = httpTransaction.GetResponse();
-	HttpHeader* pHttpHeader = null;
+	HttpResponse* httpResponse = httpTransaction.GetResponse();
+	HttpHeader* httpHeader = null;
 	AppLog("Checking HTTP Status Code");
-	if (pHttpResponse->GetHttpStatusCode() == HTTP_STATUS_OK)
+	if (httpResponse->GetHttpStatusCode() == HTTP_STATUS_OK)
 	{
-		ByteBuffer* pBody = null;
-		String statusText = pHttpResponse->GetStatusText();
-		String version = pHttpResponse->GetVersion();
+		ByteBuffer* body = null;
+		String statusText = httpResponse->GetStatusText();
+		String version = httpResponse->GetVersion();
 
-		pHttpHeader = pHttpResponse->GetHeader();
-		pBody = pHttpResponse->ReadBodyN();
-		//delete pBody;
+		httpHeader = httpResponse->GetHeader();
+		body = httpResponse->ReadBodyN();
 
 		//Parses from ByteBuffer
-		IJsonValue* pValue = JsonParser::ParseN(*pBody);
+		IJsonValue* jsonValue = JsonParser::ParseN(*body);
+
+		// Convert jsonValue to hashmap
+		HashMap* dict = JSONParser::dictionaryForJSONValue(jsonValue);
 
 		// Converts the pValue to JsonObject
-		JsonObject* pJsonObject = static_cast<JsonObject*>(pValue);
+		String userKey("user");
+		String errorKey("error");
+		if (dict->ContainsKey(userKey)) {
+			HashMap *userDict = (HashMap *)dict->GetValue(userKey);
+			User::currentUser()->updateFromDictionary(userDict);
 
-		AppLog("Received HTTP response.");
+			showProfile();
+		} else if (dict->ContainsKey(errorKey)) {
+			String *errorMessage = (String *)dict->GetValue(errorKey);
 
-//		TraverseFunction(pValue);
+			// Enable update button 1 and 2
+			Button* updateButton1 = (Button *)GetControl("updateButton1");
+			if (updateButton1 != NULL) {
+				updateButton1->SetEnabled(true);
+				updateButton1->SetText("Update");
+			}
 
-		pJsonObject->RemoveAll(true);
-		delete pJsonObject;
-		delete pBody;
-//		delete pValue;
+			Button* updateButton2 = (Button *)GetControl("updateButton2");
+			if (updateButton2 != NULL) {
+				updateButton2->SetEnabled(true);
+				updateButton2->SetText("Change Password");
+			}
+
+			// Flash error message
+			showError(*errorMessage);
+
+			Draw();
+		}
+
+		delete body;
+		delete jsonValue;
+		delete dict;
 	}else{
 		AppLog("HTTP Status not OK");
 	}
