@@ -21,6 +21,7 @@ public:
 	// Constructors
 	User();
 	virtual ~User();
+
 	result updateFromDictionary(Tizen::Base::Collection::HashMap *dictionary);
 
 	// User listener class

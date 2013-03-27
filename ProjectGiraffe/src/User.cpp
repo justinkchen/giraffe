@@ -14,7 +14,8 @@ using namespace Tizen::Base::Collection;
 
 User *currentUserSingleton = NULL;
 
-User *User::currentUser()
+User *
+User::currentUser()
 {
 	if (!currentUserSingleton) {
 		currentUserSingleton = new User();
@@ -35,7 +36,8 @@ User::~User() {
 	delete _listeners;
 }
 
-result User::updateFromDictionary(HashMap *dictionary)
+result
+User::updateFromDictionary(HashMap *dictionary)
 {
 	result success = E_FAILURE;
 	if (dictionary && !dictionary->ContainsKey(kHTTPParamNameError)) {
@@ -92,7 +94,8 @@ result User::updateFromDictionary(HashMap *dictionary)
 	return success;
 }
 
-HashMap *User::parameterDictionary()
+HashMap *
+User::parameterDictionary()
 {
 	HashMap *parameters = new HashMap(SingleObjectDeleter);
 	parameters->Construct();
@@ -106,7 +109,8 @@ HashMap *User::parameterDictionary()
 	return parameters;
 }
 
-void User::addListener(UserListener *listener)
+void
+User::addListener(UserListener *listener)
 {
 	if (listener) {
 		if (!_listeners) {
@@ -117,7 +121,8 @@ void User::addListener(UserListener *listener)
 	}
 }
 
-void User::removeListener(UserListener *listener)
+void
+User::removeListener(UserListener *listener)
 {
 	if (listener && _listeners) {
 		_listeners->Remove(*listener);
