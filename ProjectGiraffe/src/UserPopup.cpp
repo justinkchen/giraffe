@@ -507,6 +507,23 @@ UserPopup::OnTransactionReadyToRead(HttpSession &httpSession, HttpTransaction &h
 			AppLogTag("cookie", "user");
 
 			User::currentUser()->updateFromDictionary(userDict);
+
+			// Enable login button
+			Button* loginButton = (Button *)GetControl("loginButton");
+			if (loginButton != NULL) {
+				loginButton->SetEnabled(true);
+				loginButton->SetText("Log In");
+			}
+
+			// Enable signup button
+			Button* signupButton = (Button *)GetControl("signupButton");
+			if (signupButton != NULL) {
+				signupButton->SetEnabled(true);
+				signupButton->SetText("Sign Up");
+			}
+
+			Draw();
+
 			hidePopup();
 		} else if (dict->ContainsKey(errorKey)) {
 			String *errorMessage = (String *)dict->GetValue(errorKey);

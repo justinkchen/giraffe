@@ -92,11 +92,18 @@ ProjectGiraffeTab4::showProfile(void)
 
 	//add scroll panel
 	ScrollPanel *scrollPanel = new ScrollPanel();
-	scrollPanel->Construct(this->GetBounds());
+	scrollPanel->Construct(GetBounds());
 
 	User *cUser = User::currentUser();
 
 	// logout button
+	Button* logoutButton = new Button();
+	logoutButton->Construct(Rectangle(GetBounds().width/2 + 30, 10, 300, 80), "Logout");
+//	centerHorizontally(updateButton1, this);
+	logoutButton->SetName("logoutButton");
+	logoutButton->SetActionId(ID_BUTTON_LOGOUT);
+	logoutButton->AddActionEventListener(*this);
+	scrollPanel->AddControl(*logoutButton);
 
 	// Avatar button? image?
 	// Full name
@@ -234,40 +241,40 @@ ProjectGiraffeTab4::updateUser(void)
 	updateButton1->SetEnabled(false);
 	updateButton1->SetText("Updating...");
 
-	HttpSession* pHttpSession = null;
-	HttpTransaction* pHttpTransaction = null;
-	String* pProxyAddr = null;
+	HttpSession* httpSession = null;
+	HttpTransaction* httpTransaction = null;
+	String* proxyAddr = null;
 	String hostAddr = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/";
 	String uri = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/user/update";
 
 	AppLog("Starting the HTTP Session");
-	pHttpSession = new HttpSession();
+	httpSession = new HttpSession();
 
 	// HttpSession construction.
-	pHttpSession->Construct(NET_HTTP_SESSION_MODE_NORMAL, pProxyAddr, hostAddr, null, NET_HTTP_COOKIE_FLAG_ALWAYS_AUTOMATIC);
+	httpSession->Construct(NET_HTTP_SESSION_MODE_NORMAL, proxyAddr, hostAddr, null, NET_HTTP_COOKIE_FLAG_ALWAYS_AUTOMATIC);
 
 	// Open a new HttpTransaction.
-	pHttpTransaction = pHttpSession->OpenTransactionN(); //TODO: figure out NET_HTTP_AUTH_WWW_BASIC
+	httpTransaction = httpSession->OpenTransactionN(); //TODO: figure out NET_HTTP_AUTH_WWW_BASIC
 
 	// Add a listener.
-	pHttpTransaction->AddHttpTransactionListener(*this);
+	httpTransaction->AddHttpTransactionListener(*this);
 
 	// Get an HTTP request.
-	HttpRequest* pHttpRequest = pHttpTransaction->GetRequest();
+	HttpRequest* httpRequest = httpTransaction->GetRequest();
 
 	// Set the HTTP method and URI:
-	pHttpRequest->SetMethod(NET_HTTP_METHOD_PUT);
-	pHttpRequest->SetUri(uri);
+	httpRequest->SetMethod(NET_HTTP_METHOD_PUT);
+	httpRequest->SetUri(uri);
 
 	// Create HTTP multipart entity
-	HttpMultipartEntity* pMultipartEntity = new HttpMultipartEntity();
-	pMultipartEntity->Construct();
-	pMultipartEntity->AddStringPart(L"username", username);
-	pMultipartEntity->AddStringPart(L"email", email);
-	pHttpRequest->SetEntity(*pMultipartEntity);
+	HttpMultipartEntity* multipartEntity = new HttpMultipartEntity();
+	multipartEntity->Construct();
+	multipartEntity->AddStringPart(L"username", username);
+	multipartEntity->AddStringPart(L"email", email);
+	httpRequest->SetEntity(*multipartEntity);
 
 	// Submit the request:
-	pHttpTransaction->Submit();
+	httpTransaction->Submit();
 }
 
 void
@@ -299,40 +306,72 @@ ProjectGiraffeTab4::updatePassword(void)
 	updateButton2->SetEnabled(false);
 	updateButton2->SetText("Changing...");
 
-	HttpSession* pHttpSession = null;
-	HttpTransaction* pHttpTransaction = null;
-	String* pProxyAddr = null;
+	HttpSession* httpSession = null;
+	HttpTransaction* httpTransaction = null;
+	String* proxyAddr = null;
 	String hostAddr = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/";
 	String uri = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/user/update";
 
 	AppLog("Starting the HTTP Session");
-	pHttpSession = new HttpSession();
+	httpSession = new HttpSession();
 
 	// HttpSession construction.
-	pHttpSession->Construct(NET_HTTP_SESSION_MODE_NORMAL, pProxyAddr, hostAddr, null, NET_HTTP_COOKIE_FLAG_ALWAYS_AUTOMATIC);
+	httpSession->Construct(NET_HTTP_SESSION_MODE_NORMAL, proxyAddr, hostAddr, null, NET_HTTP_COOKIE_FLAG_ALWAYS_AUTOMATIC);
 
 	// Open a new HttpTransaction.
-	pHttpTransaction = pHttpSession->OpenTransactionN(); //TODO: figure out NET_HTTP_AUTH_WWW_BASIC
+	httpTransaction = httpSession->OpenTransactionN(); //TODO: figure out NET_HTTP_AUTH_WWW_BASIC
 
 	// Add a listener.
-	pHttpTransaction->AddHttpTransactionListener(*this);
+	httpTransaction->AddHttpTransactionListener(*this);
 
 	// Get an HTTP request.
-	HttpRequest* pHttpRequest = pHttpTransaction->GetRequest();
+	HttpRequest* httpRequest = httpTransaction->GetRequest();
 
 	// Set the HTTP method and URI:
-	pHttpRequest->SetMethod(NET_HTTP_METHOD_PUT);
-	pHttpRequest->SetUri(uri);
+	httpRequest->SetMethod(NET_HTTP_METHOD_PUT);
+	httpRequest->SetUri(uri);
 
 	// Create HTTP multipart entity
-	HttpMultipartEntity* pMultipartEntity = new HttpMultipartEntity();
-	pMultipartEntity->Construct();
-	pMultipartEntity->AddStringPart(L"oldPassword", oldPassword);
-	pMultipartEntity->AddStringPart(L"password", password);
-	pHttpRequest->SetEntity(*pMultipartEntity);
+	HttpMultipartEntity* multipartEntity = new HttpMultipartEntity();
+	multipartEntity->Construct();
+	multipartEntity->AddStringPart(L"oldPassword", oldPassword);
+	multipartEntity->AddStringPart(L"password", password);
+	httpRequest->SetEntity(*multipartEntity);
 
 	// Submit the request:
-	pHttpTransaction->Submit();
+	httpTransaction->Submit();
+}
+
+void
+ProjectGiraffeTab4::logout(void)
+{
+	HttpSession* httpSession = null;
+	HttpTransaction* httpTransaction = null;
+	String* proxyAddr = null;
+	String hostAddr = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/";
+	String uri = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/user/logout";
+
+	AppLog("Starting the HTTP Session");
+	httpSession = new HttpSession();
+
+	// HttpSession construction.
+	httpSession->Construct(NET_HTTP_SESSION_MODE_NORMAL, proxyAddr, hostAddr, null, NET_HTTP_COOKIE_FLAG_ALWAYS_AUTOMATIC);
+
+	// Open a new HttpTransaction.
+	httpTransaction = httpSession->OpenTransactionN(); //TODO: figure out NET_HTTP_AUTH_WWW_BASIC
+
+	// Add a listener.
+	httpTransaction->AddHttpTransactionListener(*this);
+
+	// Get an HTTP request.
+	HttpRequest* httpRequest = httpTransaction->GetRequest();
+
+	// Set the HTTP method and URI:
+	httpRequest->SetMethod(NET_HTTP_METHOD_GET);
+	httpRequest->SetUri(uri);
+
+	// Submit the request:
+	httpTransaction->Submit();
 }
 
 void
@@ -376,13 +415,16 @@ ProjectGiraffeTab4::OnActionPerformed(const Control& source, int actionId)
 		case ID_BUTTON_LOGIN:
 			UserPopup::popup()->showPopup();
 			break;
-		case ID_BUTTON_AVATAR:
+		case ID_BUTTON_LOGOUT:
+			logout();
 			break;
 		case ID_BUTTON_UPDATE1:
 			updateUser();
 			break;
 		case ID_BUTTON_UPDATE2:
 			updatePassword();
+			break;
+		case ID_BUTTON_AVATAR:
 			break;
 		default:
 			break;
@@ -482,12 +524,17 @@ ProjectGiraffeTab4::OnTransactionReadyToRead(HttpSession &httpSession, HttpTrans
 
 		// Converts the pValue to JsonObject
 		String userKey("user");
+		String logoutKey("logout");
 		String errorKey("error");
 		if (dict->ContainsKey(userKey)) {
 			HashMap *userDict = (HashMap *)dict->GetValue(userKey);
 			User::currentUser()->updateFromDictionary(userDict);
 
 			showProfile();
+		} else if (dict->ContainsKey(logoutKey)) {
+//			User::currentUser()->logout(); reset currentUser
+			// clear cookies?
+			showLoginButton();
 		} else if (dict->ContainsKey(errorKey)) {
 			String *errorMessage = (String *)dict->GetValue(errorKey);
 

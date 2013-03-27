@@ -54,15 +54,18 @@ public:
 
 private:
 	static const int ID_BUTTON_LOGIN = 401;
-	static const int ID_BUTTON_AVATAR = 402;
+	static const int ID_BUTTON_LOGOUT = 402;
 	static const int ID_BUTTON_UPDATE1 = 403;
 	static const int ID_BUTTON_UPDATE2 = 404;
+	static const int ID_BUTTON_AVATAR = 405;
 
 	void showLoginButton(void);
 	void showProfile(void);
 
 	void updateUser(void);
 	void updatePassword(void);
+
+	void logout(void);
 
 	void showError(const Tizen::Base::String &errorMessage);
 };
