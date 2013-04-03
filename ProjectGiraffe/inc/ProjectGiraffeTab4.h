@@ -7,6 +7,7 @@
 #include <FWeb.h>
 #include "User.h"
 #include "UserPopup.h"
+#include "StatusPopup.h"
 #include "JsonParser.h"
 
 class ProjectGiraffeTab4 :
@@ -67,7 +68,7 @@ private:
 
 	void logout(void);
 
-	void showError(const Tizen::Base::String &errorMessage);
+	void showStatus(const Tizen::Base::String &statusMessage, bool isError);
 };
 
 #endif // _PROJECTGIRAFFE_TAB4_H_

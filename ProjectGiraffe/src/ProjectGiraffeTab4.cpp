@@ -202,15 +202,6 @@ ProjectGiraffeTab4::showProfile(void)
 	scrollPanel->AddControl(*spacer);
 	scrollPanel->SetName("scrollPanel");
 
-	// Error label
-	/*
-	Label* errorLabel = new Label();
-	errorLabel->Construct(Rectangle(0, 0, this->GetBounds().width, 40), L"");
-	errorLabel->SetTextColor(Color(0xFF, 0x00, 0x00));
-	errorLabel->SetName("errorLabel");
-	AddControl(*errorLabel);
-	*/
-
 	AddControl(*scrollPanel);
 
 	Draw();
@@ -226,13 +217,13 @@ ProjectGiraffeTab4::updateUser(void)
 	// Check not blank
 	String blank("");
 	if (username.Equals(blank)) {
-		showError("Please enter a username.");
+		showStatus("Please enter a username.", true);
 		return;
 	} else if (email.Equals(blank)) {
-		showError("Please enter an email.");
+		showStatus("Please enter an email.", true);
 		return;
 	} else if (username.Equals(User::currentUser()->username()) && email.Equals(User::currentUser()->email())) {
-		showError("Username and email unchanged.");
+		showStatus("Username and email unchanged.", true);
 		return;
 	}
 
@@ -288,16 +279,16 @@ ProjectGiraffeTab4::updatePassword(void)
 	// Check not blank
 	String blank("");
 	if (oldPassword.Equals(blank)) {
-		showError("Please enter current password.");
+		showStatus("Please enter current password.", true);
 		return;
 	} else if (password.Equals(blank)) {
-		showError("Please enter new password.");
+		showStatus("Please enter new password.", true);
 		return;
 	} else if (confirmPassword.Equals(blank)) {
-		showError("Please enter new password confirmation.");
+		showStatus("Please enter new password confirmation.", true);
 		return;
 	} else if (!password.Equals(confirmPassword)) {
-		showError("New passwords do not match.");
+		showStatus("New passwords do not match.", true);
 		return;
 	}
 
@@ -345,6 +336,11 @@ ProjectGiraffeTab4::updatePassword(void)
 void
 ProjectGiraffeTab4::logout(void)
 {
+	// Disable logout button
+	Button* logoutButton = (Button *)GetControl("logoutButton", true);
+	logoutButton->SetEnabled(false);
+	logoutButton->SetText("Logging out...");
+
 	HttpSession* httpSession = null;
 	HttpTransaction* httpTransaction = null;
 	String* proxyAddr = null;
@@ -375,25 +371,32 @@ ProjectGiraffeTab4::logout(void)
 }
 
 void
-ProjectGiraffeTab4::showError(const String &errorMessage)
+ProjectGiraffeTab4::showStatus(const String &statusMessage, bool isError)
 {
+	StatusPopup* statusPopup = StatusPopup::popup();
+	statusPopup->setTitle("User Update Status");
+	statusPopup->setMessage(statusMessage);
 
+	if (isError) {
+		statusPopup->setType(StatusPopup::STATUS_POPUP_ERROR);
+	} else {
+		statusPopup->setType(StatusPopup::STATUS_POPUP_DEFAULT);
+	}
+
+	statusPopup->showPopup();
 }
 
 void
 ProjectGiraffeTab4::OnSceneActivatedN(const Tizen::Ui::Scenes::SceneId& previousSceneId,
 								const Tizen::Ui::Scenes::SceneId& currentSceneId, Tizen::Base::Collection::IList* pArgs)
 {
-	// TODO:
 	// Add your scene activate code here
 	AppLog("OnSceneActivatedN");
 
 	// load user
 	if (User::currentUser()->id() == 0) {
-		AppLogTag("user", "no user");
 		showLoginButton();
 	} else {
-		AppLogTag("user", "yes user");
 		showProfile();
 	}
 }
@@ -524,6 +527,7 @@ ProjectGiraffeTab4::OnTransactionReadyToRead(HttpSession &httpSession, HttpTrans
 
 		// Converts the pValue to JsonObject
 		String userKey("user");
+		String messageKey("message");
 		String logoutKey("logout");
 		String errorKey("error");
 		if (dict->ContainsKey(userKey)) {
@@ -531,10 +535,16 @@ ProjectGiraffeTab4::OnTransactionReadyToRead(HttpSession &httpSession, HttpTrans
 			User::currentUser()->updateFromDictionary(userDict);
 
 			showProfile();
+
+			String *message = (String *)dict->GetValue(messageKey);
+			showStatus(*message, false);
 		} else if (dict->ContainsKey(logoutKey)) {
-//			User::currentUser()->logout(); reset currentUser
-			// clear cookies?
+//			TODO: User::currentUser()->logout(); reset currentUser
+
 			showLoginButton();
+
+			String *message = (String *)dict->GetValue(logoutKey);
+			showStatus(*message, false);
 		} else if (dict->ContainsKey(errorKey)) {
 			String *errorMessage = (String *)dict->GetValue(errorKey);
 
@@ -552,7 +562,7 @@ ProjectGiraffeTab4::OnTransactionReadyToRead(HttpSession &httpSession, HttpTrans
 			}
 
 			// Flash error message
-			showError(*errorMessage);
+			showStatus(*errorMessage, true);
 
 			Draw();
 		}
