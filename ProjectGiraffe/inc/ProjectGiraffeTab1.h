@@ -7,7 +7,7 @@
 #include <Fnet.h>
 #include <FWeb.h>
 #include "Graffiti.h"
-#include "LoadingPopup.h"
+#include "LoadingPopupThread.h"
 
 using namespace Tizen::Web::Json;
 
@@ -22,7 +22,7 @@ public:
 	ProjectGiraffeTab1(void)
 	: _pValueList(null)
 	, _pJsonKeyList(null)
-	, _lPopup(null)
+	, __pLoadingPopupThread(null)
 	, _tableView(null) {}
 
 	virtual ~ProjectGiraffeTab1(void);
@@ -67,7 +67,7 @@ protected:
 
 private:
     Tizen::Base::Collection::ArrayList *_items;
-    LoadingPopup* _lPopup;
+    LoadingPopupThread* __pLoadingPopupThread;
     Tizen::Ui::Controls::TableView* _tableView;
     virtual void updateItems();
 };
