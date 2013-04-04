@@ -242,37 +242,6 @@ UserPopup::submitLogin(void)
 	connection->begin();
 
 	delete userParameters;
-
-
-	/*
-	HttpSession* pHttpSession = null;
-	HttpTransaction* pHttpTransaction = null;
-	String* pProxyAddr = null;
-	String hostAddr = L"https://ec2-54-243-69-6.compute-1.amazonaws.com/"; // TODO: convert to HTTPS
-	String uri = L"https://ec2-54-243-69-6.compute-1.amazonaws.com/user/login";
-
-	AppLog("Starting the HTTPS Session");
-	pHttpSession = new HttpSession();
-
-	// HttpSession construction.
-	pHttpSession->Construct(NET_HTTP_SESSION_MODE_NORMAL, pProxyAddr, hostAddr, null, NET_HTTP_COOKIE_FLAG_ALWAYS_AUTOMATIC);
-
-	// Open a new HttpTransaction.
-	pHttpTransaction = pHttpSession->OpenTransactionN(); //TODO: figure out NET_HTTP_AUTH_WWW_BASIC
-
-	// Add a listener.
-	pHttpTransaction->AddHttpTransactionListener(*this);
-
-	// Get an HTTP request.
-	HttpRequest* pHttpRequest = pHttpTransaction->GetRequest();
-
-	// Set the HTTP method and URI:
-	pHttpRequest->SetMethod(NET_HTTP_METHOD_POST);
-	pHttpRequest->SetUri(uri);
-	*/
-
-	// Submit the request:
-//	pHttpTransaction->Submit();
 }
 
 void
@@ -320,44 +289,6 @@ UserPopup::submitSignup(void)
 	connection->begin();
 
 	delete userParameters;
-
-	/*
-	HttpSession* pHttpSession = null;
-	HttpTransaction* pHttpTransaction = null;
-	String* pProxyAddr = null;
-	String hostAddr = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/";
-	String uri = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/user/signup";
-
-	AppLog("Starting the HTTP Session");
-	pHttpSession = new HttpSession();
-
-	// HttpSession construction.
-	pHttpSession->Construct(NET_HTTP_SESSION_MODE_NORMAL, pProxyAddr, hostAddr, null, NET_HTTP_COOKIE_FLAG_ALWAYS_AUTOMATIC);
-
-	// Open a new HttpTransaction.
-	pHttpTransaction = pHttpSession->OpenTransactionN(); //TODO: figure out NET_HTTP_AUTH_WWW_BASIC
-
-	// Add a listener.
-//	pHttpTransaction->AddHttpTransactionListener(*this);
-
-	// Get an HTTP request.
-	HttpRequest* pHttpRequest = pHttpTransaction->GetRequest();
-
-	// Set the HTTP method and URI:
-	pHttpRequest->SetMethod(NET_HTTP_METHOD_POST);
-	pHttpRequest->SetUri(uri);
-
-	// Create HTTP multipart entity
-	HttpMultipartEntity* pMultipartEntity = new HttpMultipartEntity();
-	pMultipartEntity->Construct();
-	pMultipartEntity->AddStringPart(L"username", username);
-	pMultipartEntity->AddStringPart(L"email", email);
-	pMultipartEntity->AddStringPart(L"password", password);
-	pHttpRequest->SetEntity(*pMultipartEntity);
-
-	// Submit the request:
-	pHttpTransaction->Submit();
-	*/
 }
 
 void
@@ -365,6 +296,26 @@ UserPopup::showError(const String &errorMessage)
 {
 	Label* errorLabel = (Label* )GetControl("errorLabel");
 	errorLabel->SetText(errorMessage);
+
+	Draw();
+}
+
+void
+UserPopup::resetButtons(void)
+{
+	// Enable login button
+	Button* loginButton = (Button *)GetControl("loginButton");
+	if (loginButton != NULL) {
+		loginButton->SetEnabled(true);
+		loginButton->SetText("Log In");
+	}
+
+	// Enable signup button
+	Button* signupButton = (Button *)GetControl("signupButton");
+	if (signupButton != NULL) {
+		signupButton->SetEnabled(true);
+		signupButton->SetText("Sign Up");
+	}
 
 	Draw();
 }
@@ -443,157 +394,9 @@ UserPopup::OnKeypadWillOpen(Control &source)
 	Invalidate(true);
 	*/
 }
-/*
-void
-UserPopup::OnTransactionAborted(HttpSession &httpSession, HttpTransaction &httpTransaction, result r)
-{
-	AppLogTag("user", "a");
-}
 
 void
-UserPopup::OnTransactionCertVerificationRequiredN(HttpSession &httpSession, HttpTransaction &httpTransaction, Tizen::Base::String *pCert)
-{
-	AppLogTag("user", "b");
-	AppLogTag("user", "%ls", pCert->GetPointer());
-	String cert(L"/C=US/ST=California/L=Palo Alto/O=Unsamsung Heroes/CN=giraffe-server/emailAddress=bbch@stanford.edu");
-	if (pCert->Equals(cert)) {
-		httpTransaction.Resume();
-	} else {
-		httpTransaction.Pause();
-	}
-}
-
-void
-UserPopup::OnTransactionCompleted(HttpSession &httpSession, HttpTransaction &httpTransaction)
-{
-	AppLogTag("user", "c");
-	HttpMultipartEntity* pMultipartEntity = static_cast< HttpMultipartEntity* >(httpTransaction.GetUserObject());
-
-	if (pMultipartEntity)
-		delete pMultipartEntity;
-
-		delete &httpTransaction;
-}
-
-void
-UserPopup::OnTransactionHeaderCompleted(HttpSession &httpSession, HttpTransaction &httpTransaction, int headerLen, bool bAuthRequired)
-{
-	AppLogTag("user", "d");
-	/*
-	HttpResponse* httpResponse = httpTransaction.GetResponse();
-//	HttpHeader* httpHeader = httpResponse->GetHeader();
-	IList* cookieList = httpResponse->GetCookies();
-
-	for (int i = 0; i < cookieList->GetCount(); i++) {
-		HttpCookie *cookie = static_cast<HttpCookie*>(cookieList->GetAt(0));
-
-		// TODO: save cookie somewhere
-	}
-
-
-	if (bAuthRequired)
-	{
-		AppLog("auth required");
-		HttpAuthentication* pAuth = httpTransaction.OpenAuthenticationInfoN();
-		String basicName("Name");
-		String basicpass("Pass");
-		HttpCredentials* pCredential = new HttpCredentials(basicName, basicpass);
-		String* pRealm = pAuth->GetRealmN();
-		NetHttpAuthScheme scheme = pAuth->GetAuthScheme();
-		if (scheme == NET_HTTP_AUTH_WWW_BASIC || scheme == NET_HTTP_AUTH_PROXY_BASIC)
-		{
-			HttpTransaction* pNewTransaction =  pAuth->SetCredentials(*pCredential);
-		}
-	}
-
-}
-
-void
-UserPopup::OnTransactionReadyToRead(HttpSession &httpSession, HttpTransaction &httpTransaction, int availableBodyLen)
-{
-	AppLogTag("user", "e");
-	HttpResponse* httpResponse = httpTransaction.GetResponse();
-	HttpHeader* httpHeader = null;
-	AppLog("Checking HTTP Status Code");
-	if (httpResponse->GetHttpStatusCode() == HTTP_STATUS_OK)
-	{
-		ByteBuffer* body = null;
-		String statusText = httpResponse->GetStatusText();
-		String version = httpResponse->GetVersion();
-
-		httpHeader = httpResponse->GetHeader();
-		body = httpResponse->ReadBodyN();
-
-		//Parses from ByteBuffer
-		IJsonValue* jsonValue = JsonParser::ParseN(*body);
-
-		// Convert jsonValue to hashmap
-		HashMap* dict = JSONParser::dictionaryForJSONValue(jsonValue);
-
-		String userKey("user");
-		String errorKey("error");
-		if (dict->ContainsKey(userKey)) {
-			HashMap *userDict = (HashMap *)dict->GetValue(userKey);
-			AppLogTag("cookie", "user");
-
-			User::currentUser()->updateFromDictionary(userDict);
-
-			// Enable login button
-			Button* loginButton = (Button *)GetControl("loginButton");
-			if (loginButton != NULL) {
-				loginButton->SetEnabled(true);
-				loginButton->SetText("Log In");
-			}
-
-			// Enable signup button
-			Button* signupButton = (Button *)GetControl("signupButton");
-			if (signupButton != NULL) {
-				signupButton->SetEnabled(true);
-				signupButton->SetText("Sign Up");
-			}
-
-			Draw();
-
-			hidePopup();
-		} else if (dict->ContainsKey(errorKey)) {
-			String *errorMessage = (String *)dict->GetValue(errorKey);
-
-			// Enable login button
-			Button* loginButton = (Button *)GetControl("loginButton");
-			if (loginButton != NULL) {
-				loginButton->SetEnabled(true);
-				loginButton->SetText("Log In");
-			}
-
-			// Enable signup button
-			Button* signupButton = (Button *)GetControl("signupButton");
-			if (signupButton != NULL) {
-				signupButton->SetEnabled(true);
-				signupButton->SetText("Sign Up");
-			}
-
-			// Flash error message
-			showError(*errorMessage);
-
-			Draw();
-		}
-
-		delete body;
-		delete jsonValue;
-		delete dict;
-	}else{
-		AppLog("HTTP Status not OK");
-	}
-}
-
-void
-UserPopup::OnTransactionReadyToWrite(HttpSession &httpSession, HttpTransaction &httpTransaction, int recommendedChunkSize)
-{
-	AppLogTag("user", "f");
-}
-*/
-void
-UserPopup::connectionDidFinish(HTTPConnection *connection, Tizen::Base::Collection::HashMap *response)
+UserPopup::connectionDidFinish(HTTPConnection *connection, HashMap *response)
 {
 	AppLog("HTTPConnection finished");
 
@@ -605,39 +408,14 @@ UserPopup::connectionDidFinish(HTTPConnection *connection, Tizen::Base::Collecti
 
 			User::currentUser()->updateFromDictionary(userDict);
 
-			// Enable login button
-			Button* loginButton = (Button *)GetControl("loginButton");
-			if (loginButton != NULL) {
-				loginButton->SetEnabled(true);
-				loginButton->SetText("Log In");
-			}
-
-			// Enable signup button
-			Button* signupButton = (Button *)GetControl("signupButton");
-			if (signupButton != NULL) {
-				signupButton->SetEnabled(true);
-				signupButton->SetText("Sign Up");
-			}
-
-			Draw();
+			resetButtons();
+//			Draw();
 
 			hidePopup();
 		} else if (response->ContainsKey(errorKey)) {
 			String *errorMessage = (String *)response->GetValue(errorKey);
 
-			// Enable login button
-			Button* loginButton = (Button *)GetControl("loginButton");
-			if (loginButton != NULL) {
-				loginButton->SetEnabled(true);
-				loginButton->SetText("Log In");
-			}
-
-			// Enable signup button
-			Button* signupButton = (Button *)GetControl("signupButton");
-			if (signupButton != NULL) {
-				signupButton->SetEnabled(true);
-				signupButton->SetText("Sign Up");
-			}
+			resetButtons();
 
 			// Flash error message
 			showError(*errorMessage);
@@ -655,22 +433,10 @@ UserPopup::connectionDidFail(HTTPConnection *connection)
 {
 	AppLog("HTTPConnection failed");
 
-	// Enable login button
-	Button* loginButton = (Button *)GetControl("loginButton");
-	if (loginButton != NULL) {
-		loginButton->SetEnabled(true);
-		loginButton->SetText("Log In");
-	}
-
-	// Enable signup button
-	Button* signupButton = (Button *)GetControl("signupButton");
-	if (signupButton != NULL) {
-		signupButton->SetEnabled(true);
-		signupButton->SetText("Sign Up");
-	}
+	resetButtons();
 
 	MessageBox msgBox;
-	msgBox.Construct(L"HTTP STATUS", L"HTTP Request Aborted, fuck this shitCheck internet connection", MSGBOX_STYLE_NONE, 3000);
+	msgBox.Construct(L"HTTP STATUS", L"HTTP Request Aborted, Check internet connection", MSGBOX_STYLE_NONE, 3000);
 	int modalresult = 0;
 	msgBox.ShowAndWait(modalresult);
 	delete connection;

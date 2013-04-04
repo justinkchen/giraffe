@@ -217,13 +217,13 @@ ProjectGiraffeTab4::updateUser(void)
 	// Check not blank
 	String blank("");
 	if (username.Equals(blank)) {
-		showStatus("Please enter a username.", true);
+		showStatus("User Update Status", "Please enter a username.", true);
 		return;
 	} else if (email.Equals(blank)) {
-		showStatus("Please enter an email.", true);
+		showStatus("User Update Status", "Please enter an email.", true);
 		return;
 	} else if (username.Equals(User::currentUser()->username()) && email.Equals(User::currentUser()->email())) {
-		showStatus("Username and email unchanged.", true);
+		showStatus("User Update Status", "Username and email unchanged.", true);
 		return;
 	}
 
@@ -232,40 +232,15 @@ ProjectGiraffeTab4::updateUser(void)
 	updateButton1->SetEnabled(false);
 	updateButton1->SetText("Updating...");
 
-	HttpSession* httpSession = null;
-	HttpTransaction* httpTransaction = null;
-	String* proxyAddr = null;
-	String hostAddr = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/";
-	String uri = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/user/update";
+	HttpMultipartEntity* userParameters = new HttpMultipartEntity();
+	userParameters->Construct();
+	userParameters->AddStringPart(L"username", username);
+	userParameters->AddStringPart(L"email", email);
 
-	AppLog("Starting the HTTP Session");
-	httpSession = new HttpSession();
+	HTTPConnection *connection = HTTPConnection::userUpdatePutConnection(this, userParameters);
+	connection->begin();
 
-	// HttpSession construction.
-	httpSession->Construct(NET_HTTP_SESSION_MODE_NORMAL, proxyAddr, hostAddr, null, NET_HTTP_COOKIE_FLAG_ALWAYS_AUTOMATIC);
-
-	// Open a new HttpTransaction.
-	httpTransaction = httpSession->OpenTransactionN(); //TODO: figure out NET_HTTP_AUTH_WWW_BASIC
-
-	// Add a listener.
-	httpTransaction->AddHttpTransactionListener(*this);
-
-	// Get an HTTP request.
-	HttpRequest* httpRequest = httpTransaction->GetRequest();
-
-	// Set the HTTP method and URI:
-	httpRequest->SetMethod(NET_HTTP_METHOD_PUT);
-	httpRequest->SetUri(uri);
-
-	// Create HTTP multipart entity
-	HttpMultipartEntity* multipartEntity = new HttpMultipartEntity();
-	multipartEntity->Construct();
-	multipartEntity->AddStringPart(L"username", username);
-	multipartEntity->AddStringPart(L"email", email);
-	httpRequest->SetEntity(*multipartEntity);
-
-	// Submit the request:
-	httpTransaction->Submit();
+	delete userParameters;
 }
 
 void
@@ -279,16 +254,16 @@ ProjectGiraffeTab4::updatePassword(void)
 	// Check not blank
 	String blank("");
 	if (oldPassword.Equals(blank)) {
-		showStatus("Please enter current password.", true);
+		showStatus("User Update Status", "Please enter current password.", true);
 		return;
 	} else if (password.Equals(blank)) {
-		showStatus("Please enter new password.", true);
+		showStatus("User Update Status", "Please enter new password.", true);
 		return;
 	} else if (confirmPassword.Equals(blank)) {
-		showStatus("Please enter new password confirmation.", true);
+		showStatus("User Update Status", "Please enter new password confirmation.", true);
 		return;
 	} else if (!password.Equals(confirmPassword)) {
-		showStatus("New passwords do not match.", true);
+		showStatus("User Update Status", "New passwords do not match.", true);
 		return;
 	}
 
@@ -297,40 +272,15 @@ ProjectGiraffeTab4::updatePassword(void)
 	updateButton2->SetEnabled(false);
 	updateButton2->SetText("Changing...");
 
-	HttpSession* httpSession = null;
-	HttpTransaction* httpTransaction = null;
-	String* proxyAddr = null;
-	String hostAddr = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/";
-	String uri = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/user/update";
+	HttpMultipartEntity* userParameters = new HttpMultipartEntity();
+	userParameters->Construct();
+	userParameters->AddStringPart(L"oldPassword", oldPassword);
+	userParameters->AddStringPart(L"password", password);
 
-	AppLog("Starting the HTTP Session");
-	httpSession = new HttpSession();
+	HTTPConnection *connection = HTTPConnection::userUpdatePutConnection(this, userParameters);
+	connection->begin();
 
-	// HttpSession construction.
-	httpSession->Construct(NET_HTTP_SESSION_MODE_NORMAL, proxyAddr, hostAddr, null, NET_HTTP_COOKIE_FLAG_ALWAYS_AUTOMATIC);
-
-	// Open a new HttpTransaction.
-	httpTransaction = httpSession->OpenTransactionN(); //TODO: figure out NET_HTTP_AUTH_WWW_BASIC
-
-	// Add a listener.
-	httpTransaction->AddHttpTransactionListener(*this);
-
-	// Get an HTTP request.
-	HttpRequest* httpRequest = httpTransaction->GetRequest();
-
-	// Set the HTTP method and URI:
-	httpRequest->SetMethod(NET_HTTP_METHOD_PUT);
-	httpRequest->SetUri(uri);
-
-	// Create HTTP multipart entity
-	HttpMultipartEntity* multipartEntity = new HttpMultipartEntity();
-	multipartEntity->Construct();
-	multipartEntity->AddStringPart(L"oldPassword", oldPassword);
-	multipartEntity->AddStringPart(L"password", password);
-	httpRequest->SetEntity(*multipartEntity);
-
-	// Submit the request:
-	httpTransaction->Submit();
+	delete userParameters;
 }
 
 void
@@ -341,40 +291,15 @@ ProjectGiraffeTab4::logout(void)
 	logoutButton->SetEnabled(false);
 	logoutButton->SetText("Logging out...");
 
-	HttpSession* httpSession = null;
-	HttpTransaction* httpTransaction = null;
-	String* proxyAddr = null;
-	String hostAddr = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/";
-	String uri = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/user/logout";
-
-	AppLog("Starting the HTTP Session");
-	httpSession = new HttpSession();
-
-	// HttpSession construction.
-	httpSession->Construct(NET_HTTP_SESSION_MODE_NORMAL, proxyAddr, hostAddr, null, NET_HTTP_COOKIE_FLAG_ALWAYS_AUTOMATIC);
-
-	// Open a new HttpTransaction.
-	httpTransaction = httpSession->OpenTransactionN(); //TODO: figure out NET_HTTP_AUTH_WWW_BASIC
-
-	// Add a listener.
-	httpTransaction->AddHttpTransactionListener(*this);
-
-	// Get an HTTP request.
-	HttpRequest* httpRequest = httpTransaction->GetRequest();
-
-	// Set the HTTP method and URI:
-	httpRequest->SetMethod(NET_HTTP_METHOD_GET);
-	httpRequest->SetUri(uri);
-
-	// Submit the request:
-	httpTransaction->Submit();
+	HTTPConnection *connection = HTTPConnection::userLogoutPostConnection(this);
+	connection->begin();
 }
 
 void
-ProjectGiraffeTab4::showStatus(const String &statusMessage, bool isError)
+ProjectGiraffeTab4::showStatus(const String &statusTitle, const String &statusMessage, bool isError)
 {
 	StatusPopup* statusPopup = StatusPopup::popup();
-	statusPopup->setTitle("User Update Status");
+	statusPopup->setTitle(statusTitle);
 	statusPopup->setMessage(statusMessage);
 
 	if (isError) {
@@ -384,6 +309,43 @@ ProjectGiraffeTab4::showStatus(const String &statusMessage, bool isError)
 	}
 
 	statusPopup->showPopup();
+
+	/*
+	 * TODO: figure out if we can use messagebox or not because
+	 * this looks like an event handler and they warn not to use inside
+	 * event handlers because it's unsafe
+	MessageBox msgBox;
+//	msgBox.Construct(statusTitle, statusMessage, MSGBOX_STYLE_NONE, 3000);
+//	msgBox.Construct(L"HTTP STATUS", L"HTTP Request Aborted, Check internet connection", MSGBOX_STYLE_NONE, 3000);
+	int modalresult = 0;
+	msgBox.ShowAndWait(modalresult);
+	*/
+}
+
+void
+ProjectGiraffeTab4::resetButtons(void)
+{
+	// Enable update button 1 and 2
+	Button* updateButton1 = (Button *)GetControl("updateButton1", true);
+	if (updateButton1 != NULL) {
+		updateButton1->SetEnabled(true);
+		updateButton1->SetText("Update");
+	}
+
+	Button* updateButton2 = (Button *)GetControl("updateButton2", true);
+	if (updateButton2 != NULL) {
+		updateButton2->SetEnabled(true);
+		updateButton2->SetText("Change Password");
+	}
+
+	// Enable logout button
+	Button* logoutButton = (Button *)GetControl("logoutButton", true);
+	if (logoutButton != NULL) {
+		logoutButton->SetEnabled(true);
+		logoutButton->SetText("Logout");
+	}
+
+	Draw();
 }
 
 void
@@ -405,7 +367,6 @@ void
 ProjectGiraffeTab4::OnSceneDeactivated(const Tizen::Ui::Scenes::SceneId& currentSceneId,
 								const Tizen::Ui::Scenes::SceneId& nextSceneId)
 {
-	// TODO:
 	// Add your scene deactivate code here
 	AppLog("OnSceneDeactivated");
 }
@@ -480,106 +441,6 @@ ProjectGiraffeTab4::OnKeypadWillOpen(Control &source)
 	*/
 }
 
-void
-ProjectGiraffeTab4::OnTransactionAborted(HttpSession &httpSession, HttpTransaction &httpTransaction, result r)
-{
-	AppLog("HTTP Transaction Aborted");
-}
-
-void
-ProjectGiraffeTab4::OnTransactionCertVerificationRequiredN(HttpSession &httpSession, HttpTransaction &httpTransaction, Tizen::Base::String *pCert)
-{
-
-}
-
-void
-ProjectGiraffeTab4::OnTransactionCompleted(HttpSession &httpSession, HttpTransaction &httpTransaction)
-{
-	AppLog("HTTP Transaction Completed");
-}
-
-void
-ProjectGiraffeTab4::OnTransactionHeaderCompleted(HttpSession &httpSession, HttpTransaction &httpTransaction, int headerLen, bool bAuthRequired)
-{
-
-}
-
-void
-ProjectGiraffeTab4::OnTransactionReadyToRead(HttpSession &httpSession, HttpTransaction &httpTransaction, int availableBodyLen)
-{
-	HttpResponse* httpResponse = httpTransaction.GetResponse();
-	HttpHeader* httpHeader = null;
-	AppLog("Checking HTTP Status Code");
-	if (httpResponse->GetHttpStatusCode() == HTTP_STATUS_OK)
-	{
-		ByteBuffer* body = null;
-		String statusText = httpResponse->GetStatusText();
-		String version = httpResponse->GetVersion();
-
-		httpHeader = httpResponse->GetHeader();
-		body = httpResponse->ReadBodyN();
-
-		//Parses from ByteBuffer
-		IJsonValue* jsonValue = JsonParser::ParseN(*body);
-
-		// Convert jsonValue to hashmap
-		HashMap* dict = JSONParser::dictionaryForJSONValue(jsonValue);
-
-		// Converts the pValue to JsonObject
-		String userKey("user");
-		String messageKey("message");
-		String logoutKey("logout");
-		String errorKey("error");
-		if (dict->ContainsKey(userKey)) {
-			HashMap *userDict = (HashMap *)dict->GetValue(userKey);
-			User::currentUser()->updateFromDictionary(userDict);
-
-			showProfile();
-
-			String *message = (String *)dict->GetValue(messageKey);
-			showStatus(*message, false);
-		} else if (dict->ContainsKey(logoutKey)) {
-//			TODO: User::currentUser()->logout(); reset currentUser
-
-			showLoginButton();
-
-			String *message = (String *)dict->GetValue(logoutKey);
-			showStatus(*message, false);
-		} else if (dict->ContainsKey(errorKey)) {
-			String *errorMessage = (String *)dict->GetValue(errorKey);
-
-			// Enable update button 1 and 2
-			Button* updateButton1 = (Button *)GetControl("updateButton1");
-			if (updateButton1 != NULL) {
-				updateButton1->SetEnabled(true);
-				updateButton1->SetText("Update");
-			}
-
-			Button* updateButton2 = (Button *)GetControl("updateButton2");
-			if (updateButton2 != NULL) {
-				updateButton2->SetEnabled(true);
-				updateButton2->SetText("Change Password");
-			}
-
-			// Flash error message
-			showStatus(*errorMessage, true);
-
-			Draw();
-		}
-
-		delete body;
-		delete jsonValue;
-		delete dict;
-	}else{
-		AppLog("HTTP Status not OK");
-	}
-}
-
-void
-ProjectGiraffeTab4::OnTransactionReadyToWrite (HttpSession &httpSession, HttpTransaction &httpTransaction, int recommendedChunkSize)
-{
-
-}
 
 void
 ProjectGiraffeTab4::onUserUpdate(User *user)
@@ -591,4 +452,54 @@ ProjectGiraffeTab4::onUserUpdate(User *user)
 		AppLogTag("user", "update yes user");
 		showProfile();
 	}
+}
+
+void
+ProjectGiraffeTab4::connectionDidFinish(HTTPConnection *connection, HashMap *response)
+{
+	if (response) {
+		String userKey("user");
+		String messageKey("message");
+		String logoutKey("logout");
+		String errorKey("error");
+		if (response->ContainsKey(userKey)) {
+			HashMap *userDict = (HashMap *)response->GetValue(userKey);
+			User::currentUser()->updateFromDictionary(userDict);
+
+			showProfile();
+
+			String *message = (String *)response->GetValue(messageKey);
+			showStatus("User Update Status", *message, false);
+		} else if (response->ContainsKey(logoutKey)) {
+//			TODO: User::currentUser()->logout(); reset currentUser
+
+			showLoginButton();
+
+			String *message = (String *)response->GetValue(logoutKey);
+			showStatus("Logout Status", *message, false);
+		} else if (response->ContainsKey(errorKey)) {
+			String *errorMessage = (String *)response->GetValue(errorKey);
+
+			resetButtons();
+
+			// Flash error message
+			showStatus("User Update Status", *errorMessage, true);
+
+			Draw();
+		}
+
+		delete connection;
+//		delete response;
+	} else {
+		connectionDidFail(connection);
+	}
+}
+
+void
+ProjectGiraffeTab4::connectionDidFail(HTTPConnection *connection)
+{
+	resetButtons();
+	showStatus(L"HTTP Status", L"HTTP Request Aborted, check internet connection", true);
+
+	delete connection;
 }

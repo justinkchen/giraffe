@@ -18,7 +18,7 @@ using namespace Tizen::Base::Collection;
 using namespace Tizen::Net::Http;
 using namespace Tizen::Web::Json;
 
-const String kHTTPHostURL = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/";
+const String kHTTPHostURL = L"https://ec2-54-243-69-6.compute-1.amazonaws.com/";
 const String kServerCert = L"/C=US/ST=California/L=Palo Alto/O=Unsamsung Heroes/CN=giraffe-server/emailAddress=bbch@stanford.edu";
 
 const String kHTTPMethodNameNearbyGraffiti = L"nearby";
@@ -132,7 +132,7 @@ HTTPConnection *HTTPConnection::userUpdatePutConnection(HTTPConnectionListener *
 
 HTTPConnection *HTTPConnection::userLogoutPostConnection(HTTPConnectionListener *listener)
 {
-	HTTPConnection *connection = new HTTPConnection(listener, kHTTPMethodNameUserSignup, NET_HTTP_METHOD_POST, NULL);
+	HTTPConnection *connection = new HTTPConnection(listener, kHTTPMethodNameUserLogout, NET_HTTP_METHOD_POST, NULL);
 
 	return connection;
 }
@@ -210,9 +210,8 @@ HTTPConnection::OnTransactionCertVerificationRequiredN (HttpSession &httpSession
 		httpTransaction.Resume();
 	} else {
 		httpTransaction.Pause();
+		//	_listener->connectionDidFail(this);
 	}
-
-//	_listener->connectionDidFail(this);
 }
 
 void

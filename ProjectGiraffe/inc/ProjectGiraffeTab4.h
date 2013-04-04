@@ -15,8 +15,8 @@ class ProjectGiraffeTab4 :
 	public Tizen::Ui::Scenes::ISceneEventListener,
 	public Tizen::Ui::IActionEventListener,
 	public Tizen::Ui::IKeypadEventListener,
-	public Tizen::Net::Http::IHttpTransactionEventListener,
-	public User::UserListener
+	public User::UserListener,
+	public HTTPConnection::HTTPConnectionListener
 {
 public:
 	ProjectGiraffeTab4(void);
@@ -42,16 +42,12 @@ public:
 	virtual void OnKeypadOpened(Tizen::Ui::Control &source);
 	virtual void OnKeypadWillOpen(Tizen::Ui::Control &source);
 
-	// IHttpTransactionEventListener
-	virtual void OnTransactionAborted(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, result r);
-	virtual void OnTransactionCertVerificationRequiredN(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, Tizen::Base::String *pCert);
-	virtual void OnTransactionCompleted(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction);
-	virtual void OnTransactionHeaderCompleted(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int headerLen, bool bAuthRequired);
-	virtual void OnTransactionReadyToRead(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int availableBodyLen);
-	virtual void OnTransactionReadyToWrite(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int recommendedChunkSize);
-
 	// UserListener
 	virtual void onUserUpdate(User *user);
+
+	// HTTPConnectionListener
+	virtual void connectionDidFinish(HTTPConnection *connection, Tizen::Base::Collection::HashMap *response);
+	virtual void connectionDidFail(HTTPConnection *connection);
 
 private:
 	static const int ID_BUTTON_LOGIN = 401;
@@ -68,7 +64,8 @@ private:
 
 	void logout(void);
 
-	void showStatus(const Tizen::Base::String &statusMessage, bool isError);
+	void showStatus(const Tizen::Base::String &statusTitle, const Tizen::Base::String &statusMessage, bool isError);
+	void resetButtons(void);
 };
 
 #endif // _PROJECTGIRAFFE_TAB4_H_

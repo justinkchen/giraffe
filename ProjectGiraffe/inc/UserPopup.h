@@ -23,7 +23,6 @@ class UserPopup:
     public Tizen::Ui::IActionEventListener,
     public Tizen::Ui::IKeypadEventListener,
     public HTTPConnection::HTTPConnectionListener
-//	public Tizen::Net::Http::IHttpTransactionEventListener
 {
 public:
 	static UserPopup *popup(void);
@@ -44,15 +43,6 @@ public:
 	virtual void OnKeypadOpened(Tizen::Ui::Control &source);
 	virtual void OnKeypadWillOpen(Tizen::Ui::Control &source);
 
-	// IHttpTransactionEventListener
-	/*
-	virtual void OnTransactionAborted(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, result r);
-	virtual void OnTransactionCertVerificationRequiredN(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, Tizen::Base::String *pCert);
-	virtual void OnTransactionCompleted(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction);
-	virtual void OnTransactionHeaderCompleted(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int headerLen, bool bAuthRequired);
-	virtual void OnTransactionReadyToRead(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int availableBodyLen);
-	virtual void OnTransactionReadyToWrite(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int recommendedChunkSize);
-	*/
 	// HTTPConnectionListener
 	virtual void connectionDidFinish(HTTPConnection *connection, Tizen::Base::Collection::HashMap *response);
 	virtual void connectionDidFail(HTTPConnection *connection);
@@ -71,6 +61,7 @@ private:
 	void submitSignup(void);
 
 	void showError(const Tizen::Base::String &errorMessage);
+	void resetButtons(void);
 };
 
 #endif /* USERPOPUP_H_ */
