@@ -12,6 +12,7 @@ class ProjectGiraffeTab3
   public Tizen::Net::Http::IHttpTransactionEventListener,
   public Tizen::Ui::IActionEventListener,
   public Tizen::Ui::ITextEventListener,
+  public Tizen::Ui::IKeypadEventListener,
   public Tizen::Ui::IAdjustmentEventListener,
   public Tizen::Web::Controls::ILoadingListener
   {
@@ -64,6 +65,14 @@ class ProjectGiraffeTab3
 	virtual void OnPageTitleReceived(const Tizen::Base::String& title);
 	virtual bool OnLoadingRequested(const Tizen::Base::String& url, Tizen::Web::Controls::WebNavigationType type);
 	virtual Tizen::Web::Controls::DecisionPolicy OnWebDataReceived(const Tizen::Base::String& mime, const Tizen::Net::Http::HttpHeader& header);
+
+	// IKeypadEventListener
+	virtual void OnKeypadActionPerformed(Tizen::Ui::Control &source, Tizen::Ui::KeypadAction keypadAction);
+	virtual void OnKeypadBoundsChanged(Tizen::Ui::Control &source);
+	virtual void OnKeypadClosed(Tizen::Ui::Control &source);
+	virtual void OnKeypadOpened(Tizen::Ui::Control &source);
+	virtual void OnKeypadWillOpen(Tizen::Ui::Control &source);
+
   private:
 	static const int ID_BUTTON  = 301;
 	Tizen::Ui::Controls::Button* _submitButton;

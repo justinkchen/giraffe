@@ -51,18 +51,11 @@ ProjectGiraffeTab3::OnInitializing(void)
 	Tizen::Base::Double* dublat = new Tizen::Base::Double(latitude);
 	Tizen::Base::Double* dublong = new Tizen::Base::Double(longitude);
 
-	// Creates an instance of Button
-	_submitButton = new Button();
-	int submitButtonW = 400;
-	int submitButtonH = 100;
-	_submitButton->Construct(Rectangle((pForm->GetClientAreaBounds().width-submitButtonW)/2, 850, submitButtonW, submitButtonH), L"Post Graffiti");
-	_submitButton->SetActionId(ID_BUTTON);
-	_submitButton->AddActionEventListener(*this);
-	AddControl(*_submitButton);
-
     // Creates an instance of EditArea
     _messageArea = new EditArea();
     _messageArea->Construct(Rectangle(50, 100, pForm->GetClientAreaBounds().width-100, 200), INPUT_STYLE_OVERLAY, 300);
+    _messageArea->SetKeypadAction(KEYPAD_ACTION_DONE);
+    _messageArea->AddKeypadEventListener(*this);
     _messageArea->AddTextEventListener(*this);
     AddControl(*_messageArea);
 
@@ -83,9 +76,18 @@ ProjectGiraffeTab3::OnInitializing(void)
     _radiusSlider = new Slider();
     _radiusSlider->Construct(Rectangle(0, 600, pForm->GetClientAreaBounds().width, 200), BACKGROUND_STYLE_NONE, true, 10, 300);
     _radiusSlider->SetTitleText(L"Radius of post (in meters):");
-    _radiusSlider->SetValue(25);
+    _radiusSlider->SetValue(50);
     _radiusSlider->AddAdjustmentEventListener(*this);
     AddControl(*_radiusSlider);
+
+	// Creates an instance of Button
+	_submitButton = new Button();
+	int submitButtonW = 400;
+	int submitButtonH = 100;
+	_submitButton->Construct(Rectangle((pForm->GetClientAreaBounds().width-submitButtonW)/2, 850, submitButtonW, submitButtonH), L"Post Graffiti");
+	_submitButton->SetActionId(ID_BUTTON);
+	_submitButton->AddActionEventListener(*this);
+	AddControl(*_submitButton);
 
 //    pRelativeLayout->SetCenterAligned(*_messageArea, CENTER_ALIGN_HORIZONTAL);
 //    pRelativeLayout->SetCenterAligned(*_messageLabel, CENTER_ALIGN_HORIZONTAL);
@@ -431,4 +433,38 @@ DecisionPolicy
 ProjectGiraffeTab3::OnWebDataReceived(const Tizen::Base::String& mime, const Tizen::Net::Http::HttpHeader& header)
 {
 	return WEB_DECISION_CONTINUE;
+}
+
+void
+ProjectGiraffeTab3::OnKeypadActionPerformed(Control &source, KeypadAction keypadAction)
+{
+	// Hide keypad when the action button is clicked
+	if (keypadAction == KEYPAD_ACTION_DONE)
+	{
+		((EditArea *)&source)->HideKeypad();
+	}
+}
+
+void
+ProjectGiraffeTab3::OnKeypadBoundsChanged(Control &source)
+{
+
+}
+
+void
+ProjectGiraffeTab3::OnKeypadClosed(Control &source)
+{
+
+}
+
+void
+ProjectGiraffeTab3::OnKeypadOpened(Control &source)
+{
+
+}
+
+void
+ProjectGiraffeTab3::OnKeypadWillOpen(Control &source)
+{
+
 }
