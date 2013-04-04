@@ -5,10 +5,11 @@ using namespace Tizen::Graphics;
 using namespace Tizen::Ui;
 using namespace Tizen::Ui::Controls;
 using namespace Tizen::Ui::Scenes;
-
+using namespace Tizen::Web::Controls;
 using namespace Tizen::Base;
 using namespace Tizen::Net::Http;
 using namespace Tizen::Web::Json;
+using namespace Tizen::Base::Utility;
 
 ProjectGiraffeTab3::~ProjectGiraffeTab3(void)
 {
@@ -41,6 +42,8 @@ ProjectGiraffeTab3::OnInitializing(void)
 	pRelativeLayout->SetVerticalFitPolicy(*this, FIT_POLICY_PARENT);
 	delete pRelativeLayout;
 
+	pRelativeLayout = dynamic_cast<RelativeLayout*>(pForm->GetPortraitLayoutN());
+
 	double latitude = ProjectGiraffeMainForm::currentLatitude;
 	double longitude = ProjectGiraffeMainForm::currentLongitude;
 	AppLog("Latitude is now: %f", latitude);
@@ -52,7 +55,7 @@ ProjectGiraffeTab3::OnInitializing(void)
 	_submitButton = new Button();
 	int submitButtonW = 400;
 	int submitButtonH = 100;
-	_submitButton->Construct(Rectangle(0, 825, submitButtonW, submitButtonH), L"Post Graffiti");
+	_submitButton->Construct(Rectangle((pForm->GetClientAreaBounds().width-submitButtonW)/2, 850, submitButtonW, submitButtonH), L"Post Graffiti");
 	_submitButton->SetActionId(ID_BUTTON);
 	_submitButton->AddActionEventListener(*this);
 	AddControl(*_submitButton);
@@ -69,25 +72,29 @@ ProjectGiraffeTab3::OnInitializing(void)
     AddControl(*_messageLabel);
 
     _addGraffitiWebView = new Web();
-    _addGraffitiWebView->Construct(Rectangle(0, 350, 300, 150));
+    _addGraffitiWebView->Construct(Rectangle(50, 350, pForm->GetClientAreaBounds().width-100, 250));
     String url = "http://ec2-54-243-69-6.compute-1.amazonaws.com/addgraffiti_map.html?latitude=" + dublat->ToString() + "&longitude=" + dublong->ToString();
-    _addGraffitiWebView->LoadUrl(GetValidUrl(url));
     _addGraffitiWebView->SetLoadingListener(this);
     AddControl(*_addGraffitiWebView);
 
+    _addGraffitiWebView->LoadUrl(GetValidUrl(url));
+
     // Creates an instance of Slider
     _radiusSlider = new Slider();
-    _radiusSlider->Construct(Rectangle(0, 550, pForm->GetClientAreaBounds().width, 200), BACKGROUND_STYLE_NONE, true, 10, 300);
+    _radiusSlider->Construct(Rectangle(0, 600, pForm->GetClientAreaBounds().width, 200), BACKGROUND_STYLE_NONE, true, 10, 300);
     _radiusSlider->SetTitleText(L"Radius of post (in meters):");
     _radiusSlider->SetValue(25);
     _radiusSlider->AddAdjustmentEventListener(*this);
     AddControl(*_radiusSlider);
 
-    pRelativeLayout->SetCenterAligned(*_messageArea, CENTER_ALIGN_HORIZONTAL);
-    pRelativeLayout->SetCenterAligned(*_messageLabel, CENTER_ALIGN_HORIZONTAL);
-    pRelativeLayout->SetCenterAligned(*_addGraffitiWebView, CENTER_ALIGN_HORIZONTAL);
-    pRelativeLayout->SetCenterAligned(*_radiusSlider, CENTER_ALIGN_HORIZONTAL);
-    pRelativeLayout->SetCenterAligned(*_submitButton, CENTER_ALIGN_HORIZONTAL);
+//    pRelativeLayout->SetCenterAligned(*_messageArea, CENTER_ALIGN_HORIZONTAL);
+//    pRelativeLayout->SetCenterAligned(*_messageLabel, CENTER_ALIGN_HORIZONTAL);
+//    pRelativeLayout->SetCenterAligned(*_addGraffitiWebView, CENTER_ALIGN_HORIZONTAL);
+//    pRelativeLayout->SetCenterAligned(*_radiusSlider, CENTER_ALIGN_HORIZONTAL);
+//    pRelativeLayout->SetCenterAligned(*_submitButton, CENTER_ALIGN_HORIZONTAL);
+
+    delete pRelativeLayout;
+
 	return r;
 }
 

@@ -72,6 +72,8 @@ class ProjectGiraffeTab3
 	Tizen::Ui::Controls::Slider* _radiusSlider;
 
 	Tizen::Web::Controls::Web* _addGraffitiWebView;
+
+	Tizen::Base::String GetValidUrl(Tizen::Base::String& url);
   };
 
 #endif // _PROJECTGIRAFFE_TAB3_H_
