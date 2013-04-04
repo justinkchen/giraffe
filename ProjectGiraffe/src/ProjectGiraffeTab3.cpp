@@ -317,22 +317,26 @@ ProjectGiraffeTab3::GetValidUrl(Tizen::Base::String& url)
 bool
 ProjectGiraffeTab3::OnHttpAuthenticationRequestedN(const Tizen::Base::String& host, const Tizen::Base::String& realm, const Tizen::Web::Controls::AuthenticationChallenge& authentication)
 {
+	AppLog("OnHttpAuthenticationRequested");
 	return false;
 }
 
 void
 ProjectGiraffeTab3::OnHttpAuthenticationCanceled(void)
 {
+	AppLog("OnHttpAuthenticationCanceled");
 }
 
 void
 ProjectGiraffeTab3::OnLoadingStarted(void)
 {
+	AppLog("OnLoadingStarted");
 }
 
 void
 ProjectGiraffeTab3::OnLoadingCanceled(void)
 {
+	AppLog("OnLoadingCanceled");
 }
 
 void
@@ -401,6 +405,7 @@ ProjectGiraffeTab3::OnLoadingErrorOccurred(LoadingErrorType error, const String&
 void
 ProjectGiraffeTab3::OnLoadingCompleted(void)
 {
+	AppLog("OnLoadingCompleted");
 }
 
 void
