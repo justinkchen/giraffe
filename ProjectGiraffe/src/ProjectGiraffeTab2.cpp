@@ -51,28 +51,28 @@ ProjectGiraffeTab2::OnInitializing(void)
 	//		pLabel1->AddTouchEventListener(*this);
 	//	}
 	// Creates an instance of Label
-	pLabellat = new Label();
-	pLabellat->Construct(Rectangle(0, 0, 500, 50), L"Obtaining Location...");
-	pLabellat->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
-	pLabellat->SetTextConfig(30, LABEL_TEXT_STYLE_BOLD);
-	pLabellong = new Label();
-	pLabellong->Construct(Rectangle(0, 50, 500, 50), L"");
-	pLabellong->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
-	pLabellong->SetTextConfig(30, LABEL_TEXT_STYLE_BOLD);
+	_latitudeLabel = new Label();
+	_latitudeLabel->Construct(Rectangle(0, 0, 500, 50), L"Obtaining Location...");
+	_latitudeLabel->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
+	_latitudeLabel->SetTextConfig(30, LABEL_TEXT_STYLE_BOLD);
+	_longitudeLabel = new Label();
+	_longitudeLabel->Construct(Rectangle(0, 50, 500, 50), L"");
+	_longitudeLabel->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
+	_longitudeLabel->SetTextConfig(30, LABEL_TEXT_STYLE_BOLD);
 
 	locationFound = false;
 
 	// Adds the label to the form
 	//AddControl(*__pLabel);
-	AddControl(*pLabellat);
-	AddControl(*pLabellong);
+	AddControl(*_latitudeLabel);
+	AddControl(*_longitudeLabel);
 
-	__pWeb = new Web();
-	__pWeb->Construct(Rectangle(0, 100, pForm->GetClientAreaBounds().width, pForm->GetClientAreaBounds().height-100));
+	_graffitiMapWebView = new Web();
+	_graffitiMapWebView->Construct(Rectangle(0, 100, pForm->GetClientAreaBounds().width, pForm->GetClientAreaBounds().height-100));
 //	String url = "http://ec2-54-243-69-6.compute-1.amazonaws.com/maps.html";
-//	__pWeb->LoadUrl(GetValidUrl(url));
-	__pWeb->SetLoadingListener(this);
-	AddControl(*__pWeb);
+//	_graffitiMapWebView->LoadUrl(GetValidUrl(url));
+	_graffitiMapWebView->SetLoadingListener(this);
+	AddControl(*_graffitiMapWebView);
 	return r;
 }
 
@@ -101,11 +101,11 @@ ProjectGiraffeTab2::OnSceneActivatedN(const Tizen::Ui::Scenes::SceneId& previous
 	//	AppLog("Longitude is now: %f", longitude);
 	//	Tizen::Base::Double* dublat = new Tizen::Base::Double(latitude);
 	//	Tizen::Base::Double* dublong = new Tizen::Base::Double(longitude);
-	//	pLabellat->SetText(dublat->ToString());
-	//	pLabellong->SetText(dublong->ToString());
+	//	_latitudeLabel->SetText(dublat->ToString());
+	//	_longitudeLabel->SetText(dublong->ToString());
 
 //	String url = "http://ec2-54-243-69-6.compute-1.amazonaws.com/maps.html";
-//	__pWeb->LoadUrl(GetValidUrl(url));
+//	_graffitiMapWebView->LoadUrl(GetValidUrl(url));
 //	SceneManager* pSceneManager = SceneManager::GetInstance();
 //	Scene* pScene = pSceneManager->GetCurrentScene();
 //	Panel* pPanel = pScene->GetPanel();
@@ -183,15 +183,15 @@ ProjectGiraffeTab2::OnUserEventReceivedN(RequestId requestId, Tizen::Base::Colle
 			AppLog("Longitude is now: %f", longitude);
 			Tizen::Base::Double* dublat = new Tizen::Base::Double(latitude);
 			Tizen::Base::Double* dublong = new Tizen::Base::Double(longitude);
-			pLabellat->SetText(L"Location Found");
-			pLabellat->Draw();
-			pLabellong->SetText(dublat->ToString() + L", " + dublong->ToString());
-			pLabellong->Draw();
+			_latitudeLabel->SetText(L"Location Found");
+			_latitudeLabel->Draw();
+			_longitudeLabel->SetText(dublat->ToString() + L", " + dublong->ToString());
+			_longitudeLabel->Draw();
 			locationFound = true;
 
 			String url = "http://ec2-54-243-69-6.compute-1.amazonaws.com/graffitimap.html?latitude=" + dublat->ToString() + "&longitude=" + dublong->ToString();
 
-			__pWeb->LoadUrl(GetValidUrl(url));
+			_graffitiMapWebView->LoadUrl(GetValidUrl(url));
 			SceneManager* pSceneManager = SceneManager::GetInstance();
 			Form* pForm = pSceneManager->GetCurrentScene()->GetForm();
 			pForm->RequestRedraw(true);
