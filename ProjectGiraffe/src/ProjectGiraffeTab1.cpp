@@ -5,6 +5,7 @@
 #include "GraffitiCellSocialContextView.h"
 #include <cstdlib>
 #include <time.h>
+#include <typeinfo>
 
 using namespace Tizen::App;
 using namespace Tizen::Base;
@@ -471,6 +472,8 @@ ProjectGiraffeTab1::TraverseFunction(IJsonValue* pValue)
 	User *dummyUser = new User();
 	dummyUser->setUsername(L"CS210 Student");
 
+	Graffiti *lastCreatedGraffiti = NULL;
+
 	switch (pValue->GetType())
 	{
 	case JSON_TYPE_OBJECT:
@@ -483,20 +486,34 @@ ProjectGiraffeTab1::TraverseFunction(IJsonValue* pValue)
 			const String* key = null;
 			IJsonValue* value = null;
 			pMapEnum->GetKey(key);
+			pMapEnum->GetValue(value);
 			String* pListKey = new (std::nothrow) String(*key);
 			_pJsonKeyList->Add(*pListKey);
-			AppLog("Key: %s", pListKey->GetPointer());
+			AppLog("Key: %ls", pListKey->GetPointer());
 
 			if(pListKey->Equals("message",true)){
 				AppLog("Message received");
-				Graffiti *newGraffiti = new Graffiti();
-				newGraffiti->setUser(dummyUser);
-				pMapEnum->GetValue(value);
+				lastCreatedGraffiti = new Graffiti();
+				lastCreatedGraffiti->setUser(dummyUser);
 				JsonString* pVal = static_cast< JsonString* >(value);
 				String* pListValue = new (std::nothrow) String(*pVal);
-				newGraffiti->setText(pListValue->GetPointer());
-//				_pValueList->Add(pListValue);
-				_items->Add(newGraffiti);
+				lastCreatedGraffiti->setText(String(*pListValue));
+				_items->Add(lastCreatedGraffiti);
+				AppLog("message : %ls", lastCreatedGraffiti->text().GetPointer());
+			} else if (value && pListKey->Equals("latitude", true)) {
+				JsonNumber *jsonNum = static_cast<JsonNumber *>(value);
+				Double *latValue = static_cast<Double *>(jsonNum);
+				if (latValue && lastCreatedGraffiti) {
+					lastCreatedGraffiti->setLatitude(latValue->ToFloat());
+					AppLog("latitude : %f", lastCreatedGraffiti->longitude());
+				}
+			} else if (value != NULL && pListKey->Equals("longitude", true)) {
+				JsonNumber *jsonNum = static_cast<JsonNumber *>(value);
+				Double *lonValue = static_cast<Double *>(jsonNum);
+				if (lonValue && lastCreatedGraffiti) {
+					lastCreatedGraffiti->setLongitude(lonValue->ToFloat());
+					AppLog("longitude : %f", lastCreatedGraffiti->longitude());
+				}
 			}
 		}
 

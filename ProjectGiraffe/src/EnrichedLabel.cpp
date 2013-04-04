@@ -35,7 +35,6 @@ EnrichedLabel::~EnrichedLabel() {
 
 result EnrichedLabel::OnDraw()
 {
-	AppLog("Enriched label onDraw");
 	_lastCanvas = GetCanvasN();
 	_lastCanvas->Clear();
 	_lastCanvas->DrawText(Point(0, 0), *_enrichedText);
