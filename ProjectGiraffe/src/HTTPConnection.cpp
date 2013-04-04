@@ -19,10 +19,14 @@ using namespace Tizen::Net::Http;
 using namespace Tizen::Web::Json;
 
 const String kHTTPHostURL = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/";
+const String kServerCert = L"/C=US/ST=California/L=Palo Alto/O=Unsamsung Heroes/CN=giraffe-server/emailAddress=bbch@stanford.edu";
+
 const String kHTTPMethodNameNearbyGraffiti = L"nearby";
 const String kHTTPMethodNameNewGraffiti = L"addgraffiti";
-const String kHTTPMethodNameUserLogin = L"login";
-const String kHTTPMethodNameUserSignup = L"signup";
+const String kHTTPMethodNameUserLogin = L"user/login";
+const String kHTTPMethodNameUserSignup = L"user/signup";
+const String kHTTPMethodNameUserUpdate = L"user/update";
+const String kHTTPMethodNameUserLogout = L"user/logout";
 
 const String kHTTPParamNameGraffiti = L"graffiti";
 const String kHTTPParamNameText = L"text";
@@ -105,33 +109,35 @@ HTTPConnection *HTTPConnection::newGraffitiPostConnection(HTTPConnectionListener
 	return connection;
 }
 
-HTTPConnection *HTTPConnection::userLoginPostConnection(HTTPConnectionListener *listener, User *user, String password)
+HTTPConnection *HTTPConnection::userLoginPostConnection(HTTPConnectionListener *listener, HttpMultipartEntity *userParameters)
 {
-	HTTPConnection *connection = NULL;
-
-	HttpMultipartEntity *parameters = parametersForUser(user);
-	if (parameters) {
-		parameters->AddStringPart(L"password", password);
-		connection = new HTTPConnection(listener, kHTTPMethodNameUserLogin, NET_HTTP_METHOD_POST, parameters);
-		delete parameters;
-	}
+	HTTPConnection *connection = new HTTPConnection(listener, kHTTPMethodNameUserLogin, NET_HTTP_METHOD_POST, userParameters);
 
 	return connection;
 }
 
-HTTPConnection *HTTPConnection::userSignupPostConnection(HTTPConnectionListener *listener, User *user, Tizen::Base::String password)
+HTTPConnection *HTTPConnection::userSignupPostConnection(HTTPConnectionListener *listener, HttpMultipartEntity *userParameters)
 {
-	HTTPConnection *connection = NULL;
-
-	HttpMultipartEntity *parameters = parametersForUser(user);
-	if (parameters) {
-		parameters->AddStringPart(L"password", password);
-		connection = new HTTPConnection(listener, kHTTPMethodNameUserSignup, NET_HTTP_METHOD_POST, parameters);
-		delete parameters;
-	}
+	HTTPConnection *connection = new HTTPConnection(listener, kHTTPMethodNameUserSignup, NET_HTTP_METHOD_POST, userParameters);
 
 	return connection;
 }
+
+HTTPConnection *HTTPConnection::userUpdatePutConnection(HTTPConnectionListener *listener, HttpMultipartEntity *userParameters)
+{
+	HTTPConnection *connection = new HTTPConnection(listener, kHTTPMethodNameUserUpdate, NET_HTTP_METHOD_PUT, userParameters);
+
+	return connection;
+}
+
+HTTPConnection *HTTPConnection::userLogoutPostConnection(HTTPConnectionListener *listener)
+{
+	HTTPConnection *connection = new HTTPConnection(listener, kHTTPMethodNameUserSignup, NET_HTTP_METHOD_POST, NULL);
+
+	return connection;
+}
+
+
 
 // Instance Methods
 void HTTPConnection::begin()
@@ -200,8 +206,13 @@ HTTPConnection::OnTransactionAborted (HttpSession &httpSession, HttpTransaction 
 void
 HTTPConnection::OnTransactionCertVerificationRequiredN (HttpSession &httpSession, HttpTransaction &httpTransaction, Tizen::Base::String *pCert)
 {
-	// TODO: figure out what we need to do for certification here.
-	_listener->connectionDidFail(this);
+	if (pCert->Equals(kServerCert)) {
+		httpTransaction.Resume();
+	} else {
+		httpTransaction.Pause();
+	}
+
+//	_listener->connectionDidFail(this);
 }
 
 void

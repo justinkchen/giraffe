@@ -13,6 +13,8 @@ extern const Tizen::Base::String kHTTPMethodNameNearbyGraffiti;
 extern const Tizen::Base::String kHTTPMethodNameNewGraffiti;
 extern const Tizen::Base::String kHTTPMethodNameUserLogin;
 extern const Tizen::Base::String kHTTPMethodNameUserSignup;
+extern const Tizen::Base::String kHTTPMethodNameUserUpdate;
+extern const Tizen::Base::String kHTTPMethodNameUserLogout;
 
 extern const Tizen::Base::String kHTTPParamNameGraffiti;
 extern const Tizen::Base::String kHTTPParamNameText;
@@ -56,8 +58,10 @@ public:
 	  // Factory methods
 	  static HTTPConnection *nearbyGraffitiGetConnection(HTTPConnectionListener *listener, double latitude, double longitude);
 	  static HTTPConnection *newGraffitiPostConnection(HTTPConnectionListener *listener, Graffiti *graffiti);
-	  static HTTPConnection *userLoginPostConnection(HTTPConnectionListener *listener, User *user, Tizen::Base::String password);
-	  static HTTPConnection *userSignupPostConnection(HTTPConnectionListener *listener, User *user, Tizen::Base::String password);
+	  static HTTPConnection *userLoginPostConnection(HTTPConnectionListener *listener, Tizen::Net::Http::HttpMultipartEntity *userParameters);
+	  static HTTPConnection *userSignupPostConnection(HTTPConnectionListener *listener, Tizen::Net::Http::HttpMultipartEntity *userParameters);
+	  static HTTPConnection *userUpdatePutConnection(HTTPConnectionListener *listener, Tizen::Net::Http::HttpMultipartEntity *userParameters);
+	  static HTTPConnection *userLogoutPostConnection(HTTPConnectionListener *listener);
 
 	  // Instance Methods
 	  void begin();
