@@ -13,25 +13,13 @@ Location* ProjectGiraffeMainForm::__currentLocation;
 double ProjectGiraffeMainForm::currentLatitude = 0;
 double ProjectGiraffeMainForm::currentLongitude = 0;
 
-<<<<<<< HEAD
+
 ProjectGiraffeMainForm::ProjectGiraffeMainForm(void)
 	: __pLocProvider(null)
 	, __pLocationManagerThread(null)
 	, __regionId(-1)
 	, __sParser(null)
-	, __pUserPopup(null)
-||||||| merged common ancestors
-ProjectGiraffeMainForm::ProjectGiraffeMainForm(void)
-	: __pLocProvider(null)
-	, __pLocationManagerThread(null)
-	, __regionId(-1)
-	, __pUserPopup(null)
-=======
-ProjectGiraffeMainForm::ProjectGiraffeMainForm(void) :
-	__pLocProvider(null),
-	__pLocationManagerThread(null),
-	__regionId(-1)
->>>>>>> origin/master
+	//, __pUserPopup(null)
 {
 }
 

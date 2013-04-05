@@ -6,12 +6,8 @@
 #include <FLocations.h>
 
 #include "UserPopup.h"
-<<<<<<< HEAD
 #include "SensorParser.h"
-||||||| merged common ancestors
-=======
 #include "LaunchPopup.h"
->>>>>>> origin/master
 
 class LocationManagerThread;
 

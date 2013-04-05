@@ -106,14 +106,10 @@ ProjectGiraffeTab1::updateItems()
 void ProjectGiraffeTab1::updateViews()
 {
 	// Remove all views if they exist
-	if (_contentViews) _contentViews->RemoveAll(true);
 	if (_contextViews) _contextViews->RemoveAll(true);
-	delete _contentViews;
 	delete _contextViews;
 
 	if (_items && _items->GetCount()) {
-		_contentViews = new ArrayList(SingleObjectDeleter);
-		_contentViews->Construct();
 		_contextViews = new ArrayList(SingleObjectDeleter);
 		_contextViews->Construct();
 
@@ -127,7 +123,6 @@ void ProjectGiraffeTab1::updateViews()
 				contentView->Construct(Rectangle(0, 0, width, GetDefaultItemHeight()));
 				contentView->setGraffiti(graffiti);
 				contentView->sizeToFit();
-				_contentViews->Add(contentView);
 
 				// Create social context view
 				GraffitiCellSocialContextView *socialContextView = new GraffitiCellSocialContextView();
@@ -137,7 +132,6 @@ void ProjectGiraffeTab1::updateViews()
 			}
 		}
 	} else {
-		_contentViews = NULL;
 		_contextViews = NULL;
 	}
 }

@@ -6,15 +6,10 @@
 #include <FWebJson.h>
 #include <Fnet.h>
 #include <FWeb.h>
-<<<<<<< HEAD
 #include "Graffiti.h"
 #include "LoadingPopupThread.h"
-||||||| merged common ancestors
-#include "Graffiti.h"
-=======
 #include "HTTPConnection.h"
 class Graffiti;
->>>>>>> origin/master
 
 using namespace Tizen::Web::Json;
 
@@ -27,26 +22,12 @@ class ProjectGiraffeTab1 :
 	public HTTPConnection::HTTPConnectionListener
 	{
 public:
-<<<<<<< HEAD
-	ProjectGiraffeTab1(void)
-	: _pValueList(null)
-	, _pJsonKeyList(null)
-	, __pLoadingPopupThread(null)
-	, _tableView(null) {}
-||||||| merged common ancestors
-	ProjectGiraffeTab1(void)
-	: _pValueList(null)
-	, _pJsonKeyList(null)
-	, _tableView(null) {}
-=======
 	ProjectGiraffeTab1(void) :
 		_pValueList(NULL),
 		_pJsonKeyList(NULL),
 		_items(NULL),
-		_contentViews(NULL),
 		_contextViews(NULL),
 		_tableView(NULL) {}
->>>>>>> origin/master
 
 	virtual ~ProjectGiraffeTab1(void);
 	bool Initialize(void);
@@ -93,13 +74,8 @@ protected:
 
 private:
     Tizen::Base::Collection::ArrayList *_items;
-<<<<<<< HEAD
     LoadingPopupThread* __pLoadingPopupThread;
-||||||| merged common ancestors
-=======
-    Tizen::Base::Collection::ArrayList *_contentViews;
     Tizen::Base::Collection::ArrayList *_contextViews;
->>>>>>> origin/master
     Tizen::Ui::Controls::TableView* _tableView;
     void updateItems();
     void updateViews();
