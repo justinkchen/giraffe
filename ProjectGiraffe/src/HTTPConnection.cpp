@@ -7,129 +7,233 @@
 
 
 #include "HTTPConnection.h"
+#include "Graffiti.h"
+#include "User.h"
+#include "JSONParser.h"
+#include <FWeb.h>
 #include <cstdlib>
 
 using namespace Tizen::Base;
+using namespace Tizen::Base::Collection;
 using namespace Tizen::Net::Http;
 using namespace Tizen::Web::Json;
 
+const String kHTTPHostURL = L"https://ec2-54-243-69-6.compute-1.amazonaws.com/";
+const String kServerCert = L"/C=US/ST=California/L=Palo Alto/O=Unsamsung Heroes/CN=giraffe-server/emailAddress=bbch@stanford.edu";
 
-HTTPConnection::HTTPConnection (String hostAddr){
+const String kHTTPMethodNameNearbyGraffiti = L"nearby";
+const String kHTTPMethodNameNewGraffiti = L"addgraffiti";
+const String kHTTPMethodNameUserLogin = L"user/login";
+const String kHTTPMethodNameUserSignup = L"user/signup";
+const String kHTTPMethodNameUserUpdate = L"user/update";
+const String kHTTPMethodNameUserLogout = L"user/logout";
+
+const String kHTTPParamNameGraffiti = L"graffiti";
+const String kHTTPParamNameText = L"text";
+const String kHTTPParamNameImageURL = L"imageURL";
+const String kHTTPParamNameLongitude = L"longitude";
+const String kHTTPParamNameLatitude = L"latitude";
+const String kHTTPParamNameDirectionX = L"directionX";
+const String kHTTPParamNameDirectionY = L"directionY";
+const String kHTTPParamNameDirectionZ = L"directionZ";
+const String kHTTPParamNameLikeCount = L"likeCount";
+const String kHTTPParamNameFlagged = L"flagged";
+const String kHTTPParamNameDateCreated = L"dateCreated";
+const String kHTTPParamNameUser = L"user";
+const String kHTTPParamNameUserID = L"id";
+const String kHTTPParamNameFullname = L"fullname";
+const String kHTTPParamNameUsername = L"username";
+const String kHTTPParamNameEmail = L"email";
+const String kHTTPParamNameYear = L"year";
+const String kHTTPParamNameMonth = L"month";
+const String kHTTPParamNameDay = L"day";
+const String kHTTPParamNameHour = L"hour";
+const String kHTTPParamNameMinute = L"minute";
+const String kHTTPParamNameSecond = L"second";
+const String kHTTPParamNameError = L"error";
 
 
-//   Kick off http request for items based on location.
-//   Populate item source array
-  HttpSession* pHttpSession = null;
-  HttpTransaction* pHttpTransaction = null;
-  String* pProxyAddr = null;
- 
-  AppLog("Starting the HTTP Session");
-  pHttpSession = new HttpSession();
-  // HttpSession construction.
-  pHttpSession->Construct(NET_HTTP_SESSION_MODE_NORMAL, pProxyAddr, hostAddr, null);
+HTTPConnection::HTTPConnection(HTTPConnectionListener *listener, const Tizen::Base::String methodName, Tizen::Net::Http::NetHttpMethod methodType, Tizen::Net::Http::HttpMultipartEntity *parameters) :
+		_methodName(methodName),
+		_listener(listener),
+		_responseDictionary(NULL)
+{
+	// Create session
+	_session = new HttpSession();
+	_session->Construct(NET_HTTP_SESSION_MODE_NORMAL, NULL, kHTTPHostURL, NULL, NET_HTTP_COOKIE_FLAG_ALWAYS_AUTOMATIC);
 
-  // Open a new HttpTransaction.
-  pHttpTransaction = pHttpSession->OpenTransactionN();
+	_transaction = _session->OpenTransactionN();
+	_transaction->AddHttpTransactionListener(*this);
 
-  // Add a listener.
-  pHttpTransaction->AddHttpTransactionListener(*this);
-
-  // Get an HTTP request.
-  HttpRequest* pHttpRequest = pHttpTransaction->GetRequest();
-
-  // Set the HTTP method and URI:
-  pHttpRequest->SetMethod(NET_HTTP_METHOD_GET);
-  pHttpRequest->SetUri(URI);
-
-  // Submit the request:
-  pHttpTransaction->Submit();
-
+	HttpRequest *request = _transaction->GetRequest();
+	request->SetMethod(methodType);
+	String uri = kHTTPHostURL;
+	uri.Append(methodName);
+	request->SetUri(uri);
+	if (parameters) {
+		request->SetEntity(*parameters);
+	}
 }
 
-HTTPConnection::~HTTPConnection(){
+HTTPConnection::~HTTPConnection()
+{
+	delete _session;
+	delete _transaction;
+	delete _responseDictionary;
+}
 
-  
+// Factory methods
+HTTPConnection *HTTPConnection::nearbyGraffitiGetConnection(HTTPConnectionListener *listener, double latitude, double longitude)
+{
+	HttpMultipartEntity *parameters = new HttpMultipartEntity();
+	parameters->Construct();
+	parameters->AddStringPart(L"latitude", Double(latitude).ToString());
+	parameters->AddStringPart(L"longitude", Double(longitude).ToString());
+
+	HTTPConnection *connection = new HTTPConnection(listener, kHTTPMethodNameNearbyGraffiti, NET_HTTP_METHOD_GET, parameters);
+	delete parameters;
+
+	return connection;
+}
+
+HTTPConnection *HTTPConnection::newGraffitiPostConnection(HTTPConnectionListener *listener, Graffiti *graffiti)
+{
+	HTTPConnection *connection = NULL;
+
+	HttpMultipartEntity *parameters = parametersForGraffiti(graffiti);
+	if (parameters) {
+		connection = new HTTPConnection(listener, kHTTPMethodNameNewGraffiti, NET_HTTP_METHOD_POST, parameters);
+		delete parameters;
+	}
+
+	return connection;
+}
+
+HTTPConnection *HTTPConnection::userLoginPostConnection(HTTPConnectionListener *listener, HttpMultipartEntity *userParameters)
+{
+	HTTPConnection *connection = new HTTPConnection(listener, kHTTPMethodNameUserLogin, NET_HTTP_METHOD_POST, userParameters);
+
+	return connection;
+}
+
+HTTPConnection *HTTPConnection::userSignupPostConnection(HTTPConnectionListener *listener, HttpMultipartEntity *userParameters)
+{
+	HTTPConnection *connection = new HTTPConnection(listener, kHTTPMethodNameUserSignup, NET_HTTP_METHOD_POST, userParameters);
+
+	return connection;
+}
+
+HTTPConnection *HTTPConnection::userUpdatePutConnection(HTTPConnectionListener *listener, HttpMultipartEntity *userParameters)
+{
+	HTTPConnection *connection = new HTTPConnection(listener, kHTTPMethodNameUserUpdate, NET_HTTP_METHOD_PUT, userParameters);
+
+	return connection;
+}
+
+HTTPConnection *HTTPConnection::userLogoutPostConnection(HTTPConnectionListener *listener)
+{
+	HTTPConnection *connection = new HTTPConnection(listener, kHTTPMethodNameUserLogout, NET_HTTP_METHOD_POST, NULL);
+
+	return connection;
 }
 
 
 
+// Instance Methods
+void HTTPConnection::begin()
+{
+	_transaction->Submit();
+}
 
 
+// Utility methods
+HttpMultipartEntity *HTTPConnection::parametersForDictionary(Tizen::Base::Collection::HashMap *dictionary)
+{
+	HttpMultipartEntity *parameters = NULL;
+	if (dictionary) {
+		parameters = new HttpMultipartEntity();
+		parameters->Construct();
 
+		IMapEnumerator *iter = dictionary->GetMapEnumeratorN();
+		String *key = NULL, value = L"";
+		while (iter->MoveNext() == E_SUCCESS) {
+			key = static_cast<String *>(iter->GetKey());
 
+			// The value will either be a String, Double, or Boolean
+			Object *objValue = iter->GetValue();
+			String *strValue = dynamic_cast<String *>(objValue);
+			if (strValue) {
+				value = *strValue;
+			}
 
+			Double *doubleValue = dynamic_cast<Double *>(objValue);
+			if (doubleValue) {
+				value = doubleValue->ToString();
+			}
 
+			Boolean *boolValue = dynamic_cast<Boolean *>(objValue);
+			if (boolValue) {
+				value = boolValue->ToString();
+			}
 
+			if (key && value.GetLength()) {
+				parameters->AddStringPart(*key, value);
+			}
+		}
+	}
+	return parameters;
+}
 
+HttpMultipartEntity *HTTPConnection::parametersForGraffiti(Graffiti *graffiti)
+{
+	HashMap *dictionary = (graffiti ? graffiti->parameterDictionary() : NULL);
+	return parametersForDictionary(dictionary);
+}
 
+HttpMultipartEntity *HTTPConnection::parametersForUser(User *user)
+{
+	HashMap *dictionary = (user ? user->parameterDictionary() : NULL);
+	return parametersForDictionary(dictionary);
+}
+
+// IHttpTransactionEventListener
 void
 HTTPConnection::OnTransactionAborted (HttpSession &httpSession, HttpTransaction &httpTransaction, result r)
 {
-  AppLog("HTTP Transaction Aborted");
-
-  // Come up with notification of aborted transaction
+	_listener->connectionDidFail(this);
 }
 
 void
 HTTPConnection::OnTransactionCertVerificationRequiredN (HttpSession &httpSession, HttpTransaction &httpTransaction, Tizen::Base::String *pCert)
 {
-
+	if (pCert->Equals(kServerCert)) {
+		httpTransaction.Resume();
+	} else {
+		httpTransaction.Pause();
+		//	_listener->connectionDidFail(this);
+	}
 }
 
 void
 HTTPConnection::OnTransactionCompleted (HttpSession &httpSession, HttpTransaction &httpTransaction)
 {
-  AppLog("HTTP Transaction Completed");
-}
-
-void
-HTTPConnection::OnTransactionHeaderCompleted (HttpSession &httpSession, HttpTransaction &httpTransaction, int headerLen, bool bAuthRequired)
-{
-
+	if (_responseDictionary) {
+		_listener->connectionDidFinish(this, _responseDictionary);
+	} else {
+		_listener->connectionDidFail(this);
+	}
 }
 
 void
 HTTPConnection::OnTransactionReadyToRead (HttpSession &httpSession, HttpTransaction &httpTransaction, int availableBodyLen)
 {
-  HttpResponse* pHttpResponse = httpTransaction.GetResponse();
-  HttpHeader* pHttpHeader = null;
-  AppLog("Checking HTTP Status Code");
-  if (pHttpResponse->GetHttpStatusCode() == HTTP_STATUS_OK)
-  {
+	HttpResponse *response = httpTransaction.GetResponse();
+	if (response->GetHttpStatusCode() == HTTP_STATUS_OK) {
+		ByteBuffer *body = response->ReadBodyN();
+		IJsonValue *jsonValue = JsonParser::ParseN(*body);
+		_responseDictionary = JSONParser::dictionaryForJSONValue(jsonValue);
 
-    ByteBuffer* pBody = null;
-    String statusText = pHttpResponse->GetStatusText();
-    String version = pHttpResponse->GetVersion();
-
-    pHttpHeader = pHttpResponse->GetHeader();
-    pBody = pHttpResponse->ReadBodyN();
-    //delete pBody;
-
-    //Parses from ByteBuffer
-    IJsonValue* pValue = JsonParser::ParseN(*pBody);
-
-    AppLog("Received HTTP response.");
-
-    // Implement JSON parsing to return
-    // list of maps corresponding to json objects
-  }
-
+		delete body;
+		delete jsonValue;
+	}
 }
-
-void
-HTTPConnection::OnTransactionReadyToWrite (HttpSession &httpSession, HttpTransaction &httpTransaction, int recommendedChunkSize)
-{
-
-}
-
-
-
-
-
-
-
-
-
-
-
-

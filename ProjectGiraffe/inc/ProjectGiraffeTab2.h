@@ -16,20 +16,23 @@ class ProjectGiraffeTab2
 {
 public:
 	ProjectGiraffeTab2(void)
-	: pLabellong(null)
-	, pLabellat(null)
-	, __pWeb(null){}
+	: _longitudeLabel(null)
+	, _latitudeLabel(null)
+	, _graffitiMapWebView(null){}
 
 	virtual ~ProjectGiraffeTab2(void);
 	bool Initialize(void);
 
-public:
 	virtual result OnInitializing(void);
 	virtual result OnTerminating(void);
+
+	// ISceneEventListener
 	virtual void OnSceneActivatedN(const Tizen::Ui::Scenes::SceneId& previousSceneId,
 								   const Tizen::Ui::Scenes::SceneId& currentSceneId, Tizen::Base::Collection::IList* pArgs);
 	virtual void OnSceneDeactivated(const Tizen::Ui::Scenes::SceneId& currentSceneId,
 									const Tizen::Ui::Scenes::SceneId& nextSceneId);
+
+	virtual void OnUserEventReceivedN(RequestId requestId, Tizen::Base::Collection::IList* pArgs);
 
 	// ITouchEventListener
 	virtual void OnTouchDoublePressed(const Tizen::Ui::Control& source, const Tizen::Graphics::Point& currentPosition, const Tizen::Ui::TouchEventInfo& touchInfo);
@@ -39,7 +42,6 @@ public:
 	virtual void OnTouchMoved(const Tizen::Ui::Control& source, const Tizen::Graphics::Point& currentPosition, const Tizen::Ui::TouchEventInfo& touchInfo);
 	virtual void OnTouchPressed(const Tizen::Ui::Control& source, const Tizen::Graphics::Point& currentPosition, const Tizen::Ui::TouchEventInfo& touchInfo);
 	virtual void OnTouchReleased(const Tizen::Ui::Control& source, const Tizen::Graphics::Point& currentPosition, const Tizen::Ui::TouchEventInfo& touchInfo);
-	virtual void OnUserEventReceivedN(RequestId requestId, Tizen::Base::Collection::IList* pArgs);
 
 	// ILoadingListener
 	virtual bool OnHttpAuthenticationRequestedN(const Tizen::Base::String& host, const Tizen::Base::String& realm, const Tizen::Web::Controls::AuthenticationChallenge& authentication);
@@ -53,9 +55,9 @@ public:
 	virtual bool OnLoadingRequested(const Tizen::Base::String& url, Tizen::Web::Controls::WebNavigationType type);
 	virtual Tizen::Web::Controls::DecisionPolicy OnWebDataReceived(const Tizen::Base::String& mime, const Tizen::Net::Http::HttpHeader& header);
 private:
-	Tizen::Ui::Controls::Label* pLabellat;
-	Tizen::Ui::Controls::Label* pLabellong;
-	Tizen::Web::Controls::Web *__pWeb;
+	Tizen::Ui::Controls::Label* _latitudeLabel;
+	Tizen::Ui::Controls::Label* _longitudeLabel;
+	Tizen::Web::Controls::Web *_graffitiMapWebView;
 	bool locationFound;
 	void SetUrl(const Tizen::Base::String& url);
 	Tizen::Base::String GetValidUrl(Tizen::Base::String& url);

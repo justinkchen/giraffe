@@ -6,10 +6,13 @@
  */
 
 #include "GraffitiCellContentView.h"
+#include "ProjectGiraffeMainForm.h"
+#include "User.h"
 #include "EnrichedLabel.h"
 #include "Macros.h"
 #include "ControlUtilities.h"
 #include <FGraphics.h>
+#include <math.h>
 
 using namespace Tizen::App;
 using namespace Tizen::Base;
@@ -106,7 +109,26 @@ void GraffitiCellContentView::sizeToFit()
 String GraffitiCellContentView::distanceString()
 {
 	// TODO: actually calculate the distance and use that value here.
-	String distanceString = L"xx ft.";
+	double lat = ProjectGiraffeMainForm::currentLatitude;
+	double lon = ProjectGiraffeMainForm::currentLongitude;
+	double earthRadius = 6371.0;
+	double dLatRad = (_graffiti->latitude() - lat) * M_PI / 180.0;
+	double dLonRad = (_graffiti->longitude() - lon) * M_PI / 180.0;
+	double currLatRad = lat * M_PI / 180.0;
+	double graffitiLatRad = _graffiti->latitude() * M_PI / 180.0;
+
+	AppLog("current lat : %f", lat);
+	AppLog("current lon : %f", lon);
+	AppLog("graffiti lat : %f", _graffiti->latitude());
+	AppLog("graffiti lon : %f", _graffiti->longitude());
+
+	double a = sin(dLatRad / 2.0) * sin(dLatRad / 2.0) +
+			   sin(dLonRad / 2.0) * sin(dLonRad / 2.0) * cos(currLatRad) * cos(graffitiLatRad);
+	double c = 2 * atan2(sqrt(a), sqrt(1.0 - a));
+	double distance = earthRadius * c;
+
+	String distanceString;
+	distanceString.Format(17, L"%f km.", distance);
 	return distanceString;
 }
 

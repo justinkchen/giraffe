@@ -9,14 +9,28 @@
 #define USER_H_
 
 #include <FBase.h>
-#include "Date.h"
+class Date;
 
 class User :
 	public Tizen::Base::Object
 {
 public:
+	// Current user
+	static User *currentUser(void);
+
+	// Constructors
 	User();
 	virtual ~User();
+
+	result updateFromDictionary(Tizen::Base::Collection::HashMap *dictionary);
+
+	// User listener class
+	class UserListener :
+		public Tizen::Base::Object
+	{
+	public :
+		virtual void onUserUpdate(User *user) = 0;
+	};
 
 	// Accessors
 	unsigned int id() { return _id; }
@@ -27,15 +41,19 @@ public:
 	void setUsername(Tizen::Base::String username) { _username = username; }
 	Tizen::Base::String email() { return _email; }
 	void setEmail(Tizen::Base::String email) { _email = email; }
-	Date dateCreated() { return _dateCreated; }
-	void setDateCreated(Date dateCreated) { _dateCreated = dateCreated; }
+	Date *dateCreated() { return _dateCreated; }
+	void setDateCreated(Date *dateCreated) { _dateCreated = dateCreated; }
+	Tizen::Base::Collection::HashMap *parameterDictionary();
+	void addListener(UserListener *listener);
+	void removeListener(UserListener *listener);
 
 private:
 	unsigned int _id;
 	Tizen::Base::String _fullname;
 	Tizen::Base::String _username;
 	Tizen::Base::String _email;
-	Date _dateCreated;
+	Date *_dateCreated;
+	Tizen::Base::Collection::ArrayList *_listeners;
 };
 
 #endif /* USER_H_ */

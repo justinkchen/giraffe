@@ -13,12 +13,25 @@ Location* ProjectGiraffeMainForm::__currentLocation;
 double ProjectGiraffeMainForm::currentLatitude = 0;
 double ProjectGiraffeMainForm::currentLongitude = 0;
 
+<<<<<<< HEAD
 ProjectGiraffeMainForm::ProjectGiraffeMainForm(void)
 	: __pLocProvider(null)
 	, __pLocationManagerThread(null)
 	, __regionId(-1)
 	, __sParser(null)
 	, __pUserPopup(null)
+||||||| merged common ancestors
+ProjectGiraffeMainForm::ProjectGiraffeMainForm(void)
+	: __pLocProvider(null)
+	, __pLocationManagerThread(null)
+	, __regionId(-1)
+	, __pUserPopup(null)
+=======
+ProjectGiraffeMainForm::ProjectGiraffeMainForm(void) :
+	__pLocProvider(null),
+	__pLocationManagerThread(null),
+	__regionId(-1)
+>>>>>>> origin/master
 {
 }
 
@@ -110,8 +123,8 @@ ProjectGiraffeMainForm::OnInitializing(void)
 	}
 	__pLocProvider->StartLocationUpdatesByInterval(10);
 
-	// Initialize UserPopup
-	__pUserPopup = new UserPopup();
+	_launchPopup = new LaunchPopup();
+	_launchPopup->ShowPopup();
 
 	__sParser = new SensorParser();
 
@@ -129,7 +142,6 @@ ProjectGiraffeMainForm::OnTerminating(void)
 	__pLocationManagerThread->Join();
 	delete __pLocationManagerThread;
 	//delete __currentLocation;
-	delete __pUserPopup;
 
 	// TODO:
 	// Add your termination code here
@@ -189,7 +201,10 @@ ProjectGiraffeMainForm::OnActionPerformed(const Tizen::Ui::Control& source, int 
 		pFooter->SetItemEnabled(4,true);
 		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_4"));
 		pHeader->SetTitleText(L"Profile");
-		__pUserPopup->ShowPopup();
+
+		if (User::currentUser()->id() == 0) {
+			UserPopup::popup()->showPopup();
+		}
 
 		AppLog("Tab4");
 		break;
@@ -249,6 +264,9 @@ ProjectGiraffeMainForm::OnLocationUpdated(const Tizen::Locations::Location& loca
 		Scene* pScene = pSceneManager->GetCurrentScene();
 		Panel* pPanel = pScene->GetPanel();
 		pPanel->SendUserEvent(101, null);
+
+		_launchPopup->SendUserEvent(101,null);
+
 		AppLog("The latitude is: %f", currentLatitude);
 		AppLog("The longitude is: %f", currentLongitude);
 	}else{

@@ -16,6 +16,7 @@ class Date :
 public:
 	Date();
 	virtual ~Date();
+	result updateFromDictionary(Tizen::Base::Collection::HashMap *dictionary);
 
 	// Utility Functions
 	Tizen::Base::String dayString(); // Return strings like "March 10, 2013"
@@ -32,6 +33,7 @@ public:
 	void setMinute(unsigned int minute) { _minute = minute; }
 	unsigned int second() { return _second; }
 	void setSecond(unsigned int second) { _second = second; }
+	Tizen::Base::Collection::HashMap *parameterDictionary();
 
 private:
 	unsigned int _year;

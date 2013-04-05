@@ -14,45 +14,54 @@
 #include <Fnet.h>
 #include <FWeb.h>
 
-class UserPopup
-	: public Tizen::Ui::Controls::Popup
-    , public Tizen::Ui::IActionEventListener
-	, public Tizen::Net::Http::IHttpTransactionEventListener
+#include "User.h"
+#include "JsonParser.h"
+#include "HttpConnection.h"
+
+class UserPopup:
+	public Tizen::Ui::Controls::Popup,
+    public Tizen::Ui::IActionEventListener,
+    public Tizen::Ui::IKeypadEventListener,
+    public HTTPConnection::HTTPConnectionListener
 {
 public:
+	static UserPopup *popup(void);
+
 	UserPopup(void);
 	virtual ~UserPopup();
 
-	void ShowPopup(void);
-	void HidePopup(void);
+	void showPopup(void);
+	void hidePopup(void);
+
+	// IActionEventListener
 	virtual void OnActionPerformed(const Tizen::Ui::Control& source, int actionId);
 
-	// ITextEventListener
-	virtual void OnTextValueChanged(const Tizen::Ui::Control& source);
-	virtual void OnTextValueChangeCanceled(const Tizen::Ui::Control& source);
+	// IKeypadEventListener
+	virtual void OnKeypadActionPerformed(Tizen::Ui::Control &source, Tizen::Ui::KeypadAction keypadAction);
+	virtual void OnKeypadBoundsChanged(Tizen::Ui::Control &source);
+	virtual void OnKeypadClosed(Tizen::Ui::Control &source);
+	virtual void OnKeypadOpened(Tizen::Ui::Control &source);
+	virtual void OnKeypadWillOpen(Tizen::Ui::Control &source);
 
-	// IHttpTransactionEventListener
-	virtual void OnTransactionAborted(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, result r);
-	virtual void OnTransactionCertVerificationRequiredN(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, Tizen::Base::String *pCert);
-	virtual void OnTransactionCompleted(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction);
-	virtual void OnTransactionHeaderCompleted(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int headerLen, bool bAuthRequired);
-	virtual void OnTransactionReadyToRead(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int availableBodyLen);
-	virtual void OnTransactionReadyToWrite(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int recommendedChunkSize);
-
-
-
+	// HTTPConnectionListener
+	virtual void connectionDidFinish(HTTPConnection *connection, Tizen::Base::Collection::HashMap *response);
+	virtual void connectionDidFail(HTTPConnection *connection);
 
 private:
-	static const int ID_BUTTON_LOG_IN = 501;
-	static const int ID_BUTTON_SIGN_UP = 502;
-	static const int ID_BUTTON_CLOSE_POPUP = 503;
-	//TODO: toggle button
+	static const int ID_BUTTON_CLOSE_POPUP = 501;
+	static const int ID_BUTTON_LOGIN = 502;
+	static const int ID_BUTTON_SIGNUP = 503;
+	static const int ID_BUTTON_VIEW_LOGIN = 504;
+	static const int ID_BUTTON_VIEW_SIGNUP = 505;
 
-	void ShowLogin(void);
-	void ShowSignup(void);
+	void showLogin(void);
+	void showSignup(void);
 
-	void SubmitLogin(void);
-	void SubmitSignup(void);
+	void submitLogin(void);
+	void submitSignup(void);
+
+	void showError(const Tizen::Base::String &errorMessage);
+	void resetButtons(void);
 };
 
 #endif /* USERPOPUP_H_ */

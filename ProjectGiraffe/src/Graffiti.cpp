@@ -6,6 +6,9 @@
  */
 
 #include "Graffiti.h"
+#include "Date.h"
+#include "User.h"
+#include "HTTPConnection.h" // TODO: maybe find a better place for the parameter names to live.
 
 using namespace Tizen::Base;
 using namespace Tizen::Base::Collection;
@@ -19,15 +22,118 @@ Graffiti::Graffiti() :
 	_directionZ(0),
 	_likeCount(0),
 	_flagged(false),
-	_dateCreated(),
-	_user(null),
-	_listeners(null)
-{
-	// TODO Auto-generated constructor stub
-}
+	_dateCreated(NULL),
+	_user(NULL),
+	_listeners(NULL) {}
 
 Graffiti::~Graffiti() {
-	// TODO Auto-generated destructor stub
+	delete _dateCreated;
+	delete _user;
+	delete _listeners;
+}
+
+result Graffiti::updateFromDictionary(HashMap *dictionary)
+{
+	result success = E_FAILURE;
+	if (dictionary && !dictionary->ContainsKey(kHTTPParamNameError)) {
+		Double *dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameLongitude));
+		if (dblValue) {
+			_longitude = dblValue->ToDouble();
+			success = E_SUCCESS;
+		}
+
+		dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameLatitude));
+		if (dblValue) {
+			_latitude = dblValue->ToDouble();
+			success = E_SUCCESS;
+		}
+
+		dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameDirectionX));
+		if (dblValue) {
+			_directionX = dblValue->ToDouble();
+			success = E_SUCCESS;
+		}
+
+		dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameDirectionY));
+		if (dblValue) {
+			_directionY = dblValue->ToDouble();
+			success = E_SUCCESS;
+		}
+
+		dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameDirectionZ));
+		if (dblValue) {
+			_directionZ = dblValue->ToDouble();
+			success = E_SUCCESS;
+		}
+
+		dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameLikeCount));
+		if (dblValue) {
+			_likeCount = dblValue->ToInt();
+			success = E_SUCCESS;
+		}
+
+		String *textValue = static_cast<String *>(dictionary->GetValue(kHTTPParamNameText));
+		if (textValue) {
+			_text = *textValue;
+			success = E_SUCCESS;
+		}
+
+		String *imageURLValue = static_cast<String *>(dictionary->GetValue(kHTTPParamNameImageURL));
+		if (imageURLValue) {
+			_imageURL = *imageURLValue;
+			success = E_SUCCESS;
+		}
+
+		Boolean *flaggedValue = static_cast<Boolean *>(dictionary->GetValue(kHTTPParamNameFlagged));
+		if (flaggedValue) {
+			_flagged = flaggedValue->ToBool();
+			success = E_SUCCESS;
+		}
+
+		HashMap *dateDictionary = static_cast<HashMap *>(dictionary->GetValue(kHTTPParamNameDateCreated));
+		if (dateDictionary) {
+			_dateCreated = new Date();
+			result dateSuccess = _dateCreated->updateFromDictionary(dateDictionary);
+			if (IsFailed(dateSuccess)) {
+				delete _dateCreated;
+				_dateCreated = NULL;
+			} else {
+				success = E_SUCCESS;
+			}
+		}
+
+		HashMap *userDictionary = static_cast<HashMap *>(dictionary->GetValue(kHTTPParamNameUser));
+		if (userDictionary) {
+			_user = new User();
+			result userSuccess = _user->updateFromDictionary(userDictionary);
+			if (IsFailed(userSuccess)) {
+				delete _user;
+				_user = NULL;
+			} else {
+				success = E_SUCCESS;
+			}
+		}
+	}
+
+	return success;
+}
+
+HashMap *Graffiti::parameterDictionary()
+{
+	HashMap *parameters = new HashMap(SingleObjectDeleter);
+	parameters->Construct();
+	parameters->Add(new String(kHTTPParamNameText), new String(_text));
+	parameters->Add(new String(kHTTPParamNameImageURL), new String(_imageURL));
+	parameters->Add(new String(kHTTPParamNameLongitude), new Double(_longitude));
+	parameters->Add(new String(kHTTPParamNameLatitude), new Double(_latitude));
+	parameters->Add(new String(kHTTPParamNameDirectionX), new Double(_directionX));
+	parameters->Add(new String(kHTTPParamNameDirectionY), new Double(_directionY));
+	parameters->Add(new String(kHTTPParamNameDirectionZ), new Double(_directionZ));
+	parameters->Add(new String(kHTTPParamNameLikeCount), new Integer(_likeCount));
+	parameters->Add(new String(kHTTPParamNameFlagged), new Boolean(_flagged));
+	parameters->Add(new String(kHTTPParamNameDateCreated), _dateCreated->parameterDictionary());
+	parameters->Add(new String(kHTTPParamNameUserID), new Double(_user->id()));
+	return parameters;
 }
 
 void Graffiti::addListener(GraffitiListener *listener)

@@ -1,9 +1,11 @@
 #include "ProjectGiraffeTab1.h"
+#include "ProjectGiraffeMainForm.h"
 #include "User.h"
 #include "GraffitiCellContentView.h"
 #include "GraffitiCellSocialContextView.h"
 #include <cstdlib>
 #include <time.h>
+#include <typeinfo>
 
 using namespace Tizen::App;
 using namespace Tizen::Base;
@@ -41,6 +43,7 @@ ProjectGiraffeTab1::Initialize(void)
 }
 
 #define kDebugUseDummyItems 0
+#define kDebugUseHTTPConnection 0
 
 void
 ProjectGiraffeTab1::updateItems()
@@ -55,6 +58,15 @@ ProjectGiraffeTab1::updateItems()
 		graffiti->setText(L"dummy string");
 		_items->Add(graffiti);
 	}
+
+#else
+
+#if kDebugUseHTTPConnection
+
+	double latitude = ProjectGiraffeMainForm::currentLatitude;
+	double longitude = ProjectGiraffeMainForm::currentLongitude;
+	HTTPConnection *connection = HTTPConnection::nearbyGraffitiGetConnection(this,latitude,longitude);
+	connection->begin();
 
 #else
 	// Kick off http request for items based on location.
@@ -87,6 +99,63 @@ ProjectGiraffeTab1::updateItems()
 	// Submit the request:
 	pHttpTransaction->Submit();
 #endif
+
+#endif
+}
+
+void ProjectGiraffeTab1::updateViews()
+{
+	// Remove all views if they exist
+	if (_contentViews) _contentViews->RemoveAll(true);
+	if (_contextViews) _contextViews->RemoveAll(true);
+	delete _contentViews;
+	delete _contextViews;
+
+	if (_items && _items->GetCount()) {
+		_contentViews = new ArrayList(SingleObjectDeleter);
+		_contentViews->Construct();
+		_contextViews = new ArrayList(SingleObjectDeleter);
+		_contextViews->Construct();
+
+		IEnumerator *iter = _items->GetEnumeratorN();
+		int width = GetSize().width;
+		while (iter->MoveNext() == E_SUCCESS) {
+			Graffiti *graffiti = static_cast<Graffiti *>(iter->GetCurrent());
+			if (graffiti) {
+				// Create content view
+				GraffitiCellContentView *contentView = new GraffitiCellContentView();
+				contentView->Construct(Rectangle(0, 0, width, GetDefaultItemHeight()));
+				contentView->setGraffiti(graffiti);
+				contentView->sizeToFit();
+				_contentViews->Add(contentView);
+
+				// Create social context view
+				GraffitiCellSocialContextView *socialContextView = new GraffitiCellSocialContextView();
+				socialContextView->Construct(contentView->GetBounds());
+				socialContextView->setGraffiti(graffiti);
+				_contextViews->Add((Panel *)socialContextView);
+			}
+		}
+	} else {
+		_contentViews = NULL;
+		_contextViews = NULL;
+	}
+}
+
+void ProjectGiraffeTab1::setItems(ArrayList *items)
+{
+	if (_items != items) {
+		// Deallocate old items
+		if (_items) _items->RemoveAll(true);
+		delete _items;
+		_items = items;
+
+		// Update views
+		updateViews();
+
+		// Use new items/views in table
+		_tableView->UpdateTableView();
+	}
 }
 
 result
@@ -198,7 +267,7 @@ void ProjectGiraffeTab1::OnTableViewItemReordered(Tizen::Ui::Controls::TableView
 int ProjectGiraffeTab1::GetItemCount(void)
 {
 	AppLog("Counting Items");
-	return _items->GetCount();
+	return _items ? _items->GetCount() : 0;
 }
 
 TableViewItem* ProjectGiraffeTab1::CreateItem(int itemIndex, int itemWidth)
@@ -213,24 +282,39 @@ TableViewItem* ProjectGiraffeTab1::CreateItem(int itemIndex, int itemWidth)
 	item->Construct(Dimension(itemWidth, GetDefaultItemHeight()),
 			TABLE_VIEW_ANNEX_STYLE_NORMAL);
 
-	// Create content view for item
-	GraffitiCellContentView *contentView = new GraffitiCellContentView();
-	contentView->Construct(Rectangle(0, 0, itemWidth, GetDefaultItemHeight()));
-	item->AddControl(*contentView);
-	contentView->setGraffiti(graffiti);
-	contentView->sizeToFit();
-	item->SetSize(contentView->GetSize());
-
 	// Create contextItem
 	TableViewContextItem *contextItem = new TableViewContextItem();
 	contextItem->Construct(item->GetSize());
 	item->SetContextItem(contextItem);
 
+#if kDebugUseHTTPConnection
+	GraffitiCellContentView *contentView = static_cast<GraffitiCellContentView *>(_contentViews->GetAt(itemIndex));
+	if (contentView) {
+		item->AddControl(*contentView);
+		item->SetSize(contentView->GetSize());
+		contextItem->SetSize(contentView->GetSize());
+	}
+	GraffitiCellSocialContextView *contextView = static_cast<GraffitiCellSocialContextView *>(_contextViews->GetAt(itemIndex));
+	if (contextView) {
+		contextItem->AddControl(*contextView);
+	}
+#else
+	// Create content view
+	GraffitiCellContentView *contentView = new GraffitiCellContentView();
+	contentView->Construct(Rectangle(0, 0, itemWidth, GetDefaultItemHeight()));
+	contentView->setGraffiti(graffiti);
+	contentView->sizeToFit();
+	item->AddControl(*contentView);
+	item->SetSize(contentView->GetSize());
+	contextItem->SetSize(contentView->GetSize());
+
 	// Create social context view
 	GraffitiCellSocialContextView *socialContextView = new GraffitiCellSocialContextView();
-	socialContextView->Construct(item->GetBounds());
-	contextItem->AddControl(*socialContextView);
+	socialContextView->Construct(contentView->GetBounds());
 	socialContextView->setGraffiti(graffiti);
+	contextItem->AddControl(*socialContextView);
+#endif
+
 
 	return item;
 }
@@ -251,6 +335,42 @@ void ProjectGiraffeTab1::UpdateItem(int itemIndex, Tizen::Ui::Controls::TableVie
 int ProjectGiraffeTab1::GetDefaultItemHeight(void)
 {
 	return 150;
+}
+
+
+void ProjectGiraffeTab1::connectionDidFinish(HTTPConnection *connection, Tizen::Base::Collection::HashMap *response)
+{
+	AppLog("HTTPConnection finished");
+	if (response) {
+		ArrayList *graffitiList = static_cast<ArrayList *>(response->GetValue(kHTTPParamNameGraffiti));
+		if (graffitiList) {
+			ArrayList *newItems = new ArrayList(SingleObjectDeleter);
+			newItems->Construct();
+
+			for (int i = 0; i < graffitiList->GetCount(); i++) {
+				HashMap *graffitiDictionary = static_cast<HashMap *>(graffitiList->GetAt(i));
+				if (graffitiDictionary) {
+					Graffiti *newGraffiti = new Graffiti();
+					newGraffiti->updateFromDictionary(graffitiDictionary);
+					newItems->Add(newGraffiti);
+				}
+			}
+			setItems(newItems);
+		}
+	} else {
+		connectionDidFail(connection);
+	}
+}
+
+void ProjectGiraffeTab1::connectionDidFail(HTTPConnection *connection)
+{
+	AppLog("HTTPConnection failed");
+
+	MessageBox msgBox;
+	msgBox.Construct(L"HTTP STATUS", L"HTTP Request Aborted, Check internet connection", MSGBOX_STYLE_NONE, 3000);
+	int modalresult = 0;
+	msgBox.ShowAndWait(modalresult);
+	delete connection;
 }
 
 void
@@ -360,6 +480,8 @@ ProjectGiraffeTab1::TraverseFunction(IJsonValue* pValue)
 	User *dummyUser = new User();
 	dummyUser->setUsername(L"CS210 Student");
 
+	Graffiti *lastCreatedGraffiti = NULL;
+
 	switch (pValue->GetType())
 	{
 	case JSON_TYPE_OBJECT:
@@ -372,20 +494,34 @@ ProjectGiraffeTab1::TraverseFunction(IJsonValue* pValue)
 			const String* key = null;
 			IJsonValue* value = null;
 			pMapEnum->GetKey(key);
+			pMapEnum->GetValue(value);
 			String* pListKey = new (std::nothrow) String(*key);
 			_pJsonKeyList->Add(*pListKey);
-			AppLog("Key: %s", pListKey->GetPointer());
+			AppLog("Key: %ls", pListKey->GetPointer());
 
 			if(pListKey->Equals("message",true)){
 				AppLog("Message received");
-				Graffiti *newGraffiti = new Graffiti();
-				newGraffiti->setUser(dummyUser);
-				pMapEnum->GetValue(value);
+				lastCreatedGraffiti = new Graffiti();
+				lastCreatedGraffiti->setUser(dummyUser);
 				JsonString* pVal = static_cast< JsonString* >(value);
 				String* pListValue = new (std::nothrow) String(*pVal);
-				newGraffiti->setText(pListValue->GetPointer());
-//				_pValueList->Add(pListValue);
-				_items->Add(newGraffiti);
+				lastCreatedGraffiti->setText(String(*pListValue));
+				_items->Add(lastCreatedGraffiti);
+				AppLog("message : %ls", lastCreatedGraffiti->text().GetPointer());
+			} else if (value && pListKey->Equals("latitude", true)) {
+				JsonNumber *jsonNum = static_cast<JsonNumber *>(value);
+				Double *latValue = static_cast<Double *>(jsonNum);
+				if (latValue && lastCreatedGraffiti) {
+					lastCreatedGraffiti->setLatitude(latValue->ToFloat());
+					AppLog("latitude : %f", lastCreatedGraffiti->longitude());
+				}
+			} else if (value != NULL && pListKey->Equals("longitude", true)) {
+				JsonNumber *jsonNum = static_cast<JsonNumber *>(value);
+				Double *lonValue = static_cast<Double *>(jsonNum);
+				if (lonValue && lastCreatedGraffiti) {
+					lastCreatedGraffiti->setLongitude(lonValue->ToFloat());
+					AppLog("longitude : %f", lastCreatedGraffiti->longitude());
+				}
 			}
 		}
 

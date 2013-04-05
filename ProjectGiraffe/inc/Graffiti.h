@@ -9,8 +9,8 @@
 #define GRAFFITI_H_
 
 #include <FBase.h>
-#include "Date.h"
-#include "User.h"
+class Date;
+class User;
 
 class Graffiti :
 	public Tizen::Base::Object
@@ -18,6 +18,7 @@ class Graffiti :
 public:
 	Graffiti();
 	virtual ~Graffiti();
+	result updateFromDictionary(Tizen::Base::Collection::HashMap *dictionary);
 
 	// Graffiti Listener
 	class GraffitiListener :
@@ -49,10 +50,11 @@ public:
     void setLikeCount(int likeCount);
     bool flagged() { return _flagged; }
     void setFlagged(bool flagged);
-    Date dateCreated() { return _dateCreated; }
-    void setDateCreated(Date dateCreated) { _dateCreated = dateCreated; }
+    Date *dateCreated() { return _dateCreated; }
+    void setDateCreated(Date *dateCreated) { _dateCreated = dateCreated; }
     User *user() { return _user; }
     void setUser(User *user) { _user = user; }
+    Tizen::Base::Collection::HashMap *parameterDictionary();
 
 private:
     Tizen::Base::String _text;
@@ -64,7 +66,7 @@ private:
     float _directionZ;
     int _likeCount;
     bool _flagged;
-    Date _dateCreated;
+    Date *_dateCreated;
     User *_user;
 
     Tizen::Base::Collection::ArrayList *_listeners;
