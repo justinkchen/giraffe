@@ -122,8 +122,8 @@ ProjectGiraffeTab1::OnInitializing(void)
 	_pJsonKeyList = new (std::nothrow) ArrayList();
 	_pJsonKeyList->Construct();
 	_isArray = 0;
-	__pLoadingPopupThread =  new (std::nothrow) LoadingPopupThread();
-	__pLoadingPopupThread->Construct();
+	//__pLoadingPopupThread =  new (std::nothrow) LoadingPopupThread();
+	//__pLoadingPopupThread->Construct();
 
 	return r;
 }
@@ -164,7 +164,7 @@ ProjectGiraffeTab1::OnSceneActivatedN(const Tizen::Ui::Scenes::SceneId& previous
 		const Tizen::Ui::Scenes::SceneId& currentSceneId, Tizen::Base::Collection::IList* pArgs)
 {
 	//Start load icon here.
-	__pLoadingPopupThread->Start();
+	//__pLoadingPopupThread->Start();
 	updateItems();
 	AppLog("OnSceneActivatedN");
 }
@@ -262,8 +262,6 @@ ProjectGiraffeTab1::OnTransactionAborted (HttpSession &httpSession, HttpTransact
 	msgBox.Construct(L"HTTP STATUS", L"HTTP Request Aborted, Check internet connection", MSGBOX_STYLE_NONE, 3000);
 	int modalresult = 0;
 	msgBox.ShowAndWait(modalresult);
-	__pLoadingPopupThread->Quit();
-	__pLoadingPopupThread->Join();
 }
 
 void
