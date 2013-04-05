@@ -6,6 +6,8 @@
 #include <FWebJson.h>
 #include <Fnet.h>
 #include <FWeb.h>
+#include "Graffiti.h"
+#include "LoadingPopupThread.h"
 #include "HTTPConnection.h"
 class Graffiti;
 
@@ -24,7 +26,6 @@ public:
 		_pValueList(NULL),
 		_pJsonKeyList(NULL),
 		_items(NULL),
-		_contentViews(NULL),
 		_contextViews(NULL),
 		_tableView(NULL) {}
 
@@ -73,7 +74,7 @@ protected:
 
 private:
     Tizen::Base::Collection::ArrayList *_items;
-    Tizen::Base::Collection::ArrayList *_contentViews;
+    LoadingPopupThread* __pLoadingPopupThread;
     Tizen::Base::Collection::ArrayList *_contextViews;
     Tizen::Ui::Controls::TableView* _tableView;
     void updateItems();

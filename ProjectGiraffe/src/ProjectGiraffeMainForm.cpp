@@ -13,10 +13,13 @@ Location* ProjectGiraffeMainForm::__currentLocation;
 double ProjectGiraffeMainForm::currentLatitude = 0;
 double ProjectGiraffeMainForm::currentLongitude = 0;
 
-ProjectGiraffeMainForm::ProjectGiraffeMainForm(void) :
-	__pLocProvider(null),
-	__pLocationManagerThread(null),
-	__regionId(-1)
+
+ProjectGiraffeMainForm::ProjectGiraffeMainForm(void)
+	: __pLocProvider(null)
+	, __pLocationManagerThread(null)
+	, __regionId(-1)
+	, __sParser(null)
+	//, __pUserPopup(null)
 {
 }
 
@@ -111,6 +114,8 @@ ProjectGiraffeMainForm::OnInitializing(void)
 	_launchPopup = new LaunchPopup();
 	_launchPopup->ShowPopup();
 
+	__sParser = new SensorParser();
+
 	AppLog("Everything is initialized, Location updates started.");
 	MainFormParseLocation();
 	return r;
@@ -138,6 +143,7 @@ ProjectGiraffeMainForm::OnActionPerformed(const Tizen::Ui::Control& source, int 
 	AppAssert(pSceneManager);
 	Header* pHeader = GetHeader();
 	Footer* pFooter = GetFooter();
+	__sParser->StopParsing();
 	switch(actionId)
 	{
 	case ID_FOOTER_ITEM1:
@@ -171,6 +177,7 @@ ProjectGiraffeMainForm::OnActionPerformed(const Tizen::Ui::Control& source, int 
 		pFooter->SetItemEnabled(4,true);
 		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_3"));
 		pHeader->SetTitleText(L"Post Graffiti");
+		__sParser->CreateSensor();
 		AppLog("Tab3");
 		break;
 	case ID_FOOTER_ITEM4:

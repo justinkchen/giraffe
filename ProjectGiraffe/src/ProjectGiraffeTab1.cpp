@@ -106,14 +106,10 @@ ProjectGiraffeTab1::updateItems()
 void ProjectGiraffeTab1::updateViews()
 {
 	// Remove all views if they exist
-	if (_contentViews) _contentViews->RemoveAll(true);
 	if (_contextViews) _contextViews->RemoveAll(true);
-	delete _contentViews;
 	delete _contextViews;
 
 	if (_items && _items->GetCount()) {
-		_contentViews = new ArrayList(SingleObjectDeleter);
-		_contentViews->Construct();
 		_contextViews = new ArrayList(SingleObjectDeleter);
 		_contextViews->Construct();
 
@@ -127,7 +123,6 @@ void ProjectGiraffeTab1::updateViews()
 				contentView->Construct(Rectangle(0, 0, width, GetDefaultItemHeight()));
 				contentView->setGraffiti(graffiti);
 				contentView->sizeToFit();
-				_contentViews->Add(contentView);
 
 				// Create social context view
 				GraffitiCellSocialContextView *socialContextView = new GraffitiCellSocialContextView();
@@ -137,7 +132,6 @@ void ProjectGiraffeTab1::updateViews()
 			}
 		}
 	} else {
-		_contentViews = NULL;
 		_contextViews = NULL;
 	}
 }
@@ -183,6 +177,7 @@ ProjectGiraffeTab1::OnInitializing(void)
 	_tableView->AddTableViewItemEventListener(*this);
 	AddControl(*_tableView);
 
+
 	_items = new (std::nothrow) ArrayList();
 
 	_pValueList = new (std::nothrow) LinkedList();
@@ -190,6 +185,8 @@ ProjectGiraffeTab1::OnInitializing(void)
 	_pJsonKeyList = new (std::nothrow) ArrayList();
 	_pJsonKeyList->Construct();
 	_isArray = 0;
+	//__pLoadingPopupThread =  new (std::nothrow) LoadingPopupThread();
+	//__pLoadingPopupThread->Construct();
 
 	return r;
 }
@@ -229,8 +226,9 @@ void
 ProjectGiraffeTab1::OnSceneActivatedN(const Tizen::Ui::Scenes::SceneId& previousSceneId,
 		const Tizen::Ui::Scenes::SceneId& currentSceneId, Tizen::Base::Collection::IList* pArgs)
 {
+	//Start load icon here.
+	//__pLoadingPopupThread->Start();
 	updateItems();
-
 	AppLog("OnSceneActivatedN");
 }
 
@@ -450,9 +448,13 @@ ProjectGiraffeTab1::OnTransactionReadyToRead (HttpSession &httpSession, HttpTran
 		delete pBody;
 		delete pValue;
 		_tableView->ScrollToItem(0);
+
+
+
 	}else{
 		AppLog("HTTP Status not OK");
 	}
+	//Remove load icon here.
 }
 
 void
