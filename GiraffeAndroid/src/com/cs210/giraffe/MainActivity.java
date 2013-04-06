@@ -5,6 +5,7 @@ import java.util.Locale;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Criteria;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -116,6 +117,8 @@ ActionBar.TabListener {
 	            return true;
 	        case R.id.action_settings:
 	            // Start settings activity
+	        	Intent intent = new Intent(this, SettingsActivity.class);
+	        	startActivity(intent);
 	            return true;
 	        case R.id.action_help:
 	            //showHelp();

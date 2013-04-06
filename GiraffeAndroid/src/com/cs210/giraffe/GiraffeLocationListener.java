@@ -18,6 +18,8 @@ public class GiraffeLocationListener implements LocationListener {
 		currentLocation = locationManager.getLastKnownLocation(provider);
 		if(currentLocation != null){
 			locationFound = true;
+		}else{
+			System.out.println("Can't get a location from provider");
 		}
 	}
 
@@ -25,6 +27,7 @@ public class GiraffeLocationListener implements LocationListener {
 	public void onLocationChanged(Location location) {
 		// Called when a new location is found by the network location provider.
 		if(isBetterLocation(location, currentLocation)){
+			System.out.println("New Location-> Latitude: " + location.getLatitude() + ", Longitude: " + location.getLongitude());
 			currentLocation = location;
 		}
 	}
