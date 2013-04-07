@@ -22,11 +22,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity implements
 ActionBar.TabListener {
 
 	static final int NUM_TABS = 3;
+	private static GiraffeLocationListener locationListener;
 	
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -46,6 +48,7 @@ ActionBar.TabListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		//setContentView(R.layout.fragment_mapview);
 		setContentView(R.layout.activity_main);
 		
 		// Set up the action bar.
@@ -89,9 +92,9 @@ ActionBar.TabListener {
 		String bestProvider = locationManager.getBestProvider(criteria, false);
 		
 		// Register the listener with the Location Manager to receive location updates
-		GiraffeLocationListener locationListener = new GiraffeLocationListener(locationManager, bestProvider);
+		locationListener = new GiraffeLocationListener(locationManager, bestProvider);
 		locationManager.requestLocationUpdates(bestProvider, 0, 0, locationListener);
-		
+
 	}
 
 	@Override
@@ -146,6 +149,10 @@ ActionBar.TabListener {
 			FragmentTransaction fragmentTransaction) {
 	}
 
+	public static GiraffeLocationListener getGiraffeLocationListener(){
+		return locationListener;
+	}
+	
 	/**
 	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
 	 * one of the sections/tabs/pages.
@@ -163,8 +170,19 @@ ActionBar.TabListener {
 			// below) with the page number as its lone argument.
 			Fragment fragment = new DummySectionFragment();
 			Bundle args = new Bundle();
-			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
-			fragment.setArguments(args);
+			switch(position) {
+			case 0:
+				fragment = new NearbyListFragment();	
+				break;
+			case 1:
+				fragment = new DummySectionFragment();
+				args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
+				fragment.setArguments(args);
+				break;
+			case 2:
+				fragment = new GraffitiMapFragment();
+				break;
+			}
 			return fragment;
 		}
 
