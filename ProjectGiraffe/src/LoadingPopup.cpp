@@ -15,12 +15,12 @@ using namespace Tizen::Base;
 using namespace Tizen::Base::Collection;
 
 LoadingPopup::LoadingPopup()
-	: __pAnimation(null)
-	, __pAnimationFrameList(null)
+	: _animation(null)
+	, _animationFrameList(null)
 	{
 
 
-	Construct(false, Dimension(120,100));
+	Construct(false, Dimension(100,100));
 	AppResource* pAppResource = Application::GetInstance()->GetAppResource();
 	if (pAppResource != null)
 	{
@@ -89,38 +89,38 @@ LoadingPopup::LoadingPopup()
 		AnimationFrame *pAniFrame30 = new (std::nothrow) AnimationFrame(*pBitmap29, duration);
 
 		// Create AnimationList
-		__pAnimationFrameList = new (std::nothrow) ArrayList();
-		__pAnimationFrameList->Construct();
-		__pAnimationFrameList->Add(*pAniFrame1);
-		__pAnimationFrameList->Add(*pAniFrame2);
-		__pAnimationFrameList->Add(*pAniFrame3);
-		__pAnimationFrameList->Add(*pAniFrame4);
-		__pAnimationFrameList->Add(*pAniFrame5);
-		__pAnimationFrameList->Add(*pAniFrame6);
-		__pAnimationFrameList->Add(*pAniFrame7);
-		__pAnimationFrameList->Add(*pAniFrame8);
-		__pAnimationFrameList->Add(*pAniFrame9);
-		__pAnimationFrameList->Add(*pAniFrame10);
-		__pAnimationFrameList->Add(*pAniFrame11);
-		__pAnimationFrameList->Add(*pAniFrame12);
-		__pAnimationFrameList->Add(*pAniFrame13);
-		__pAnimationFrameList->Add(*pAniFrame14);
-		__pAnimationFrameList->Add(*pAniFrame15);
-		__pAnimationFrameList->Add(*pAniFrame16);
-		__pAnimationFrameList->Add(*pAniFrame17);
-		__pAnimationFrameList->Add(*pAniFrame18);
-		__pAnimationFrameList->Add(*pAniFrame19);
-		__pAnimationFrameList->Add(*pAniFrame20);
-		__pAnimationFrameList->Add(*pAniFrame21);
-		__pAnimationFrameList->Add(*pAniFrame22);
-		__pAnimationFrameList->Add(*pAniFrame23);
-		__pAnimationFrameList->Add(*pAniFrame24);
-		__pAnimationFrameList->Add(*pAniFrame25);
-		__pAnimationFrameList->Add(*pAniFrame26);
-		__pAnimationFrameList->Add(*pAniFrame27);
-		__pAnimationFrameList->Add(*pAniFrame28);
-		__pAnimationFrameList->Add(*pAniFrame29);
-		__pAnimationFrameList->Add(*pAniFrame30);
+		_animationFrameList = new (std::nothrow) ArrayList();
+		_animationFrameList->Construct();
+		_animationFrameList->Add(*pAniFrame1);
+		_animationFrameList->Add(*pAniFrame2);
+		_animationFrameList->Add(*pAniFrame3);
+		_animationFrameList->Add(*pAniFrame4);
+		_animationFrameList->Add(*pAniFrame5);
+		_animationFrameList->Add(*pAniFrame6);
+		_animationFrameList->Add(*pAniFrame7);
+		_animationFrameList->Add(*pAniFrame8);
+		_animationFrameList->Add(*pAniFrame9);
+		_animationFrameList->Add(*pAniFrame10);
+		_animationFrameList->Add(*pAniFrame11);
+		_animationFrameList->Add(*pAniFrame12);
+		_animationFrameList->Add(*pAniFrame13);
+		_animationFrameList->Add(*pAniFrame14);
+		_animationFrameList->Add(*pAniFrame15);
+		_animationFrameList->Add(*pAniFrame16);
+		_animationFrameList->Add(*pAniFrame17);
+		_animationFrameList->Add(*pAniFrame18);
+		_animationFrameList->Add(*pAniFrame19);
+		_animationFrameList->Add(*pAniFrame20);
+		_animationFrameList->Add(*pAniFrame21);
+		_animationFrameList->Add(*pAniFrame22);
+		_animationFrameList->Add(*pAniFrame23);
+		_animationFrameList->Add(*pAniFrame24);
+		_animationFrameList->Add(*pAniFrame25);
+		_animationFrameList->Add(*pAniFrame26);
+		_animationFrameList->Add(*pAniFrame27);
+		_animationFrameList->Add(*pAniFrame28);
+		_animationFrameList->Add(*pAniFrame29);
+		_animationFrameList->Add(*pAniFrame30);
 
 		// Deallocate a Bitmap.
 		delete pBitmap0;
@@ -155,43 +155,39 @@ LoadingPopup::LoadingPopup()
 		delete pBitmap29;
 
 		// Create Animation
-		__pAnimation = new (std::nothrow) Animation();
+		_animation = new (std::nothrow) Animation();
 
 		Rectangle clientArea = GetClientAreaBounds();
 
-		__pAnimation->Construct(Rectangle(clientArea.x-40, clientArea.y, 100, 100), *__pAnimationFrameList);
-		__pAnimation->SetRepeatCount(10000);
-		AddControl(*__pAnimation);
+		_animation->Construct(Rectangle(clientArea.x-40, clientArea.y, 100, 100), *_animationFrameList);
+		_animation->SetRepeatCount(10000);
+		AddControl(*_animation);
 
 	}
 
 }
 
 LoadingPopup::~LoadingPopup() {
-	if(__pAnimationFrameList != null)
+	if(_animationFrameList != null)
 	{
-		__pAnimationFrameList->RemoveAll(true);
-		delete __pAnimationFrameList;
-		__pAnimationFrameList = null;
+		_animationFrameList->RemoveAll(true);
+		delete _animationFrameList;
+		_animationFrameList = null;
 	}
 }
 
 void
 LoadingPopup::ShowPopup(void)
 {
-
-
 	SetShowState(true);
-	__pAnimation->Play();
-	Draw();
+	_animation->Play();
 	Show();
-
 }
 
 void
 LoadingPopup::HidePopup(void)
 {
 	SetShowState(false);
-	__pAnimation->Stop();
+	_animation->Stop();
 	Invalidate(true);
 }

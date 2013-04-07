@@ -26,8 +26,8 @@ class LoadingPopup
 		void HidePopup(void);
 
 	private:
-		Tizen::Ui::Controls::Animation* __pAnimation;
-		Tizen::Base::Collection::ArrayList* __pAnimationFrameList;
+		Tizen::Ui::Controls::Animation* _animation;
+		Tizen::Base::Collection::ArrayList* _animationFrameList;
 };
 
 #endif /* LOADINGPOPUP_H_ */

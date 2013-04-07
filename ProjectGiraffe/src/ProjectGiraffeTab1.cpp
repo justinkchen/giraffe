@@ -185,8 +185,8 @@ ProjectGiraffeTab1::OnInitializing(void)
 	_pJsonKeyList = new (std::nothrow) ArrayList();
 	_pJsonKeyList->Construct();
 	_isArray = 0;
-	//__pLoadingPopupThread =  new (std::nothrow) LoadingPopupThread();
-	//__pLoadingPopupThread->Construct();
+	_loadingPopupThread =  new (std::nothrow) LoadingPopupThread();
+	//_loadingPopupThread->Construct();
 
 	return r;
 }
@@ -227,7 +227,8 @@ ProjectGiraffeTab1::OnSceneActivatedN(const Tizen::Ui::Scenes::SceneId& previous
 		const Tizen::Ui::Scenes::SceneId& currentSceneId, Tizen::Base::Collection::IList* pArgs)
 {
 	//Start load icon here.
-	//__pLoadingPopupThread->Start();
+	_loadingPopupThread->Construct();
+	_loadingPopupThread->Start();
 	updateItems();
 	AppLog("OnSceneActivatedN");
 }
@@ -455,6 +456,8 @@ ProjectGiraffeTab1::OnTransactionReadyToRead (HttpSession &httpSession, HttpTran
 		AppLog("HTTP Status not OK");
 	}
 	//Remove load icon here.
+	_loadingPopupThread->Quit();
+	//_loadingPopupThread->Join();
 }
 
 void
