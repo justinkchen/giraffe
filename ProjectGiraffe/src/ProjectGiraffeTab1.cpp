@@ -227,8 +227,8 @@ ProjectGiraffeTab1::OnSceneActivatedN(const Tizen::Ui::Scenes::SceneId& previous
 		const Tizen::Ui::Scenes::SceneId& currentSceneId, Tizen::Base::Collection::IList* pArgs)
 {
 	//Start load icon here.
-	_loadingPopupThread->Construct();
-	_loadingPopupThread->Start();
+	//_loadingPopupThread->Construct();
+	//_loadingPopupThread->Start();
 	updateItems();
 	AppLog("OnSceneActivatedN");
 }
@@ -456,7 +456,7 @@ ProjectGiraffeTab1::OnTransactionReadyToRead (HttpSession &httpSession, HttpTran
 		AppLog("HTTP Status not OK");
 	}
 	//Remove load icon here.
-	_loadingPopupThread->Quit();
+	//_loadingPopupThread->Quit();
 	//_loadingPopupThread->Join();
 }
 
