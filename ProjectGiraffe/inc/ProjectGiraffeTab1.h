@@ -6,13 +6,9 @@
 #include <FWebJson.h>
 #include <Fnet.h>
 #include <FWeb.h>
-<<<<<<< HEAD
 #include "HttpConnection.h"
-=======
 #include "Graffiti.h"
 #include "LoadingPopupThread.h"
-#include "HTTPConnection.h"
->>>>>>> master
 class Graffiti;
 
 using namespace Tizen::Web::Json;

@@ -137,9 +137,21 @@ User::removeListener(UserListener *listener)
 }
 
 void
-User::saveUser(AppRegistry *appRegistry)
+User::saveUser()
 {
+	AppRegistry* appRegistry = Application::GetInstance()->GetAppRegistry();
 	User *user = currentUser();
+
+	// First time saving
+	int i = 0;
+	result r = appRegistry->Get(idKey, i);
+	if (r == E_KEY_NOT_FOUND) {
+		appRegistry->Add(idKey, 0);
+		appRegistry->Add(fullnameKey, "");
+		appRegistry->Add(usernameKey, "");
+		appRegistry->Add(emailKey, "");
+		appRegistry->Save();
+	}
 
 	if (user->id() != 0) {
 		appRegistry->Set(idKey, (signed)user->id());
@@ -157,8 +169,9 @@ User::saveUser(AppRegistry *appRegistry)
 }
 
 void
-User::loadUser(AppRegistry *appRegistry)
+User::loadUser()
 {
+	AppRegistry* appRegistry = Application::GetInstance()->GetAppRegistry();
 	User *user = currentUser();
 
 	int id = 0;
@@ -169,6 +182,7 @@ User::loadUser(AppRegistry *appRegistry)
 	appRegistry->Get(idKey, id);
 
 	if (id != 0) {
+		AppLogTag("data", "user loaded");
 		user->setId((unsigned)id);
 
 		appRegistry->Get(fullnameKey, fullname);

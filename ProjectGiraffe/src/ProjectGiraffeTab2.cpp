@@ -79,8 +79,6 @@ ProjectGiraffeTab2::OnInitializing(void)
 result
 ProjectGiraffeTab2::OnTerminating(void)
 {
-
-
 	result r = E_SUCCESS;
 
 	// TODO: Add your termination code here

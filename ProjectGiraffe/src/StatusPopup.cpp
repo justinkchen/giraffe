@@ -38,6 +38,7 @@ StatusPopup::StatusPopup()
 	messageBox->SetTextAlignment(ALIGNMENT_LEFT);
 //	messageBox->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
 //	messageBox->SetTextVerticalAlignment(ALIGNMENT_TOP);
+//	messageBox->SetBackgroundBitmap();
 	AddControl(*messageBox);
 
 	AddTouchEventListener(*this);

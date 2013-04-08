@@ -49,8 +49,8 @@ public:
 	void addListener(UserListener *listener);
 	void removeListener(UserListener *listener);
 
-	static void saveUser(Tizen::App::AppRegistry *appRegistry);
-	static void loadUser(Tizen::App::AppRegistry *appRegistry);
+	static void saveUser(void);
+	static void loadUser(void);
 
 
 private:
