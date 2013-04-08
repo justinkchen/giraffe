@@ -9,8 +9,15 @@
 #include "Date.h"
 #include "HTTPConnection.h" // TODO: maybe find a better place for the parameter names to live.
 
+using namespace Tizen::App;
 using namespace Tizen::Base;
 using namespace Tizen::Base::Collection;
+
+const Tizen::Base::String idKey = "UserId";
+const Tizen::Base::String fullnameKey = "UserFullname";
+const Tizen::Base::String usernameKey = "UserUsername";
+const Tizen::Base::String emailKey = "UserEmail";
+//const Tizen::Base::String dateKey = "UserDate";
 
 User *currentUserSingleton = NULL;
 
@@ -126,5 +133,51 @@ User::removeListener(UserListener *listener)
 {
 	if (listener && _listeners) {
 		_listeners->Remove(*listener);
+	}
+}
+
+void
+User::saveUser(AppRegistry *appRegistry)
+{
+	User *user = currentUser();
+
+	if (user->id() != 0) {
+		appRegistry->Set(idKey, (signed)user->id());
+		appRegistry->Set(fullnameKey, user->fullname());
+		appRegistry->Set(usernameKey, user->username());
+		appRegistry->Set(emailKey, user->email());
+	} else {
+		appRegistry->Set(idKey, 0);
+		appRegistry->Set(fullnameKey, "");
+		appRegistry->Set(usernameKey, "");
+		appRegistry->Set(emailKey, "");
+	}
+
+	appRegistry->Save();
+}
+
+void
+User::loadUser(AppRegistry *appRegistry)
+{
+	User *user = currentUser();
+
+	int id = 0;
+	String fullname = "";
+	String username = "";
+	String email = "";
+
+	appRegistry->Get(idKey, id);
+
+	if (id != 0) {
+		user->setId((unsigned)id);
+
+		appRegistry->Get(fullnameKey, fullname);
+		user->setFullname(fullname);
+
+		appRegistry->Get(usernameKey, username);
+		user->setUsername(username);
+
+		appRegistry->Get(emailKey, email);
+		user->setEmail(email);
 	}
 }

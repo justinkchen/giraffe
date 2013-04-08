@@ -42,7 +42,7 @@ public:
 	virtual void OnTouchReleased (const Tizen::Ui::Control &source, const Tizen::Graphics::Point &currentPosition, const Tizen::Ui::TouchEventInfo &touchInfo);
 
 private:
-	Tizen::Ui::Controls::Label *messageLabel;
+	Tizen::Ui::Controls::TextBox *messageBox;
 
 	void hidePopup(void);
 };

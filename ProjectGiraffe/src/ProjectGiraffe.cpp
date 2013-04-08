@@ -38,6 +38,8 @@ ProjectGiraffeApp::OnAppInitializing(AppRegistry& appRegistry)
 	// TODO:
 	// Initialize Frame and App specific data.
 	// The App's permanent data and context can be obtained from the appRegistry.
+	AppLogTag("data", "initializing");
+	User::loadUser(&appRegistry);
 	//
 	// If this method is successful, return true; otherwise, return false.
 	// If this method returns false, the App will be terminated.
@@ -79,6 +81,9 @@ ProjectGiraffeApp::OnAppTerminating(AppRegistry& appRegistry, bool forcedTermina
 	// TODO:
 	// Deallocate resources allocated by this App for termination.
 	// The App's permanent data and context can be saved via appRegistry.
+	AppLogTag("data", "terminating");
+	User::saveUser(&appRegistry);
+
 	return true;
 }
 

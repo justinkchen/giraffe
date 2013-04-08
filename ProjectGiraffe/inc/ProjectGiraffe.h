@@ -6,6 +6,8 @@
 #include <FSystem.h>
 #include <FUi.h>
 
+#include "User.h"
+
 /**
  * [ProjectGiraffeApp] UiApp must inherit from UiApp class
  * which provides basic features necessary to define an UiApp.

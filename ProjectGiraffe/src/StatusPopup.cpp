@@ -29,14 +29,13 @@ StatusPopup::StatusPopup()
 	Construct(true, Dimension(680,200));
 
 	// initialize messageLabel
-	// TODO: convert messageLabel to enrichedtext to allow text wrap
-	messageLabel = new Label();
-	messageLabel->Construct(Rectangle(0, 0, 660, 80), L"");
-	messageLabel->SetName("messageLabel");
-	messageLabel->SetTextConfig(40, LABEL_TEXT_STYLE_NORMAL);
-	messageLabel->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
-	messageLabel->SetTextVerticalAlignment(ALIGNMENT_TOP);
-	AddControl(*messageLabel);
+	messageBox = new TextBox();
+	messageBox->Construct(Rectangle(0, 0, 660, 80), L"");
+	messageBox->SetName("messageBox");
+	messageBox->SetTextConfig(40, LABEL_TEXT_STYLE_NORMAL);
+	messageBox->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
+	messageBox->SetTextVerticalAlignment(ALIGNMENT_TOP);
+	AddControl(*messageBox);
 
 	AddTouchEventListener(*this);
 }
@@ -72,7 +71,7 @@ StatusPopup::setTitle(const String &title)
 void
 StatusPopup::setMessage(const String &message)
 {
-	messageLabel->SetText(message);
+	messageBox->SetText(message);
 }
 
 void
@@ -81,13 +80,13 @@ StatusPopup::setType(StatusType type)
 	switch(type)
 	{
 	case STATUS_POPUP_DEFAULT:
-		messageLabel->SetTextColor(Color(0x00, 0x00, 0x00));
+		messageBox->SetTextColor(Color(0x00, 0x00, 0x00));
 		break;
 	case STATUS_POPUP_ERROR:
-		messageLabel->SetTextColor(Color(0xFF, 0x00, 0x00));
+		messageBox->SetTextColor(Color(0xFF, 0x00, 0x00));
 		break;
 	default:
-		messageLabel->SetTextColor(Color(0x00, 0x00, 0x00));
+		messageBox->SetTextColor(Color(0x00, 0x00, 0x00));
 		break;
 	}
 }

@@ -8,6 +8,7 @@
 #ifndef USER_H_
 #define USER_H_
 
+#include <FApp.h>
 #include <FBase.h>
 class Date;
 
@@ -43,9 +44,14 @@ public:
 	void setEmail(Tizen::Base::String email) { _email = email; }
 	Date *dateCreated() { return _dateCreated; }
 	void setDateCreated(Date *dateCreated) { _dateCreated = dateCreated; }
+
 	Tizen::Base::Collection::HashMap *parameterDictionary();
 	void addListener(UserListener *listener);
 	void removeListener(UserListener *listener);
+
+	static void saveUser(Tizen::App::AppRegistry *appRegistry);
+	static void loadUser(Tizen::App::AppRegistry *appRegistry);
+
 
 private:
 	unsigned int _id;
