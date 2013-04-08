@@ -7,6 +7,7 @@
 #include <FUi.h>
 
 #include "User.h"
+#include "HttpConnection.h"
 
 /**
  * [ProjectGiraffeApp] UiApp must inherit from UiApp class

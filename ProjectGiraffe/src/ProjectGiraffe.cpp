@@ -39,6 +39,7 @@ ProjectGiraffeApp::OnAppInitializing(AppRegistry& appRegistry)
 	// Initialize Frame and App specific data.
 	// The App's permanent data and context can be obtained from the appRegistry.
 	User::loadUser();
+	HttpConnection::loadCookies();
 	//
 	// If this method is successful, return true; otherwise, return false.
 	// If this method returns false, the App will be terminated.
@@ -81,6 +82,7 @@ ProjectGiraffeApp::OnAppTerminating(AppRegistry& appRegistry, bool forcedTermina
 	// Deallocate resources allocated by this App for termination.
 	// The App's permanent data and context can be saved via appRegistry.
 	User::saveUser();
+	HttpConnection::saveCookies();
 
 	return true;
 }

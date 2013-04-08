@@ -3,6 +3,7 @@
 #ifndef HttpConnection_H_
 #define HttpConnection_H_
 
+#include <FApp.h>
 #include <FBase.h>
 #include <Fnet.h>
 
@@ -69,6 +70,9 @@ public:
 	  // Accessors
 	  const Tizen::Base::String methodName() { return _methodName; }
 
+	  static void saveCookies(void);
+	  static void loadCookies(void);
+
 private:
 	  // Constructor
 	  HttpConnection(HttpConnectionListener *listener,
@@ -86,7 +90,7 @@ private:
 	  virtual void OnTransactionCertVerificationRequiredN(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, Tizen::Base::String *pCert);
 	  virtual void OnTransactionCompleted(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction);
   	  virtual void OnTransactionReadyToRead(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int availableBodyLen);
-	  virtual void OnTransactionHeaderCompleted(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int headerLen, bool bAuthRequired) {}
+	  virtual void OnTransactionHeaderCompleted(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int headerLen, bool bAuthRequired);
   	  virtual void OnTransactionReadyToWrite(Tizen::Net::Http::HttpSession &httpSession, Tizen::Net::Http::HttpTransaction &httpTransaction, int recommendedChunkSize) {}
 
   	  // Private Members

@@ -12,6 +12,7 @@
 #include <FWeb.h>
 #include <cstdlib>
 
+using namespace Tizen::App;
 using namespace Tizen::Base;
 using namespace Tizen::Base::Collection;
 using namespace Tizen::Net::Http;
@@ -52,15 +53,19 @@ const String kHTTPParamNameMinute = L"minute";
 const String kHTTPParamNameSecond = L"second";
 const String kHTTPParamNameError = L"error";
 
+const String cookiesKey = "HttpConnectionCookie";
+static String _cookies = "";
+
 HttpConnection::HttpConnection(HttpConnectionListener *listener,
 		const Tizen::Base::String methodName,
 		Tizen::Net::Http::NetHttpMethod methodType,
 		Tizen::Net::Http::HttpMultipartEntity *parameters) :
-		_methodName(methodName), _listener(listener), _responseDictionary(NULL) {
+		_methodName(methodName), _listener(listener), _responseDictionary(NULL)
+{
 	// Create session
 	_session = new HttpSession();
 	_session->Construct(NET_HTTP_SESSION_MODE_NORMAL, NULL, kHTTPHostURL, NULL,
-			NET_HTTP_COOKIE_FLAG_ALWAYS_AUTOMATIC);
+			NET_HTTP_COOKIE_FLAG_ALWAYS_MANUAL);
 
 	_transaction = _session->OpenTransactionN();
 	_transaction->AddHttpTransactionListener(*this);
@@ -73,17 +78,26 @@ HttpConnection::HttpConnection(HttpConnectionListener *listener,
 	if (parameters) {
 		request->SetEntity(*parameters);
 	}
+
+	if (!_cookies.Equals("", false)) {
+		String cookieString = "Cookie: ";
+		cookieString.Append(_cookies);
+		request->SetCookie(cookieString);
+	}
 }
 
-HttpConnection::~HttpConnection() {
+HttpConnection::~HttpConnection()
+{
 	delete _session;
 	delete _transaction;
 	delete _responseDictionary;
 }
 
 // Factory methods
-HttpConnection *HttpConnection::nearbyGraffitiGetConnection(
-		HttpConnectionListener *listener, double latitude, double longitude) {
+HttpConnection *
+HttpConnection::nearbyGraffitiGetConnection(
+		HttpConnectionListener *listener, double latitude, double longitude)
+{
 	HttpMultipartEntity *parameters = new HttpMultipartEntity();
 	parameters->Construct();
 	parameters->AddStringPart(L"latitude", Double(latitude).ToString());
@@ -96,8 +110,10 @@ HttpConnection *HttpConnection::nearbyGraffitiGetConnection(
 	return connection;
 }
 
-HttpConnection *HttpConnection::newGraffitiPostConnection(
-		HttpConnectionListener *listener, Graffiti *graffiti) {
+HttpConnection *
+HttpConnection::newGraffitiPostConnection(
+		HttpConnectionListener *listener, Graffiti *graffiti)
+{
 	HttpConnection *connection = NULL;
 
 	HttpMultipartEntity *parameters = parametersForGraffiti(graffiti);
@@ -110,32 +126,40 @@ HttpConnection *HttpConnection::newGraffitiPostConnection(
 	return connection;
 }
 
-HttpConnection *HttpConnection::userLoginPostConnection(
-		HttpConnectionListener *listener, HttpMultipartEntity *userParameters) {
+HttpConnection *
+HttpConnection::userLoginPostConnection(
+		HttpConnectionListener *listener, HttpMultipartEntity *userParameters)
+{
 	HttpConnection *connection = new HttpConnection(listener,
 			kHTTPMethodNameUserLogin, NET_HTTP_METHOD_POST, userParameters);
 
 	return connection;
 }
 
-HttpConnection *HttpConnection::userSignupPostConnection(
-		HttpConnectionListener *listener, HttpMultipartEntity *userParameters) {
+HttpConnection *
+HttpConnection::userSignupPostConnection(
+		HttpConnectionListener *listener, HttpMultipartEntity *userParameters)
+{
 	HttpConnection *connection = new HttpConnection(listener,
 			kHTTPMethodNameUserSignup, NET_HTTP_METHOD_POST, userParameters);
 
 	return connection;
 }
 
-HttpConnection *HttpConnection::userUpdatePutConnection(
-		HttpConnectionListener *listener, HttpMultipartEntity *userParameters) {
+HttpConnection *
+HttpConnection::userUpdatePutConnection(
+		HttpConnectionListener *listener, HttpMultipartEntity *userParameters)
+{
 	HttpConnection *connection = new HttpConnection(listener,
 			kHTTPMethodNameUserUpdate, NET_HTTP_METHOD_PUT, userParameters);
 
 	return connection;
 }
 
-HttpConnection *HttpConnection::userLogoutPostConnection(
-		HttpConnectionListener *listener) {
+HttpConnection *
+HttpConnection::userLogoutPostConnection(
+		HttpConnectionListener *listener)
+{
 	HttpConnection *connection = new HttpConnection(listener,
 			kHTTPMethodNameUserLogout, NET_HTTP_METHOD_POST, NULL);
 
@@ -143,13 +167,17 @@ HttpConnection *HttpConnection::userLogoutPostConnection(
 }
 
 // Instance Methods
-void HttpConnection::begin() {
+void
+HttpConnection::begin()
+{
 	_transaction->Submit();
 }
 
 // Utility methods
-HttpMultipartEntity *HttpConnection::parametersForDictionary(
-		Tizen::Base::Collection::HashMap *dictionary) {
+HttpMultipartEntity *
+HttpConnection::parametersForDictionary(
+		Tizen::Base::Collection::HashMap *dictionary)
+{
 	HttpMultipartEntity *parameters = NULL;
 	if (dictionary) {
 		parameters = new HttpMultipartEntity();
@@ -185,25 +213,57 @@ HttpMultipartEntity *HttpConnection::parametersForDictionary(
 	return parameters;
 }
 
-HttpMultipartEntity *HttpConnection::parametersForGraffiti(Graffiti *graffiti) {
+HttpMultipartEntity *
+HttpConnection::parametersForGraffiti(Graffiti *graffiti)
+{
 	HashMap *dictionary = (graffiti ? graffiti->parameterDictionary() : NULL);
 	return parametersForDictionary(dictionary);
 }
 
-HttpMultipartEntity *HttpConnection::parametersForUser(User *user) {
+HttpMultipartEntity *
+HttpConnection::parametersForUser(User *user)
+{
 	HashMap *dictionary = (user ? user->parameterDictionary() : NULL);
 	return parametersForDictionary(dictionary);
 }
 
+void
+HttpConnection::saveCookies()
+{
+	AppRegistry* appRegistry = Application::GetInstance()->GetAppRegistry();
+
+	String tempCookies;
+	result r = appRegistry->Get(cookiesKey, tempCookies);
+	if (r == E_KEY_NOT_FOUND) {
+		appRegistry->Add(cookiesKey, _cookies);
+	} else {
+		appRegistry->Set(cookiesKey, _cookies);
+	}
+
+	appRegistry->Save();
+}
+
+void
+HttpConnection::loadCookies()
+{
+	AppRegistry* appRegistry = Application::GetInstance()->GetAppRegistry();
+
+	appRegistry->Get(cookiesKey, _cookies);
+}
+
 // IHttpTransactionEventListener
-void HttpConnection::OnTransactionAborted(HttpSession &httpSession,
-		HttpTransaction &httpTransaction, result r) {
+void
+HttpConnection::OnTransactionAborted(HttpSession &httpSession,
+		HttpTransaction &httpTransaction, result r)
+{
 	_listener->connectionDidFail(this);
 }
 
-void HttpConnection::OnTransactionCertVerificationRequiredN(
+void
+HttpConnection::OnTransactionCertVerificationRequiredN(
 		HttpSession &httpSession, HttpTransaction &httpTransaction,
-		Tizen::Base::String *pCert) {
+		Tizen::Base::String *pCert)
+{
 	if (pCert->Equals(kServerCert)) {
 		httpTransaction.Resume();
 	} else {
@@ -212,8 +272,10 @@ void HttpConnection::OnTransactionCertVerificationRequiredN(
 	}
 }
 
-void HttpConnection::OnTransactionCompleted(HttpSession &httpSession,
-		HttpTransaction &httpTransaction) {
+void
+HttpConnection::OnTransactionCompleted(HttpSession &httpSession,
+		HttpTransaction &httpTransaction)
+{
 	if (_responseDictionary) {
 		_listener->connectionDidFinish(this, _responseDictionary);
 	} else {
@@ -221,8 +283,10 @@ void HttpConnection::OnTransactionCompleted(HttpSession &httpSession,
 	}
 }
 
-void HttpConnection::OnTransactionReadyToRead(HttpSession &httpSession,
-		HttpTransaction &httpTransaction, int availableBodyLen) {
+void
+HttpConnection::OnTransactionReadyToRead(HttpSession &httpSession,
+		HttpTransaction &httpTransaction, int availableBodyLen)
+{
 	HttpResponse *response = httpTransaction.GetResponse();
 	if (response->GetHttpStatusCode() == HTTP_STATUS_OK) {
 		ByteBuffer *body = response->ReadBodyN();
@@ -232,4 +296,30 @@ void HttpConnection::OnTransactionReadyToRead(HttpSession &httpSession,
 		delete body;
 		delete jsonValue;
 	}
+}
+
+void
+HttpConnection::OnTransactionHeaderCompleted(HttpSession &httpSession,
+		HttpTransaction &httpTransaction, int headerLen, bool bAuthRequired)
+{
+	HttpResponse* httpResponse = httpTransaction.GetResponse();
+	IList* cookieList = httpResponse->GetCookies();
+
+	if (cookieList == null) {
+		return;
+	}
+
+	String cookieString = "";
+	for (int i = 0; i < cookieList->GetCount(); i++) {
+		HttpCookie *cookie = static_cast<HttpCookie*>(cookieList->GetAt(i));
+
+		cookieString.Append(cookie->GetCookieName());
+		cookieString.Append('=');
+		cookieString.Append(cookie->GetCookieValue());
+
+		cookieString.Append(';');
+	}
+
+	cookieString.SetLength(cookieString.GetLength() - 1);
+	_cookies = cookieString;
 }

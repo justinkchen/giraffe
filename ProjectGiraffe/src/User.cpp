@@ -13,11 +13,11 @@ using namespace Tizen::App;
 using namespace Tizen::Base;
 using namespace Tizen::Base::Collection;
 
-const Tizen::Base::String idKey = "UserId";
-const Tizen::Base::String fullnameKey = "UserFullname";
-const Tizen::Base::String usernameKey = "UserUsername";
-const Tizen::Base::String emailKey = "UserEmail";
-//const Tizen::Base::String dateKey = "UserDate";
+const String idKey = "UserId";
+const String fullnameKey = "UserFullname";
+const String usernameKey = "UserUsername";
+const String emailKey = "UserEmail";
+//const String dateKey = "UserDate";
 
 User *currentUserSingleton = NULL;
 
