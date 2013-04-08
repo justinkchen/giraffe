@@ -5,10 +5,11 @@ using namespace Tizen::Graphics;
 using namespace Tizen::Ui;
 using namespace Tizen::Ui::Controls;
 using namespace Tizen::Ui::Scenes;
-
+using namespace Tizen::Web::Controls;
 using namespace Tizen::Base;
 using namespace Tizen::Net::Http;
 using namespace Tizen::Web::Json;
+using namespace Tizen::Base::Utility;
 
 ProjectGiraffeTab3::~ProjectGiraffeTab3(void)
 {
@@ -41,33 +42,60 @@ ProjectGiraffeTab3::OnInitializing(void)
 	pRelativeLayout->SetVerticalFitPolicy(*this, FIT_POLICY_PARENT);
 	delete pRelativeLayout;
 
-	// Creates an instance of Button
-	__pButton = new Button();
-	int submitButtonW = 500;
-	int submitButtonH = 150;
-	__pButton->Construct(Rectangle((pForm->GetClientAreaBounds().width-submitButtonW)/2, 700, submitButtonW, submitButtonH), L"Post Graffiti");
-	__pButton->SetActionId(ID_BUTTON);
-	__pButton->AddActionEventListener(*this);
-	AddControl(*__pButton);
+	pRelativeLayout = dynamic_cast<RelativeLayout*>(pForm->GetPortraitLayoutN());
+
+	double latitude = ProjectGiraffeMainForm::currentLatitude;
+	double longitude = ProjectGiraffeMainForm::currentLongitude;
+	AppLog("Latitude is now: %f", latitude);
+	AppLog("Longitude is now: %f", longitude);
+	Tizen::Base::Double* dublat = new Tizen::Base::Double(latitude);
+	Tizen::Base::Double* dublong = new Tizen::Base::Double(longitude);
 
     // Creates an instance of EditArea
-    __pEditArea = new EditArea();
-    __pEditArea->Construct(Rectangle(50, 100, pForm->GetClientAreaBounds().width-100, 300));
-    __pEditArea->AddTextEventListener(*this);
-    AddControl(*__pEditArea);
+    _messageArea = new EditArea();
+    _messageArea->Construct(Rectangle(50, 100, pForm->GetClientAreaBounds().width-100, 200), INPUT_STYLE_OVERLAY, 300);
+    _messageArea->SetKeypadAction(KEYPAD_ACTION_DONE);
+    _messageArea->AddKeypadEventListener(*this);
+    _messageArea->AddTextEventListener(*this);
+    AddControl(*_messageArea);
 
     // Creates an instance of Label
-    __pEditAreaLabel = new Label();
-    __pEditAreaLabel->Construct(Rectangle(50, 50, pForm->GetClientAreaBounds().width-100, 50),L"Graffiti Message:");
-    AddControl(*__pEditAreaLabel);
+    _messageLabel = new Label();
+    _messageLabel->Construct(Rectangle(50, 50, pForm->GetClientAreaBounds().width-100, 50),L"Graffiti Message:");
+    AddControl(*_messageLabel);
+
+    _addGraffitiWebView = new Web();
+    _addGraffitiWebView->Construct(Rectangle(50, 350, pForm->GetClientAreaBounds().width-100, 250));
+    String url = "http://ec2-54-243-69-6.compute-1.amazonaws.com/addgraffiti_map.html?latitude=" + dublat->ToString() + "&longitude=" + dublong->ToString();
+    _addGraffitiWebView->SetLoadingListener(this);
+    AddControl(*_addGraffitiWebView);
+
+    _addGraffitiWebView->LoadUrl(GetValidUrl(url));
 
     // Creates an instance of Slider
-    __pSlider = new Slider();
-    __pSlider->Construct(Rectangle(0, 450, pForm->GetClientAreaBounds().width, 200), BACKGROUND_STYLE_DEFAULT, true, 5, 500);
-    __pSlider->SetTitleText(L"Radius of post (in meters):");
-    __pSlider->SetValue(25);
-    __pSlider->AddAdjustmentEventListener(*this);
-    AddControl(*__pSlider);
+    _radiusSlider = new Slider();
+    _radiusSlider->Construct(Rectangle(0, 600, pForm->GetClientAreaBounds().width, 200), BACKGROUND_STYLE_NONE, true, 10, 300);
+    _radiusSlider->SetTitleText(L"Radius of post (in meters):");
+    _radiusSlider->SetValue(50);
+    _radiusSlider->AddAdjustmentEventListener(*this);
+    AddControl(*_radiusSlider);
+
+	// Creates an instance of Button
+	_submitButton = new Button();
+	int submitButtonW = 400;
+	int submitButtonH = 100;
+	_submitButton->Construct(Rectangle((pForm->GetClientAreaBounds().width-submitButtonW)/2, 850, submitButtonW, submitButtonH), L"Post Graffiti");
+	_submitButton->SetActionId(ID_BUTTON);
+	_submitButton->AddActionEventListener(*this);
+	AddControl(*_submitButton);
+
+//    pRelativeLayout->SetCenterAligned(*_messageArea, CENTER_ALIGN_HORIZONTAL);
+//    pRelativeLayout->SetCenterAligned(*_messageLabel, CENTER_ALIGN_HORIZONTAL);
+//    pRelativeLayout->SetCenterAligned(*_addGraffitiWebView, CENTER_ALIGN_HORIZONTAL);
+//    pRelativeLayout->SetCenterAligned(*_radiusSlider, CENTER_ALIGN_HORIZONTAL);
+//    pRelativeLayout->SetCenterAligned(*_submitButton, CENTER_ALIGN_HORIZONTAL);
+
+    delete pRelativeLayout;
 
 	return r;
 }
@@ -172,8 +200,8 @@ ProjectGiraffeTab3::OnTransactionReadyToRead (HttpSession &httpSession, HttpTran
 		msgBox.Construct(L"Success", L"Graffiti successfully posted!", MSGBOX_STYLE_OK , 0);
 		int modalresult = 0;
 		msgBox.ShowAndWait(modalresult);
-		__pEditArea->SetText(L"");
-		__pEditArea->Draw();
+		_messageArea->SetText(L"");
+		_messageArea->Draw();
 	}else{
 		AppLog("HTTP Status not OK");
 	}
@@ -221,13 +249,13 @@ ProjectGiraffeTab3::OnActionPerformed(const Tizen::Ui::Control& source, int acti
 		// Set POST body
 		HttpUrlEncodedEntity* pHttpUrlEncodedEntity = new HttpUrlEncodedEntity();
 		pHttpUrlEncodedEntity->Construct();
-		String message = __pEditArea->GetText();
+		String message = _messageArea->GetText();
 		String latitude;
 		latitude.Append(ProjectGiraffeMainForm::currentLatitude);
 		String longitude;
 		longitude.Append(ProjectGiraffeMainForm::currentLongitude);
 		String radius;
-		radius.Append(__pSlider->GetValue());
+		radius.Append(_radiusSlider->GetValue());
 
 
 		pHttpUrlEncodedEntity->AddParameter(L"message", message);
@@ -270,5 +298,173 @@ ProjectGiraffeTab3::OnTextValueChangeCanceled(const Tizen::Ui::Control& source)
 void
 ProjectGiraffeTab3::OnAdjustmentValueChanged(const Control& source, int adjustment)
 {
-    // ....
+	Tizen::Base::Integer* newRadius = new Tizen::Base::Integer(adjustment);
+    _addGraffitiWebView->EvaluateJavascriptN(L"updateRadius(" + newRadius->ToString() + ");");
+}
+
+String
+ProjectGiraffeTab3::GetValidUrl(Tizen::Base::String& url)
+{
+	String absoluteUrl = url;
+	Uri uri;
+
+	uri.SetUri(url);
+	if (uri.GetScheme() == L"")
+	{
+		absoluteUrl.Insert(L"http://", 0);
+	}
+	return absoluteUrl;
+}
+
+bool
+ProjectGiraffeTab3::OnHttpAuthenticationRequestedN(const Tizen::Base::String& host, const Tizen::Base::String& realm, const Tizen::Web::Controls::AuthenticationChallenge& authentication)
+{
+	AppLog("OnHttpAuthenticationRequested");
+	return false;
+}
+
+void
+ProjectGiraffeTab3::OnHttpAuthenticationCanceled(void)
+{
+	AppLog("OnHttpAuthenticationCanceled");
+}
+
+void
+ProjectGiraffeTab3::OnLoadingStarted(void)
+{
+	AppLog("OnLoadingStarted");
+}
+
+void
+ProjectGiraffeTab3::OnLoadingCanceled(void)
+{
+	AppLog("OnLoadingCanceled");
+}
+
+void
+ProjectGiraffeTab3::OnLoadingErrorOccurred(LoadingErrorType error, const String& reason)
+{
+	Tizen::Ui::Controls::MessageBox msgBox;
+	int modalresult = 0;
+	Tizen::Base::String errReason;
+
+	switch (error)
+	{
+	case WEB_REQUEST_TIMEOUT:
+	{
+		errReason = Tizen::Base::String(L"Request timeout");
+	}
+	break;
+
+	case WEB_NO_CONNECTION:
+	{
+		errReason = Tizen::Base::String(L"Network is not in service");
+	}
+	break;
+
+	case WEB_MIME_NOT_SUPPORTED:
+	{
+		errReason = Tizen::Base::String(L"The content type is not supported");
+	}
+	break;
+
+	case WEB_BAD_URL:
+	{
+		errReason = Tizen::Base::String(L"The url is invalid");
+	}
+	break;
+
+	case WEB_HTTP_RESPONSE:
+	{
+		errReason = Tizen::Base::String(L"HTTP response");
+	}
+	break;
+
+	case WEB_OUT_OF_MEMORY:
+	{
+		errReason = Tizen::Base::String(L"Page Too Large");
+	}
+	break;
+
+	case WEB_REQUEST_MAX_EXCEEDED:
+	{
+		errReason = Tizen::Base::String(L"Request Max Exceeded");
+	}
+	break;
+
+	case WEB_ERROR_UNKNOWN:
+	default:
+	{
+		errReason = Tizen::Base::String(L"An Unknown error");
+	}
+	break;
+	}
+
+	msgBox.Construct(L"LOADING ERROR TYPE", errReason, MSGBOX_STYLE_NONE, 3000);
+	msgBox.ShowAndWait(modalresult);
+}
+
+void
+ProjectGiraffeTab3::OnLoadingCompleted(void)
+{
+	AppLog("OnLoadingCompleted");
+}
+
+void
+ProjectGiraffeTab3::OnEstimatedProgress(int progress)
+{
+}
+
+void
+ProjectGiraffeTab3::OnPageTitleReceived(const Tizen::Base::String& title)
+{
+}
+
+bool
+ProjectGiraffeTab3::OnLoadingRequested(const Tizen::Base::String& url, WebNavigationType type)
+{
+	AppLog("%S",url.GetPointer());
+	return false;
+}
+
+
+
+DecisionPolicy
+ProjectGiraffeTab3::OnWebDataReceived(const Tizen::Base::String& mime, const Tizen::Net::Http::HttpHeader& header)
+{
+	return WEB_DECISION_CONTINUE;
+}
+
+void
+ProjectGiraffeTab3::OnKeypadActionPerformed(Control &source, KeypadAction keypadAction)
+{
+	// Hide keypad when the action button is clicked
+	if (keypadAction == KEYPAD_ACTION_DONE)
+	{
+		((EditArea *)&source)->HideKeypad();
+	}
+}
+
+void
+ProjectGiraffeTab3::OnKeypadBoundsChanged(Control &source)
+{
+
+}
+
+void
+ProjectGiraffeTab3::OnKeypadClosed(Control &source)
+{
+
+}
+
+void
+ProjectGiraffeTab3::OnKeypadOpened(Control &source)
+{
+
+}
+
+void
+ProjectGiraffeTab3::OnKeypadWillOpen(Control &source)
+{
+
 }
