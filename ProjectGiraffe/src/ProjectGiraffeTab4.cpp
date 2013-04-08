@@ -237,7 +237,7 @@ ProjectGiraffeTab4::updateUser(void)
 	userParameters->AddStringPart(L"username", username);
 	userParameters->AddStringPart(L"email", email);
 
-	HTTPConnection *connection = HTTPConnection::userUpdatePutConnection(this, userParameters);
+	HttpConnection *connection = HttpConnection::userUpdatePutConnection(this, userParameters);
 	connection->begin();
 
 	delete userParameters;
@@ -277,7 +277,7 @@ ProjectGiraffeTab4::updatePassword(void)
 	userParameters->AddStringPart(L"oldPassword", oldPassword);
 	userParameters->AddStringPart(L"password", password);
 
-	HTTPConnection *connection = HTTPConnection::userUpdatePutConnection(this, userParameters);
+	HttpConnection *connection = HttpConnection::userUpdatePutConnection(this, userParameters);
 	connection->begin();
 
 	delete userParameters;
@@ -291,7 +291,7 @@ ProjectGiraffeTab4::logout(void)
 	logoutButton->SetEnabled(false);
 	logoutButton->SetText("Logging out...");
 
-	HTTPConnection *connection = HTTPConnection::userLogoutPostConnection(this);
+	HttpConnection *connection = HttpConnection::userLogoutPostConnection(this);
 	connection->begin();
 }
 
@@ -455,7 +455,7 @@ ProjectGiraffeTab4::onUserUpdate(User *user)
 }
 
 void
-ProjectGiraffeTab4::connectionDidFinish(HTTPConnection *connection, HashMap *response)
+ProjectGiraffeTab4::connectionDidFinish(HttpConnection *connection, HashMap *response)
 {
 	if (response) {
 		String userKey("user");
@@ -496,7 +496,7 @@ ProjectGiraffeTab4::connectionDidFinish(HTTPConnection *connection, HashMap *res
 }
 
 void
-ProjectGiraffeTab4::connectionDidFail(HTTPConnection *connection)
+ProjectGiraffeTab4::connectionDidFail(HttpConnection *connection)
 {
 	resetButtons();
 	showStatus(L"HTTP Status", L"HTTP Request Aborted, check internet connection", true);

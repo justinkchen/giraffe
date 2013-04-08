@@ -238,7 +238,7 @@ UserPopup::submitLogin(void)
 	userParameters->AddStringPart(L"usernameEmail", usernameEmail);
 	userParameters->AddStringPart(L"password", password);
 
-	HTTPConnection *connection = HTTPConnection::userLoginPostConnection(this, userParameters);
+	HttpConnection *connection = HttpConnection::userLoginPostConnection(this, userParameters);
 	connection->begin();
 
 	delete userParameters;
@@ -285,7 +285,7 @@ UserPopup::submitSignup(void)
 	userParameters->AddStringPart(L"email", email);
 	userParameters->AddStringPart(L"password", password);
 
-	HTTPConnection *connection = HTTPConnection::userSignupPostConnection(this, userParameters);
+	HttpConnection *connection = HttpConnection::userSignupPostConnection(this, userParameters);
 	connection->begin();
 
 	delete userParameters;
@@ -396,9 +396,9 @@ UserPopup::OnKeypadWillOpen(Control &source)
 }
 
 void
-UserPopup::connectionDidFinish(HTTPConnection *connection, HashMap *response)
+UserPopup::connectionDidFinish(HttpConnection *connection, HashMap *response)
 {
-	AppLog("HTTPConnection finished");
+	AppLog("HttpConnection finished");
 
 	if (response) {
 		String userKey("user");
@@ -429,9 +429,9 @@ UserPopup::connectionDidFinish(HTTPConnection *connection, HashMap *response)
 }
 
 void
-UserPopup::connectionDidFail(HTTPConnection *connection)
+UserPopup::connectionDidFail(HttpConnection *connection)
 {
-	AppLog("HTTPConnection failed");
+	AppLog("HttpConnection failed");
 
 	resetButtons();
 

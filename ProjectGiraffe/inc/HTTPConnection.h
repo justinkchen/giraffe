@@ -1,7 +1,7 @@
 
 
-#ifndef HTTPCONNECTION_H_
-#define HTTPCONNECTION_H_
+#ifndef HttpConnection_H_
+#define HttpConnection_H_
 
 #include <FBase.h>
 #include <Fnet.h>
@@ -40,28 +40,28 @@ extern const Tizen::Base::String kHTTPParamNameMinute;
 extern const Tizen::Base::String kHTTPParamNameSecond;
 extern const Tizen::Base::String kHTTPParamNameError;
 
-class HTTPConnection 
+class HttpConnection
   : public Tizen::Net::Http::IHttpTransactionEventListener
 {
 public:
 	  // Destructor
-	  virtual ~HTTPConnection();
+	  virtual ~HttpConnection();
 
 	  // Listener class
-	  class HTTPConnectionListener
+	  class HttpConnectionListener
 	  {
 	  public:
-		  virtual void connectionDidFinish(HTTPConnection *connection, Tizen::Base::Collection::HashMap *response) {}
-		  virtual void connectionDidFail(HTTPConnection *connection) {}
+		  virtual void connectionDidFinish(HttpConnection *connection, Tizen::Base::Collection::HashMap *response) {}
+		  virtual void connectionDidFail(HttpConnection *connection) {}
 	  };
 
 	  // Factory methods
-	  static HTTPConnection *nearbyGraffitiGetConnection(HTTPConnectionListener *listener, double latitude, double longitude);
-	  static HTTPConnection *newGraffitiPostConnection(HTTPConnectionListener *listener, Graffiti *graffiti);
-	  static HTTPConnection *userLoginPostConnection(HTTPConnectionListener *listener, Tizen::Net::Http::HttpMultipartEntity *userParameters);
-	  static HTTPConnection *userSignupPostConnection(HTTPConnectionListener *listener, Tizen::Net::Http::HttpMultipartEntity *userParameters);
-	  static HTTPConnection *userUpdatePutConnection(HTTPConnectionListener *listener, Tizen::Net::Http::HttpMultipartEntity *userParameters);
-	  static HTTPConnection *userLogoutPostConnection(HTTPConnectionListener *listener);
+	  static HttpConnection *nearbyGraffitiGetConnection(HttpConnectionListener *listener, double latitude, double longitude);
+	  static HttpConnection *newGraffitiPostConnection(HttpConnectionListener *listener, Graffiti *graffiti);
+	  static HttpConnection *userLoginPostConnection(HttpConnectionListener *listener, Tizen::Net::Http::HttpMultipartEntity *userParameters);
+	  static HttpConnection *userSignupPostConnection(HttpConnectionListener *listener, Tizen::Net::Http::HttpMultipartEntity *userParameters);
+	  static HttpConnection *userUpdatePutConnection(HttpConnectionListener *listener, Tizen::Net::Http::HttpMultipartEntity *userParameters);
+	  static HttpConnection *userLogoutPostConnection(HttpConnectionListener *listener);
 
 	  // Instance Methods
 	  void begin();
@@ -71,7 +71,7 @@ public:
 
 private:
 	  // Constructor
-	  HTTPConnection(HTTPConnectionListener *listener,
+	  HttpConnection(HttpConnectionListener *listener,
 			  	  	 const Tizen::Base::String methodName,
 			  	  	 Tizen::Net::Http::NetHttpMethod methodType,
 			  	  	 Tizen::Net::Http::HttpMultipartEntity *parameters);
@@ -91,7 +91,7 @@ private:
 
   	  // Private Members
   	  const Tizen::Base::String _methodName;
-  	  HTTPConnectionListener *_listener;
+  	  HttpConnectionListener *_listener;
   	  Tizen::Net::Http::HttpSession *_session;
   	  Tizen::Net::Http::HttpTransaction *_transaction;
   	  Tizen::Base::Collection::HashMap *_responseDictionary;
@@ -100,4 +100,4 @@ private:
 
 
 
-#endif /* HTTPCONNECTION_H_ */
+#endif /* HttpConnection_H_ */

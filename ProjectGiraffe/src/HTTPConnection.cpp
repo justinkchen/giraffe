@@ -1,12 +1,11 @@
 /*
- * HTTPConnection.cpp
+ * HttpConnection.cpp
  *
  *  Created on: Mar 17, 2013
  *      Author: Elliott
  */
 
-
-#include "HTTPConnection.h"
+#include "HttpConnection.h"
 #include "Graffiti.h"
 #include "User.h"
 #include "JSONParser.h"
@@ -19,7 +18,8 @@ using namespace Tizen::Net::Http;
 using namespace Tizen::Web::Json;
 
 const String kHTTPHostURL = L"https://ec2-54-243-69-6.compute-1.amazonaws.com/";
-const String kServerCert = L"/C=US/ST=California/L=Palo Alto/O=Unsamsung Heroes/CN=giraffe-server/emailAddress=bbch@stanford.edu";
+const String kServerCert =
+		L"/C=US/ST=California/L=Palo Alto/O=Unsamsung Heroes/CN=giraffe-server/emailAddress=bbch@stanford.edu";
 
 const String kHTTPMethodNameNearbyGraffiti = L"nearby";
 const String kHTTPMethodNameNewGraffiti = L"addgraffiti";
@@ -52,15 +52,15 @@ const String kHTTPParamNameMinute = L"minute";
 const String kHTTPParamNameSecond = L"second";
 const String kHTTPParamNameError = L"error";
 
-
-HTTPConnection::HTTPConnection(HTTPConnectionListener *listener, const Tizen::Base::String methodName, Tizen::Net::Http::NetHttpMethod methodType, Tizen::Net::Http::HttpMultipartEntity *parameters) :
-		_methodName(methodName),
-		_listener(listener),
-		_responseDictionary(NULL)
-{
+HttpConnection::HttpConnection(HttpConnectionListener *listener,
+		const Tizen::Base::String methodName,
+		Tizen::Net::Http::NetHttpMethod methodType,
+		Tizen::Net::Http::HttpMultipartEntity *parameters) :
+		_methodName(methodName), _listener(listener), _responseDictionary(NULL) {
 	// Create session
 	_session = new HttpSession();
-	_session->Construct(NET_HTTP_SESSION_MODE_NORMAL, NULL, kHTTPHostURL, NULL, NET_HTTP_COOKIE_FLAG_ALWAYS_AUTOMATIC);
+	_session->Construct(NET_HTTP_SESSION_MODE_NORMAL, NULL, kHTTPHostURL, NULL,
+			NET_HTTP_COOKIE_FLAG_ALWAYS_AUTOMATIC);
 
 	_transaction = _session->OpenTransactionN();
 	_transaction->AddHttpTransactionListener(*this);
@@ -75,80 +75,81 @@ HTTPConnection::HTTPConnection(HTTPConnectionListener *listener, const Tizen::Ba
 	}
 }
 
-HTTPConnection::~HTTPConnection()
-{
+HttpConnection::~HttpConnection() {
 	delete _session;
 	delete _transaction;
 	delete _responseDictionary;
 }
 
 // Factory methods
-HTTPConnection *HTTPConnection::nearbyGraffitiGetConnection(HTTPConnectionListener *listener, double latitude, double longitude)
-{
+HttpConnection *HttpConnection::nearbyGraffitiGetConnection(
+		HttpConnectionListener *listener, double latitude, double longitude) {
 	HttpMultipartEntity *parameters = new HttpMultipartEntity();
 	parameters->Construct();
 	parameters->AddStringPart(L"latitude", Double(latitude).ToString());
 	parameters->AddStringPart(L"longitude", Double(longitude).ToString());
 
-	HTTPConnection *connection = new HTTPConnection(listener, kHTTPMethodNameNearbyGraffiti, NET_HTTP_METHOD_GET, parameters);
+	HttpConnection *connection = new HttpConnection(listener,
+			kHTTPMethodNameNearbyGraffiti, NET_HTTP_METHOD_GET, parameters);
 	delete parameters;
 
 	return connection;
 }
 
-HTTPConnection *HTTPConnection::newGraffitiPostConnection(HTTPConnectionListener *listener, Graffiti *graffiti)
-{
-	HTTPConnection *connection = NULL;
+HttpConnection *HttpConnection::newGraffitiPostConnection(
+		HttpConnectionListener *listener, Graffiti *graffiti) {
+	HttpConnection *connection = NULL;
 
 	HttpMultipartEntity *parameters = parametersForGraffiti(graffiti);
 	if (parameters) {
-		connection = new HTTPConnection(listener, kHTTPMethodNameNewGraffiti, NET_HTTP_METHOD_POST, parameters);
+		connection = new HttpConnection(listener, kHTTPMethodNameNewGraffiti,
+				NET_HTTP_METHOD_POST, parameters);
 		delete parameters;
 	}
 
 	return connection;
 }
 
-HTTPConnection *HTTPConnection::userLoginPostConnection(HTTPConnectionListener *listener, HttpMultipartEntity *userParameters)
-{
-	HTTPConnection *connection = new HTTPConnection(listener, kHTTPMethodNameUserLogin, NET_HTTP_METHOD_POST, userParameters);
+HttpConnection *HttpConnection::userLoginPostConnection(
+		HttpConnectionListener *listener, HttpMultipartEntity *userParameters) {
+	HttpConnection *connection = new HttpConnection(listener,
+			kHTTPMethodNameUserLogin, NET_HTTP_METHOD_POST, userParameters);
 
 	return connection;
 }
 
-HTTPConnection *HTTPConnection::userSignupPostConnection(HTTPConnectionListener *listener, HttpMultipartEntity *userParameters)
-{
-	HTTPConnection *connection = new HTTPConnection(listener, kHTTPMethodNameUserSignup, NET_HTTP_METHOD_POST, userParameters);
+HttpConnection *HttpConnection::userSignupPostConnection(
+		HttpConnectionListener *listener, HttpMultipartEntity *userParameters) {
+	HttpConnection *connection = new HttpConnection(listener,
+			kHTTPMethodNameUserSignup, NET_HTTP_METHOD_POST, userParameters);
 
 	return connection;
 }
 
-HTTPConnection *HTTPConnection::userUpdatePutConnection(HTTPConnectionListener *listener, HttpMultipartEntity *userParameters)
-{
-	HTTPConnection *connection = new HTTPConnection(listener, kHTTPMethodNameUserUpdate, NET_HTTP_METHOD_PUT, userParameters);
+HttpConnection *HttpConnection::userUpdatePutConnection(
+		HttpConnectionListener *listener, HttpMultipartEntity *userParameters) {
+	HttpConnection *connection = new HttpConnection(listener,
+			kHTTPMethodNameUserUpdate, NET_HTTP_METHOD_PUT, userParameters);
 
 	return connection;
 }
 
-HTTPConnection *HTTPConnection::userLogoutPostConnection(HTTPConnectionListener *listener)
-{
-	HTTPConnection *connection = new HTTPConnection(listener, kHTTPMethodNameUserLogout, NET_HTTP_METHOD_POST, NULL);
+HttpConnection *HttpConnection::userLogoutPostConnection(
+		HttpConnectionListener *listener) {
+	HttpConnection *connection = new HttpConnection(listener,
+			kHTTPMethodNameUserLogout, NET_HTTP_METHOD_POST, NULL);
 
 	return connection;
 }
-
-
 
 // Instance Methods
-void HTTPConnection::begin()
-{
+void HttpConnection::begin() {
 	_transaction->Submit();
 }
 
-
 // Utility methods
-HttpMultipartEntity *HTTPConnection::parametersForDictionary(Tizen::Base::Collection::HashMap *dictionary)
-{
+HttpMultipartEntity *HttpConnection::parametersForDictionary(
+		Tizen::Base::Collection::HashMap *dictionary) {
 	HttpMultipartEntity *parameters = NULL;
 	if (dictionary) {
 		parameters = new HttpMultipartEntity();
@@ -184,28 +185,25 @@ HttpMultipartEntity *HTTPConnection::parametersForDictionary(Tizen::Base::Collec
 	return parameters;
 }
 
-HttpMultipartEntity *HTTPConnection::parametersForGraffiti(Graffiti *graffiti)
-{
+HttpMultipartEntity *HttpConnection::parametersForGraffiti(Graffiti *graffiti) {
 	HashMap *dictionary = (graffiti ? graffiti->parameterDictionary() : NULL);
 	return parametersForDictionary(dictionary);
 }
 
-HttpMultipartEntity *HTTPConnection::parametersForUser(User *user)
-{
+HttpMultipartEntity *HttpConnection::parametersForUser(User *user) {
 	HashMap *dictionary = (user ? user->parameterDictionary() : NULL);
 	return parametersForDictionary(dictionary);
 }
 
 // IHttpTransactionEventListener
-void
-HTTPConnection::OnTransactionAborted (HttpSession &httpSession, HttpTransaction &httpTransaction, result r)
-{
+void HttpConnection::OnTransactionAborted(HttpSession &httpSession,
+		HttpTransaction &httpTransaction, result r) {
 	_listener->connectionDidFail(this);
 }
 
-void
-HTTPConnection::OnTransactionCertVerificationRequiredN (HttpSession &httpSession, HttpTransaction &httpTransaction, Tizen::Base::String *pCert)
-{
+void HttpConnection::OnTransactionCertVerificationRequiredN(
+		HttpSession &httpSession, HttpTransaction &httpTransaction,
+		Tizen::Base::String *pCert) {
 	if (pCert->Equals(kServerCert)) {
 		httpTransaction.Resume();
 	} else {
@@ -214,9 +212,8 @@ HTTPConnection::OnTransactionCertVerificationRequiredN (HttpSession &httpSession
 	}
 }
 
-void
-HTTPConnection::OnTransactionCompleted (HttpSession &httpSession, HttpTransaction &httpTransaction)
-{
+void HttpConnection::OnTransactionCompleted(HttpSession &httpSession,
+		HttpTransaction &httpTransaction) {
 	if (_responseDictionary) {
 		_listener->connectionDidFinish(this, _responseDictionary);
 	} else {
@@ -224,9 +221,8 @@ HTTPConnection::OnTransactionCompleted (HttpSession &httpSession, HttpTransactio
 	}
 }
 
-void
-HTTPConnection::OnTransactionReadyToRead (HttpSession &httpSession, HttpTransaction &httpTransaction, int availableBodyLen)
-{
+void HttpConnection::OnTransactionReadyToRead(HttpSession &httpSession,
+		HttpTransaction &httpTransaction, int availableBodyLen) {
 	HttpResponse *response = httpTransaction.GetResponse();
 	if (response->GetHttpStatusCode() == HTTP_STATUS_OK) {
 		ByteBuffer *body = response->ReadBodyN();

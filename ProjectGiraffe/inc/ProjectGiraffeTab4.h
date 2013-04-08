@@ -16,7 +16,7 @@ class ProjectGiraffeTab4 :
 	public Tizen::Ui::IActionEventListener,
 	public Tizen::Ui::IKeypadEventListener,
 	public User::UserListener,
-	public HTTPConnection::HTTPConnectionListener
+	public HttpConnection::HttpConnectionListener
 {
 public:
 	ProjectGiraffeTab4(void);
@@ -45,9 +45,9 @@ public:
 	// UserListener
 	virtual void onUserUpdate(User *user);
 
-	// HTTPConnectionListener
-	virtual void connectionDidFinish(HTTPConnection *connection, Tizen::Base::Collection::HashMap *response);
-	virtual void connectionDidFail(HTTPConnection *connection);
+	// HttpConnectionListener
+	virtual void connectionDidFinish(HttpConnection *connection, Tizen::Base::Collection::HashMap *response);
+	virtual void connectionDidFail(HttpConnection *connection);
 
 private:
 	static const int ID_BUTTON_LOGIN = 401;

@@ -8,7 +8,7 @@
 #include "Graffiti.h"
 #include "Date.h"
 #include "User.h"
-#include "HTTPConnection.h" // TODO: maybe find a better place for the parameter names to live.
+#include "HttpConnection.h" // TODO: maybe find a better place for the parameter names to live.
 
 using namespace Tizen::Base;
 using namespace Tizen::Base::Collection;

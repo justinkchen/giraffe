@@ -30,11 +30,14 @@ StatusPopup::StatusPopup()
 
 	// initialize messageLabel
 	messageBox = new TextBox();
-	messageBox->Construct(Rectangle(0, 0, 660, 80), L"");
+	messageBox->Construct(Rectangle(0, 0, 660, 80), TEXT_BOX_BORDER_NONE);
+//	messageBox->Construct(Rectangle(0, 0, 660, 80), L"");
 	messageBox->SetName("messageBox");
-	messageBox->SetTextConfig(40, LABEL_TEXT_STYLE_NORMAL);
-	messageBox->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
-	messageBox->SetTextVerticalAlignment(ALIGNMENT_TOP);
+	messageBox->SetText("");
+	messageBox->SetTextSize(40);
+	messageBox->SetTextAlignment(ALIGNMENT_LEFT);
+//	messageBox->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
+//	messageBox->SetTextVerticalAlignment(ALIGNMENT_TOP);
 	AddControl(*messageBox);
 
 	AddTouchEventListener(*this);
@@ -80,13 +83,13 @@ StatusPopup::setType(StatusType type)
 	switch(type)
 	{
 	case STATUS_POPUP_DEFAULT:
-		messageBox->SetTextColor(Color(0x00, 0x00, 0x00));
+		messageBox->SetTextColor(TEXT_BOX_TEXT_COLOR_NORMAL, Color(0x00, 0x00, 0x00));
 		break;
 	case STATUS_POPUP_ERROR:
-		messageBox->SetTextColor(Color(0xFF, 0x00, 0x00));
+		messageBox->SetTextColor(TEXT_BOX_TEXT_COLOR_NORMAL, Color(0xFF, 0x00, 0x00));
 		break;
 	default:
-		messageBox->SetTextColor(Color(0x00, 0x00, 0x00));
+		messageBox->SetTextColor(TEXT_BOX_TEXT_COLOR_NORMAL, Color(0x00, 0x00, 0x00));
 		break;
 	}
 }

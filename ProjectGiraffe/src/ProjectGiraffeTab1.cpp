@@ -43,7 +43,7 @@ ProjectGiraffeTab1::Initialize(void)
 }
 
 #define kDebugUseDummyItems 0
-#define kDebugUseHTTPConnection 0
+#define kDebugUseHttpConnection 0
 
 void
 ProjectGiraffeTab1::updateItems()
@@ -61,11 +61,11 @@ ProjectGiraffeTab1::updateItems()
 
 #else
 
-#if kDebugUseHTTPConnection
+#if kDebugUseHttpConnection
 
 	double latitude = ProjectGiraffeMainForm::currentLatitude;
 	double longitude = ProjectGiraffeMainForm::currentLongitude;
-	HTTPConnection *connection = HTTPConnection::nearbyGraffitiGetConnection(this,latitude,longitude);
+	HttpConnection *connection = HttpConnection::nearbyGraffitiGetConnection(this,latitude,longitude);
 	connection->begin();
 
 #else
@@ -283,7 +283,7 @@ TableViewItem* ProjectGiraffeTab1::CreateItem(int itemIndex, int itemWidth)
 	contextItem->Construct(item->GetSize());
 	item->SetContextItem(contextItem);
 
-#if kDebugUseHTTPConnection
+#if kDebugUseHttpConnection
 	GraffitiCellContentView *contentView = static_cast<GraffitiCellContentView *>(_contentViews->GetAt(itemIndex));
 	if (contentView) {
 		item->AddControl(*contentView);
@@ -334,9 +334,9 @@ int ProjectGiraffeTab1::GetDefaultItemHeight(void)
 }
 
 
-void ProjectGiraffeTab1::connectionDidFinish(HTTPConnection *connection, Tizen::Base::Collection::HashMap *response)
+void ProjectGiraffeTab1::connectionDidFinish(HttpConnection *connection, Tizen::Base::Collection::HashMap *response)
 {
-	AppLog("HTTPConnection finished");
+	AppLog("HttpConnection finished");
 	if (response) {
 		ArrayList *graffitiList = static_cast<ArrayList *>(response->GetValue(kHTTPParamNameGraffiti));
 		if (graffitiList) {
@@ -358,9 +358,9 @@ void ProjectGiraffeTab1::connectionDidFinish(HTTPConnection *connection, Tizen::
 	}
 }
 
-void ProjectGiraffeTab1::connectionDidFail(HTTPConnection *connection)
+void ProjectGiraffeTab1::connectionDidFail(HttpConnection *connection)
 {
-	AppLog("HTTPConnection failed");
+	AppLog("HttpConnection failed");
 
 	MessageBox msgBox;
 	msgBox.Construct(L"HTTP STATUS", L"HTTP Request Aborted, Check internet connection", MSGBOX_STYLE_NONE, 3000);

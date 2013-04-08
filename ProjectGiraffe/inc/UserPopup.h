@@ -22,7 +22,7 @@ class UserPopup:
 	public Tizen::Ui::Controls::Popup,
     public Tizen::Ui::IActionEventListener,
     public Tizen::Ui::IKeypadEventListener,
-    public HTTPConnection::HTTPConnectionListener
+    public HttpConnection::HttpConnectionListener
 {
 public:
 	static UserPopup *popup(void);
@@ -43,9 +43,9 @@ public:
 	virtual void OnKeypadOpened(Tizen::Ui::Control &source);
 	virtual void OnKeypadWillOpen(Tizen::Ui::Control &source);
 
-	// HTTPConnectionListener
-	virtual void connectionDidFinish(HTTPConnection *connection, Tizen::Base::Collection::HashMap *response);
-	virtual void connectionDidFail(HTTPConnection *connection);
+	// HttpConnectionListener
+	virtual void connectionDidFinish(HttpConnection *connection, Tizen::Base::Collection::HashMap *response);
+	virtual void connectionDidFail(HttpConnection *connection);
 
 private:
 	static const int ID_BUTTON_CLOSE_POPUP = 501;

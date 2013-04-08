@@ -6,7 +6,7 @@
 #include <FWebJson.h>
 #include <Fnet.h>
 #include <FWeb.h>
-#include "HTTPConnection.h"
+#include "HttpConnection.h"
 class Graffiti;
 
 using namespace Tizen::Web::Json;
@@ -17,7 +17,7 @@ class ProjectGiraffeTab1 :
 	public Tizen::Ui::Controls::ITableViewItemProvider,
 	public Tizen::Ui::Controls::ITableViewItemEventListener,
 	public Tizen::Net::Http::IHttpTransactionEventListener,
-	public HTTPConnection::HTTPConnectionListener
+	public HttpConnection::HttpConnectionListener
 	{
 public:
 	ProjectGiraffeTab1(void) :
@@ -36,9 +36,9 @@ public:
 	virtual result OnInitializing(void);
 	virtual result OnTerminating(void);
 
-	// HTTPConnectionListener
-	virtual void connectionDidFinish(HTTPConnection *connection, Tizen::Base::Collection::HashMap *response);
-	virtual void connectionDidFail(HTTPConnection *connection);
+	// HttpConnectionListener
+	virtual void connectionDidFinish(HttpConnection *connection, Tizen::Base::Collection::HashMap *response);
+	virtual void connectionDidFail(HttpConnection *connection);
 
 	// ISceneEventListener
 	virtual void OnSceneActivatedN(const Tizen::Ui::Scenes::SceneId& previousSceneId,
