@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 
 public class GraffitiMapFragment extends Fragment {
 
@@ -61,16 +60,21 @@ public class GraffitiMapFragment extends Fragment {
 	@Override
 	public void onResume(){
 		super.onResume();
+		Log.w("GraffitiMap", "Resuming Map Fragment");
 		setUpMapIfNeeded();
 	}
 	
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        Log.w("GraffitiMap", "Destroying View");
         SupportMapFragment f = (SupportMapFragment) this.getActivity().getSupportFragmentManager().findFragmentById(R.id.map);
         if (f != null){
         	this.getActivity().getSupportFragmentManager().beginTransaction().remove(f).commit();
+        	mMap = null;
         }
+        
+        
     }
     
     private void setUpMapIfNeeded() {
@@ -83,15 +87,15 @@ public class GraffitiMapFragment extends Fragment {
         	}else{
         		Log.e("GraffitiMap", "Fragment not found");
         	}
-            // Check if we were successful in obtaining the map.
-            if (mMap != null) {
-                // The Map is verified. It is now safe to manipulate the map.
-				Location myLocation = MainActivity.getGiraffeLocationListener().getCurrentLocation();
-				LatLng myLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-				mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatLng, 15));
-				mMap.animateCamera(CameraUpdateFactory.zoomIn());
-				Log.w("GraffitiMap", "Map settings added in");
-            }
+        }
+        // Check if we were successful in obtaining the map.
+        if (mMap != null){
+        	// The Map is verified. It is now safe to manipulate the map.
+			Location myLocation = MainActivity.getGiraffeLocationListener().getCurrentLocation();
+			LatLng myLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+			mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatLng, 15));
+			mMap.animateCamera(CameraUpdateFactory.zoomIn());
+			Log.w("GraffitiMap", "Map settings added in");
         }
     }
 }

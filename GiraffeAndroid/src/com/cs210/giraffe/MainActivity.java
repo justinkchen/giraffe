@@ -48,7 +48,6 @@ ActionBar.TabListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//setContentView(R.layout.fragment_mapview);
 		setContentView(R.layout.activity_main);
 		
 		// Set up the action bar.
@@ -175,9 +174,7 @@ ActionBar.TabListener {
 				fragment = new NearbyListFragment();	
 				break;
 			case 1:
-				fragment = new DummySectionFragment();
-				args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
-				fragment.setArguments(args);
+				fragment = new AddGraffitiFragment();
 				break;
 			case 2:
 				fragment = new GraffitiMapFragment();
