@@ -15,6 +15,7 @@
             <Privilege>http://tizen.org/privilege/web.service</Privilege>
             <Privilege>http://tizen.org/privilege/location</Privilege>
             <Privilege>http://tizen.org/privilege/http</Privilege>
+            <Privilege>http://tizen.org/privilege/application.launch</Privilege>
         </Privileges>
         <UiApp Main="True" MenuIconVisible="True" Name="ProjectGiraffe">
             <UiScalability BaseScreenSize="Normal" CoordinateSystem="Logical" LogicalCoordinate="720"/>

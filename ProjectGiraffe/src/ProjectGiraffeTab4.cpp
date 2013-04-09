@@ -2,6 +2,7 @@
 
 #include "ControlUtilities.h"
 
+using namespace Tizen::App;
 using namespace Tizen::Graphics;
 using namespace Tizen::Ui;
 using namespace Tizen::Ui::Controls;
@@ -14,12 +15,12 @@ using namespace ControlUtil;
 
 ProjectGiraffeTab4::ProjectGiraffeTab4(void)
 {
-
+	_avatarContextMenu = null;
 }
 
 ProjectGiraffeTab4::~ProjectGiraffeTab4(void)
 {
-
+	delete _avatarContextMenu;
 }
 
 bool
@@ -106,6 +107,24 @@ ProjectGiraffeTab4::showProfile(void)
 	scrollPanel->AddControl(*logoutButton);
 
 	// Avatar button? image?
+	Button* avatarButton = new Button();
+	avatarButton->Construct(Rectangle(10, 10, 250, 250), "");
+	avatarButton->SetName("avatarButton");
+	avatarButton->SetActionId(ID_BUTTON_AVATAR);
+	avatarButton->AddActionEventListener(*this);
+	scrollPanel->AddControl(*avatarButton);
+
+	if (_avatarContextMenu == null) {
+		_avatarContextMenu = new ContextMenu();
+		_avatarContextMenu->Construct(Point(135, 420), CONTEXT_MENU_STYLE_LIST, CONTEXT_MENU_ANCHOR_DIRECTION_DOWNWARD);
+		_avatarContextMenu->AddItem("Choose from library", ID_CONTEXT_CHOOSE);
+		_avatarContextMenu->AddItem("Take photo", ID_CONTEXT_TAKE);
+		_avatarContextMenu->AddActionEventListener(*this);
+		_avatarContextMenu->SetShowState(false);
+		_avatarContextMenu->Invalidate(true);
+
+	}
+
 	// Full name
 
 	Label* usernameLabel = new Label();
@@ -296,6 +315,38 @@ ProjectGiraffeTab4::logout(void)
 }
 
 void
+ProjectGiraffeTab4::showAvatarMenu(void)
+{
+	_avatarContextMenu->SetShowState(true);
+	_avatarContextMenu->Show();
+}
+
+void
+ProjectGiraffeTab4::choosePhoto(void)
+{
+	AppLog("choose photo from library");
+}
+
+void
+ProjectGiraffeTab4::takePhoto(void)
+{
+	AppLog("take photo with camera");
+
+	AppControl* appControl = AppManager::FindAppControlN(L"tizen.camera", L"http://tizen.org/appcontrol/operation/createcontent");
+
+	HashMap extraData;
+	extraData.Construct();
+	String typeKey = L"type";
+	String typeVal = L"camera";
+	extraData.Add(&typeKey, &typeVal);
+
+	if (appControl) {
+		appControl->Start(null, null, &extraData, this);
+		delete appControl;
+	}
+}
+
+void
 ProjectGiraffeTab4::showStatus(const String &statusTitle, const String &statusMessage, bool isError)
 {
 	StatusPopup* statusPopup = StatusPopup::popup();
@@ -389,6 +440,13 @@ ProjectGiraffeTab4::OnActionPerformed(const Control& source, int actionId)
 			updatePassword();
 			break;
 		case ID_BUTTON_AVATAR:
+			showAvatarMenu();
+			break;
+		case ID_CONTEXT_CHOOSE:
+			choosePhoto();
+			break;
+		case ID_CONTEXT_TAKE:
+			takePhoto();
 			break;
 		default:
 			break;
@@ -441,6 +499,28 @@ ProjectGiraffeTab4::OnKeypadWillOpen(Control &source)
 	*/
 }
 
+void
+ProjectGiraffeTab4::OnAppControlCompleteResponseReceived(const AppId &appId, const String &operationId, AppCtrlResult appControlResult, const IMap *extraData)
+{
+	AppLogTag("camera1", "asdf");
+	if (appId.Equals(L"tizen.camera", true) &&
+			operationId.Equals(L"http://tizen.org/appcontrol/operation/createcontent", true))
+	{
+		if (appControlResult == APP_CTRL_RESULT_SUCCEEDED) {
+			AppLogTag("camera1", "Camera capture success.");
+		} else if (appControlResult == APP_CTRL_RESULT_CANCELED) {
+			AppLogTag("camera1", "Camera capture canceled.");
+		} else if (appControlResult == APP_CTRL_RESULT_FAILED) {
+			AppLogTag("camera1", "Camera capture failed.");
+		}
+	}
+}
+
+void
+ProjectGiraffeTab4::OnAppControlStartResponseReceived(const AppId &appId, const String &operationId, result r)
+{
+	AppLogTag("camera1", "qwer");
+}
 
 void
 ProjectGiraffeTab4::onUserUpdate(User *user)

@@ -85,9 +85,7 @@ User::updateFromDictionary(HashMap *dictionary)
 		}
 
 		if (!IsFailed(success)) {
-			AppLogTag("user", "ab");
 			if (_listeners) {
-				AppLogTag("user", "cd");
 				IEnumerator *iter = _listeners->GetEnumeratorN();
 				while (iter->MoveNext() == E_SUCCESS) {
 					UserListener *listener = static_cast<UserListener *>(iter->GetCurrent());
@@ -182,7 +180,6 @@ User::loadUser()
 	appRegistry->Get(idKey, id);
 
 	if (id != 0) {
-		AppLogTag("data", "user loaded");
 		user->setId((unsigned)id);
 
 		appRegistry->Get(fullnameKey, fullname);
