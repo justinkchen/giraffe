@@ -1,0 +1,144 @@
+package com.cs210.giraffe;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import android.support.v4.content.AsyncTaskLoader;
+import android.util.Log;
+import android.content.Context;
+
+public class NearbyGraffitiListLoader extends AsyncTaskLoader<List<Graffiti>> {
+	
+	List<Graffiti> _graffitiData;
+	
+	public NearbyGraffitiListLoader(Context context) {
+		super(context);
+		System.out.println("NearbyGraffitiListLoader constructed");
+	}
+
+	@Override
+	public List<Graffiti> loadInBackground() {
+		System.out.println("NearbyGraffitiListLoader.loadInBackground");
+		URL url;
+		Log.w("NearbyGraffitiListLoader", "Loading in background");
+		try {
+			url = new URL("http://ec2-54-243-69-6.compute-1.amazonaws.com/");
+			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+			InputStream in = urlConnection.getInputStream();
+			InputStreamReader isw = new InputStreamReader(in);
+			
+			int data = isw.read();
+	        while (data != -1) {
+	            char current = (char) data;
+	            data = isw.read();
+	            System.out.print(current);
+	        }
+	        System.out.println("");
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		List<Graffiti> graffitiList = new ArrayList<Graffiti>(1);
+		Graffiti testGraffiti = new Graffiti();
+		testGraffiti.setText("Test Graffiti");
+		graffitiList.add(testGraffiti);
+		return graffitiList;
+	}
+	
+	 /**
+     * Called when there is new data to deliver to the client.  The
+     * super class will take care of delivering it; the implementation
+     * here just adds a little more logic.
+     */
+    @Override public void deliverResult(List<Graffiti> listOfData) {
+        if (isReset()) {
+            // An async query came in while the loader is stopped.  We
+            // don't need the result.
+            if (listOfData != null) {
+                onReleaseResources(listOfData);
+            }
+        }
+        List<Graffiti> oldApps = listOfData;
+        _graffitiData = listOfData;
+
+        if (isStarted()) {
+            // If the Loader is currently started, we can immediately
+            // deliver its results.
+            super.deliverResult(listOfData);
+        }
+
+        // At this point we can release the resources associated with
+        // 'oldApps' if needed; now that the new result is delivered we
+        // know that it is no longer in use.
+        if (oldApps != null) {
+            onReleaseResources(oldApps);
+        }
+    }
+
+    /**
+     * Handles a request to start the Loader.
+     */
+    @Override protected void onStartLoading() {
+        if (_graffitiData != null) {
+            // If we currently have a result available, deliver it
+            // immediately.
+            deliverResult(_graffitiData);
+        }
+
+
+        if (takeContentChanged() || _graffitiData == null) {
+            // If the data has changed since the last time it was loaded
+            // or is not currently available, start a load.
+            forceLoad();
+        }
+    }
+    
+    /**
+     * Handles a request to stop the Loader.
+     */
+    @Override protected void onStopLoading() {
+        // Attempt to cancel the current load task if possible.
+        cancelLoad();
+    }
+
+    /**
+     * Handles a request to cancel a load.
+     */
+    @Override public void onCanceled(List<Graffiti> apps) {
+        super.onCanceled(apps);
+
+        // At this point we can release the resources associated with 'apps'
+        // if needed.
+        onReleaseResources(apps);
+    }
+
+    /**
+     * Handles a request to completely reset the Loader.
+     */
+    @Override protected void onReset() {
+        super.onReset();
+
+        // Ensure the loader is stopped
+        onStopLoading();
+
+        // At this point we can release the resources associated with 'apps'
+        // if needed.
+        if (_graffitiData != null) {
+            onReleaseResources(_graffitiData);
+            _graffitiData = null;
+        }
+    }
+    
+    /**
+     * Helper function to take care of releasing resources associated
+     * with an actively loaded data set.
+     */
+    protected void onReleaseResources(List<Graffiti> apps) {}
+}
