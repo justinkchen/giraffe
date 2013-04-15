@@ -9,8 +9,10 @@ import java.net.URL;
 import java.util.Locale;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Criteria;
 import android.location.LocationManager;
@@ -99,6 +101,23 @@ ActionBar.TabListener {
 		
 		// Register the listener with the Location Manager to receive location updates
 		locationListener = new GiraffeLocationListener(locationManager, bestProvider);
+		
+		if (bestProvider == null || !locationListener.isLocationFound()){
+			new AlertDialog.Builder(this)
+	        .setIcon(R.drawable.ic_device_access_location_off)
+	        .setTitle("No location provider accessible")
+	        .setMessage("Please turn on GPS location services and try again")
+	        .setCancelable(false)
+	        .setPositiveButton("Close App", new DialogInterface.OnClickListener()
+	        {
+	        	@Override
+	        	public void onClick(DialogInterface dialog, int which) {
+	        		finish();    
+	        	}
+	        })
+	        .show();
+		}
+		
 		locationManager.requestLocationUpdates(bestProvider, 0, 0, locationListener);
 
 	}

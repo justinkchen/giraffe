@@ -35,8 +35,7 @@ public class GiraffeLocationListener implements LocationListener {
 
 	@Override
 	public void onProviderDisabled(String provider) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
