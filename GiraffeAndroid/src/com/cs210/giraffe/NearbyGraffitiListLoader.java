@@ -9,6 +9,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 import android.content.Context;
@@ -25,30 +29,30 @@ public class NearbyGraffitiListLoader extends AsyncTaskLoader<List<Graffiti>> {
 	@Override
 	public List<Graffiti> loadInBackground() {
 		System.out.println("NearbyGraffitiListLoader.loadInBackground");
-		URL url;
-		Log.w("NearbyGraffitiListLoader", "Loading in background");
+		URL url = null;
 		try {
 			url = new URL("http://ec2-54-243-69-6.compute-1.amazonaws.com/");
-			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-			InputStream in = urlConnection.getInputStream();
-			InputStreamReader isw = new InputStreamReader(in);
-			
-			int data = isw.read();
-	        while (data != -1) {
-	            char current = (char) data;
-	            data = isw.read();
-	            System.out.print(current);
-	        }
-	        System.out.println("");
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (MalformedURLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-		List<Graffiti> graffitiList = new ArrayList<Graffiti>(1);
-		Graffiti testGraffiti = new Graffiti();
-		testGraffiti.setText("Test Graffiti");
-		graffitiList.add(testGraffiti);
+		Log.w("NearbyGraffitiListLoader", "Loading in background");
+		JSONArray graffitiJSONArray = JSONHandler.getJsonArrayFromURL(url);
+		List<Graffiti> graffitiList = new ArrayList<Graffiti>(graffitiJSONArray.length());
+		for (int i = 0; i < graffitiJSONArray.length(); i++){
+			Graffiti newGraffiti = new Graffiti();
+			try {
+				System.out.println("JSONObject: " + ((JSONObject)graffitiJSONArray.get(i)).toString());
+				newGraffiti.setText(((JSONObject)graffitiJSONArray.get(i)).getString("message"));
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			graffitiList.add(newGraffiti);
+		}
+//		Graffiti testGraffiti = new Graffiti();
+//		testGraffiti.setText("Test Graffiti");
+//		graffitiList.add(testGraffiti);
 		return graffitiList;
 	}
 	

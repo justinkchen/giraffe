@@ -3,6 +3,7 @@ package com.cs210.giraffe;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,7 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 		}
 		
 		Graffiti item = getItem(position);
+		((TextView)view.findViewById(R.id.username)).setTypeface(null, Typeface.BOLD);
 		((TextView)view.findViewById(R.id.message)).setText(item.getText());
 		return view;
 	}
