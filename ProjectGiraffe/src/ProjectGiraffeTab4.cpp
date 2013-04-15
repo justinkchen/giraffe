@@ -325,6 +325,22 @@ void
 ProjectGiraffeTab4::choosePhoto(void)
 {
 	AppLog("choose photo from library");
+
+	AppControl* appControl = AppManager::FindAppControlN(L"tizen.filemanager", L"http://tizen.org/appcontrol/operation/pick");
+
+	HashMap extraData;
+	extraData.Construct();
+	String selectKey = L"selectionType";
+	String selectVal = L"single";
+	extraData.Add(&selectKey, &selectVal);
+	String typeKey = L"type";
+	String typeVal = L"image";
+	extraData.Add(&typeKey, &typeVal);
+
+	if (appControl) {
+		appControl->Start(null, null, &extraData, this);
+		delete appControl;
+	}
 }
 
 void
@@ -503,7 +519,30 @@ void
 ProjectGiraffeTab4::OnAppControlCompleteResponseReceived(const AppId &appId, const String &operationId, AppCtrlResult appControlResult, const IMap *extraData)
 {
 	AppLogTag("camera1", "asdf");
-	if (appId.Equals(L"tizen.camera", true) &&
+	if (appId.Equals(L"tizen.filemanager", true) &&
+			operationId.Equals(L"http://tizen.org/appcontrol/operation/pick", true))
+	{
+		if (appControlResult == APP_CTRL_RESULT_SUCCEEDED) {
+			AppLogTag("camera1", "Media list success.");
+			String pathKey = L"path";
+			String *filePath = (String *)extraData->GetValue(pathKey);
+
+			AppLogTag("camera1", "filepath: %ls", filePath->GetPointer());
+
+			HttpMultipartEntity* userParameters = new HttpMultipartEntity();
+			userParameters->Construct();
+			userParameters->AddFilePart(L"avatar", *filePath);
+
+			HttpConnection *connection = HttpConnection::userUpdatePutConnection(this, userParameters);
+			connection->begin();
+
+//			delete userParameters;
+		} else if (appControlResult == APP_CTRL_RESULT_CANCELED) {
+			AppLogTag("camera1", "Media list canceled.");
+		} else if (appControlResult == APP_CTRL_RESULT_FAILED) {
+			AppLogTag("camera1", "Media list failed.");
+		}
+	} else if (appId.Equals(L"tizen.camera", true) &&
 			operationId.Equals(L"http://tizen.org/appcontrol/operation/createcontent", true))
 	{
 		if (appControlResult == APP_CTRL_RESULT_SUCCEEDED) {
