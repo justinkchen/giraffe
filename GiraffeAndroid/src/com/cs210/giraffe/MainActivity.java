@@ -90,8 +90,21 @@ ActionBar.TabListener {
 			// the TabListener interface, as the callback (listener) for when
 			// this tab is selected.
 			actionBar.addTab(actionBar.newTab()
-					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
+//			.setText(mSectionsPagerAdapter.getPageTitle(i))
+			switch(i){
+			case 0:
+				actionBar.getTabAt(i).setIcon(R.drawable.ic_collections_view_as_list_holodark);
+				break;
+			case 1:
+				actionBar.getTabAt(i).setIcon(R.drawable.ic_content_new_event_holodark);
+				break;
+			case 2:
+				actionBar.getTabAt(i).setIcon(R.drawable.ic_location_map_holodark);
+				break;
+			default:
+				break;
+			}
 		}
 		
 		// Acquire a reference to the system Location Manager
@@ -126,6 +139,7 @@ ActionBar.TabListener {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
+		menu.getItem(0).setIcon(R.drawable.ic_action_user);
 		return true;
 	}
 	

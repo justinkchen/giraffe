@@ -32,21 +32,27 @@ public class GraffitiMapFragment extends Fragment {
 		Log.w("GraffitiMap", "Checking Google Play Services status");
 		switch(result) {
 			case ConnectionResult.SUCCESS:
-				toast = Toast.makeText(this.getActivity().getApplicationContext(), "Google Play Services Found",Toast.LENGTH_LONG);
-				toast.show();
+//				toast = Toast.makeText(this.getActivity().getApplicationContext(), "Google Play Services Found",Toast.LENGTH_LONG);
+//				toast.show();
+				Log.w("GraffitiMapFragment", "Google Play Services Found");
 				break;
 			case ConnectionResult.SERVICE_MISSING:
-				toast = Toast.makeText(this.getActivity().getApplicationContext(), "Need Google Play Services: SERVICE_MISSING",Toast.LENGTH_LONG);
-				toast.show();
-//				TODO: GooglePlayServicesUtil.getErrorDialog(result, arg1, arg2)
+//				toast = Toast.makeText(this.getActivity().getApplicationContext(), "Need Google Play Services: SERVICE_MISSING",Toast.LENGTH_LONG);
+//				toast.show();
+				Log.e("GraffitiMapFragment", "Need Google Play Services: SERVICE_MISSING");
+//				TODO: Set the Error Dialog: GooglePlayServicesUtil.getErrorDialog(result, arg1, arg2)
 				break;
 			case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED:
-				toast = Toast.makeText(this.getActivity().getApplicationContext(), "Need Google Play Services: SERVICE_VERSION_UPDATE_REQUIRED" ,Toast.LENGTH_LONG);
-				toast.show();
+//				toast = Toast.makeText(this.getActivity().getApplicationContext(), "Need Google Play Services: SERVICE_VERSION_UPDATE_REQUIRED" ,Toast.LENGTH_LONG);
+//				toast.show();
+				Log.e("GraffitiMapFragment", "Need Google Play Services: SERVICE_VERSION_UPDATE_REQUIRED");
+//				TODO: Set the Error Dialog: GooglePlayServicesUtil.getErrorDialog(result, arg1, arg2)
 				break;
 			case ConnectionResult.SERVICE_DISABLED:
-				toast = Toast.makeText(this.getActivity().getApplicationContext(), "Need Google Play Services: SERVICE_DISABLED",Toast.LENGTH_LONG);
-				toast.show();
+//				toast = Toast.makeText(this.getActivity().getApplicationContext(), "Need Google Play Services: SERVICE_DISABLED",Toast.LENGTH_LONG);
+//				toast.show();
+				Log.e("GraffitiMapFragment", "Need Google Play Services: SERVICE_DISABLED");
+//				TODO: Set the Error Dialog: GooglePlayServicesUtil.getErrorDialog(result, arg1, arg2)
 				break;
 		}
 	}
