@@ -1,7 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-    
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:minHeight="300dp"
+    android:minWidth="450dp" >
+
+    <TextView
+        android:id="@+id/maxRadius"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/radiusSeekBar"
+        android:layout_toRightOf="@+id/radiusSeekBar"
+        android:text="@string/max_radius" />
+
+    <TextView
+        android:id="@+id/minRadius"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/radiusSeekBar"
+        android:layout_toLeftOf="@+id/radiusSeekBar"
+        android:text="@string/min_radius" />
+
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="21dp"
+        android:minWidth="150dip"
+        android:text="@string/action_submit" />
+
+    <include 
+        android:id="@+id/addGraffitiMap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/radiusSeekBar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
+        layout="@layout/fragment_addgraffiti_mapview" />
+
+    <EditText
+        android:id="@+id/graffitiEditText"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/submitButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="18dp"
+        android:ems="10"
+        android:hint="Enter Messsage Here"
+        android:inputType="textMultiLine"
+        android:minLines="5" />
+
+    <TextView
+        android:id="@+id/addGraffitiTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/action_addgraffiti"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="bold" />
+
+    <SeekBar
+        android:id="@+id/radiusSeekBar"
+        android:layout_width="300dip"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/graffitiEditText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="25dp" />
 
 </RelativeLayout>

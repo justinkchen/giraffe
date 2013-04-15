@@ -18,7 +18,7 @@ import android.support.v4.app.Fragment;
 
 public class GraffitiMapFragment extends Fragment {
 
-	private GoogleMap mMap = null;
+	private GoogleMap _map = null;
 	
 	public GraffitiMapFragment() {
 		// TODO Auto-generated constructor stub
@@ -77,7 +77,7 @@ public class GraffitiMapFragment extends Fragment {
         SupportMapFragment f = (SupportMapFragment) this.getActivity().getSupportFragmentManager().findFragmentById(R.id.map);
         if (f != null){
         	this.getActivity().getSupportFragmentManager().beginTransaction().remove(f).commit();
-        	mMap = null;
+        	_map = null;
         }
         
         
@@ -86,21 +86,21 @@ public class GraffitiMapFragment extends Fragment {
     private void setUpMapIfNeeded() {
     	Log.w("GraffitiMap", "Setting up map");
         // Do a null check to confirm that we have not already instantiated the map.
-        if (mMap == null) {
+        if (_map == null) {
         	SupportMapFragment mapFrag = (SupportMapFragment) this.getActivity().getSupportFragmentManager().findFragmentById(R.id.map);
         	if(mapFrag != null){
-        		mMap = mapFrag.getMap();
+        		_map = mapFrag.getMap();
         	}else{
         		Log.e("GraffitiMap", "Fragment not found");
         	}
         }
         // Check if we were successful in obtaining the map.
-        if (mMap != null){
+        if (_map != null){
         	// The Map is verified. It is now safe to manipulate the map.
 			Location myLocation = MainActivity.getGiraffeLocationListener().getCurrentLocation();
 			LatLng myLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-			mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatLng, 15));
-			mMap.animateCamera(CameraUpdateFactory.zoomIn());
+			_map.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatLng, 15));
+			_map.animateCamera(CameraUpdateFactory.zoomIn());
 			Log.w("GraffitiMap", "Map settings added in");
         }
     }

@@ -8,5 +8,8 @@
     <string name="action_addgraffiti">Add Graffiti</string>
     <string name="action_profile">Profile</string>
     <string name="action_help">Help</string>
+    <string name="min_radius">5</string>
+    <string name="max_radius">300</string>
+    <string name="action_submit">Submit</string>
 
 </resources>
