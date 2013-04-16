@@ -68,6 +68,9 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/graffitiEditText"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="25dp" />
+        android:layout_marginBottom="25dp"
+        android:indeterminate="false"
+        android:max="290"
+        android:progress="40" />
 
 </RelativeLayout>

@@ -43,7 +43,14 @@ public class NearbyGraffitiListLoader extends AsyncTaskLoader<List<Graffiti>> {
 			Graffiti newGraffiti = new Graffiti();
 			try {
 				System.out.println("JSONObject: " + ((JSONObject)graffitiJSONArray.get(i)).toString());
-				newGraffiti.setText(((JSONObject)graffitiJSONArray.get(i)).getString("message"));
+				String graffitiMessage = ((JSONObject)graffitiJSONArray.get(i)).getString("message");
+				int graffitiRadius = ((JSONObject)graffitiJSONArray.get(i)).getInt("radius");
+				double graffitiLatitude = ((JSONObject)graffitiJSONArray.get(i)).getDouble("latitude");
+				double graffitiLongitude = ((JSONObject)graffitiJSONArray.get(i)).getDouble("longitude");
+				newGraffiti.setText(graffitiMessage);
+				newGraffiti.setRadius(graffitiRadius);
+				newGraffiti.setLatitude(graffitiLatitude);
+				newGraffiti.setLongitude(graffitiLongitude);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

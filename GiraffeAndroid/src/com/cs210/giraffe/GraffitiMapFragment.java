@@ -1,11 +1,15 @@
 package com.cs210.giraffe;
 
+import java.util.List;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.location.Location;
 import android.os.Bundle;
@@ -15,13 +19,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 
-public class GraffitiMapFragment extends Fragment {
+public class GraffitiMapFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Graffiti>>{
 
 	private GoogleMap _map = null;
 	
 	public GraffitiMapFragment() {
 		// TODO Auto-generated constructor stub
+	}
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState){
+		super.onActivityCreated(savedInstanceState);
+		
+		System.out.println("GraffitiMapFragment.onActivityCreated");
+
+		getLoaderManager().initLoader(0, null, this);
 	}
 	
 	@Override
@@ -97,11 +112,37 @@ public class GraffitiMapFragment extends Fragment {
         // Check if we were successful in obtaining the map.
         if (_map != null){
         	// The Map is verified. It is now safe to manipulate the map.
-			Location myLocation = MainActivity.getGiraffeLocationListener().getCurrentLocation();
+        	Location myLocation = MainActivity.getGiraffeLocationListener().getCurrentLocation();
 			LatLng myLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
 			_map.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatLng, 15));
+			_map.setMyLocationEnabled(true);
 			_map.animateCamera(CameraUpdateFactory.zoomIn());
 			Log.w("GraffitiMap", "Map settings added in");
+			
         }
     }
+
+	@Override
+	public Loader<List<Graffiti>> onCreateLoader(int arg0, Bundle arg1) {
+		System.out.println("GraffitiMapFragment.onCreateLoader");
+		return new NearbyGraffitiListLoader(getActivity());
+	}
+
+	@Override
+	public void onLoadFinished(Loader<List<Graffiti>> arg0, List<Graffiti> data) {
+        System.out.println("GraffitiFragment.onLoadFinished");
+        LatLng myLocation = new LatLng(_map.getMyLocation().getLatitude(), _map.getMyLocation().getLongitude());
+        _map.addMarker(new MarkerOptions().position(myLocation));
+        for (Graffiti point : data){
+        	System.out.println("Graffiti Map Message: " + point.getText());
+        	LatLng pointLatLng = new LatLng(point.getLatitude(), point.getLongitude());
+        	_map.addMarker(new MarkerOptions().position(pointLatLng).title(point.getText()));
+        	_map.addCircle(new CircleOptions().center(pointLatLng).strokeWidth(1.0f).fillColor(0x0f0000ff).radius(point.getRadius()));
+        }
+	}
+
+	@Override
+	public void onLoaderReset(Loader<List<Graffiti>> arg0) {
+		_map.clear();
+	}
 }

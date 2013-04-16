@@ -2,57 +2,58 @@ package com.cs210.giraffe;
 
 public class Graffiti {
 
-	private float _longitude;
-	private float _latitude;
-	private float _directionX;
-	private float _directionY;
-	private float _directionZ;
+	private double _longitude;
+	private double _latitude;
+	private double _directionX;
+	private double _directionY;
+	private double _directionZ;
 	private String _text;
 	private String _imageURL;
 	private int _likeCount;
 	private boolean _flagged;
+	private int _radius;
 	
 	public Graffiti() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public float getLongitude() {
+	public double getLongitude() {
 		return _longitude;
 	}
 
-	public void setLongitude(float _longitude) {
+	public void setLongitude(double _longitude) {
 		this._longitude = _longitude;
 	}
 
-	public float getLatitude() {
+	public double getLatitude() {
 		return _latitude;
 	}
 
-	public void setLatitude(float _latitude) {
+	public void setLatitude(double _latitude) {
 		this._latitude = _latitude;
 	}
 
-	public float getDirectionX() {
+	public double getDirectionX() {
 		return _directionX;
 	}
 
-	public void setDirectionX(float _directionX) {
+	public void setDirectionX(double _directionX) {
 		this._directionX = _directionX;
 	}
 
-	public float getDirectionY() {
+	public double getDirectionY() {
 		return _directionY;
 	}
 
-	public void setDirectionY(float _directionY) {
+	public void setDirectionY(double _directionY) {
 		this._directionY = _directionY;
 	}
 
-	public float getDirectionZ() {
+	public double getDirectionZ() {
 		return _directionZ;
 	}
 
-	public void setDirectionZ(float _directionZ) {
+	public void setDirectionZ(double _directionZ) {
 		this._directionZ = _directionZ;
 	}
 
@@ -86,6 +87,14 @@ public class Graffiti {
 
 	public void setFlagged(boolean _flagged) {
 		this._flagged = _flagged;
+	}
+
+	public int getRadius() {
+		return _radius;
+	}
+
+	public void setRadius(int _radius) {
+		this._radius = _radius;
 	}
 	
 	
