@@ -82,7 +82,6 @@ public class GraffitiMapFragment extends Fragment implements LoaderManager.Loade
 	public void onResume(){
 		super.onResume();
 		Log.w("GraffitiMap", "Resuming Map Fragment");
-		setUpMapIfNeeded();
 	}
 	
     @Override
@@ -98,7 +97,7 @@ public class GraffitiMapFragment extends Fragment implements LoaderManager.Loade
         
     }
     
-    private void setUpMapIfNeeded() {
+    private void setUpMapIfNeeded(List<Graffiti> data) {
     	Log.w("GraffitiMap", "Setting up map");
         // Do a null check to confirm that we have not already instantiated the map.
         if (_map == null) {
@@ -111,6 +110,7 @@ public class GraffitiMapFragment extends Fragment implements LoaderManager.Loade
         }
         // Check if we were successful in obtaining the map.
         if (_map != null){
+        	_map.clear();
         	// The Map is verified. It is now safe to manipulate the map.
         	Location myLocation = MainActivity.getGiraffeLocationListener().getCurrentLocation();
 			LatLng myLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
@@ -118,6 +118,14 @@ public class GraffitiMapFragment extends Fragment implements LoaderManager.Loade
 			_map.setMyLocationEnabled(true);
 			_map.animateCamera(CameraUpdateFactory.zoomIn());
 			Log.w("GraffitiMap", "Map settings added in");
+			
+	        _map.addMarker(new MarkerOptions().position(myLatLng));
+	        for (Graffiti point : data){
+	        	System.out.println("Graffiti Map Message: " + point.getText());
+	        	LatLng pointLatLng = new LatLng(point.getLatitude(), point.getLongitude());
+	        	_map.addMarker(new MarkerOptions().position(pointLatLng).title(point.getText()));
+	        	_map.addCircle(new CircleOptions().center(pointLatLng).strokeWidth(1.0f).fillColor(0x0f0000ff).radius(point.getRadius()));
+	        }
 			
         }
     }
@@ -131,14 +139,7 @@ public class GraffitiMapFragment extends Fragment implements LoaderManager.Loade
 	@Override
 	public void onLoadFinished(Loader<List<Graffiti>> arg0, List<Graffiti> data) {
         System.out.println("GraffitiFragment.onLoadFinished");
-        LatLng myLocation = new LatLng(_map.getMyLocation().getLatitude(), _map.getMyLocation().getLongitude());
-        _map.addMarker(new MarkerOptions().position(myLocation));
-        for (Graffiti point : data){
-        	System.out.println("Graffiti Map Message: " + point.getText());
-        	LatLng pointLatLng = new LatLng(point.getLatitude(), point.getLongitude());
-        	_map.addMarker(new MarkerOptions().position(pointLatLng).title(point.getText()));
-        	_map.addCircle(new CircleOptions().center(pointLatLng).strokeWidth(1.0f).fillColor(0x0f0000ff).radius(point.getRadius()));
-        }
+        setUpMapIfNeeded(data);
 	}
 
 	@Override
