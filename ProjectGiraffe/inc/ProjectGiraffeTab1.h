@@ -27,6 +27,7 @@ public:
 		_pJsonKeyList(NULL),
 		_items(NULL),
 		_loadingPopupThread(NULL),
+		_contentViews(NULL),
 		_contextViews(NULL),
 		_tableView(NULL) {}
 
@@ -76,6 +77,7 @@ protected:
 private:
     Tizen::Base::Collection::ArrayList *_items;
     LoadingPopupThread* _loadingPopupThread;
+	Tizen::Base::Collection::ArrayList *_contentViews;
     Tizen::Base::Collection::ArrayList *_contextViews;
     Tizen::Ui::Controls::TableView* _tableView;
     void updateItems();
