@@ -144,6 +144,7 @@ public class AddGraffitiFragment extends Fragment implements OnSeekBarChangeList
 		InputStream myInputStream = null;
 		StringBuilder sb = new StringBuilder();
 		//adding some data to send along with the request to the server
+		
 		try {
 			sb.append("message=" + URLEncoder.encode(newGraffiti.getText(), "UTF-8"));
 			sb.append("&latitude=" + URLEncoder.encode(newGraffiti.getLatitude() + "", "UTF-8"));
@@ -155,6 +156,9 @@ public class AddGraffitiFragment extends Fragment implements OnSeekBarChangeList
 			e1.printStackTrace();
 		}
 		URL url;
+		HttpsTask task = new HttpsTask();
+		task.execute("https://ec2-54-243-69-6.compute-1.amazonaws.com/");
+		Log.d("Johan", "Posting URL");
 		try {
 			url = new URL(urlString);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
