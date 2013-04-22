@@ -17,6 +17,7 @@ const String idKey = "UserId";
 const String fullnameKey = "UserFullname";
 const String usernameKey = "UserUsername";
 const String emailKey = "UserEmail";
+const String avatarUrlKey = "UserAvatarUrl";
 //const String dateKey = "UserDate";
 
 User *currentUserSingleton = NULL;
@@ -72,6 +73,12 @@ User::updateFromDictionary(HashMap *dictionary)
 			success = E_SUCCESS;
 		}
 
+		String *avatarUrlValue = static_cast<String *>(dictionary->GetValue(kHTTPParamNameAvatarUrl));
+		if (avatarUrlValue) {
+			_avatarUrl = *avatarUrlValue;
+			success = E_SUCCESS;
+		}
+
 		HashMap *dateDictionary = static_cast<HashMap *>(dictionary->GetValue(kHTTPParamNameDateCreated));
 		if (dateDictionary) {
 			_dateCreated = new Date();
@@ -97,6 +104,26 @@ User::updateFromDictionary(HashMap *dictionary)
 	}
 
 	return success;
+}
+
+void
+User::logout()
+{
+	_id = 0;
+	_fullname = L"";
+	_username = L"";
+	_email = L"";
+	_avatarUrl = L"";
+	_dateCreated = NULL;
+
+	if (_listeners) {
+		IEnumerator *iter = _listeners->GetEnumeratorN();
+		while (iter->MoveNext() == E_SUCCESS) {
+			UserListener *listener = static_cast<UserListener *>(iter->GetCurrent());
+			listener->onUserUpdate(this);
+		}
+		delete iter;
+	}
 }
 
 HashMap *

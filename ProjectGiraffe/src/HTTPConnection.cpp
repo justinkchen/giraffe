@@ -45,6 +45,7 @@ const String kHTTPParamNameUserID = L"id";
 const String kHTTPParamNameFullname = L"fullname";
 const String kHTTPParamNameUsername = L"username";
 const String kHTTPParamNameEmail = L"email";
+const String kHTTPParamNameAvatarUrl = L"avatar";
 const String kHTTPParamNameYear = L"year";
 const String kHTTPParamNameMonth = L"month";
 const String kHTTPParamNameDay = L"day";

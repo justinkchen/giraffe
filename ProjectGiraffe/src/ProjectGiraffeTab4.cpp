@@ -140,6 +140,7 @@ ProjectGiraffeTab4::showProfile(void)
 	usernameField->SetName("usernameField");
 	usernameField->SetKeypadAction(KEYPAD_ACTION_DONE);
 	usernameField->AddKeypadEventListener(*this);
+	usernameField->SetLowerCaseModeEnabled(true);
 	scrollPanel->AddControl(*usernameField);
 
 	Label* emailLabel = new Label();
@@ -155,6 +156,7 @@ ProjectGiraffeTab4::showProfile(void)
 	emailField->SetName("emailField");
 	emailField->SetKeypadAction(KEYPAD_ACTION_DONE);
 	emailField->AddKeypadEventListener(*this);
+	emailField->SetLowerCaseModeEnabled(true);
 	scrollPanel->AddControl(*emailField);
 
 	Button* updateButton1 = new Button();
@@ -177,6 +179,7 @@ ProjectGiraffeTab4::showProfile(void)
 	oldPasswordField->SetName("oldPasswordField");
 	oldPasswordField->SetKeypadAction(KEYPAD_ACTION_DONE);
 	oldPasswordField->AddKeypadEventListener(*this);
+	oldPasswordField->SetLowerCaseModeEnabled(true);
 	scrollPanel->AddControl(*oldPasswordField);
 
 	Label* passwordLabel = new Label();
@@ -191,6 +194,7 @@ ProjectGiraffeTab4::showProfile(void)
 	passwordField->SetName("passwordField");
 	passwordField->SetKeypadAction(KEYPAD_ACTION_DONE);
 	passwordField->AddKeypadEventListener(*this);
+	passwordField->SetLowerCaseModeEnabled(true);
 	scrollPanel->AddControl(*passwordField);
 
 	Label* confirmPasswordLabel = new Label();
@@ -205,6 +209,7 @@ ProjectGiraffeTab4::showProfile(void)
 	confirmPasswordField->SetName("confirmPasswordField");
 	confirmPasswordField->SetKeypadAction(KEYPAD_ACTION_DONE);
 	confirmPasswordField->AddKeypadEventListener(*this);
+	confirmPasswordField->SetLowerCaseModeEnabled(true);
 	scrollPanel->AddControl(*confirmPasswordField);
 
 	Button* updateButton2 = new Button();
@@ -606,14 +611,14 @@ ProjectGiraffeTab4::connectionDidFinish(HttpConnection *connection, HashMap *res
 			HashMap *userDict = (HashMap *)response->GetValue(userKey);
 			User::currentUser()->updateFromDictionary(userDict);
 
-			showProfile();
+//			showProfile();
 
 			String *message = (String *)response->GetValue(messageKey);
 			showStatus("User Update Status", *message, false);
 		} else if (response->ContainsKey(logoutKey)) {
-//			TODO: User::currentUser()->logout(); reset currentUser
+			User::currentUser()->logout();
 
-			showLoginButton();
+//			showLoginButton();
 
 			String *message = (String *)response->GetValue(logoutKey);
 			showStatus("Logout Status", *message, false);

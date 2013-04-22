@@ -24,6 +24,7 @@ public:
 	virtual ~User();
 
 	result updateFromDictionary(Tizen::Base::Collection::HashMap *dictionary);
+	void logout(void);
 
 	// User listener class
 	class UserListener :
@@ -58,6 +59,7 @@ private:
 	Tizen::Base::String _fullname;
 	Tizen::Base::String _username;
 	Tizen::Base::String _email;
+	Tizen::Base::String _avatarUrl;
 	Date *_dateCreated;
 	Tizen::Base::Collection::ArrayList *_listeners;
 };

@@ -65,6 +65,7 @@ UserPopup::showLogin(void)
 	usernameEmailField->SetName("usernameEmailField");
 	usernameEmailField->SetKeypadAction(KEYPAD_ACTION_DONE);
 	usernameEmailField->AddKeypadEventListener(*this);
+	usernameEmailField->SetLowerCaseModeEnabled(true);
 	AddControl(*usernameEmailField);
 
 	// Password edit field
@@ -74,6 +75,7 @@ UserPopup::showLogin(void)
 	passwordField->SetName("passwordField");
 	passwordField->SetKeypadAction(KEYPAD_ACTION_DONE);
 	passwordField->AddKeypadEventListener(*this);
+	passwordField->SetLowerCaseModeEnabled(true);
 	AddControl(*passwordField);
 
 	// Submit button to log in
@@ -136,6 +138,7 @@ UserPopup::showSignup(void)
 	usernameField->SetName("usernameField");
 	usernameField->SetKeypadAction(KEYPAD_ACTION_DONE);
 	usernameField->AddKeypadEventListener(*this);
+	usernameField->SetLowerCaseModeEnabled(true);
 	AddControl(*usernameField);
 
 	// Email edit field
@@ -145,6 +148,7 @@ UserPopup::showSignup(void)
 	emailField->SetName("emailField");
 	emailField->SetKeypadAction(KEYPAD_ACTION_DONE);
 	emailField->AddKeypadEventListener(*this);
+	emailField->SetLowerCaseModeEnabled(true);
 	AddControl(*emailField);
 
 	// Password edit field
@@ -154,6 +158,7 @@ UserPopup::showSignup(void)
 	passwordField->SetName("passwordField");
 	passwordField->SetKeypadAction(KEYPAD_ACTION_DONE);
 	passwordField->AddKeypadEventListener(*this);
+	passwordField->SetLowerCaseModeEnabled(true);
 	AddControl(*passwordField);
 
 	// Password confirmation edit field
@@ -163,6 +168,7 @@ UserPopup::showSignup(void)
 	passwordConfirmField->SetName("passwordConfirmField");
 	passwordConfirmField->SetKeypadAction(KEYPAD_ACTION_DONE);
 	passwordConfirmField->AddKeypadEventListener(*this);
+	passwordConfirmField->SetLowerCaseModeEnabled(true);
 	AddControl(*passwordConfirmField);
 
 	// Submit button to sign up

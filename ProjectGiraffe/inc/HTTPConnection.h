@@ -33,6 +33,7 @@ extern const Tizen::Base::String kHTTPParamNameUserID;
 extern const Tizen::Base::String kHTTPParamNameFullname;
 extern const Tizen::Base::String kHTTPParamNameUsername;
 extern const Tizen::Base::String kHTTPParamNameEmail;
+extern const Tizen::Base::String kHTTPParamNameAvatarUrl;
 extern const Tizen::Base::String kHTTPParamNameYear;
 extern const Tizen::Base::String kHTTPParamNameMonth;
 extern const Tizen::Base::String kHTTPParamNameDay;
