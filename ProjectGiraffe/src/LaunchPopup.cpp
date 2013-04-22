@@ -295,7 +295,7 @@ LaunchPopup::OnActionPerformed(const Control& source, int actionId)
 void
 LaunchPopup::OnUserEventReceivedN(RequestId requestId, Tizen::Base::Collection::IList* pArgs)
 {
-	AppLogDebug("We received an event.");
+	//AppLogDebug("We received an event.");
 	if(!_locationFound){
 		if (requestId == 101) // Location Found
 		{

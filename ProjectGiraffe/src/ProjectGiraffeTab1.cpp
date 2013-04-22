@@ -106,10 +106,14 @@ ProjectGiraffeTab1::updateItems()
 void ProjectGiraffeTab1::updateViews()
 {
 	// Remove all views if they exist
+	if (_contentViews) _contentViews->RemoveAll(true);
+	delete _contentViews;
 	if (_contextViews) _contextViews->RemoveAll(true);
 	delete _contextViews;
 
 	if (_items && _items->GetCount()) {
+		_contentViews = new ArrayList(SingleObjectDeleter);
+		_contentViews->Construct();
 		_contextViews = new ArrayList(SingleObjectDeleter);
 		_contextViews->Construct();
 
@@ -123,6 +127,7 @@ void ProjectGiraffeTab1::updateViews()
 				contentView->Construct(Rectangle(0, 0, width, GetDefaultItemHeight()));
 				contentView->setGraffiti(graffiti);
 				contentView->sizeToFit();
+				_contentViews->Add((Panel *)contentView);
 
 				// Create social context view
 				GraffitiCellSocialContextView *socialContextView = new GraffitiCellSocialContextView();
@@ -132,6 +137,7 @@ void ProjectGiraffeTab1::updateViews()
 			}
 		}
 	} else {
+		_contentViews = NULL;
 		_contextViews = NULL;
 	}
 }
@@ -283,13 +289,13 @@ TableViewItem* ProjectGiraffeTab1::CreateItem(int itemIndex, int itemWidth)
 	item->SetContextItem(contextItem);
 
 #if kDebugUseHttpConnection
-	GraffitiCellContentView *contentView = static_cast<GraffitiCellContentView *>(_contentViews->GetAt(itemIndex));
+	Control *contentView = static_cast<Control *>(_contentViews->GetAt(itemIndex));
 	if (contentView) {
 		item->AddControl(*contentView);
 		item->SetSize(contentView->GetSize());
 		contextItem->SetSize(contentView->GetSize());
 	}
-	GraffitiCellSocialContextView *contextView = static_cast<GraffitiCellSocialContextView *>(_contextViews->GetAt(itemIndex));
+	Control *contextView = static_cast<Control *>(_contextViews->GetAt(itemIndex));
 	if (contextView) {
 		contextItem->AddControl(*contextView);
 	}
