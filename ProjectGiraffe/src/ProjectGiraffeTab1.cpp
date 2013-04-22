@@ -235,7 +235,7 @@ ProjectGiraffeTab1::OnSceneActivatedN(const Tizen::Ui::Scenes::SceneId& previous
 	//Start load icon here.
 	//_loadingPopupThread->Construct();
 	//_loadingPopupThread->Start();
-//	updateItems();
+	updateItems();
 	AppLog("OnSceneActivatedN");
 }
 
