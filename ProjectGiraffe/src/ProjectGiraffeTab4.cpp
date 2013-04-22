@@ -518,7 +518,7 @@ ProjectGiraffeTab4::OnKeypadWillOpen(Control &source)
 void
 ProjectGiraffeTab4::OnAppControlCompleteResponseReceived(const AppId &appId, const String &operationId, AppCtrlResult appControlResult, const IMap *extraData)
 {
-	AppLogTag("camera1", "asdf");
+	AppLogTag("camera1", "appid %ls opid %ls", appId.GetPointer(), operationId.GetPointer());
 	if (appId.Equals(L"tizen.filemanager", true) &&
 			operationId.Equals(L"http://tizen.org/appcontrol/operation/pick", true))
 	{
@@ -536,6 +536,7 @@ ProjectGiraffeTab4::OnAppControlCompleteResponseReceived(const AppId &appId, con
 			HttpConnection *connection = HttpConnection::userUpdatePutConnection(this, userParameters);
 			connection->begin();
 
+			// TODO: figure out when to free
 //			delete userParameters;
 		} else if (appControlResult == APP_CTRL_RESULT_CANCELED) {
 			AppLogTag("camera1", "Media list canceled.");
@@ -545,12 +546,32 @@ ProjectGiraffeTab4::OnAppControlCompleteResponseReceived(const AppId &appId, con
 	} else if (appId.Equals(L"tizen.camera", true) &&
 			operationId.Equals(L"http://tizen.org/appcontrol/operation/createcontent", true))
 	{
+		AppLogTag("camera1", "camcam");
 		if (appControlResult == APP_CTRL_RESULT_SUCCEEDED) {
 			AppLogTag("camera1", "Camera capture success.");
+
+			String pathKey = L"path";
+			String *filePath = (String *)extraData->GetValue(pathKey);
+
+			AppLogTag("camera1", "filepath: %ls", filePath->GetPointer());
+
+			HttpMultipartEntity* userParameters = new HttpMultipartEntity();
+			userParameters->Construct();
+			userParameters->AddFilePart(L"avatar", *filePath);
+
+			HttpConnection *connection = HttpConnection::userUpdatePutConnection(this, userParameters);
+			connection->begin();
+
+			// TODO: figure out when to free
+			// delete userParameters;
 		} else if (appControlResult == APP_CTRL_RESULT_CANCELED) {
 			AppLogTag("camera1", "Camera capture canceled.");
 		} else if (appControlResult == APP_CTRL_RESULT_FAILED) {
 			AppLogTag("camera1", "Camera capture failed.");
+		} else if (appControlResult == APP_CTRL_RESULT_TERMINATED) {
+			AppLogTag("camera1", "Camera capture terminated.");
+		} else if (appControlResult == APP_CTRL_RESULT_ABORTED) {
+			AppLogTag("camera1", "Camera capture aborted.");
 		}
 	}
 }
