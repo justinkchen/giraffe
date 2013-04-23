@@ -3,10 +3,15 @@
 
 #include <FBase.h>
 #include <FUi.h>
+#include "User.h"
+#include "HttpConnection.h"
 
-class ProjectGiraffeTab5
-	: public Tizen::Ui::Controls::Panel
-	, public Tizen::Ui::Scenes::ISceneEventListener
+class ProjectGiraffeTab5 :
+	public Tizen::Ui::Controls::Panel,
+	public Tizen::Ui::Scenes::ISceneEventListener,
+	public Tizen::Ui::IActionEventListener,
+	public User::UserListener,
+	public HttpConnection::HttpConnectionListener
 {
 public:
 	ProjectGiraffeTab5(void);
@@ -22,6 +27,21 @@ public:
 	virtual void OnSceneDeactivated(const Tizen::Ui::Scenes::SceneId& currentSceneId,
 									const Tizen::Ui::Scenes::SceneId& nextSceneId);
 
+	// IActionEventListener
+	virtual void OnActionPerformed(const Tizen::Ui::Control& source, int actionId);
+
+	// UserListener
+	virtual void onUserUpdate(User *user);
+
+	// HttpConnectionListener
+	virtual void connectionDidFinish(HttpConnection *connection, Tizen::Base::Collection::HashMap *response);
+	virtual void connectionDidFail(HttpConnection *connection);
+
+private:
+	static const int ID_BUTTON_LOGIN = 401;
+
+	void showLoginButton(void);
+	void showProfile(void);
 };
 
 #endif // _PROJECTGIRAFFE_TAB5_H_
