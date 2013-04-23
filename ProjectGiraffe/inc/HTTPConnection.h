@@ -64,6 +64,7 @@ public:
 	  static HttpConnection *userSignupPostConnection(HttpConnectionListener *listener, Tizen::Net::Http::HttpMultipartEntity *userParameters);
 	  static HttpConnection *userUpdatePutConnection(HttpConnectionListener *listener, Tizen::Net::Http::HttpMultipartEntity *userParameters);
 	  static HttpConnection *userLogoutPostConnection(HttpConnectionListener *listener);
+	  static HttpConnection *userPostsGetConnection(HttpConnectionListener *listener, int uid);
 
 	  // Instance Methods
 	  void begin();

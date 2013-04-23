@@ -26,6 +26,7 @@ const String kHTTPMethodNameNearbyGraffiti = L"nearby";
 const String kHTTPMethodNameNewGraffiti = L"addgraffiti";
 const String kHTTPMethodNameUserLogin = L"user/login";
 const String kHTTPMethodNameUserSignup = L"user/signup";
+const String kHTTPMethodNameUserPosts = L"user/posts";
 const String kHTTPMethodNameUserUpdate = L"user/update";
 const String kHTTPMethodNameUserLogout = L"user/logout";
 
@@ -110,6 +111,22 @@ HttpConnection::nearbyGraffitiGetConnection(
 
 	return connection;
 }
+
+HttpConnection *
+HttpConnection::userPostsGetConnection(
+		HttpConnectionListener *listener, int uid)
+{
+	HttpMultipartEntity *parameters = new HttpMultipartEntity();
+	parameters->Construct();
+	parameters->AddStringPart(L"user_id", Integer(uid).ToString());
+
+	HttpConnection *connection = new HttpConnection(listener,
+			kHTTPMethodNameUserPosts, NET_HTTP_METHOD_GET, parameters);
+	delete parameters;
+
+	return connection;
+}
+
 
 HttpConnection *
 HttpConnection::newGraffitiPostConnection(

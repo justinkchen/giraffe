@@ -82,6 +82,7 @@ private:
     Tizen::Ui::Controls::TableView* _tableView;
     void updateItems();
     void updateViews();
+    void displayNoGraffiti();
     void setItems(Tizen::Base::Collection::ArrayList *items);
 };
 
