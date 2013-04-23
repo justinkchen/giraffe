@@ -1,6 +1,8 @@
 #include "ProjectGiraffeTab4.h"
-
+#include "ProjectGiraffeMainForm.h"
 #include "ControlUtilities.h"
+#include "GraffitiCellContentView.h"
+#include "GraffitiCellSocialContextView.h"
 
 using namespace Tizen::App;
 using namespace Tizen::Base;
@@ -57,7 +59,12 @@ result
 ProjectGiraffeTab4::OnTerminating(void)
 {
 	result r = E_SUCCESS;
-
+	if (_items)
+	{
+		_items->RemoveAll(true);
+		delete _items;
+		_items = null;
+	}
 	// TODO: Add your termination code here
 
 	return r;
@@ -160,11 +167,97 @@ ProjectGiraffeTab4::showProfile(void)
 	*/
 
 
-	scrollPanel->SetName("scrollPanel");
+	// Create tableView
+	_tableView = new TableView();
+	_tableView->Construct(Rectangle(0,270,GetBounds().width, GetBounds().height-270), \
+			true, TABLE_VIEW_SCROLL_BAR_STYLE_FADE_OUT);
+	_tableView->SetItemProvider(this);
+	_tableView->AddTableViewItemEventListener(*this);
+	AddControl(*_tableView);
 
-	AddControl(*scrollPanel);
 
+	_items = new (std::nothrow) ArrayList();
+
+	updateItems();
 	Draw();
+}
+
+void
+ProjectGiraffeTab4::updateItems()
+{
+	AppLog("updating items");
+	HttpConnection *connection = HttpConnection::userPostsGetConnection(this,User::currentUser()->id());
+	connection->begin();
+}
+
+void ProjectGiraffeTab4::updateViews()
+{
+	AppLog("updating views");
+	// Remove all views if they exist
+	if (_contentViews) _contentViews->RemoveAll(true);
+	delete _contentViews;
+	if (_contextViews) _contextViews->RemoveAll(true);
+	delete _contextViews;
+
+	if (_items && _items->GetCount()) {
+		_contentViews = new ArrayList(SingleObjectDeleter);
+		_contentViews->Construct();
+		_contextViews = new ArrayList(SingleObjectDeleter);
+		_contextViews->Construct();
+
+		IEnumerator *iter = _items->GetEnumeratorN();
+		int width = GetSize().width;
+		while (iter->MoveNext() == E_SUCCESS) {
+			Graffiti *graffiti = static_cast<Graffiti *>(iter->GetCurrent());
+			if (graffiti) {
+				// Create content view
+				GraffitiCellContentView *contentView = new GraffitiCellContentView();
+				contentView->Construct(Rectangle(0, 0, width, GetDefaultItemHeight()));
+				contentView->setGraffiti(graffiti);
+				contentView->sizeToFit();
+				_contentViews->Add((Panel *)contentView);
+
+				// Create social context view
+				GraffitiCellSocialContextView *socialContextView = new GraffitiCellSocialContextView();
+				socialContextView->Construct(contentView->GetBounds());
+				socialContextView->setGraffiti(graffiti);
+				_contextViews->Add((Panel *)socialContextView);
+			}
+		}
+	} else {
+		_contentViews = NULL;
+		_contextViews = NULL;
+	}
+}
+
+void ProjectGiraffeTab4::setItems(ArrayList *items)
+{
+	AppLog("setItems");
+	if (_items != items) {
+		// Deallocate old items
+		if (_items) _items->RemoveAll(true);
+		delete _items;
+		_items = items;
+		AppLog("previous items deleted");
+
+		// Update views
+		updateViews();
+
+		AppLog("updating tableview");
+		// Use new items/views in table
+		_tableView->UpdateTableView();
+		AppLog("tableview updated");
+	}
+}
+
+void ProjectGiraffeTab4::displayNoGraffiti(){
+	Label* noGraffitiLabel = new Label();
+	noGraffitiLabel->Construct(Rectangle(0, 270, GetBounds().width, 40), "posts");
+	noGraffitiLabel->SetTextConfig(32, LABEL_TEXT_STYLE_BOLD);
+	noGraffitiLabel->SetTextHorizontalAlignment(ALIGNMENT_CENTER);
+	noGraffitiLabel->SetName("noGraffitiLabel");
+	noGraffitiLabel->SetText(L"No graffiti posted yet");
+	AddControl(*noGraffitiLabel);
 }
 
 void
@@ -369,6 +462,7 @@ ProjectGiraffeTab4::onUserUpdate(User *user)
 void
 ProjectGiraffeTab4::connectionDidFinish(HttpConnection *connection, HashMap *response)
 {
+	/*
 	if (response) {
 		String userKey("user");
 		String messageKey("message");
@@ -392,6 +486,37 @@ ProjectGiraffeTab4::connectionDidFinish(HttpConnection *connection, HashMap *res
 
 		delete connection;
 //		delete response;
+	}
+	*/
+	AppLog("HttpConnection finished");
+	if (response) {
+		// TODO: check for the return value
+		ArrayList *graffitiList = static_cast<ArrayList *>(response->GetValue(kHTTPParamNameGraffiti));
+		if (graffitiList) {
+			AppLog("Retrieved list");
+			ArrayList *newItems = new ArrayList(SingleObjectDeleter);
+			newItems->Construct();
+
+			for (int i = 0; i < graffitiList->GetCount(); i++) {
+				HashMap *graffitiDictionary = static_cast<HashMap *>(graffitiList->GetAt(i));
+				AppLog("updating dictionary");
+				if (graffitiDictionary) {
+					Graffiti *newGraffiti = new Graffiti();
+					newGraffiti->updateFromDictionary(graffitiDictionary);
+					AppLog("Updated from dictionary");
+					newItems->Add(newGraffiti);
+				}
+			}
+			if(graffitiList->GetCount() == 0){
+				AppLog("No graffiti to display");
+				displayNoGraffiti();
+			}
+			AppLog("Setting new items");
+			setItems(newItems);
+		}else{
+			AppLog("Failed to retrieve graffiti list");
+			displayNoGraffiti();
+		}
 	} else {
 		connectionDidFail(connection);
 	}
@@ -402,5 +527,79 @@ ProjectGiraffeTab4::connectionDidFail(HttpConnection *connection)
 {
 	showStatus(L"HTTP Status", L"HTTP Request Aborted, check internet connection", true);
 
+	displayNoGraffiti();
 	delete connection;
+}
+
+// ITableViewItemEventListener
+void ProjectGiraffeTab4::OnTableViewItemStateChanged(Tizen::Ui::Controls::TableView& tableView,
+		int itemIndex, Tizen::Ui::Controls::TableViewItem* pItem, Tizen::Ui::Controls::TableViewItemStatus status)
+{
+
+}
+
+void ProjectGiraffeTab4::OnTableViewContextItemActivationStateChanged(Tizen::Ui::Controls::TableView& tableView, int itemIndex,
+		Tizen::Ui::Controls::TableViewContextItem* pContextItem, bool activated)
+{
+}
+
+void ProjectGiraffeTab4::OnTableViewItemReordered(Tizen::Ui::Controls::TableView& tableView, int itemIndexFrom, int itemIndexTo)
+{
+}
+
+// ITableViewItemProvider
+int ProjectGiraffeTab4::GetItemCount(void)
+{
+	AppLog("Counting Items");
+	return _items ? _items->GetCount() : 0;
+}
+
+TableViewItem* ProjectGiraffeTab4::CreateItem(int itemIndex, int itemWidth)
+{
+	AppLog("Creating Items");
+
+	// Fetch Graffiti object
+	Graffiti *graffiti = dynamic_cast<Graffiti *>(_items->GetAt(itemIndex));
+
+	// Create item
+	TableViewItem *item = new TableViewItem();
+	item->Construct(Dimension(itemWidth, GetDefaultItemHeight()),
+			TABLE_VIEW_ANNEX_STYLE_NORMAL);
+
+	// Create contextItem
+	TableViewContextItem *contextItem = new TableViewContextItem();
+	contextItem->Construct(item->GetSize());
+	item->SetContextItem(contextItem);
+
+	Control *contentView = static_cast<Control *>(_contentViews->GetAt(itemIndex));
+	if (contentView) {
+		item->AddControl(*contentView);
+		item->SetSize(contentView->GetSize());
+		contextItem->SetSize(contentView->GetSize());
+	}
+	Control *contextView = static_cast<Control *>(_contextViews->GetAt(itemIndex));
+	if (contextView) {
+		contextItem->AddControl(*contextView);
+	}
+
+
+	return item;
+}
+
+bool ProjectGiraffeTab4::DeleteItem(int itemIndex, Tizen::Ui::Controls::TableViewItem* pItem)
+{
+	AppLog("Deleting item %d", itemIndex);
+// TODO: Figure out what is causing this to crash...seems to work fine without this, but would be good to fix I think.
+//	delete pItem;
+	return true;
+}
+
+void ProjectGiraffeTab4::UpdateItem(int itemIndex, Tizen::Ui::Controls::TableViewItem* pItem)
+{
+	AppLog("Updating Items");
+}
+
+int ProjectGiraffeTab4::GetDefaultItemHeight(void)
+{
+	return 150;
 }

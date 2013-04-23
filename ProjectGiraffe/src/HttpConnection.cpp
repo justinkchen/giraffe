@@ -22,26 +22,31 @@ const String kHTTPHostURL = L"https://ec2-54-243-69-6.compute-1.amazonaws.com/";
 const String kServerCert =
 		L"/C=US/ST=California/L=Palo Alto/O=Unsamsung Heroes/CN=giraffe-server/emailAddress=bbch@stanford.edu";
 
-const String kHTTPMethodNameNearbyGraffiti = L"nearby";
-const String kHTTPMethodNameNewGraffiti = L"addgraffiti";
+const String kHTTPMethodNameNearbyGraffiti = L"graffiti/nearby"; // TODO rename variable
+const String kHTTPMethodNameNewGraffiti = L"graffiti/new"; // TODO rename variable
+const String kHTTPMethodNameGraffitiLike = L"graffiti/like";
+const String kHTTPMethodNameGraffitiFlag = L"graffiti/flag";
 const String kHTTPMethodNameUserLogin = L"user/login";
 const String kHTTPMethodNameUserSignup = L"user/signup";
 const String kHTTPMethodNameUserUpdate = L"user/update";
+const String kHTTPMethodNameUserPosts = L"user/posts";
+const String kHTTPMethodNameUserStats = L"user/stats";
 const String kHTTPMethodNameUserLogout = L"user/logout";
 
-const String kHTTPParamNameGraffiti = L"graffiti";
-const String kHTTPParamNameText = L"text";
-const String kHTTPParamNameImageURL = L"imageURL";
+const String kHTTPParamNameGraffiti = L"posts";
+const String kHTTPParamNameText = L"message";
+const String kHTTPParamNameImageURL = L"image_url";
 const String kHTTPParamNameLongitude = L"longitude";
 const String kHTTPParamNameLatitude = L"latitude";
-const String kHTTPParamNameDirectionX = L"directionX";
-const String kHTTPParamNameDirectionY = L"directionY";
-const String kHTTPParamNameDirectionZ = L"directionZ";
-const String kHTTPParamNameLikeCount = L"likeCount";
+const String kHTTPParamNameDirectionX = L"direction_x";
+const String kHTTPParamNameDirectionY = L"direction_y";
+const String kHTTPParamNameDirectionZ = L"direction_z";
+const String kHTTPParamNameLikeCount = L"num_likes";
 const String kHTTPParamNameFlagged = L"flagged";
 const String kHTTPParamNameDateCreated = L"dateCreated";
 const String kHTTPParamNameUser = L"user";
 const String kHTTPParamNameUserID = L"id";
+const String kHTTPParamNameRadius = L"radius";
 const String kHTTPParamNameFullname = L"fullname";
 const String kHTTPParamNameUsername = L"username";
 const String kHTTPParamNameEmail = L"email";
@@ -110,6 +115,22 @@ HttpConnection::nearbyGraffitiGetConnection(
 
 	return connection;
 }
+
+HttpConnection *
+HttpConnection::userPostsGetConnection(
+		HttpConnectionListener *listener, int uid)
+{
+	HttpMultipartEntity *parameters = new HttpMultipartEntity();
+	parameters->Construct();
+	parameters->AddStringPart(L"id", Integer(uid).ToString());
+
+	HttpConnection *connection = new HttpConnection(listener,
+			kHTTPMethodNameUserPosts, NET_HTTP_METHOD_GET, parameters);
+	delete parameters;
+
+	return connection;
+}
+
 
 HttpConnection *
 HttpConnection::newGraffitiPostConnection(

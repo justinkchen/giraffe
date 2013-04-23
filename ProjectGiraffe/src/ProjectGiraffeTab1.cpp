@@ -43,7 +43,7 @@ ProjectGiraffeTab1::Initialize(void)
 }
 
 #define kDebugUseDummyItems 0
-#define kDebugUseHttpConnection 0
+#define kDebugUseHttpConnection 1
 
 void
 ProjectGiraffeTab1::updateItems()
@@ -235,7 +235,7 @@ ProjectGiraffeTab1::OnSceneActivatedN(const Tizen::Ui::Scenes::SceneId& previous
 	//Start load icon here.
 	//_loadingPopupThread->Construct();
 	//_loadingPopupThread->Start();
-//	updateItems();
+	updateItems();
 	AppLog("OnSceneActivatedN");
 }
 
@@ -356,6 +356,9 @@ void ProjectGiraffeTab1::connectionDidFinish(HttpConnection *connection, Tizen::
 					newItems->Add(newGraffiti);
 				}
 			}
+			if(graffitiList->GetCount() == 0){
+				displayNoGraffiti();
+			}
 			setItems(newItems);
 		}
 	} else {
@@ -366,12 +369,23 @@ void ProjectGiraffeTab1::connectionDidFinish(HttpConnection *connection, Tizen::
 void ProjectGiraffeTab1::connectionDidFail(HttpConnection *connection)
 {
 	AppLog("HttpConnection failed");
+	displayNoGraffiti();
 
 	MessageBox msgBox;
 	msgBox.Construct(L"HTTP STATUS", L"HTTP Request Aborted, Check internet connection", MSGBOX_STYLE_NONE, 3000);
 	int modalresult = 0;
 	msgBox.ShowAndWait(modalresult);
 	delete connection;
+}
+
+void ProjectGiraffeTab1::displayNoGraffiti(){
+	Label* noGraffitiLabel = new Label();
+	noGraffitiLabel->Construct(Rectangle(0, 80, GetBounds().width, 40), "posts");
+	noGraffitiLabel->SetTextConfig(32, LABEL_TEXT_STYLE_BOLD);
+	noGraffitiLabel->SetTextHorizontalAlignment(ALIGNMENT_CENTER);
+	noGraffitiLabel->SetName("noGraffitiLabel");
+	noGraffitiLabel->SetText(L"No nearby graffiti");
+	AddControl(*noGraffitiLabel);
 }
 
 void
