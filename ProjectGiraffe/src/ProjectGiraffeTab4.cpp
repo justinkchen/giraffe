@@ -369,11 +369,9 @@ ProjectGiraffeTab4::onUserUpdate(User *user)
 void
 ProjectGiraffeTab4::connectionDidFinish(HttpConnection *connection, HashMap *response)
 {
-	/*
 	if (response) {
 		String userKey("user");
 		String messageKey("message");
-		String logoutKey("logout");
 		String errorKey("error");
 		if (response->ContainsKey(userKey)) {
 			HashMap *userDict = (HashMap *)response->GetValue(userKey);
@@ -383,17 +381,8 @@ ProjectGiraffeTab4::connectionDidFinish(HttpConnection *connection, HashMap *res
 
 			String *message = (String *)response->GetValue(messageKey);
 			showStatus("User Update Status", *message, false);
-		} else if (response->ContainsKey(logoutKey)) {
-			User::currentUser()->logout();
-
-//			showLoginButton();
-
-			String *message = (String *)response->GetValue(logoutKey);
-			showStatus("Logout Status", *message, false);
 		} else if (response->ContainsKey(errorKey)) {
 			String *errorMessage = (String *)response->GetValue(errorKey);
-
-			resetButtons();
 
 			// Flash error message
 			showStatus("User Update Status", *errorMessage, true);
@@ -404,15 +393,14 @@ ProjectGiraffeTab4::connectionDidFinish(HttpConnection *connection, HashMap *res
 		delete connection;
 //		delete response;
 	} else {
-	*/
 		connectionDidFail(connection);
-//	}
+	}
 }
 
 void
 ProjectGiraffeTab4::connectionDidFail(HttpConnection *connection)
 {
-//	showStatus(L"HTTP Status", L"HTTP Request Aborted, check internet connection", true);
+	showStatus(L"HTTP Status", L"HTTP Request Aborted, check internet connection", true);
 
 	delete connection;
 }
