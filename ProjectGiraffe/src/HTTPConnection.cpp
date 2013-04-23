@@ -30,19 +30,20 @@ const String kHTTPMethodNameUserPosts = L"user/posts";
 const String kHTTPMethodNameUserUpdate = L"user/update";
 const String kHTTPMethodNameUserLogout = L"user/logout";
 
-const String kHTTPParamNameGraffiti = L"graffiti";
-const String kHTTPParamNameText = L"text";
-const String kHTTPParamNameImageURL = L"imageURL";
+const String kHTTPParamNameGraffiti = L"posts";
+const String kHTTPParamNameText = L"message";
+const String kHTTPParamNameImageURL = L"image_url";
 const String kHTTPParamNameLongitude = L"longitude";
 const String kHTTPParamNameLatitude = L"latitude";
-const String kHTTPParamNameDirectionX = L"directionX";
-const String kHTTPParamNameDirectionY = L"directionY";
-const String kHTTPParamNameDirectionZ = L"directionZ";
-const String kHTTPParamNameLikeCount = L"likeCount";
+const String kHTTPParamNameDirectionX = L"direction_x";
+const String kHTTPParamNameDirectionY = L"direction_y";
+const String kHTTPParamNameDirectionZ = L"direction_z";
+const String kHTTPParamNameLikeCount = L"num_likes";
 const String kHTTPParamNameFlagged = L"flagged";
 const String kHTTPParamNameDateCreated = L"dateCreated";
 const String kHTTPParamNameUser = L"user";
 const String kHTTPParamNameUserID = L"id";
+const String kHTTPParamNameRadius = L"radius";
 const String kHTTPParamNameFullname = L"fullname";
 const String kHTTPParamNameUsername = L"username";
 const String kHTTPParamNameEmail = L"email";
@@ -118,7 +119,7 @@ HttpConnection::userPostsGetConnection(
 {
 	HttpMultipartEntity *parameters = new HttpMultipartEntity();
 	parameters->Construct();
-	parameters->AddStringPart(L"user_id", Integer(uid).ToString());
+	parameters->AddStringPart(L"id", Integer(uid).ToString());
 
 	HttpConnection *connection = new HttpConnection(listener,
 			kHTTPMethodNameUserPosts, NET_HTTP_METHOD_GET, parameters);

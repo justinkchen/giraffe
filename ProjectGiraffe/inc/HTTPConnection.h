@@ -26,6 +26,7 @@ extern const Tizen::Base::String kHTTPParamNameDirectionX;
 extern const Tizen::Base::String kHTTPParamNameDirectionY;
 extern const Tizen::Base::String kHTTPParamNameDirectionZ;
 extern const Tizen::Base::String kHTTPParamNameLikeCount;
+extern const Tizen::Base::String kHTTPParamNameRadius;
 extern const Tizen::Base::String kHTTPParamNameFlagged;
 extern const Tizen::Base::String kHTTPParamNameDateCreated;
 extern const Tizen::Base::String kHTTPParamNameUser;

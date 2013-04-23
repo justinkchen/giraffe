@@ -15,6 +15,8 @@ class ProjectGiraffeTab4 :
 	public Tizen::Ui::Scenes::ISceneEventListener,
 	public Tizen::Ui::IActionEventListener,
 	public Tizen::App::IAppControlResponseListener,
+	public Tizen::Ui::Controls::ITableViewItemProvider,
+	public Tizen::Ui::Controls::ITableViewItemEventListener,
 	public User::UserListener,
 	public HttpConnection::HttpConnectionListener
 {
@@ -38,6 +40,18 @@ public:
 	//IAppControlResponseListener
 	virtual void OnAppControlCompleteResponseReceived(const Tizen::App::AppId &appId, const Tizen::Base::String &operationId, Tizen::App::AppCtrlResult appControlResult, const Tizen::Base::Collection::IMap *extraData);
 	virtual void OnAppControlStartResponseReceived(const Tizen::App::AppId &appId, const Tizen::Base::String &operationId, result r);
+
+    // ITableViewItemEventListener
+    virtual void OnTableViewItemStateChanged(Tizen::Ui::Controls::TableView& tableView, int itemIndex, Tizen::Ui::Controls::TableViewItem* pItem, Tizen::Ui::Controls::TableViewItemStatus status);
+    virtual void OnTableViewContextItemActivationStateChanged(Tizen::Ui::Controls::TableView& tableView, int itemIndex, Tizen::Ui::Controls::TableViewContextItem* pContextItem, bool activated);
+    virtual void OnTableViewItemReordered(Tizen::Ui::Controls::TableView& tableView, int itemIndexFrom, int itemIndexTo);
+
+    // ITableViewItemProvider
+    virtual int GetItemCount(void);
+    virtual Tizen::Ui::Controls::TableViewItem* CreateItem(int itemIndex, int itemWidth);
+    virtual bool DeleteItem(int itemIndex, Tizen::Ui::Controls::TableViewItem* pItem);
+    virtual void UpdateItem(int itemIndex, Tizen::Ui::Controls::TableViewItem* pItem);
+    virtual int GetDefaultItemHeight(void);
 
 	// UserListener
 	virtual void onUserUpdate(User *user);
@@ -63,6 +77,15 @@ private:
 	void takePhoto(void);
 
 	void showStatus(const Tizen::Base::String &statusTitle, const Tizen::Base::String &statusMessage, bool isError);
+
+    Tizen::Base::Collection::ArrayList *_items;
+	Tizen::Base::Collection::ArrayList *_contentViews;
+    Tizen::Base::Collection::ArrayList *_contextViews;
+    Tizen::Ui::Controls::TableView* _tableView;
+    void updateItems();
+    void updateViews();
+    void displayNoGraffiti();
+    void setItems(Tizen::Base::Collection::ArrayList *items);
 };
 
 #endif // _PROJECTGIRAFFE_TAB4_H_
