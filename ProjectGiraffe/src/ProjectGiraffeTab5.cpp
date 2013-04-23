@@ -15,12 +15,12 @@ using namespace ControlUtil;
 
 ProjectGiraffeTab5::ProjectGiraffeTab5(void)
 {
-	_avatarContextMenu = null;
+
 }
 
 ProjectGiraffeTab5::~ProjectGiraffeTab5(void)
 {
-	delete _avatarContextMenu;
+
 }
 
 bool
@@ -97,45 +97,17 @@ ProjectGiraffeTab5::showProfile(void)
 
 	User *cUser = User::currentUser();
 
-	// logout button
-	Button* logoutButton = new Button();
-	logoutButton->Construct(Rectangle(GetBounds().width/2 + 30, 10, 300, 80), "Logout");
-//	centerHorizontally(updateButton1, this);
-	logoutButton->SetName("logoutButton");
-	logoutButton->SetActionId(ID_BUTTON_LOGOUT);
-	logoutButton->AddActionEventListener(*this);
-	scrollPanel->AddControl(*logoutButton);
-
-	// Avatar button? image?
-	Button* avatarButton = new Button();
-	avatarButton->Construct(Rectangle(10, 10, 250, 250), "");
-	avatarButton->SetName("avatarButton");
-	avatarButton->SetActionId(ID_BUTTON_AVATAR);
-	avatarButton->AddActionEventListener(*this);
-	scrollPanel->AddControl(*avatarButton);
-
-	if (_avatarContextMenu == null) {
-		_avatarContextMenu = new ContextMenu();
-		_avatarContextMenu->Construct(Point(135, 420), CONTEXT_MENU_STYLE_LIST, CONTEXT_MENU_ANCHOR_DIRECTION_DOWNWARD);
-		_avatarContextMenu->AddItem("Choose from library", ID_CONTEXT_CHOOSE);
-		_avatarContextMenu->AddItem("Take photo", ID_CONTEXT_TAKE);
-		_avatarContextMenu->AddActionEventListener(*this);
-		_avatarContextMenu->SetShowState(false);
-		_avatarContextMenu->Invalidate(true);
-
-	}
-
 	// Full name
 
 	Label* usernameLabel = new Label();
-	usernameLabel->Construct(Rectangle(10, 260, 300, 40), "Username:");
+	usernameLabel->Construct(Rectangle(10, 10, 300, 40), "Username:");
 	usernameLabel->SetTextConfig(32, LABEL_TEXT_STYLE_BOLD);
 	usernameLabel->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
 	usernameLabel->SetName("usernameLabel");
 	scrollPanel->AddControl(*usernameLabel);
 
 	EditField* usernameField = new EditField();
-	usernameField->Construct(Rectangle(10, 310, this->GetBounds().width - 20, 80), EDIT_FIELD_STYLE_NORMAL, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_NONE, true);
+	usernameField->Construct(Rectangle(10, 60, this->GetBounds().width - 20, 80), EDIT_FIELD_STYLE_NORMAL, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_NONE, true);
 	usernameField->SetText(cUser->username());
 	usernameField->SetName("usernameField");
 	usernameField->SetKeypadAction(KEYPAD_ACTION_DONE);
@@ -144,14 +116,14 @@ ProjectGiraffeTab5::showProfile(void)
 	scrollPanel->AddControl(*usernameField);
 
 	Label* emailLabel = new Label();
-	emailLabel->Construct(Rectangle(10, 400, 300, 40), "Email:");
+	emailLabel->Construct(Rectangle(10, 150, 300, 40), "Email:");
 	emailLabel->SetTextConfig(32, LABEL_TEXT_STYLE_BOLD);
 	emailLabel->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
 	emailLabel->SetName("emailLabel");
 	scrollPanel->AddControl(*emailLabel);
 
 	EditField* emailField = new EditField();
-	emailField->Construct(Rectangle(10, 450, this->GetBounds().width - 20, 80), EDIT_FIELD_STYLE_EMAIL, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_NONE, true);
+	emailField->Construct(Rectangle(10, 200, this->GetBounds().width - 20, 80), EDIT_FIELD_STYLE_EMAIL, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_NONE, true);
 	emailField->SetText(cUser->email());
 	emailField->SetName("emailField");
 	emailField->SetKeypadAction(KEYPAD_ACTION_DONE);
@@ -160,7 +132,7 @@ ProjectGiraffeTab5::showProfile(void)
 	scrollPanel->AddControl(*emailField);
 
 	Button* updateButton1 = new Button();
-	updateButton1->Construct(Rectangle(0, 540, 300, 80), "Update");
+	updateButton1->Construct(Rectangle(0, 290, 300, 80), "Update");
 	centerHorizontally(updateButton1, this);
 	updateButton1->SetName("updateButton1");
 	updateButton1->SetActionId(ID_BUTTON_UPDATE1);
@@ -168,14 +140,14 @@ ProjectGiraffeTab5::showProfile(void)
 	scrollPanel->AddControl(*updateButton1);
 
 	Label* oldPasswordLabel = new Label();
-	oldPasswordLabel->Construct(Rectangle(10, 630, 300, 40), "Current password:");
+	oldPasswordLabel->Construct(Rectangle(10, 380, 300, 40), "Current password:");
 	oldPasswordLabel->SetTextConfig(32, LABEL_TEXT_STYLE_BOLD);
 	oldPasswordLabel->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
 	oldPasswordLabel->SetName("oldPassworldLabel");
 	scrollPanel->AddControl(*oldPasswordLabel);
 
 	EditField* oldPasswordField = new EditField();
-	oldPasswordField->Construct(Rectangle(10, 680, this->GetBounds().width - 20, 80), EDIT_FIELD_STYLE_PASSWORD, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_NONE, true);
+	oldPasswordField->Construct(Rectangle(10, 430, this->GetBounds().width - 20, 80), EDIT_FIELD_STYLE_PASSWORD, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_NONE, true);
 	oldPasswordField->SetName("oldPasswordField");
 	oldPasswordField->SetKeypadAction(KEYPAD_ACTION_DONE);
 	oldPasswordField->AddKeypadEventListener(*this);
@@ -183,14 +155,14 @@ ProjectGiraffeTab5::showProfile(void)
 	scrollPanel->AddControl(*oldPasswordField);
 
 	Label* passwordLabel = new Label();
-	passwordLabel->Construct(Rectangle(10, 770, 300, 40), "New password:");
+	passwordLabel->Construct(Rectangle(10, 520, 300, 40), "New password:");
 	passwordLabel->SetTextConfig(32, LABEL_TEXT_STYLE_BOLD);
 	passwordLabel->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
 	passwordLabel->SetName("passwordLabel");
 	scrollPanel->AddControl(*passwordLabel);
 
 	EditField* passwordField = new EditField();
-	passwordField->Construct(Rectangle(10, 820, this->GetBounds().width - 20, 80), EDIT_FIELD_STYLE_PASSWORD, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_NONE, true);
+	passwordField->Construct(Rectangle(10, 570, this->GetBounds().width - 20, 80), EDIT_FIELD_STYLE_PASSWORD, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_NONE, true);
 	passwordField->SetName("passwordField");
 	passwordField->SetKeypadAction(KEYPAD_ACTION_DONE);
 	passwordField->AddKeypadEventListener(*this);
@@ -198,14 +170,14 @@ ProjectGiraffeTab5::showProfile(void)
 	scrollPanel->AddControl(*passwordField);
 
 	Label* confirmPasswordLabel = new Label();
-	confirmPasswordLabel->Construct(Rectangle(10, 910, 300, 40), "Confirm password:");
+	confirmPasswordLabel->Construct(Rectangle(10, 660, 300, 40), "Confirm password:");
 	confirmPasswordLabel->SetTextConfig(32, LABEL_TEXT_STYLE_BOLD);
 	confirmPasswordLabel->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
 	confirmPasswordLabel->SetName("confirmPasswordLabel");
 	scrollPanel->AddControl(*confirmPasswordLabel);
 
 	EditField* confirmPasswordField = new EditField();
-	confirmPasswordField->Construct(Rectangle(10, 960, this->GetBounds().width - 20, 80), EDIT_FIELD_STYLE_PASSWORD, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_NONE, true);
+	confirmPasswordField->Construct(Rectangle(10, 710, this->GetBounds().width - 20, 80), EDIT_FIELD_STYLE_PASSWORD, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_NONE, true);
 	confirmPasswordField->SetName("confirmPasswordField");
 	confirmPasswordField->SetKeypadAction(KEYPAD_ACTION_DONE);
 	confirmPasswordField->AddKeypadEventListener(*this);
@@ -213,15 +185,24 @@ ProjectGiraffeTab5::showProfile(void)
 	scrollPanel->AddControl(*confirmPasswordField);
 
 	Button* updateButton2 = new Button();
-	updateButton2->Construct(Rectangle(0, 1050, 300, 80), "Change Password");
+	updateButton2->Construct(Rectangle(0, 800, 300, 80), "Change Password");
 	centerHorizontally(updateButton2, this);
 	updateButton2->SetName("updateButton2");
 	updateButton2->SetActionId(ID_BUTTON_UPDATE2);
 	updateButton2->AddActionEventListener(*this);
 	scrollPanel->AddControl(*updateButton2);
 
+	// logout button
+	Button* logoutButton = new Button();
+	logoutButton->Construct(Rectangle(0, 890, 300, 80), "Logout");
+	centerHorizontally(logoutButton, this);
+	logoutButton->SetName("logoutButton");
+	logoutButton->SetActionId(ID_BUTTON_LOGOUT);
+	logoutButton->AddActionEventListener(*this);
+	scrollPanel->AddControl(*logoutButton);
+
 	Label* spacer = new Label();
-	spacer->Construct(Rectangle(0, 1140, this->GetBounds().width, 10), "");
+	spacer->Construct(Rectangle(0, 980, this->GetBounds().width, 10), "");
 	spacer->SetName("spacer");
 	scrollPanel->AddControl(*spacer);
 	scrollPanel->SetName("scrollPanel");
@@ -320,54 +301,6 @@ ProjectGiraffeTab5::logout(void)
 }
 
 void
-ProjectGiraffeTab5::showAvatarMenu(void)
-{
-	_avatarContextMenu->SetShowState(true);
-	_avatarContextMenu->Show();
-}
-
-void
-ProjectGiraffeTab5::choosePhoto(void)
-{
-	AppLog("choose photo from library");
-
-	AppControl* appControl = AppManager::FindAppControlN(L"tizen.filemanager", L"http://tizen.org/appcontrol/operation/pick");
-
-	HashMap extraData;
-	extraData.Construct();
-	String selectKey = L"selectionType";
-	String selectVal = L"single";
-	extraData.Add(&selectKey, &selectVal);
-	String typeKey = L"type";
-	String typeVal = L"image";
-	extraData.Add(&typeKey, &typeVal);
-
-	if (appControl) {
-		appControl->Start(null, null, &extraData, this);
-		delete appControl;
-	}
-}
-
-void
-ProjectGiraffeTab5::takePhoto(void)
-{
-	AppLog("take photo with camera");
-
-	AppControl* appControl = AppManager::FindAppControlN(L"tizen.camera", L"http://tizen.org/appcontrol/operation/createcontent");
-
-	HashMap extraData;
-	extraData.Construct();
-	String typeKey = L"type";
-	String typeVal = L"camera";
-	extraData.Add(&typeKey, &typeVal);
-
-	if (appControl) {
-		appControl->Start(null, null, &extraData, this);
-		delete appControl;
-	}
-}
-
-void
 ProjectGiraffeTab5::showStatus(const String &statusTitle, const String &statusMessage, bool isError)
 {
 	StatusPopup* statusPopup = StatusPopup::popup();
@@ -447,31 +380,22 @@ void
 ProjectGiraffeTab5::OnActionPerformed(const Control& source, int actionId)
 {
 	switch (actionId)
-		{
-		case ID_BUTTON_LOGIN:
-			UserPopup::popup()->showPopup();
-			break;
-		case ID_BUTTON_LOGOUT:
-			logout();
-			break;
-		case ID_BUTTON_UPDATE1:
-			updateUser();
-			break;
-		case ID_BUTTON_UPDATE2:
-			updatePassword();
-			break;
-		case ID_BUTTON_AVATAR:
-			showAvatarMenu();
-			break;
-		case ID_CONTEXT_CHOOSE:
-			choosePhoto();
-			break;
-		case ID_CONTEXT_TAKE:
-			takePhoto();
-			break;
-		default:
-			break;
-		}
+	{
+	case ID_BUTTON_LOGIN:
+		UserPopup::popup()->showPopup();
+		break;
+	case ID_BUTTON_LOGOUT:
+		logout();
+		break;
+	case ID_BUTTON_UPDATE1:
+		updateUser();
+		break;
+	case ID_BUTTON_UPDATE2:
+		updatePassword();
+		break;
+	default:
+		break;
+	}
 }
 
 void
@@ -518,73 +442,6 @@ ProjectGiraffeTab5::OnKeypadWillOpen(Control &source)
 
 	Invalidate(true);
 	*/
-}
-
-void
-ProjectGiraffeTab5::OnAppControlCompleteResponseReceived(const AppId &appId, const String &operationId, AppCtrlResult appControlResult, const IMap *extraData)
-{
-	AppLogTag("camera1", "appid %ls opid %ls", appId.GetPointer(), operationId.GetPointer());
-	if (appId.Equals(L"tizen.filemanager", true) &&
-			operationId.Equals(L"http://tizen.org/appcontrol/operation/pick", true))
-	{
-		if (appControlResult == APP_CTRL_RESULT_SUCCEEDED) {
-			AppLogTag("camera1", "Media list success.");
-			String pathKey = L"path";
-			String *filePath = (String *)extraData->GetValue(pathKey);
-
-			AppLogTag("camera1", "filepath: %ls", filePath->GetPointer());
-
-			HttpMultipartEntity* userParameters = new HttpMultipartEntity();
-			userParameters->Construct();
-			userParameters->AddFilePart(L"avatar", *filePath);
-
-			HttpConnection *connection = HttpConnection::userUpdatePutConnection(this, userParameters);
-			connection->begin();
-
-			// TODO: figure out when to free
-//			delete userParameters;
-		} else if (appControlResult == APP_CTRL_RESULT_CANCELED) {
-			AppLogTag("camera1", "Media list canceled.");
-		} else if (appControlResult == APP_CTRL_RESULT_FAILED) {
-			AppLogTag("camera1", "Media list failed.");
-		}
-	} else if (appId.Equals(L"tizen.camera", true) &&
-			operationId.Equals(L"http://tizen.org/appcontrol/operation/createcontent", true))
-	{
-		AppLogTag("camera1", "camcam");
-		if (appControlResult == APP_CTRL_RESULT_SUCCEEDED) {
-			AppLogTag("camera1", "Camera capture success.");
-
-			String pathKey = L"path";
-			String *filePath = (String *)extraData->GetValue(pathKey);
-
-			AppLogTag("camera1", "filepath: %ls", filePath->GetPointer());
-
-			HttpMultipartEntity* userParameters = new HttpMultipartEntity();
-			userParameters->Construct();
-			userParameters->AddFilePart(L"avatar", *filePath);
-
-			HttpConnection *connection = HttpConnection::userUpdatePutConnection(this, userParameters);
-			connection->begin();
-
-			// TODO: figure out when to free
-			// delete userParameters;
-		} else if (appControlResult == APP_CTRL_RESULT_CANCELED) {
-			AppLogTag("camera1", "Camera capture canceled.");
-		} else if (appControlResult == APP_CTRL_RESULT_FAILED) {
-			AppLogTag("camera1", "Camera capture failed.");
-		} else if (appControlResult == APP_CTRL_RESULT_TERMINATED) {
-			AppLogTag("camera1", "Camera capture terminated.");
-		} else if (appControlResult == APP_CTRL_RESULT_ABORTED) {
-			AppLogTag("camera1", "Camera capture aborted.");
-		}
-	}
-}
-
-void
-ProjectGiraffeTab5::OnAppControlStartResponseReceived(const AppId &appId, const String &operationId, result r)
-{
-	AppLogTag("camera1", "qwer");
 }
 
 void

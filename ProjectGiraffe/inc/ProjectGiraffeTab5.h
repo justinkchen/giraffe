@@ -1,7 +1,6 @@
 #ifndef _PROJECTGIRAFFE_TAB5_H_
 #define _PROJECTGIRAFFE_TAB5_H_
 
-#include <FApp.h>
 #include <FBase.h>
 #include <FUi.h>
 #include <Fnet.h>
@@ -16,7 +15,6 @@ class ProjectGiraffeTab5 :
 	public Tizen::Ui::Scenes::ISceneEventListener,
 	public Tizen::Ui::IActionEventListener,
 	public Tizen::Ui::IKeypadEventListener,
-	public Tizen::App::IAppControlResponseListener,
 	public User::UserListener,
 	public HttpConnection::HttpConnectionListener
 {
@@ -44,10 +42,6 @@ public:
 	virtual void OnKeypadOpened(Tizen::Ui::Control &source);
 	virtual void OnKeypadWillOpen(Tizen::Ui::Control &source);
 
-	//IAppControlResponseListener
-	virtual void OnAppControlCompleteResponseReceived(const Tizen::App::AppId &appId, const Tizen::Base::String &operationId, Tizen::App::AppCtrlResult appControlResult, const Tizen::Base::Collection::IMap *extraData);
-	virtual void OnAppControlStartResponseReceived(const Tizen::App::AppId &appId, const Tizen::Base::String &operationId, result r);
-
 	// UserListener
 	virtual void onUserUpdate(User *user);
 
@@ -60,12 +54,6 @@ private:
 	static const int ID_BUTTON_LOGOUT = 502;
 	static const int ID_BUTTON_UPDATE1 = 503;
 	static const int ID_BUTTON_UPDATE2 = 504;
-	static const int ID_BUTTON_AVATAR = 505;
-
-	static const int ID_CONTEXT_CHOOSE = 506;
-	static const int ID_CONTEXT_TAKE = 507;
-
-	Tizen::Ui::Controls::ContextMenu* _avatarContextMenu;
 
 	void showLoginButton(void);
 	void showProfile(void);
@@ -74,10 +62,6 @@ private:
 	void updatePassword(void);
 
 	void logout(void);
-
-	void showAvatarMenu(void);
-	void choosePhoto(void);
-	void takePhoto(void);
 
 	void showStatus(const Tizen::Base::String &statusTitle, const Tizen::Base::String &statusMessage, bool isError);
 	void resetButtons(void);

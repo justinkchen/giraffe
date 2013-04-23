@@ -2,21 +2,24 @@
 
 #include "ControlUtilities.h"
 
+using namespace Tizen::App;
+using namespace Tizen::Base;
+using namespace Tizen::Base::Collection;
 using namespace Tizen::Graphics;
+using namespace Tizen::Net::Http;
 using namespace Tizen::Ui;
 using namespace Tizen::Ui::Controls;
 using namespace Tizen::Ui::Scenes;
-using namespace Tizen::Base::Collection;
 using namespace ControlUtil;
 
 ProjectGiraffeTab4::ProjectGiraffeTab4(void)
 {
-
+	_avatarContextMenu = null;
 }
 
 ProjectGiraffeTab4::~ProjectGiraffeTab4(void)
 {
-
+	delete _avatarContextMenu;
 }
 
 bool
@@ -93,15 +96,34 @@ ProjectGiraffeTab4::showProfile(void)
 
 	User *cUser = User::currentUser();
 
+	// Avatar button? image?
+	Button* avatarButton = new Button();
+	avatarButton->Construct(Rectangle(10, 10, 250, 250), "");
+	avatarButton->SetName("avatarButton");
+	avatarButton->SetActionId(ID_BUTTON_AVATAR);
+	avatarButton->AddActionEventListener(*this);
+	AddControl(*avatarButton);
+
+	if (_avatarContextMenu == null) {
+		_avatarContextMenu = new ContextMenu();
+		_avatarContextMenu->Construct(Point(135, 420), CONTEXT_MENU_STYLE_LIST, CONTEXT_MENU_ANCHOR_DIRECTION_DOWNWARD);
+		_avatarContextMenu->AddItem("Choose from library", ID_CONTEXT_CHOOSE);
+		_avatarContextMenu->AddItem("Take photo", ID_CONTEXT_TAKE);
+		_avatarContextMenu->AddActionEventListener(*this);
+		_avatarContextMenu->SetShowState(false);
+		_avatarContextMenu->Invalidate(true);
+
+	}
+
 	Label* usernameLabel = new Label();
-	usernameLabel->Construct(Rectangle(10, 10, GetBounds().width - 20, 60), cUser->username());
+	usernameLabel->Construct(Rectangle(270, 10, GetBounds().width - 20, 60), cUser->username());
 	usernameLabel->SetTextConfig(48, LABEL_TEXT_STYLE_BOLD);
 	usernameLabel->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
 	usernameLabel->SetName("usernameLabel");
 	AddControl(*usernameLabel);
 
 	Label* postsLabel = new Label();
-	postsLabel->Construct(Rectangle(10, 80, GetBounds().width/3, 40), "posts");
+	postsLabel->Construct(Rectangle(270, 80, GetBounds().width/3, 40), "posts");
 	postsLabel->SetTextConfig(32, LABEL_TEXT_STYLE_BOLD);
 	postsLabel->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
 	postsLabel->SetName("postsLabel");
@@ -146,6 +168,81 @@ ProjectGiraffeTab4::showProfile(void)
 }
 
 void
+ProjectGiraffeTab4::showAvatarMenu(void)
+{
+	_avatarContextMenu->SetShowState(true);
+	_avatarContextMenu->Show();
+}
+
+void
+ProjectGiraffeTab4::choosePhoto(void)
+{
+	AppLog("choose photo from library");
+
+	AppControl* appControl = AppManager::FindAppControlN(L"tizen.filemanager", L"http://tizen.org/appcontrol/operation/pick");
+
+	HashMap extraData;
+	extraData.Construct();
+	String selectKey = L"selectionType";
+	String selectVal = L"single";
+	extraData.Add(&selectKey, &selectVal);
+	String typeKey = L"type";
+	String typeVal = L"image";
+	extraData.Add(&typeKey, &typeVal);
+
+	if (appControl) {
+		appControl->Start(null, null, &extraData, this);
+		delete appControl;
+	}
+}
+
+void
+ProjectGiraffeTab4::takePhoto(void)
+{
+	AppLog("take photo with camera");
+
+	AppControl* appControl = AppManager::FindAppControlN(L"tizen.camera", L"http://tizen.org/appcontrol/operation/createcontent");
+
+	HashMap extraData;
+	extraData.Construct();
+	String typeKey = L"type";
+	String typeVal = L"camera";
+	extraData.Add(&typeKey, &typeVal);
+
+	if (appControl) {
+		appControl->Start(null, null, &extraData, this);
+		delete appControl;
+	}
+}
+
+void
+ProjectGiraffeTab4::showStatus(const String &statusTitle, const String &statusMessage, bool isError)
+{
+	StatusPopup* statusPopup = StatusPopup::popup();
+	statusPopup->setTitle(statusTitle);
+	statusPopup->setMessage(statusMessage);
+
+	if (isError) {
+		statusPopup->setType(StatusPopup::STATUS_POPUP_ERROR);
+	} else {
+		statusPopup->setType(StatusPopup::STATUS_POPUP_DEFAULT);
+	}
+
+	statusPopup->showPopup();
+
+	/*
+	 * TODO: figure out if we can use messagebox or not because
+	 * this looks like an event handler and they warn not to use inside
+	 * event handlers because it's unsafe
+	MessageBox msgBox;
+//	msgBox.Construct(statusTitle, statusMessage, MSGBOX_STYLE_NONE, 3000);
+//	msgBox.Construct(L"HTTP STATUS", L"HTTP Request Aborted, Check internet connection", MSGBOX_STYLE_NONE, 3000);
+	int modalresult = 0;
+	msgBox.ShowAndWait(modalresult);
+	*/
+}
+
+void
 ProjectGiraffeTab4::OnSceneActivatedN(const Tizen::Ui::Scenes::SceneId& previousSceneId,
 								const Tizen::Ui::Scenes::SceneId& currentSceneId, Tizen::Base::Collection::IList* pArgs)
 {
@@ -173,7 +270,88 @@ ProjectGiraffeTab4::OnSceneDeactivated(const Tizen::Ui::Scenes::SceneId& current
 void
 ProjectGiraffeTab4::OnActionPerformed(const Control& source, int actionId)
 {
+	switch (actionId)
+	{
+	case ID_BUTTON_LOGIN:
+		UserPopup::popup()->showPopup();
+		break;
+	case ID_BUTTON_AVATAR:
+		showAvatarMenu();
+		break;
+	case ID_CONTEXT_CHOOSE:
+		choosePhoto();
+		break;
+	case ID_CONTEXT_TAKE:
+		takePhoto();
+		break;
+	}
+}
 
+void
+ProjectGiraffeTab4::OnAppControlCompleteResponseReceived(const AppId &appId, const String &operationId, AppCtrlResult appControlResult, const IMap *extraData)
+{
+	AppLogTag("camera1", "appid %ls opid %ls", appId.GetPointer(), operationId.GetPointer());
+	if (appId.Equals(L"tizen.filemanager", true) &&
+			operationId.Equals(L"http://tizen.org/appcontrol/operation/pick", true))
+	{
+		if (appControlResult == APP_CTRL_RESULT_SUCCEEDED) {
+			AppLogTag("camera1", "Media list success.");
+			String pathKey = L"path";
+			String *filePath = (String *)extraData->GetValue(pathKey);
+
+			AppLogTag("camera1", "filepath: %ls", filePath->GetPointer());
+
+			HttpMultipartEntity* userParameters = new HttpMultipartEntity();
+			userParameters->Construct();
+			userParameters->AddFilePart(L"avatar", *filePath);
+
+			HttpConnection *connection = HttpConnection::userUpdatePutConnection(this, userParameters);
+			connection->begin();
+
+			// TODO: figure out when to free
+//			delete userParameters;
+		} else if (appControlResult == APP_CTRL_RESULT_CANCELED) {
+			AppLogTag("camera1", "Media list canceled.");
+		} else if (appControlResult == APP_CTRL_RESULT_FAILED) {
+			AppLogTag("camera1", "Media list failed.");
+		}
+	} else if (appId.Equals(L"tizen.camera", true) &&
+			operationId.Equals(L"http://tizen.org/appcontrol/operation/createcontent", true))
+	{
+		AppLogTag("camera1", "camcam");
+		if (appControlResult == APP_CTRL_RESULT_SUCCEEDED) {
+			AppLogTag("camera1", "Camera capture success.");
+
+			String pathKey = L"path";
+			String *filePath = (String *)extraData->GetValue(pathKey);
+
+			AppLogTag("camera1", "filepath: %ls", filePath->GetPointer());
+
+			HttpMultipartEntity* userParameters = new HttpMultipartEntity();
+			userParameters->Construct();
+			userParameters->AddFilePart(L"avatar", *filePath);
+
+			HttpConnection *connection = HttpConnection::userUpdatePutConnection(this, userParameters);
+			connection->begin();
+
+			// TODO: figure out when to free
+			// delete userParameters;
+		} else if (appControlResult == APP_CTRL_RESULT_CANCELED) {
+			AppLogTag("camera1", "Camera capture canceled.");
+		} else if (appControlResult == APP_CTRL_RESULT_FAILED) {
+			AppLogTag("camera1", "Camera capture failed.");
+		} else if (appControlResult == APP_CTRL_RESULT_TERMINATED) {
+			AppLogTag("camera1", "Camera capture terminated.");
+		} else if (appControlResult == APP_CTRL_RESULT_ABORTED) {
+			AppLogTag("camera1", "Camera capture aborted.");
+		}
+	}
+}
+
+void
+ProjectGiraffeTab4::OnAppControlStartResponseReceived(const AppId &appId, const String &operationId, result r)
+{
+	AppLogTag("camera1", "start response");
 }
 
 void
