@@ -10,8 +10,8 @@
 class Graffiti;
 class User;
 
-extern const Tizen::Base::String kHTTPMethodNameNearbyGraffiti;
-extern const Tizen::Base::String kHTTPMethodNameNewGraffiti;
+extern const Tizen::Base::String kHTTPMethodNameGraffitiNearby;
+extern const Tizen::Base::String kHTTPMethodNameGraffitiNew;
 extern const Tizen::Base::String kHTTPMethodNameGraffitiLike;
 extern const Tizen::Base::String kHTTPMethodNameGraffitiFlag;
 

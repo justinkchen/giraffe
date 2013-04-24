@@ -22,8 +22,8 @@ const String kHTTPHostURL = L"https://ec2-54-243-69-6.compute-1.amazonaws.com/";
 const String kServerCert =
 		L"/C=US/ST=California/L=Palo Alto/O=Unsamsung Heroes/CN=giraffe-server/emailAddress=bbch@stanford.edu";
 
-const String kHTTPMethodNameNearbyGraffiti = L"graffiti/nearby"; // TODO rename variable
-const String kHTTPMethodNameNewGraffiti = L"graffiti/new"; // TODO rename variable
+const String kHTTPMethodNameGraffitiNearby = L"graffiti/nearby";
+const String kHTTPMethodNameGraffitiNew = L"graffiti/new";
 const String kHTTPMethodNameGraffitiLike = L"graffiti/like";
 const String kHTTPMethodNameGraffitiFlag = L"graffiti/flag";
 const String kHTTPMethodNameUserLogin = L"user/login";
@@ -110,7 +110,7 @@ HttpConnection::nearbyGraffitiGetConnection(
 	parameters->AddStringPart(L"longitude", Double(longitude).ToString());
 
 	HttpConnection *connection = new HttpConnection(listener,
-			kHTTPMethodNameNearbyGraffiti, NET_HTTP_METHOD_GET, parameters);
+			kHTTPMethodNameGraffitiNearby, NET_HTTP_METHOD_GET, parameters);
 	delete parameters;
 
 	return connection;
@@ -140,7 +140,7 @@ HttpConnection::newGraffitiPostConnection(
 
 	HttpMultipartEntity *parameters = parametersForGraffiti(graffiti);
 	if (parameters) {
-		connection = new HttpConnection(listener, kHTTPMethodNameNewGraffiti,
+		connection = new HttpConnection(listener, kHTTPMethodNameGraffitiNew,
 				NET_HTTP_METHOD_POST, parameters);
 		delete parameters;
 	}
