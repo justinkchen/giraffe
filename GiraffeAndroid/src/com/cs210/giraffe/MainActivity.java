@@ -132,6 +132,8 @@ ActionBar.TabListener {
 		}
 		
 		locationManager.requestLocationUpdates(bestProvider, 0, 0, locationListener);
+		
+		HttpsTask.setContext(getApplicationContext());
 
 	}
 
