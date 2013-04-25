@@ -34,6 +34,7 @@ const String kHTTPMethodNameUserStats = L"users/stats";
 const String kHTTPMethodNameUserLogout = L"users/logout";
 
 const String kHTTPParamNameGraffiti = L"graffiti";
+const String kHTTPParamNameGraffitoId = L"id";
 const String kHTTPParamNameText = L"message";
 const String kHTTPParamNameImageURL = L"imageUrl";
 const String kHTTPParamNameLongitude = L"longitude";
@@ -42,6 +43,8 @@ const String kHTTPParamNameDirectionX = L"directionX";
 const String kHTTPParamNameDirectionY = L"directionY";
 const String kHTTPParamNameDirectionZ = L"directionZ";
 const String kHTTPParamNameDateCreated = L"dateCreated";
+const String kHTTPParamNameLikeCount = L"likeCount";
+const String kHTTPParamNameFlagged = L"flagged";
 const String kHTTPParamNameUser = L"user";
 const String kHTTPParamNameUserID = L"id";
 const String kHTTPParamNameRadius = L"radius";
@@ -98,7 +101,7 @@ HttpConnection::~HttpConnection()
 
 // Factory methods
 HttpConnection *
-HttpConnection::nearbyGraffitiGetConnection(
+HttpConnection::graffitiNearbyGetConnection(
 		HttpConnectionListener *listener, double latitude, double longitude)
 {
 	HttpMultipartEntity *parameters = new HttpMultipartEntity();
@@ -130,17 +133,18 @@ HttpConnection::userPostsGetConnection(
 
 
 HttpConnection *
-HttpConnection::newGraffitiPostConnection(
-		HttpConnectionListener *listener, Graffiti *graffiti)
+HttpConnection::graffitiNewPostConnection(
+		HttpConnectionListener *listener, HttpMultipartEntity *graffitiParameters)
 {
 	HttpConnection *connection = NULL;
 
-	HttpMultipartEntity *parameters = parametersForGraffiti(graffiti);
-	if (parameters) {
+//	HttpMultipartEntity *parameters = parametersForGraffiti(graffiti);
+
+//	if (parameters) {
 		connection = new HttpConnection(listener, kHTTPMethodNameGraffitiNew,
-				NET_HTTP_METHOD_POST, parameters);
-		delete parameters;
-	}
+				NET_HTTP_METHOD_POST, graffitiParameters);
+//		delete parameters;
+//	}
 
 	return connection;
 }

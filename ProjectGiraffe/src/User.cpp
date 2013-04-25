@@ -48,6 +48,7 @@ result
 User::updateFromDictionary(HashMap *dictionary)
 {
 	result success = E_FAILURE;
+
 	if (dictionary && !dictionary->ContainsKey(kHTTPParamNameError)) {
 		Double *idValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameUserID));
 		if (idValue) {

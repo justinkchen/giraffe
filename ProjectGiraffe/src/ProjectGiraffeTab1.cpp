@@ -65,7 +65,7 @@ ProjectGiraffeTab1::updateItems()
 
 	double latitude = ProjectGiraffeMainForm::currentLatitude;
 	double longitude = ProjectGiraffeMainForm::currentLongitude;
-	HttpConnection *connection = HttpConnection::nearbyGraffitiGetConnection(this,latitude,longitude);
+	HttpConnection *connection = HttpConnection::graffitiNearbyGetConnection(this,latitude,longitude);
 	connection->begin();
 
 #else

@@ -64,8 +64,8 @@ public:
 	  };
 
 	  // Factory methods
-	  static HttpConnection *nearbyGraffitiGetConnection(HttpConnectionListener *listener, double latitude, double longitude);
-	  static HttpConnection *newGraffitiPostConnection(HttpConnectionListener *listener, Graffiti *graffiti);
+	  static HttpConnection *graffitiNearbyGetConnection(HttpConnectionListener *listener, double latitude, double longitude);
+	  static HttpConnection *graffitiNewPostConnection(HttpConnectionListener *listener, Tizen::Net::Http::HttpMultipartEntity *graffitiParameters);
 	  static HttpConnection *userLoginPostConnection(HttpConnectionListener *listener, Tizen::Net::Http::HttpMultipartEntity *userParameters);
 	  static HttpConnection *userSignupPostConnection(HttpConnectionListener *listener, Tizen::Net::Http::HttpMultipartEntity *userParameters);
 	  static HttpConnection *userUpdatePutConnection(HttpConnectionListener *listener, Tizen::Net::Http::HttpMultipartEntity *userParameters);

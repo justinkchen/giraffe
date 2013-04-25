@@ -7,6 +7,7 @@ using namespace Tizen::Ui::Controls;
 using namespace Tizen::Ui::Scenes;
 using namespace Tizen::Web::Controls;
 using namespace Tizen::Base;
+using namespace Tizen::Base::Collection;
 using namespace Tizen::Net::Http;
 using namespace Tizen::Web::Json;
 using namespace Tizen::Base::Utility;
@@ -221,11 +222,12 @@ ProjectGiraffeTab3::OnActionPerformed(const Tizen::Ui::Control& source, int acti
 	{
 	case ID_BUTTON:
 	{
+		/*
 		HttpSession* pHttpSession = null;
 		HttpTransaction* pHttpTransaction = null;
 		String* pProxyAddr = null;
 		String hostAddr = L"http://ec2-54-243-69-6.compute-1.amazonaws.com";
-		String uri = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/addgraffiti";
+		String uri = L"http://ec2-54-243-69-6.compute-1.amazonaws.com/graffiti/new";
 
 		AppLog("Starting the HTTP Session");
 		pHttpSession = new HttpSession();
@@ -245,9 +247,11 @@ ProjectGiraffeTab3::OnActionPerformed(const Tizen::Ui::Control& source, int acti
 		// Set the HTTP method and URI:
 		pHttpRequest->SetMethod(NET_HTTP_METHOD_POST);
 		pHttpRequest->SetUri(uri);
+		*/
 
 		// Set POST body
-		HttpUrlEncodedEntity* pHttpUrlEncodedEntity = new HttpUrlEncodedEntity();
+
+		HttpMultipartEntity* pHttpUrlEncodedEntity = new HttpMultipartEntity();
 		pHttpUrlEncodedEntity->Construct();
 		String message = _messageArea->GetText();
 		String latitude;
@@ -257,12 +261,24 @@ ProjectGiraffeTab3::OnActionPerformed(const Tizen::Ui::Control& source, int acti
 		String radius;
 		radius.Append(_radiusSlider->GetValue());
 
+		pHttpUrlEncodedEntity->AddFilePart(L"message", message);
+		pHttpUrlEncodedEntity->AddFilePart(L"latitude", latitude);
+		pHttpUrlEncodedEntity->AddFilePart(L"longitude", longitude);
+		pHttpUrlEncodedEntity->AddFilePart(L"radius", radius);
 
-		pHttpUrlEncodedEntity->AddParameter(L"message", message);
-		pHttpUrlEncodedEntity->AddParameter(L"latitude", latitude);
-		pHttpUrlEncodedEntity->AddParameter(L"longitude", longitude);
-		pHttpUrlEncodedEntity->AddParameter(L"radius", radius);
-		pHttpUrlEncodedEntity->AddParameter(L"userid", L"1");
+		Graffiti *g = new Graffiti();
+		g->setText(_messageArea->GetText());
+		g->setLatitude(ProjectGiraffeMainForm::currentLatitude);
+		g->setLongitude(ProjectGiraffeMainForm::currentLongitude);
+		g->setRadius(_radiusSlider->GetValue());
+
+		HttpConnection *connection = HttpConnection::graffitiNewPostConnection(this, pHttpUrlEncodedEntity);
+		AppLogTag("user", "asdf");
+		connection->begin();
+		/*
+		String userId = L"";
+		userId.Append((int)User::currentUser()->id());
+		pHttpUrlEncodedEntity->AddParameter(L"userId", userId);
 		pHttpRequest->SetEntity(*pHttpUrlEncodedEntity);
 
 		// Submit the request:
@@ -274,6 +290,7 @@ ProjectGiraffeTab3::OnActionPerformed(const Tizen::Ui::Control& source, int acti
 		}else{
 			pHttpTransaction->Submit();
 		}
+		*/
 	}
 	break;
 	default:
@@ -467,4 +484,21 @@ void
 ProjectGiraffeTab3::OnKeypadWillOpen(Control &source)
 {
 
+}
+
+void
+ProjectGiraffeTab3::connectionDidFinish(HttpConnection *connection, HashMap *response)
+{
+	AppLog("HttpConnection finished");
+	if (response) {
+
+	} else {
+		connectionDidFail(connection);
+	}
+}
+
+void
+ProjectGiraffeTab3::connectionDidFail(HttpConnection *connection)
+{
+	delete connection;
 }

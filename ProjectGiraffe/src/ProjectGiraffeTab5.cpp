@@ -89,15 +89,15 @@ ProjectGiraffeTab5::showLoginButton(void)
 void
 ProjectGiraffeTab5::showProfile(void)
 {
-	RemoveAllControls();
+	AppLogTag("user", "start draw profile");
 
+	RemoveAllControls();
+	AppLogTag("user", "g");
 	//add scroll panel
 	ScrollPanel *scrollPanel = new ScrollPanel();
 	scrollPanel->Construct(GetBounds());
 
 	User *cUser = User::currentUser();
-
-	// Full name
 
 	Label* usernameLabel = new Label();
 	usernameLabel->Construct(Rectangle(10, 10, 300, 40), "Username:");

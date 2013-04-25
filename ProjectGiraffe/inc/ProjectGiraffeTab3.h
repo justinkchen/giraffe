@@ -5,6 +5,9 @@
 #include <FUi.h>
 #include <Fnet.h>
 #include <FWeb.h>
+#include "Graffiti.h"
+#include "User.h"
+#include "HttpConnection.h"
 
 class ProjectGiraffeTab3
 : public Tizen::Ui::Controls::Panel,
@@ -14,7 +17,8 @@ class ProjectGiraffeTab3
   public Tizen::Ui::ITextEventListener,
   public Tizen::Ui::IKeypadEventListener,
   public Tizen::Ui::IAdjustmentEventListener,
-  public Tizen::Web::Controls::ILoadingListener
+  public Tizen::Web::Controls::ILoadingListener,
+  public HttpConnection::HttpConnectionListener
   {
   public:
 	ProjectGiraffeTab3(void)
@@ -72,6 +76,10 @@ class ProjectGiraffeTab3
 	virtual void OnKeypadClosed(Tizen::Ui::Control &source);
 	virtual void OnKeypadOpened(Tizen::Ui::Control &source);
 	virtual void OnKeypadWillOpen(Tizen::Ui::Control &source);
+
+	// HttpConnectionListener
+	virtual void connectionDidFinish(HttpConnection *connection, Tizen::Base::Collection::HashMap *response);
+	virtual void connectionDidFail(HttpConnection *connection);
 
   private:
 	static const int ID_BUTTON  = 301;

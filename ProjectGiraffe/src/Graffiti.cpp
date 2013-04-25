@@ -20,6 +20,7 @@ Graffiti::Graffiti() :
 	_latitude(0),
 	_directionX(0),
 	_directionZ(0),
+	_radius(0),
 	_likeCount(0),
 	_flagged(false),
 	_dateCreated(NULL),
@@ -63,6 +64,12 @@ result Graffiti::updateFromDictionary(HashMap *dictionary)
 		dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameDirectionZ));
 		if (dblValue) {
 			_directionZ = dblValue->ToDouble();
+			success = E_SUCCESS;
+		}
+
+		dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameRadius));
+		if (dblValue) {
+			_radius = dblValue->ToDouble();
 			success = E_SUCCESS;
 		}
 
@@ -117,6 +124,9 @@ HashMap *Graffiti::parameterDictionary()
 	parameters->Add(new String(kHTTPParamNameDirectionX), new Double(_directionX));
 	parameters->Add(new String(kHTTPParamNameDirectionY), new Double(_directionY));
 	parameters->Add(new String(kHTTPParamNameDirectionZ), new Double(_directionZ));
+	parameters->Add(new String(kHTTPParamNameRadius), new Double(_radius));
+	parameters->Add(new String(kHTTPParamNameLikeCount), new Integer(_likeCount));
+	parameters->Add(new String(kHTTPParamNameFlagged), new Boolean(_flagged));
 	parameters->Add(new String(kHTTPParamNameDateCreated), _dateCreated->parameterDictionary());
 	parameters->Add(new String(kHTTPParamNameUserID), new Double(_user->id()));
 	return parameters;

@@ -46,6 +46,8 @@ public:
     void setDirectionY(float directionY) { _directionY = directionY; }
     float directionZ() { return _directionZ; }
     void setDirectionZ(float directionZ) { _directionZ = directionZ; }
+    float radius() { return _radius; }
+    void setRadius(float radius) { _radius = radius; }
     int likeCount() { return _likeCount; }
     void setLikeCount(int likeCount);
     bool flagged() { return _flagged; }
@@ -64,6 +66,7 @@ private:
     float _directionX;
     float _directionY;
     float _directionZ;
+    float _radius;
     int _likeCount;
     bool _flagged;
     Date *_dateCreated;
