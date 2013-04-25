@@ -251,8 +251,8 @@ ProjectGiraffeTab3::OnActionPerformed(const Tizen::Ui::Control& source, int acti
 
 		// Set POST body
 
-		HttpMultipartEntity* pHttpUrlEncodedEntity = new HttpMultipartEntity();
-		pHttpUrlEncodedEntity->Construct();
+		HttpMultipartEntity* graffitiParameters = new HttpMultipartEntity();
+		graffitiParameters->Construct();
 		String message = _messageArea->GetText();
 		String latitude;
 		latitude.Append(ProjectGiraffeMainForm::currentLatitude);
@@ -261,10 +261,10 @@ ProjectGiraffeTab3::OnActionPerformed(const Tizen::Ui::Control& source, int acti
 		String radius;
 		radius.Append(_radiusSlider->GetValue());
 
-		pHttpUrlEncodedEntity->AddFilePart(L"message", message);
-		pHttpUrlEncodedEntity->AddFilePart(L"latitude", latitude);
-		pHttpUrlEncodedEntity->AddFilePart(L"longitude", longitude);
-		pHttpUrlEncodedEntity->AddFilePart(L"radius", radius);
+		graffitiParameters->AddStringPart(L"message", message);
+		graffitiParameters->AddStringPart(L"latitude", latitude);
+		graffitiParameters->AddStringPart(L"longitude", longitude);
+		graffitiParameters->AddStringPart(L"radius", radius);
 
 		Graffiti *g = new Graffiti();
 		g->setText(_messageArea->GetText());
@@ -272,7 +272,7 @@ ProjectGiraffeTab3::OnActionPerformed(const Tizen::Ui::Control& source, int acti
 		g->setLongitude(ProjectGiraffeMainForm::currentLongitude);
 		g->setRadius(_radiusSlider->GetValue());
 
-		HttpConnection *connection = HttpConnection::graffitiNewPostConnection(this, pHttpUrlEncodedEntity);
+		HttpConnection *connection = HttpConnection::graffitiNewPostConnection(this, graffitiParameters);
 		AppLogTag("user", "asdf");
 		connection->begin();
 		/*
@@ -489,7 +489,7 @@ ProjectGiraffeTab3::OnKeypadWillOpen(Control &source)
 void
 ProjectGiraffeTab3::connectionDidFinish(HttpConnection *connection, HashMap *response)
 {
-	AppLog("HttpConnection finished");
+	AppLogTag("user", "HttpConnection finished");
 	if (response) {
 
 	} else {
@@ -500,5 +500,6 @@ ProjectGiraffeTab3::connectionDidFinish(HttpConnection *connection, HashMap *res
 void
 ProjectGiraffeTab3::connectionDidFail(HttpConnection *connection)
 {
+	AppLogTag("user", "failed");
 	delete connection;
 }

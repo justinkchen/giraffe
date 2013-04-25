@@ -82,6 +82,7 @@ HttpConnection::HttpConnection(HttpConnectionListener *listener,
 	uri.Append(methodName);
 	request->SetUri(uri);
 	if (parameters) {
+		AppLogTag("user", "added");
 		request->SetEntity(*parameters);
 	}
 
@@ -136,12 +137,12 @@ HttpConnection *
 HttpConnection::graffitiNewPostConnection(
 		HttpConnectionListener *listener, HttpMultipartEntity *graffitiParameters)
 {
-	HttpConnection *connection = NULL;
+//	HttpConnection *connection = NULL;
 
 //	HttpMultipartEntity *parameters = parametersForGraffiti(graffiti);
 
 //	if (parameters) {
-		connection = new HttpConnection(listener, kHTTPMethodNameGraffitiNew,
+	HttpConnection *connection = new HttpConnection(listener, kHTTPMethodNameGraffitiNew,
 				NET_HTTP_METHOD_POST, graffitiParameters);
 //		delete parameters;
 //	}
