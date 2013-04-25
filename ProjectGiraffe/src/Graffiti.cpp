@@ -66,12 +66,6 @@ result Graffiti::updateFromDictionary(HashMap *dictionary)
 			success = E_SUCCESS;
 		}
 
-		dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameLikeCount));
-		if (dblValue) {
-			_likeCount = dblValue->ToInt();
-			success = E_SUCCESS;
-		}
-
 		String *textValue = static_cast<String *>(dictionary->GetValue(kHTTPParamNameText));
 		if (textValue) {
 			_text = *textValue;
@@ -81,12 +75,6 @@ result Graffiti::updateFromDictionary(HashMap *dictionary)
 		String *imageURLValue = static_cast<String *>(dictionary->GetValue(kHTTPParamNameImageURL));
 		if (imageURLValue) {
 			_imageURL = *imageURLValue;
-			success = E_SUCCESS;
-		}
-
-		Boolean *flaggedValue = static_cast<Boolean *>(dictionary->GetValue(kHTTPParamNameFlagged));
-		if (flaggedValue) {
-			_flagged = flaggedValue->ToBool();
 			success = E_SUCCESS;
 		}
 
@@ -129,8 +117,6 @@ HashMap *Graffiti::parameterDictionary()
 	parameters->Add(new String(kHTTPParamNameDirectionX), new Double(_directionX));
 	parameters->Add(new String(kHTTPParamNameDirectionY), new Double(_directionY));
 	parameters->Add(new String(kHTTPParamNameDirectionZ), new Double(_directionZ));
-	parameters->Add(new String(kHTTPParamNameLikeCount), new Integer(_likeCount));
-	parameters->Add(new String(kHTTPParamNameFlagged), new Boolean(_flagged));
 	parameters->Add(new String(kHTTPParamNameDateCreated), _dateCreated->parameterDictionary());
 	parameters->Add(new String(kHTTPParamNameUserID), new Double(_user->id()));
 	return parameters;
