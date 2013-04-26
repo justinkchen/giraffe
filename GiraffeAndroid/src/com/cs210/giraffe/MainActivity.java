@@ -155,13 +155,16 @@ ActionBar.TabListener {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle item selection
+		Intent intent;
 	    switch (item.getItemId()) {
 	        case R.id.action_profile:
 	            // Show current user profile
+	        	intent = new Intent(this, ProfileActivity.class);
+	        	startActivity(intent);
 	            return true;
 	        case R.id.action_settings:
 	            // Start settings activity
-	        	Intent intent = new Intent(this, SettingsActivity.class);
+	        	intent = new Intent(this, SettingsActivity.class);
 	        	startActivity(intent);
 	            return true;
 	        case R.id.action_help:
