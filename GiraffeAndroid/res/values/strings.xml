@@ -11,5 +11,7 @@
     <string name="min_radius">5</string>
     <string name="max_radius">300</string>
     <string name="action_submit">Submit</string>
+    <string name="user">Username</string>
+    <string name="changep">Change Password</string>
 
 </resources>
