@@ -1,11 +1,13 @@
 package com.cs210.giraffe;
 
-import android.app.Activity;
+
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 
-public class ProfileActivity extends Activity {
+public class ProfileActivity extends FragmentActivity {
 
 	private ProfileFragment _pf;
 	
@@ -17,6 +19,7 @@ public class ProfileActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         _pf = new ProfileFragment();
+        
         getFragmentManager().beginTransaction()
     		.replace(android.R.id.content, _pf)
     		.commit();
@@ -24,6 +27,7 @@ public class ProfileActivity extends Activity {
     }
 	
 	public void changePassword(View v) {
-		_pf.setUsername("Clicked");
+		DialogFragment newFragment = new ChangePasswordFragment();
+	    newFragment.show(getSupportFragmentManager(), "changePassword");
 	}
 }

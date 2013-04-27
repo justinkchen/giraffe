@@ -1,5 +1,6 @@
 package com.cs210.giraffe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -20,6 +21,7 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 		super(context, android.R.layout.simple_list_item_2);
 		_inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
+	
 	
 	public void setData(List<Graffiti> data){
 		clear();

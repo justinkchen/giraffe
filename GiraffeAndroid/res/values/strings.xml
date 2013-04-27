@@ -13,5 +13,10 @@
     <string name="action_submit">Submit</string>
     <string name="user">Username</string>
     <string name="changep">Change Password</string>
+    <string name="oldpassword">Old Password</string>
+    <string name="newpassword1">New Password</string>
+    <string name="newpassword2">New Password(repeat)</string>
+    <string name="submit">Submit</string>
+    <string name="cancel">Cancel</string>
 
 </resources>
