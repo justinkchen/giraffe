@@ -70,7 +70,7 @@ ProjectGiraffeTab5::showLoginButton(void)
 	RemoveAllControls();
 
 	Label* loginLabel = new Label();
-	loginLabel->Construct(Rectangle(0, 0, 600, 80), "To view your profile, please log in first.");
+	loginLabel->Construct(Rectangle(0, 0, 600, 80), "To view this tab, please log in first.");
 	centerHorizontally(loginLabel, this);
 	loginLabel->SetName("loginLabel");
 	AddControl(*loginLabel);
