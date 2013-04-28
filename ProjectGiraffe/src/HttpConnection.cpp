@@ -29,7 +29,7 @@ const String kHTTPMethodNameGraffitiFlag = L"graffiti/flag";
 const String kHTTPMethodNameUserLogin = L"users/login";
 const String kHTTPMethodNameUserSignup = L"users/signup";
 const String kHTTPMethodNameUserUpdate = L"users/update";
-const String kHTTPMethodNameUserPosts = L"users/posts";
+const String kHTTPMethodNameUserPosts = L"users/graffiti";
 const String kHTTPMethodNameUserStats = L"users/stats";
 const String kHTTPMethodNameUserLogout = L"users/logout";
 
@@ -111,8 +111,7 @@ HttpConnection::graffitiNearbyGetConnection(
 	fullParameterPath.Format(100, L"%ls?latitude=%f&longitude=%f", urlPath.GetPointer(), latitude, longitude);
 
 	HttpConnection *connection = new HttpConnection(listener,
-			fullParameterPath, NET_HTTP_METHOD_GET, parameters);
-	delete parameters;
+			fullParameterPath, NET_HTTP_METHOD_GET, null);
 
 	return connection;
 }
@@ -127,8 +126,7 @@ HttpConnection::userPostsGetConnection(
 	fullParameterPath.Format(100, L"%ls?id=%d", urlPath.GetPointer(), uid);
 
 	HttpConnection *connection = new HttpConnection(listener,
-			kHTTPMethodNameUserPosts, NET_HTTP_METHOD_GET, parameters);
-	delete parameters;
+			fullParameterPath, NET_HTTP_METHOD_GET, null);
 
 	return connection;
 }

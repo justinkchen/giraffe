@@ -503,6 +503,7 @@ ProjectGiraffeTab4::connectionDidFinish(HttpConnection *connection, HashMap *res
 				if (graffitiDictionary) {
 					Graffiti *newGraffiti = new Graffiti();
 					newGraffiti->updateFromDictionary(graffitiDictionary);
+					newGraffiti->setUser(User::currentUser());
 					AppLog("Updated from dictionary");
 					newItems->Add(newGraffiti);
 				}
@@ -518,6 +519,7 @@ ProjectGiraffeTab4::connectionDidFinish(HttpConnection *connection, HashMap *res
 			displayNoGraffiti();
 		}
 	} else {
+
 		connectionDidFail(connection);
 	}
 }
@@ -525,6 +527,7 @@ ProjectGiraffeTab4::connectionDidFinish(HttpConnection *connection, HashMap *res
 void
 ProjectGiraffeTab4::connectionDidFail(HttpConnection *connection)
 {
+	AppLog("connection failed");
 	showStatus(L"HTTP Status", L"HTTP Request Aborted, check internet connection", true);
 
 	displayNoGraffiti();
