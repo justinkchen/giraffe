@@ -13,9 +13,11 @@
     <string name="action_submit">Submit</string>
     <string name="user">Username</string>
     <string name="changep">Change Password</string>
-    <string name="oldpassword">Old Password</string>
-    <string name="newpassword1">New Password</string>
-    <string name="newpassword2">New Password(repeat)</string>
+    <string name="oldpassword">\tOld Password:</string>
+    <string name="newpassword1">\tNew Password:</string>
+    <string name="newpassword2">\tNew Password (repeat):</string>
+    <string name="oldpasswordhint">Old Password</string>
+    <string name="newpasswordhint">New Password</string>
     <string name="submit">Submit</string>
     <string name="cancel">Cancel</string>
 
