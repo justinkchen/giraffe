@@ -105,13 +105,13 @@ HttpConnection *
 HttpConnection::graffitiNearbyGetConnection(
 		HttpConnectionListener *listener, double latitude, double longitude)
 {
-	HttpMultipartEntity *parameters = new HttpMultipartEntity();
-	parameters->Construct();
-	parameters->AddStringPart(L"latitude", Double(latitude).ToString());
-	parameters->AddStringPart(L"longitude", Double(longitude).ToString());
+	String fullParameterPath;
+	String urlPath;
+	urlPath.Append(kHTTPMethodNameGraffitiNearby);
+	fullParameterPath.Format(100, L"%ls?latitude=%f&longitude=%f", urlPath.GetPointer(), latitude, longitude);
 
 	HttpConnection *connection = new HttpConnection(listener,
-			kHTTPMethodNameGraffitiNearby, NET_HTTP_METHOD_GET, parameters);
+			fullParameterPath, NET_HTTP_METHOD_GET, parameters);
 	delete parameters;
 
 	return connection;
@@ -121,9 +121,10 @@ HttpConnection *
 HttpConnection::userPostsGetConnection(
 		HttpConnectionListener *listener, int uid)
 {
-	HttpMultipartEntity *parameters = new HttpMultipartEntity();
-	parameters->Construct();
-	parameters->AddStringPart(L"id", Integer(uid).ToString());
+	String fullParameterPath;
+	String urlPath;
+	urlPath.Append(kHTTPMethodNameUserPosts);
+	fullParameterPath.Format(100, L"%ls?id=%d", urlPath.GetPointer(), uid);
 
 	HttpConnection *connection = new HttpConnection(listener,
 			kHTTPMethodNameUserPosts, NET_HTTP_METHOD_GET, parameters);

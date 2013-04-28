@@ -35,8 +35,10 @@ Graffiti::~Graffiti() {
 
 result Graffiti::updateFromDictionary(HashMap *dictionary)
 {
+	AppLog("In updateFromDictionary");
 	result success = E_FAILURE;
 	if (dictionary && !dictionary->ContainsKey(kHTTPParamNameError)) {
+		AppLog("updating from dictionary");
 		Double *dblValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameLongitude));
 		if (dblValue) {
 			_longitude = dblValue->ToDouble();
@@ -87,18 +89,27 @@ result Graffiti::updateFromDictionary(HashMap *dictionary)
 
 		HashMap *dateDictionary = static_cast<HashMap *>(dictionary->GetValue(kHTTPParamNameDateCreated));
 		if (dateDictionary) {
-			_dateCreated = new Date();
-			result dateSuccess = _dateCreated->updateFromDictionary(dateDictionary);
-			if (IsFailed(dateSuccess)) {
-				delete _dateCreated;
-				_dateCreated = NULL;
-			} else {
-				success = E_SUCCESS;
-			}
+			// TODO: Handle dates
+//			_dateCreated = new Date();
+//			result dateSuccess = _dateCreated->updateFromDictionary(dateDictionary);
+//			if (IsFailed(dateSuccess)) {
+//				delete _dateCreated;
+//				_dateCreated = NULL;
+//			} else {
+//				success = E_SUCCESS;
+//			}
+		}
+
+		String *usernameValue = static_cast<String *>(dictionary->GetValue(kHTTPParamNameUsername));
+		if (usernameValue) {
+			_user = new User();
+			_user->setUsername(usernameValue->GetPointer());
+			success = E_SUCCESS;
 		}
 
 		HashMap *userDictionary = static_cast<HashMap *>(dictionary->GetValue(kHTTPParamNameUser));
 		if (userDictionary) {
+			// TODO: Handle users using a dictionary instead of just a username
 			_user = new User();
 			result userSuccess = _user->updateFromDictionary(userDictionary);
 			if (IsFailed(userSuccess)) {
@@ -109,7 +120,7 @@ result Graffiti::updateFromDictionary(HashMap *dictionary)
 			}
 		}
 	}
-
+	AppLog("Finished updating from dictionary");
 	return success;
 }
 

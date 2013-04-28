@@ -344,26 +344,32 @@ void ProjectGiraffeTab1::connectionDidFinish(HttpConnection *connection, Tizen::
 	AppLog("HttpConnection finished");
 	if (response) {
 		ArrayList *graffitiList = static_cast<ArrayList *>(response->GetValue(kHTTPParamNameGraffiti));
+		AppLog("Got graffiti list");
 		if (graffitiList) {
 			ArrayList *newItems = new ArrayList(SingleObjectDeleter);
 			newItems->Construct();
-
+			AppLog("Going through dictionary");
 			for (int i = 0; i < graffitiList->GetCount(); i++) {
 				HashMap *graffitiDictionary = static_cast<HashMap *>(graffitiList->GetAt(i));
 				if (graffitiDictionary) {
+					AppLog("Creating new graffiti from dictionary");
 					Graffiti *newGraffiti = new Graffiti();
+					AppLog("Updating from dictionary");
 					newGraffiti->updateFromDictionary(graffitiDictionary);
+					AppLog("Graffiti updated from dictionary");
 					newItems->Add(newGraffiti);
 				}
 			}
 			if(graffitiList->GetCount() == 0){
 				displayNoGraffiti();
 			}
+			AppLog("Setting items");
 			setItems(newItems);
 		}
 	} else {
 		connectionDidFail(connection);
 	}
+	AppLog("Finishing processing response data");
 }
 
 void ProjectGiraffeTab1::connectionDidFail(HttpConnection *connection)
