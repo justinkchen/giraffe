@@ -68,7 +68,7 @@ public class AddGraffitiFragment extends Fragment implements OnSeekBarChangeList
 				newGraffiti.setLatitude(myLocation.getLatitude());
 				newGraffiti.setLongitude(myLocation.getLongitude());
 				newGraffiti.setRadius(_currentProgress);
-				String uri = "http://ec2-54-243-69-6.compute-1.amazonaws.com/addgraffiti";
+				String uri = "http://ec2-54-243-69-6.compute-1.amazonaws.com/graffiti/new";
 				InputStream responseStream = postGraffiti(newGraffiti, uri);
 			}
 		});

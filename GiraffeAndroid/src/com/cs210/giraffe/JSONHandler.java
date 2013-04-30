@@ -31,7 +31,8 @@ public class JSONHandler {
 		}
 		
 		try {
-			JSONArray returnArray = new JSONArray(urlInputString);
+			JSONObject returnObject = new JSONObject(urlInputString);
+			JSONArray returnArray = returnObject.getJSONArray("graffiti");
 			System.out.println("returnArray length: " + returnArray.length());
 			return returnArray;
 		} catch (JSONException e) {

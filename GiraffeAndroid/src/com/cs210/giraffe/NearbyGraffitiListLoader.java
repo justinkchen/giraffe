@@ -13,6 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.location.Location;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 import android.content.Context;
@@ -30,9 +31,12 @@ public class NearbyGraffitiListLoader extends AsyncTaskLoader<List<Graffiti>> {
 	public List<Graffiti> loadInBackground() {
 		System.out.println("NearbyGraffitiListLoader.loadInBackground");
 		URL url = null;
+		Location currLocation = MainActivity.getGiraffeLocationListener().getCurrentLocation();
 		try {
-			url = new URL("http://ec2-54-243-69-6.compute-1.amazonaws.com/");
-		} catch (MalformedURLException e1) {
+			//url = new URL("http://ec2-54-243-69-6.compute-1.amazonaws.com/graffiti/nearby" + "?latitude=" + currLocation.getLatitude() + "&longitude=" + currLocation.getLongitude());
+			url = new URL("http://ec2-54-243-69-6.compute-1.amazonaws.com/graffiti/nearby?latitude=37.4280040&longitude=-122.1706350");
+		} 
+		catch (MalformedURLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
