@@ -29,6 +29,8 @@
 		BBAC6418172DF0E3002A5658 /* GiraffeSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBAC6417172DF0E3002A5658 /* GiraffeSettingsViewController.m */; };
 		BBAC641B172DF4A4002A5658 /* Graffiti.m in Sources */ = {isa = PBXBuildFile; fileRef = BBAC641A172DF4A4002A5658 /* Graffiti.m */; };
 		BBAC641E172DF4B1002A5658 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = BBAC641D172DF4B1002A5658 /* User.m */; };
+		BBD0151D172F3C2B00DB2ACC /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBD0151C172F3C2B00DB2ACC /* CoreLocation.framework */; };
+		BBD01520172F3EF700DB2ACC /* HttpConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = BBD0151F172F3EF700DB2ACC /* HttpConnection.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,6 +67,9 @@
 		BBAC641A172DF4A4002A5658 /* Graffiti.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Graffiti.m; sourceTree = "<group>"; };
 		BBAC641C172DF4B1002A5658 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		BBAC641D172DF4B1002A5658 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		BBD0151C172F3C2B00DB2ACC /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		BBD0151E172F3EF700DB2ACC /* HttpConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HttpConnection.h; path = ../HttpConnection.h; sourceTree = "<group>"; };
+		BBD0151F172F3EF700DB2ACC /* HttpConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HttpConnection.m; path = ../HttpConnection.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +77,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBD0151D172F3C2B00DB2ACC /* CoreLocation.framework in Frameworks */,
 				BB52B484172896330077591D /* UIKit.framework in Frameworks */,
 				BB52B486172896330077591D /* Foundation.framework in Frameworks */,
 				BB52B488172896330077591D /* CoreGraphics.framework in Frameworks */,
@@ -84,6 +90,7 @@
 		BB52B477172896330077591D = {
 			isa = PBXGroup;
 			children = (
+				BBD0151C172F3C2B00DB2ACC /* CoreLocation.framework */,
 				BB52B489172896330077591D /* GiraffeiOS */,
 				BB52B482172896330077591D /* Frameworks */,
 				BB52B481172896330077591D /* Products */,
@@ -116,21 +123,23 @@
 				BB52B49B172896340077591D /* MainStoryboard_iPhone.storyboard */,
 				BBAC6419172DF4A4002A5658 /* Graffiti.h */,
 				BBAC641A172DF4A4002A5658 /* Graffiti.m */,
-				BBAC641C172DF4B1002A5658 /* User.h */,
-				BBAC641D172DF4B1002A5658 /* User.m */,
+				BBD0151E172F3EF700DB2ACC /* HttpConnection.h */,
+				BBD0151F172F3EF700DB2ACC /* HttpConnection.m */,
+				BB52B49E172896340077591D /* MainStoryboard_iPad.storyboard */,
+				BB52B4A1172896340077591D /* GiraffeNearbyViewController.h */,
+				BB52B4A2172896340077591D /* GiraffeNearbyViewController.m */,
+				BB52B4A8172896340077591D /* GiraffeMapViewController.h */,
+				BB52B4A9172896340077591D /* GiraffeMapViewController.m */,
+				BBAC6410172DEBB7002A5658 /* GiraffeShareViewController.h */,
+				BBAC6411172DEBB7002A5658 /* GiraffeShareViewController.m */,
 				BBAC6413172DF0D2002A5658 /* GiraffeProfileViewController.h */,
 				BBAC6414172DF0D3002A5658 /* GiraffeProfileViewController.m */,
 				BBAC6416172DF0E3002A5658 /* GiraffeSettingsViewController.h */,
 				BBAC6417172DF0E3002A5658 /* GiraffeSettingsViewController.m */,
-				BB52B49E172896340077591D /* MainStoryboard_iPad.storyboard */,
-				BB52B4A1172896340077591D /* GiraffeNearbyViewController.h */,
-				BB52B4A2172896340077591D /* GiraffeNearbyViewController.m */,
-				BBAC6410172DEBB7002A5658 /* GiraffeShareViewController.h */,
-				BBAC6411172DEBB7002A5658 /* GiraffeShareViewController.m */,
+				BBAC641C172DF4B1002A5658 /* User.h */,
+				BBAC641D172DF4B1002A5658 /* User.m */,
 				BB52B4A4172896340077591D /* first.png */,
 				BB52B4A6172896340077591D /* first@2x.png */,
-				BB52B4A8172896340077591D /* GiraffeMapViewController.h */,
-				BB52B4A9172896340077591D /* GiraffeMapViewController.m */,
 				BB52B4AB172896340077591D /* second.png */,
 				BB52B4AD172896340077591D /* second@2x.png */,
 				BB52B48A172896330077591D /* Supporting Files */,
@@ -233,6 +242,7 @@
 				BBAC6418172DF0E3002A5658 /* GiraffeSettingsViewController.m in Sources */,
 				BBAC641B172DF4A4002A5658 /* Graffiti.m in Sources */,
 				BBAC641E172DF4B1002A5658 /* User.m in Sources */,
+				BBD01520172F3EF700DB2ACC /* HttpConnection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

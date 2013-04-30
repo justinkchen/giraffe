@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
 
-@interface GiraffeShareViewController : UIViewController
+#import "HttpConnection.h"
+
+@interface GiraffeShareViewController : UIViewController <CLLocationManagerDelegate, NSURLConnectionDelegate> {
+    CLLocationManager *locationManager;
+}
+@property (retain, nonatomic) CLLocationManager *locationManager;
 
 @end
