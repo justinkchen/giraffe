@@ -34,15 +34,20 @@
             android:value="AIzaSyC7vHHwQ0XsJP6SbF51ZbdYYG_3YVkmnbo"/>
         <activity
             android:name="com.cs210.giraffe.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name" 
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.cs210.giraffe.SettingsActivity"></activity>
-        <activity android:name="com.cs210.giraffe.ProfileActivity"></activity>
+        <activity android:name="com.cs210.giraffe.SettingsActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity android:name="com.cs210.giraffe.ProfileActivity"
+            android:screenOrientation="portrait" >  
+        </activity>
         
     </application>
 

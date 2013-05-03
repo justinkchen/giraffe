@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
@@ -43,6 +44,11 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 		Graffiti item = getItem(position);
 		((TextView)view.findViewById(R.id.username)).setTypeface(null, Typeface.BOLD);
 		((TextView)view.findViewById(R.id.message)).setText(item.getText());
+		
+		if(item.getImageURL() != null){
+			new DownloadImageTask((ImageView) view.findViewById(R.id.graffiti_image))
+			.execute(item.getImageURL());
+		}
 		return view;
 	}
 
