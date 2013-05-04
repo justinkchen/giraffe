@@ -20,5 +20,6 @@
     <string name="newpasswordhint">New Password</string>
     <string name="submit">Submit</string>
     <string name="cancel">Cancel</string>
+    <string name="subsetting">Subsettings</string>
 
 </resources>
