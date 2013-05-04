@@ -10,12 +10,8 @@
 	        android:summary="Test summary"
 	        android:defaultValue="true" />
 	    
-	    <ListPreference android:key="change_password"
-		    android:title="@string/changep"
-		    android:entries="@array/settings_change_password"
-		    android:entryValues="@array/settings_change_password_phone_value"
-		    android:defaultValue="1337">
-		</ListPreference>
+	    <Preference android:key="change_password"
+		    android:title="@string/changep" />
 	    
     </PreferenceCategory>
 	    

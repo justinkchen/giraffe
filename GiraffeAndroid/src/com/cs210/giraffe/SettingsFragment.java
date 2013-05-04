@@ -23,8 +23,8 @@ public class SettingsFragment extends PreferenceFragment {
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
         
-        ListPreference pLocAuto = (ListPreference) findPreference("change_password");
-        pLocAuto.setOnPreferenceClickListener(new myOnPreferenceClickListener());
+        Preference changePasswordPreference =  findPreference("change_password");
+        changePasswordPreference.setOnPreferenceClickListener(new myOnPreferenceClickListener());
     }
 
    
@@ -34,7 +34,7 @@ public class SettingsFragment extends PreferenceFragment {
         	Log.i("Johan", "Click");
         	df = new ChangePasswordFragment();
     	    df.show(getFragmentManager(), "changePassword");
-            return false;
+            return true;
         }
     }
 }
