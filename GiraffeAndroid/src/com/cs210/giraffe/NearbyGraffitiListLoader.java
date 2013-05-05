@@ -33,8 +33,8 @@ public class NearbyGraffitiListLoader extends AsyncTaskLoader<List<Graffiti>> {
 		URL url = null;
 		Location currLocation = MainActivity.getGiraffeLocationListener().getCurrentLocation();
 		try {
-			url = new URL("http://ec2-54-243-69-6.compute-1.amazonaws.com/graffiti/nearby" + "?latitude=" + currLocation.getLatitude() + "&longitude=" + currLocation.getLongitude());
-			//url = new URL("http://ec2-54-243-69-6.compute-1.amazonaws.com/graffiti/nearby?latitude=37.4280040&longitude=-122.1706350");
+			//url = new URL("http://ec2-54-243-69-6.compute-1.amazonaws.com/graffiti/nearby" + "?latitude=" + currLocation.getLatitude() + "&longitude=" + currLocation.getLongitude());
+			url = new URL("http://ec2-54-243-69-6.compute-1.amazonaws.com/graffiti/nearby?latitude=37.4280040&longitude=-122.1706350");
 		} 
 		catch (MalformedURLException e1) {
 			// TODO Auto-generated catch block
@@ -51,7 +51,9 @@ public class NearbyGraffitiListLoader extends AsyncTaskLoader<List<Graffiti>> {
 				int graffitiRadius = ((JSONObject)graffitiJSONArray.get(i)).getInt("radius");
 				double graffitiLatitude = ((JSONObject)graffitiJSONArray.get(i)).getDouble("latitude");
 				double graffitiLongitude = ((JSONObject)graffitiJSONArray.get(i)).getDouble("longitude");
+				String graffitiImageUrl = ((JSONObject)graffitiJSONArray.get(i)).getString("imageUrl");
 				newGraffiti.setText(graffitiMessage);
+				newGraffiti.setImageURL(graffitiImageUrl);
 				newGraffiti.setRadius(graffitiRadius);
 				newGraffiti.setLatitude(graffitiLatitude);
 				newGraffiti.setLongitude(graffitiLongitude);
