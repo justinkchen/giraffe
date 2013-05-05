@@ -3,6 +3,7 @@ package com.cs210.giraffe;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -54,5 +55,4 @@ public class SettingsActivity extends PreferenceActivity {
 	public void submitPasswordDialog(View v) {
 		_sf.df.submitChangePassword();
 	}
-    
 }
