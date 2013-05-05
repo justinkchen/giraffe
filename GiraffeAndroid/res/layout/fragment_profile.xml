@@ -35,14 +35,4 @@
 
     </ListView>
 
-    <Button
-        android:id="@+id/changePassButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/userImageView"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="45dp"
-        android:text="@string/changep"
-        android:onClick="changePassword" />
-
 </RelativeLayout>

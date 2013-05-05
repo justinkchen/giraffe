@@ -11,7 +11,10 @@
 	        android:defaultValue="true" />
 	    
 	    <Preference android:key="change_password"
-		    android:title="@string/changep" />
+		    android:title="@string/change_password" />
+	    
+	    <Preference android:key="change_profile_image"
+		    android:title="@string/change_profile_image" />
 	    
     </PreferenceCategory>
 	    
