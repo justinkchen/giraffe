@@ -10,14 +10,16 @@
 
 @interface User : NSObject
 
+@property (nonatomic, assign) int identifier;
+@property (nonatomic, strong) NSString *username;
+@property (nonatomic, strong) NSString *email;
+@property (nonatomic, strong) NSString *imageUrl;
+@property (nonatomic, strong) NSDate *dateCreated;
+
 + (User *)currentUser;
 + (void)saveUser;
 + (void)loadUser;
 
-//- (void)addListener:(UserListener *)listener;
-//- (void)removeObserver
-
-// update??
 - (void)clear;
 
 @end

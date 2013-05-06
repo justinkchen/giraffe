@@ -8,20 +8,7 @@
 
 #import "User.h"
 
-@interface User()
-@property (nonatomic, assign) int userId;
-@property (nonatomic, strong) NSString *username;
-@property (nonatomic, strong) NSString *email;
-@property (nonatomic, strong) NSString *avatar;
-//@property (nonatomic, strong) NSDate _dateCreated;
-// listerns?
-@end
-
 @implementation User
-
-@synthesize userId = _userId;
-@synthesize username = _username;
-@synthesize email = _email;
 
 static User *_currentUser;
 
