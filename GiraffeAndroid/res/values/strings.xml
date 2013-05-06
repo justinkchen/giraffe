@@ -10,6 +10,7 @@
     <string name="action_help">Help</string>
     <string name="min_radius">5</string>
     <string name="max_radius">300</string>
+    <string name="action_add_image">Add Image</string>
     <string name="action_submit">Submit</string>
     <string name="user">Username</string>
     <string name="change_password">Change Password</string>

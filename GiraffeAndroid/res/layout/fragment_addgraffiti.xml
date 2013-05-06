@@ -20,6 +20,16 @@
         android:layout_alignBottom="@+id/radiusSeekBar"
         android:layout_toLeftOf="@+id/radiusSeekBar"
         android:text="@string/min_radius" />
+    
+    <Button
+        android:id="@+id/addImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="21dp"
+        android:minWidth="150dip"
+        android:text="@string/action_add_image" />
 
     <Button
         android:id="@+id/submitButton"
@@ -28,6 +38,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="21dp"
+        android:layout_toRightOf="@+id/addImageButton"
         android:minWidth="150dip"
         android:text="@string/action_submit" />
 
