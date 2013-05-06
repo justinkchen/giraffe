@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class Graffiti;
+
 @interface GraffitiCell : UITableViewCell
+
+@property (nonatomic, retain) Graffiti *graffiti;
 
 @end
