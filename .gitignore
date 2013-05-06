@@ -37,4 +37,8 @@ crash-info/
 # Pem files
 *.pem
 
+# Xcode user data
+GiraffeiOS/GiraffeiOS.xcodeproj/xcuserdata/*
+GiraffeiOS/GiraffeiOS.xcodeproj/project.xcworkspace/xcuserdata/*
+
 *~
