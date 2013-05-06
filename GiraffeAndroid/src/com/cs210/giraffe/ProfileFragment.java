@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,10 +31,6 @@ public class ProfileFragment extends Fragment {
 	public static final int RESULT_OK = -1;
 
 	private TextView _userText;
-	private ListView _userPostsView;
-	ArrayAdapter<Graffiti> _adapter;
-	private ArrayList<Graffiti> _userPosts;
-	private UserGraffitiListLoader _userPostLoader;
 	private ImageView _userProfilePicture;
 
 	public ProfileFragment() {
@@ -54,13 +50,6 @@ public class ProfileFragment extends Fragment {
 				false);
 
 		_userText = (TextView) rootView.findViewById(R.id.userTextView);
-		_userPostsView = (ListView) rootView
-				.findViewById(R.id.userPostListView);
-		_userPostLoader = new UserGraffitiListLoader(getActivity());
-		_userPosts = new ArrayList<Graffiti>();
-		_adapter = new ArrayAdapter<Graffiti>(getActivity(),
-				android.R.layout.simple_list_item_2, _userPosts);
-		_userPostsView.setAdapter(_adapter);
 		_userProfilePicture = (ImageView) rootView
 				.findViewById(R.id.userImageView);
 		_userProfilePicture.setOnClickListener(new profileImageClickListener());

@@ -1,6 +1,7 @@
 package com.cs210.giraffe;
 
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -20,18 +21,14 @@ public class ProfileActivity extends FragmentActivity {
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        _pf = new ProfileFragment();
-        
-        getFragmentManager().beginTransaction()
-    		.replace(android.R.id.content, _pf)
-    		.commit();
+        setContentView(R.layout.activity_profile);
+//        _pf = new ProfileFragment();
+//        
+//        getFragmentManager().beginTransaction()
+//    		.replace(android.R.id.content, _pf)
+//    		.commit();
         getActionBar().setDisplayHomeAsUpEnabled(true);
     }
-	
-	public void changePassword(View v) {
-		_df = new ChangePasswordFragment();
-	    //_df.show(getSupportFragmentManager(), "changePassword");
-	}
 	
 	
 	
