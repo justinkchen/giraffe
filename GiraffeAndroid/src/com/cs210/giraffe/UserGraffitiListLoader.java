@@ -13,6 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.location.Location;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 import android.content.Context;
@@ -30,15 +31,21 @@ public class UserGraffitiListLoader extends AsyncTaskLoader<List<Graffiti>> {
 	public List<Graffiti> loadInBackground() {
 		System.out.println("UserGraffitiListLoader.loadInBackground");
 		URL url = null;
+		Location currLocation = MainActivity.getGiraffeLocationListener().getCurrentLocation();
 		try {
-			url = new URL("http://ec2-54-243-69-6.compute-1.amazonaws.com/");
-		} catch (MalformedURLException e1) {
+			//url = new URL("http://ec2-54-243-69-6.compute-1.amazonaws.com/graffiti/User" + "?latitude=" + currLocation.getLatitude() + "&longitude=" + currLocation.getLongitude());
+			url = new URL("http://ec2-54-243-69-6.compute-1.amazonaws.com/graffiti/nearby?latitude=37.4280040&longitude=-122.1706350");
+			Log.i("Johan", "Trying url");
+		} 
+		catch (MalformedURLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		Log.w("UserGraffitiListLoader", "Loading in background");
 		JSONArray graffitiJSONArray = JSONHandler.getJsonArrayFromURL(url, "graffiti");
 		List<Graffiti> graffitiList = new ArrayList<Graffiti>(graffitiJSONArray.length());
+
+		Log.i("Johan", Integer.toString(graffitiJSONArray.length()));
 		for (int i = 0; i < graffitiJSONArray.length(); i++){
 			Graffiti newGraffiti = new Graffiti();
 			try {
@@ -47,7 +54,9 @@ public class UserGraffitiListLoader extends AsyncTaskLoader<List<Graffiti>> {
 				int graffitiRadius = ((JSONObject)graffitiJSONArray.get(i)).getInt("radius");
 				double graffitiLatitude = ((JSONObject)graffitiJSONArray.get(i)).getDouble("latitude");
 				double graffitiLongitude = ((JSONObject)graffitiJSONArray.get(i)).getDouble("longitude");
+				String graffitiImageUrl = ((JSONObject)graffitiJSONArray.get(i)).getString("imageUrl");
 				newGraffiti.setText(graffitiMessage);
+				newGraffiti.setImageURL(graffitiImageUrl);
 				newGraffiti.setRadius(graffitiRadius);
 				newGraffiti.setLatitude(graffitiLatitude);
 				newGraffiti.setLongitude(graffitiLongitude);
