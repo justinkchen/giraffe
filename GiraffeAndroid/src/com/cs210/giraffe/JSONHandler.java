@@ -18,7 +18,7 @@ import android.util.Log;
 
 public class JSONHandler {
 
-	public static JSONArray getJsonArrayFromURL(URL url){
+	public static JSONArray getJsonArrayFromURL(URL url, String arrayName){
 		String urlInputString = "";
 		try {
 			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -32,14 +32,13 @@ public class JSONHandler {
 		
 		try {
 			JSONObject returnObject = new JSONObject(urlInputString);
-			JSONArray returnArray = returnObject.getJSONArray("graffiti");
-			System.out.println("returnArray length: " + returnArray.length());
+			JSONArray returnArray = returnObject.getJSONArray(arrayName);
 			return returnArray;
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
-		return new JSONArray();
 	}
 	
 	public static String convertStreamToString(InputStream is) throws IOException {

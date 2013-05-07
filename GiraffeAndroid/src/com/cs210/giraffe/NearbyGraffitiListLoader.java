@@ -41,7 +41,7 @@ public class NearbyGraffitiListLoader extends AsyncTaskLoader<List<Graffiti>> {
 			e1.printStackTrace();
 		}
 		Log.w("NearbyGraffitiListLoader", "Loading in background");
-		JSONArray graffitiJSONArray = JSONHandler.getJsonArrayFromURL(url);
+		JSONArray graffitiJSONArray = JSONHandler.getJsonArrayFromURL(url, "graffiti");
 		List<Graffiti> graffitiList = new ArrayList<Graffiti>(graffitiJSONArray.length());
 		for (int i = 0; i < graffitiJSONArray.length(); i++){
 			Graffiti newGraffiti = new Graffiti();

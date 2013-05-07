@@ -16,6 +16,7 @@ import android.view.View;
 public class SettingsActivity extends PreferenceActivity {
 
 	private SettingsFragment _sf;
+	private NotLoggedInFragment _notLoggedInFragment;
 	
 	public SettingsActivity() {
 		// TODO Auto-generated constructor stub
@@ -23,12 +24,21 @@ public class SettingsActivity extends PreferenceActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-    	_sf = new SettingsFragment();
-        super.onCreate(savedInstanceState);
-        getFragmentManager().beginTransaction()
-    		.replace(android.R.id.content, _sf)
-    		.commit();
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+    	getActionBar().setTitle(R.string.action_settings);
+    	if(MainActivity.isLoggedIn()){
+	    	_sf = new SettingsFragment();
+	        super.onCreate(savedInstanceState);
+	        getFragmentManager().beginTransaction()
+	    		.replace(android.R.id.content, _sf)
+	    		.commit();
+    	}else{
+    		_notLoggedInFragment = new NotLoggedInFragment();
+    		super.onCreate(savedInstanceState);
+	        getFragmentManager().beginTransaction()
+	    		.replace(android.R.id.content, _notLoggedInFragment)
+	    		.commit();
+    	}
+    	getActionBar().setDisplayHomeAsUpEnabled(true);
     }
     
     @Override

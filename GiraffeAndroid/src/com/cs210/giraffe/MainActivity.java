@@ -37,7 +37,8 @@ public class MainActivity extends FragmentActivity implements
 ActionBar.TabListener {
 
 	static final int NUM_TABS = 3;
-	private static GiraffeLocationListener locationListener;
+	private static GiraffeLocationListener locationListener = null;
+	private static User currentUser = null;
 	
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -53,6 +54,10 @@ ActionBar.TabListener {
 	 * The {@link ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
+	
+	protected static boolean isLoggedIn(){
+		return (currentUser != null);
+	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -148,7 +153,11 @@ ActionBar.TabListener {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		// Handle disabling or enabling menu based on user login
-
+		if(!isLoggedIn()){
+			menu.getItem(0).setVisible(false);
+		}else{
+			menu.getItem(0).setVisible(true);
+		}
 		return true;
 	}
 
@@ -197,6 +206,14 @@ ActionBar.TabListener {
 		return locationListener;
 	}
 	
+	public static User getCurrentUser() {
+		return currentUser;
+	}
+
+	public static void setCurrentUser(User currentUser) {
+		MainActivity.currentUser = currentUser;
+	}
+
 	/**
 	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
 	 * one of the sections/tabs/pages.

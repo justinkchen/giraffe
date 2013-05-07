@@ -21,7 +21,7 @@ public class ProfileActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         _pf = new ProfileFragment();
-        
+        getActionBar().setTitle(R.string.action_profile);
         getFragmentManager().beginTransaction()
     		.replace(android.R.id.content, _pf)
     		.commit();

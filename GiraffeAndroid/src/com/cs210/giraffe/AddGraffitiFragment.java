@@ -16,6 +16,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ public class AddGraffitiFragment extends Fragment implements OnSeekBarChangeList
 	private SeekBar _radiusBar = null;
 	private EditText _messageBox = null;
 	private int _currentProgress = 50;
+	private LoginFragment loginFragment;
 
 	private static final int MIN_RADIUS = 10; // meters
 
@@ -50,29 +52,76 @@ public class AddGraffitiFragment extends Fragment implements OnSeekBarChangeList
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_addgraffiti,
-				container, false);
-		_radiusBar = (SeekBar) rootView.findViewById(R.id.radiusSeekBar);
-		_radiusBar.setOnSeekBarChangeListener(this);
-		_messageBox = (EditText) rootView.findViewById(R.id.graffitiEditText);
+		View rootView;
+    	if(MainActivity.isLoggedIn()){
 		
-		final Button submitButton = (Button) rootView.findViewById(R.id.submitButton);
-		submitButton.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// Perform action on click
-				Location myLocation = MainActivity.getGiraffeLocationListener().getCurrentLocation();
-				Graffiti newGraffiti = new Graffiti();
-				newGraffiti.setText(_messageBox.getText().toString());
-				newGraffiti.setLatitude(myLocation.getLatitude());
-				newGraffiti.setLongitude(myLocation.getLongitude());
-				newGraffiti.setRadius(_currentProgress);
-				String uri = "http://ec2-54-243-69-6.compute-1.amazonaws.com/graffiti/new";
-				InputStream responseStream = postGraffiti(newGraffiti, uri);
-			}
-		});
-
+			rootView = inflater.inflate(R.layout.fragment_addgraffiti,
+					container, false);
+			_radiusBar = (SeekBar) rootView.findViewById(R.id.radiusSeekBar);
+			_radiusBar.setOnSeekBarChangeListener(this);
+			_messageBox = (EditText) rootView.findViewById(R.id.graffitiEditText);
+			
+			final Button submitButton = (Button) rootView.findViewById(R.id.submitButton);
+			submitButton.setOnClickListener(new View.OnClickListener() {
+		
+				@Override
+				public void onClick(View v) {
+					// Perform action on click
+					Location myLocation = MainActivity.getGiraffeLocationListener().getCurrentLocation();
+					Graffiti newGraffiti = new Graffiti();
+					newGraffiti.setText(_messageBox.getText().toString());
+					newGraffiti.setLatitude(myLocation.getLatitude());
+					newGraffiti.setLongitude(myLocation.getLongitude());
+					newGraffiti.setRadius(_currentProgress);
+					String uri = "http://ec2-54-243-69-6.compute-1.amazonaws.com/graffiti/new";
+					InputStream responseStream = postGraffiti(newGraffiti, uri);
+					
+					// TODO: check response of server
+					boolean success = true;
+					if (success){
+						new AlertDialog.Builder(getActivity())
+						.setIcon(R.drawable.ic_navigation_accept)
+						.setTitle("Success!")
+						.setMessage("Graffiti Successfully Posted!")
+						.setCancelable(false)
+						.setPositiveButton("Okay", new DialogInterface.OnClickListener()
+						{
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								// Close dialog  
+							}
+						})
+						.show();
+						_messageBox.setText("");
+					}
+				}
+			});
+    	}else{
+    		rootView = inflater.inflate(R.layout.fragment_notloggedin,
+					container, false);
+    		final Button loginButton = (Button) rootView.findViewById(R.id.loginbutton);
+    		final Button registerButton = (Button) rootView.findViewById(R.id.registerbutton);
+			
+			loginButton.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// Perform action on click
+					loginFragment = new LoginFragment();
+					loginFragment.show(getFragmentManager(), "loginFragment");
+				}
+			});
+			
+			registerButton.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// Perform action on click
+					Intent intent = new Intent(getActivity(), RegisterActivity.class);
+		        	getActivity().startActivity(intent);
+				}
+			});
+    	}
 		return rootView;
 	}
 
@@ -147,18 +196,18 @@ public class AddGraffitiFragment extends Fragment implements OnSeekBarChangeList
 		
 		try {
 			sb.append("message=" + URLEncoder.encode(newGraffiti.getText(), "UTF-8"));
-			sb.append("&latitude=" + URLEncoder.encode(newGraffiti.getLatitude() + "", "UTF-8"));
-			sb.append("&longitude=" + URLEncoder.encode(newGraffiti.getLongitude() + "", "UTF-8"));
-			sb.append("&radius=" + URLEncoder.encode(newGraffiti.getRadius() + "", "UTF-8"));
-			sb.append("&userid=" + URLEncoder.encode("1", "UTF-8"));
+			sb.append("&latitude=" + URLEncoder.encode(String.valueOf(newGraffiti.getLatitude()), "UTF-8"));
+			sb.append("&longitude=" + URLEncoder.encode(String.valueOf(newGraffiti.getLongitude()), "UTF-8"));
+			sb.append("&radius=" + URLEncoder.encode(String.valueOf(newGraffiti.getRadius()), "UTF-8"));
+			sb.append("&userid=" + URLEncoder.encode(String.valueOf(1), "UTF-8"));
 		} catch (UnsupportedEncodingException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		URL url;
-		HttpsTask task = new HttpsTask();
-		task.execute("https://ec2-54-243-69-6.compute-1.amazonaws.com/");
-		Log.d("Johan", "Posting URL");
+		URL url = null;
+//		HttpsTask task = new HttpsTask();
+//		task.execute("https://ec2-54-243-69-6.compute-1.amazonaws.com/");
+//		Log.d("Johan", "Posting URL");
 		try {
 			url = new URL(urlString);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -174,24 +223,6 @@ public class AddGraffitiFragment extends Fragment implements OnSeekBarChangeList
 		} catch (Exception e) {
 			//handle the exception !
 			System.out.println("Error Message: " + e.getMessage());
-		}
-		// TODO: check response of server
-		boolean success = true;
-		if (success){
-			new AlertDialog.Builder(getActivity())
-			.setIcon(R.drawable.ic_navigation_accept)
-			.setTitle("Success!")
-			.setMessage("Graffiti Successfully Posted!")
-			.setCancelable(false)
-			.setPositiveButton("Okay", new DialogInterface.OnClickListener()
-			{
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// Close dialog  
-				}
-			})
-			.show();
-			_messageBox.setText("");
 		}
 		
 		return myInputStream;

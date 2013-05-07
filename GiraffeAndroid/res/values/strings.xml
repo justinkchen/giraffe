@@ -25,5 +25,19 @@
     <string name="action_camera">Camera</string>
     <string name="action_gallery">Gallery</string>
     <string name="action_files">Files</string>
+    <string name="usernameemailtext">\tUsername/Email:</string>
+    <string name="usernameemailhint">Username or Email</string>
+    <string name="passwordtext">\tPassword:</string>
+    <string name="passwordhint">Password</string>
+    <string name="login">Login</string>
+    <string name="notloggedin">...Not Logged In...\nPlease Login or Register below</string>
+    <string name="register">Register</string>
+    <string name="action_register">Register</string>
+    <string name="password2text">\tConfirm Password:</string>
+    <string name="password2hint">Confirm Password</string>
+    <string name="usernametext">\tUsername:</string>
+    <string name="usernamehint">Username</string>
+    <string name="emailtext">\tEmail:</string>
+    <string name="emailhint">Email</string>
 
 </resources>
