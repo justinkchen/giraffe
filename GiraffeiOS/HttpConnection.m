@@ -11,17 +11,17 @@
 NSString *const kHostURL = @"http://ec2-54-243-69-6.compute-1.amazonaws.com/";
 
 // API methods
-NSString *const kGraffitiNearby = @"graffiti/nearby";
-NSString *const kGraffitiNew = @"graffiti/new";
-NSString *const kGraffitiLike = @"graffiti/like";
-NSString *const kGraffitiFlag = @"graffiti/flag";
+NSString *const akGraffitiNearby = @"graffiti/nearby";
+NSString *const akGraffitiNew = @"graffiti/new";
+NSString *const akGraffitiLike = @"graffiti/like";
+NSString *const akGraffitiFlag = @"graffiti/flag";
 
-NSString *const kUserLogin = @"users/login";
-NSString *const kUserSignup = @"users/signup";
-NSString *const kUserUpdate = @"users/update";
-NSString *const kUserPosts = @"users/graffiti";
-NSString *const kUserStats = @"users/stats";
-NSString *const kUserLogout = @"users/logout";
+NSString *const akUserLogin = @"users/login";
+NSString *const akUserSignup = @"users/signup";
+NSString *const akUserUpdate = @"users/update";
+NSString *const akUserPosts = @"users/graffiti";
+NSString *const akUserStats = @"users/stats";
+NSString *const akUserLogout = @"users/logout";
 
 @interface HttpConnection() {
     
@@ -69,7 +69,7 @@ NSString *const kUserLogout = @"users/logout";
 
 + (void)graffitiNewPostConnection:(id <NSURLConnectionDelegate>)delegate
                        withParams:(NSData *)graffitiParameters {
-    [self createConnection:delegate withRoute:kGraffitiNew withMethod:@"POST" withData:graffitiParameters];
+    [self createConnection:delegate withRoute:akGraffitiNew withMethod:@"POST" withData:graffitiParameters];
 }
 
 + (void)userLoginPostConnection:(id <NSURLConnectionDelegate>)delegate
