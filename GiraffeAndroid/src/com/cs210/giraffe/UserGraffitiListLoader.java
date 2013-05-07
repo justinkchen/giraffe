@@ -34,7 +34,7 @@ public class UserGraffitiListLoader extends AsyncTaskLoader<List<Graffiti>> {
 		Location currLocation = MainActivity.getGiraffeLocationListener().getCurrentLocation();
 		try {
 			//url = new URL("http://ec2-54-243-69-6.compute-1.amazonaws.com/graffiti/User" + "?latitude=" + currLocation.getLatitude() + "&longitude=" + currLocation.getLongitude());
-			url = new URL("http://ec2-54-243-69-6.compute-1.amazonaws.com/graffiti/nearby?latitude=37.4280040&longitude=-122.1706350");
+			url = new URL("http://ec2-54-243-69-6.compute-1.amazonaws.com/users/graffiti?id=2");
 			Log.i("Johan", "Trying url");
 		} 
 		catch (MalformedURLException e1) {
