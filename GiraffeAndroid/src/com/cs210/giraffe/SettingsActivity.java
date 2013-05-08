@@ -25,20 +25,25 @@ public class SettingsActivity extends PreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
     	getActionBar().setTitle(R.string.action_settings);
+    	super.onCreate(savedInstanceState);
+    	getActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+    
+    @Override
+    protected void onResume(){
+    	super.onResume();
     	if(MainActivity.isLoggedIn()){
 	    	_sf = new SettingsFragment();
-	        super.onCreate(savedInstanceState);
+	        
 	        getFragmentManager().beginTransaction()
 	    		.replace(android.R.id.content, _sf)
 	    		.commit();
     	}else{
     		_notLoggedInFragment = new NotLoggedInFragment();
-    		super.onCreate(savedInstanceState);
 	        getFragmentManager().beginTransaction()
 	    		.replace(android.R.id.content, _notLoggedInFragment)
 	    		.commit();
     	}
-    	getActionBar().setDisplayHomeAsUpEnabled(true);
     }
     
     @Override

@@ -18,6 +18,7 @@ public class GiraffeLocationListener implements LocationListener {
 		locationManager = lm;
 		currentLocation = locationManager.getLastKnownLocation(provider);
 		if(currentLocation != null){
+			System.out.println("Location already found, Latitude: " + currentLocation.getLatitude() + ", Longitude: " + currentLocation.getLongitude());
 			locationFound = true;
 		}else{
 			System.out.println("Can't get a location from provider");
@@ -27,6 +28,7 @@ public class GiraffeLocationListener implements LocationListener {
 	@Override
 	public void onLocationChanged(Location location) {
 		// Called when a new location is found by the network location provider.
+		System.out.println("Location has changed, Latitude: " + location.getLatitude() + ", Longitude: " + location.getLongitude());
 		if(isBetterLocation(location, currentLocation)){
 			System.out.println("New Location-> Latitude: " + location.getLatitude() + ", Longitude: " + location.getLongitude());
 			currentLocation = location;
@@ -35,19 +37,19 @@ public class GiraffeLocationListener implements LocationListener {
 
 	@Override
 	public void onProviderDisabled(String provider) {
-		
+		System.out.println("Provider is disabled");
 	}
 
 	@Override
 	public void onProviderEnabled(String provider) {
 		// TODO Auto-generated method stub
-
+		System.out.println("Provider is enabled");
 	}
 
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
 		// TODO Auto-generated method stub
-
+		System.out.println("Provider status changed");
 	}
 
 	public Location getCurrentLocation(){

@@ -40,5 +40,6 @@
     <string name="usernamehint">Username</string>
     <string name="emailtext">\tEmail:</string>
     <string name="emailhint">Email</string>
+    <string name="notregisteredyet">Not registered yet? Click here!</string>
 
 </resources>

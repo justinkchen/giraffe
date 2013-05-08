@@ -3,6 +3,8 @@ package com.cs210.giraffe;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.CookieHandler;
+import java.net.CookieManager;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -38,6 +40,8 @@ ActionBar.TabListener {
 
 	static final int NUM_TABS = 3;
 	private static GiraffeLocationListener locationListener = null;
+	private static CookieManager cookieManager = null;
+	private static String baseServerURI = "https://ec2-54-243-69-6.compute-1.amazonaws.com";
 	private static User currentUser = null;
 	
 	/**
@@ -57,6 +61,16 @@ ActionBar.TabListener {
 	
 	protected static boolean isLoggedIn(){
 		return (currentUser != null);
+	}
+	
+	protected static void loginUser(User user){
+		currentUser = user;
+	}
+	
+	@Override
+	protected void onResume(){
+		super.onResume();
+		this.invalidateOptionsMenu();
 	}
 	
 	@Override
@@ -138,6 +152,9 @@ ActionBar.TabListener {
 		
 		locationManager.requestLocationUpdates(bestProvider, 0, 0, locationListener);
 		
+		setCookieManager(new CookieManager());
+		CookieHandler.setDefault(cookieManager);
+		
 		HttpsTask.setContext(getApplicationContext());
 
 	}
@@ -212,6 +229,22 @@ ActionBar.TabListener {
 
 	public static void setCurrentUser(User currentUser) {
 		MainActivity.currentUser = currentUser;
+	}
+
+	public static CookieManager getCookieManager() {
+		return cookieManager;
+	}
+
+	public static void setCookieManager(CookieManager cookieManager) {
+		MainActivity.cookieManager = cookieManager;
+	}
+
+	public static String getBaseServerURI() {
+		return baseServerURI;
+	}
+
+	public static void setBaseServerURI(String baseServerURI) {
+		MainActivity.baseServerURI = baseServerURI;
 	}
 
 	/**

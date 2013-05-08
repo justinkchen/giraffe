@@ -4,6 +4,13 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content">
     
+    <Button 
+   	    android:id="@+id/registerbutton"
+   	    android:layout_width="fill_parent"
+       	android:layout_height="wrap_content"
+       	android:text="@string/notregisteredyet"
+       	style="?android:attr/borderlessButtonStyle"/>
+    
     <TextView
         android:id="@+id/usernametext"
         android:layout_width="match_parent"

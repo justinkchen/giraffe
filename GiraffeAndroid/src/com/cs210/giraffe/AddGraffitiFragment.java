@@ -36,13 +36,13 @@ import android.widget.TextView;
 import android.widget.SeekBar;
 
 public class AddGraffitiFragment extends Fragment implements
-		OnSeekBarChangeListener {
+OnSeekBarChangeListener {
 
 	private GoogleMap _circleOverlayMap = null;
 	private SeekBar _radiusBar = null;
 	private EditText _messageBox = null;
 	private int _currentProgress = 50;
-	private LoginFragment loginFragment;
+	private LoginSupportFragment _loginFragment;
 
 	private static final int MIN_RADIUS = 10; // meters
 	public static final int TAKE_CAMERA_PICTURE = 100;
@@ -61,25 +61,24 @@ public class AddGraffitiFragment extends Fragment implements
 			Bundle savedInstanceState) {
 
 		View rootView;
-    	if(MainActivity.isLoggedIn()){
-		
-			rootView = inflater.inflate(R.layout.fragment_addgraffiti,
-					container, false);
-			_radiusBar = (SeekBar) rootView.findViewById(R.id.radiusSeekBar);
-			_radiusBar.setOnSeekBarChangeListener(this);
-			_messageBox = (EditText) rootView.findViewById(R.id.graffitiEditText);
-			
-			
-			final Button addImageButton = (Button) rootView
-					.findViewById(R.id.addImageButton);
-			
-			addImageButton.setOnClickListener(new AddImageButtonClickListener());
-			
-			final Button submitButton = (Button) rootView.findViewById(R.id.submitButton);
-			submitButton.setOnClickListener(new View.OnClickListener() {
-		
-				@Override
-				public void onClick(View v) {
+		rootView = inflater.inflate(R.layout.fragment_addgraffiti,
+				container, false);
+		_radiusBar = (SeekBar) rootView.findViewById(R.id.radiusSeekBar);
+		_radiusBar.setOnSeekBarChangeListener(this);
+		_messageBox = (EditText) rootView.findViewById(R.id.graffitiEditText);
+
+
+		final Button addImageButton = (Button) rootView
+				.findViewById(R.id.addImageButton);
+
+		addImageButton.setOnClickListener(new AddImageButtonClickListener());
+
+		final Button submitButton = (Button) rootView.findViewById(R.id.submitButton);
+		submitButton.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if(MainActivity.isLoggedIn()){
 					// Perform action on click
 					Location myLocation = MainActivity.getGiraffeLocationListener().getCurrentLocation();
 					Graffiti newGraffiti = new Graffiti();
@@ -89,7 +88,7 @@ public class AddGraffitiFragment extends Fragment implements
 					newGraffiti.setRadius(_currentProgress);
 					String uri = "http://ec2-54-243-69-6.compute-1.amazonaws.com/graffiti/new";
 					InputStream responseStream = postGraffiti(newGraffiti, uri);
-					
+
 					// TODO: check response of server
 					boolean success = true;
 					if (success){
@@ -108,41 +107,46 @@ public class AddGraffitiFragment extends Fragment implements
 						.show();
 						_messageBox.setText("");
 					}
+				}else{
+					_loginFragment = new LoginSupportFragment();
+					_loginFragment.show(getFragmentManager(), "loginFragment");
 				}
-			});
-    	}else{
-    		rootView = inflater.inflate(R.layout.fragment_notloggedin,
-					container, false);
-    		final Button loginButton = (Button) rootView.findViewById(R.id.loginbutton);
-    		final Button registerButton = (Button) rootView.findViewById(R.id.registerbutton);
-			
-			loginButton.setOnClickListener(new View.OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					// Perform action on click
-					loginFragment = new LoginFragment();
-					loginFragment.show(getFragmentManager(), "loginFragment");
-				}
-			});
-			
-			registerButton.setOnClickListener(new View.OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					// Perform action on click
-					Intent intent = new Intent(getActivity(), RegisterActivity.class);
-		        	getActivity().startActivity(intent);
-				}
-			});
-    	}
+			}
+		});
+		
+		//		} else {
+		//			rootView = inflater.inflate(R.layout.fragment_notloggedin,
+		//					container, false);
+		//			final Button loginButton = (Button) rootView.findViewById(R.id.loginbutton);
+		//			final Button registerButton = (Button) rootView.findViewById(R.id.registerbutton);
+		//
+		//			loginButton.setOnClickListener(new View.OnClickListener() {
+		//
+		//				@Override
+		//				public void onClick(View v) {
+		//					// Perform action on click
+		//					loginFragment = new LoginFragment();
+		//					loginFragment.show(getFragmentManager(), "loginFragment");
+		//				}
+		//			});
+		//
+		//			registerButton.setOnClickListener(new View.OnClickListener() {
+		//
+		//				@Override
+		//				public void onClick(View v) {
+		//					// Perform action on click
+		//					Intent intent = new Intent(getActivity(), RegisterActivity.class);
+		//					getActivity().startActivity(intent);
+		//				}
+		//			});
+		//		}
 		return rootView;
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		Log.w("AddGraffitiFragment", "Resuming Map Fragment");
+		Log.w("AddGraffitiFragment", "Resuming Add Graffiti Fragment");
 		setUpMapIfNeeded();
 	}
 
@@ -155,7 +159,7 @@ public class AddGraffitiFragment extends Fragment implements
 				.findFragmentById(R.id.addGraffitiMap);
 		if (f != null) {
 			this.getActivity().getSupportFragmentManager().beginTransaction()
-					.remove(f).commit();
+			.remove(f).commit();
 			_circleOverlayMap = null;
 		}
 
@@ -199,7 +203,7 @@ public class AddGraffitiFragment extends Fragment implements
 			boolean fromUser) {
 		setUpMapIfNeeded();
 		_currentProgress = progress + MIN_RADIUS; // starts at 0 but we want it
-													// to start at 10
+		// to start at 10
 	}
 
 	@Override
@@ -230,9 +234,9 @@ public class AddGraffitiFragment extends Fragment implements
 			e1.printStackTrace();
 		}
 		URL url = null;
-//		HttpsTask task = new HttpsTask();
-//		task.execute("https://ec2-54-243-69-6.compute-1.amazonaws.com/");
-//		Log.d("Johan", "Posting URL");
+		//		HttpsTask task = new HttpsTask();
+		//		task.execute("https://ec2-54-243-69-6.compute-1.amazonaws.com/");
+		//		Log.d("Johan", "Posting URL");
 		try {
 			url = new URL(urlString);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();

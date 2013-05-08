@@ -21,9 +21,6 @@ public class RegisterActivity extends FragmentActivity {
         _registerFragment = new RegisterFragment();
         
         this.getSupportFragmentManager().beginTransaction().replace(android.R.id.content, _registerFragment).commit();
-//        getFragmentManager().beginTransaction()
-//    		.replace(android.R.id.content, _registerFragment)
-//    		.commit();
         getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 	

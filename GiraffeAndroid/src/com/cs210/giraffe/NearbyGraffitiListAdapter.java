@@ -45,7 +45,8 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 		((TextView)view.findViewById(R.id.username)).setTypeface(null, Typeface.BOLD);
 		((TextView)view.findViewById(R.id.message)).setText(item.getText());
 		
-		if(item.getImageURL() != null){
+		System.out.println("item image url: " + item.getImageURL());
+		if(!item.getImageURL().equals("null")){
 			new DownloadImageTask((ImageView) view.findViewById(R.id.graffiti_image))
 			.execute(item.getImageURL());
 		}
