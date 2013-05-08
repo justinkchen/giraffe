@@ -175,7 +175,7 @@ public class LoginSupportFragment extends DialogFragment {
 					public void onClick(DialogInterface dialog, int which) {
 						// Close dialog  
 						getDialog().cancel();
-						
+						getActivity().invalidateOptionsMenu();
 					}
 				})
 				.show();

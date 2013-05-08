@@ -121,6 +121,8 @@ public class LoginFragment extends DialogFragment {
 				wr.write(sb.toString());
 				wr.flush();
 				myInputStream = conn.getInputStream();
+				System.out.println("Response message: " + conn.getResponseMessage());
+
 				String headerfields = conn.getHeaderField(0);
 				int i = 1;
 				while ((headerfields = conn.getHeaderField(i)) != null) {
