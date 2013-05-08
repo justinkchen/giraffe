@@ -1,34 +1,31 @@
 package com.cs210.giraffe;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.Preference.OnPreferenceClickListener;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 public class ProfileFragment extends Fragment {
 
 	public static final int TAKE_CAMERA_PICTURE = 100;
-	public static final int CHOOSE_GALLERY_PHOTO = 101;
+	public static final int CHOOSE_GALLERY_IMAGE = 101;
 	public static final int RESULT_OK = -1;
+	public static final int THUMBNAIL_HEIGHT = 66;
+	public static final int THUMBNAIL_WIDTH = 66;
 
 	private TextView _userText;
 	private ImageView _userProfilePicture;
@@ -65,9 +62,9 @@ public class ProfileFragment extends Fragment {
 		// Make a nice function for loading data here
 	}
 
-	public void setProfilePicture(Bitmap photo) {
+	public void setProfilePicture(Bitmap image) {
 		Log.i("Johan", "Setting profile picture");
-		_userProfilePicture.setImageBitmap(photo);
+		_userProfilePicture.setImageBitmap(image);
 	}
 
 	private class profileImageClickListener implements OnClickListener {
@@ -92,10 +89,10 @@ public class ProfileFragment extends Fragment {
 
 					case 1:
 						// Choose from the gallery
-						Intent pickPhoto = new Intent(
+						Intent pickimage = new Intent(
 								Intent.ACTION_PICK,
 								android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-						startActivityForResult(pickPhoto, CHOOSE_GALLERY_PHOTO);
+						startActivityForResult(pickimage, CHOOSE_GALLERY_IMAGE);
 						break;
 
 					default:
@@ -111,19 +108,19 @@ public class ProfileFragment extends Fragment {
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		Log.i("Johan", "Getting here");
-		Bitmap photo = null;
+		Bitmap image = null;
 		switch (requestCode) {
 
 		case TAKE_CAMERA_PICTURE:
 			if (resultCode == RESULT_OK)
-				photo = (Bitmap) data.getExtras().get("data");
+				image = (Bitmap) data.getExtras().get("data");
 			break;
 
-		case CHOOSE_GALLERY_PHOTO:
+		case CHOOSE_GALLERY_IMAGE:
 			if (resultCode == RESULT_OK) {
 				Uri targetUri = data.getData();
 				try {
-					photo = BitmapFactory.decodeStream(getActivity()
+					image = BitmapFactory.decodeStream(getActivity()
 							.getContentResolver().openInputStream(targetUri));
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
@@ -137,7 +134,12 @@ public class ProfileFragment extends Fragment {
 
 		}
 		
-		if (photo != null)
-			setProfilePicture(photo);
+		if (image != null) {
+			image = ThumbnailUtils.extractThumbnail(image, THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT);
+			setProfilePicture(image);
+			UpdateProfilePictureTask updateProfilePictureTask = new UpdateProfilePictureTask();
+			updateProfilePictureTask.execute(image);
+		}
 	}
+
 }
