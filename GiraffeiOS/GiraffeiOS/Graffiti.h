@@ -12,6 +12,20 @@
 
 @interface Graffiti : NSObject
 
+extern NSString *const kParamNameGraffiti;
+extern NSString *const kParamNameGraffitiText;
+extern NSString *const kParamNameGraffitiImageUrl;
+extern NSString *const kParamNameGraffitiLongitude;
+extern NSString *const kParamNameGraffitiLatitude;
+extern NSString *const kParamNameGraffitiDirectionX;
+extern NSString *const kParamNameGraffitiDirectionY;
+extern NSString *const kParamNameGraffitiDirectionZ;
+extern NSString *const kParamNameGraffitiRadius;
+extern NSString *const kParamNameGraffitiLikeCount;
+extern NSString *const kParamNameGraffitiFlagged;
+extern NSString *const kParamNameGraffitiDateCreated;
+extern NSString *const kParamNameGraffitiAuthor;
+
 @property (nonatomic, retain) NSString *text;
 @property (nonatomic, retain) NSString *imageUrl;
 @property (nonatomic, assign) float longitude;

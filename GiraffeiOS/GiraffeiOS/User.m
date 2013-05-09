@@ -10,6 +10,13 @@
 
 @implementation User
 
+NSString *const kParamNameUser = @"user";
+NSString *const kParamNameUserId = @"id";
+NSString *const kParamNameUserUsername = @"username";
+NSString *const kParamNameUserEmail = @"email";
+NSString *const kParamNameUserImageUrl = @"imageUrl";
+NSString *const kParamNameUserDateCreated = @"dateCreated";
+
 + (User *)currentUser
 {
     // Create Singleton
