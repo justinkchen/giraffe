@@ -89,7 +89,7 @@ const CGFloat kGraffitiTextSize = 16.0;
     return [UIFont helveticaNeueCondensedOfSize:kGraffitiTextSize weight:UIFontWeightRegular];
 }
 
-const CGFloat kPadding = 8.0;
+const CGFloat kGraffitiCellPadding = 8.0;
 
 - (void)layoutSubviews
 {
@@ -99,7 +99,7 @@ const CGFloat kPadding = 8.0;
             self.authorAvatarImage = [UIImageView new];
             self.authorAvatarImage.backgroundColor = [UIColor orangeColor];
             self.authorAvatarImage.frameSize = CGSizeMake(kAuthorAvatarSideLength, kAuthorAvatarSideLength);
-            self.authorAvatarImage.frameOrigin = CGPointMake(kPadding, kPadding);
+            self.authorAvatarImage.frameOrigin = CGPointMake(kGraffitiCellPadding, kGraffitiCellPadding);
             [self.contentView addSubview:self.authorAvatarImage];
         }
     } else {
@@ -111,12 +111,12 @@ const CGFloat kPadding = 8.0;
     if (!self.authorNameLabel) {
         self.authorNameLabel = [UILabel new];
         self.authorNameLabel.font = [self authorNameFont];
-        self.authorNameLabel.frameOriginY = kPadding;
+        self.authorNameLabel.frameOriginY = kGraffitiCellPadding;
         [self.contentView addSubview:self.authorNameLabel];
     }
     self.authorNameLabel.text = self.graffiti.author.username;
     [self.authorNameLabel sizeToFit];
-    self.authorNameLabel.frameOriginX = self.authorAvatarImage.rightEdge + kPadding;
+    self.authorNameLabel.frameOriginX = self.authorAvatarImage.rightEdge + kGraffitiCellPadding;
     
     // Detail label
     if (!self.detailLabel) {
@@ -126,7 +126,7 @@ const CGFloat kPadding = 8.0;
     }
     self.detailLabel.text = [self detailText];
     [self.detailLabel sizeToFit];
-    self.detailLabel.frameOriginY = self.authorNameLabel.bottomEdge + kPadding;
+    self.detailLabel.frameOriginY = self.authorNameLabel.bottomEdge + kGraffitiCellPadding;
     self.detailLabel.frameOriginX = self.authorNameLabel.frameOriginX;
     
     // Text label
@@ -136,14 +136,14 @@ const CGFloat kPadding = 8.0;
         [self.contentView addSubview:self.textLabel];
     }
     self.textLabel.text = self.graffiti.text;
-    self.textLabel.frameOriginX = kPadding;
-    self.textLabel.frameOriginY = MAX(self.detailLabel.bottomEdge, self.authorAvatarImage.bottomEdge) + kPadding;
+    self.textLabel.frameOriginX = kGraffitiCellPadding;
+    self.textLabel.frameOriginY = MAX(self.detailLabel.bottomEdge, self.authorAvatarImage.bottomEdge) + kGraffitiCellPadding;
     self.textLabel.frameSize = [self.graffiti.text sizeWithFont:[self graffitiTextFont] constrainedToSize:CGSizeMake(self.frameWidth, CGFLOAT_MAX)];
 }
 
 - (CGSize)sizeThatFits:(CGSize)size
 {
-    CGFloat height = kPadding;
+    CGFloat height = kGraffitiCellPadding;
     if ([self shouldShowAuthorAvatar]) {
         // Author avatar is taller than labels
         height += kAuthorAvatarSideLength;
@@ -151,17 +151,17 @@ const CGFloat kPadding = 8.0;
         // Author name label
         height += [self.graffiti.author.username sizeWithFont:[self authorNameFont]].height;
         
-        height += kPadding;
+        height += kGraffitiCellPadding;
         
         // Metadata
         height += [[self detailText] sizeWithFont:[self detailFont]].height;
         
-        height += kPadding;
+        height += kGraffitiCellPadding;
     }
     
     // Add height for text
     height += [self.graffiti.text sizeWithFont:[self graffitiTextFont] constrainedToSize:CGSizeMake(size.width, CGFLOAT_MAX)].height;
-    height += 2 * kPadding;
+    height += 2 * kGraffitiCellPadding;
     
     return size;
 }
