@@ -43,6 +43,7 @@ public class UserGraffitiListAdapter extends ArrayAdapter<Graffiti> implements L
 		
 		Graffiti item = getItem(position);
 		((TextView)view.findViewById(R.id.username)).setTypeface(null, Typeface.BOLD);
+		((TextView)view.findViewById(R.id.username)).setText(MainActivity.getCurrentUser().getUsername());
 		((TextView)view.findViewById(R.id.message)).setText(item.getText());
 		
 		if(item.getImageURL() != null){

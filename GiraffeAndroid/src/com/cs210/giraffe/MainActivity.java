@@ -74,7 +74,21 @@ ActionBar.TabListener {
 	@Override
 	protected void onResume(){
 		super.onResume();
+		System.out.println("onResume MainActivity");
+	}
+	
+	
+	@Override
+	protected void onResumeFragments(){
+		super.onResumeFragments();
+		System.out.println("onResumeFragments MainActivity");
 		this.invalidateOptionsMenu();
+	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+	    outState.putString("WORKAROUND_FOR_BUG_19917_KEY", "WORKAROUND_FOR_BUG_19917_VALUE");
+	    super.onSaveInstanceState(outState);
 	}
 	
 	@Override

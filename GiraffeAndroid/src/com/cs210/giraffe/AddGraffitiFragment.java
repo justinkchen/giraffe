@@ -34,6 +34,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -117,19 +118,38 @@ OnSeekBarChangeListener {
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
-		Log.w("AddGraffitiFragment", "Destroying View");
-		SupportMapFragment f = (SupportMapFragment) this.getActivity()
-				.getSupportFragmentManager()
-				.findFragmentById(R.id.addGraffitiMap);
-		if (f != null) {
-			this.getActivity().getSupportFragmentManager().beginTransaction()
-			.remove(f).commit();
-			_circleOverlayMap = null;
+		if(!getActivity().isFinishing()){
+			Log.w("AddGraffitiFragment", "Destroying View");
+			SupportMapFragment f = (SupportMapFragment) this.getActivity()
+					.getSupportFragmentManager()
+					.findFragmentById(R.id.addGraffitiMap);
+			if (f != null) {
+				FragmentTransaction ft = this.getActivity().getSupportFragmentManager().beginTransaction();
+	//			ft.commitAllowingStateLoss();
+				ft.remove(f).commit();
+				_circleOverlayMap = null;
+				
+			}
 		}
-
+	}
+	
+	@Override
+	public void onPause(){
+		super.onPause();
+//		Log.w("AddGraffitiFragment", "Pausing AddGraffitiFragment");
+//		SupportMapFragment f = (SupportMapFragment) this.getActivity()
+//				.getSupportFragmentManager()
+//				.findFragmentById(R.id.addGraffitiMap);
+//		if (f != null) {
+//			FragmentTransaction ft = this.getActivity().getSupportFragmentManager().beginTransaction();
+////			ft.commitAllowingStateLoss();
+//			ft.remove(f).commit();
+//			_circleOverlayMap = null;
+//			
+//		}
 	}
 
-	private void setUpMapIfNeeded() {
+	public void setUpMapIfNeeded() {
 		Log.w("AddGraffitiFragment", "Setting up map");
 		// Do a null check to confirm that we have not already instantiated the
 		// map.
