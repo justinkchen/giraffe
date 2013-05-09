@@ -1,14 +1,18 @@
 package com.cs210.giraffe;
 
 import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.net.URL;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -19,7 +23,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements AsyncResponse {
 
 	public static final int TAKE_CAMERA_PICTURE = 100;
 	public static final int CHOOSE_GALLERY_IMAGE = 101;
@@ -29,7 +33,9 @@ public class ProfileFragment extends Fragment {
 
 	private TextView _userText;
 	private ImageView _userProfilePicture;
-
+	
+	SetProfilePictureTask setProfilePictureTask = new SetProfilePictureTask();
+	
 	public ProfileFragment() {
 
 	}
@@ -37,7 +43,8 @@ public class ProfileFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		//Set call back for profile image loader
+		setProfilePictureTask.delegate = this;
 	}
 
 	@Override
@@ -50,11 +57,17 @@ public class ProfileFragment extends Fragment {
 		_userProfilePicture = (ImageView) rootView
 				.findViewById(R.id.userImageView);
 		_userProfilePicture.setOnClickListener(new profileImageClickListener());
-		
+
 		User currentUser = MainActivity.getCurrentUser();
 		String username = currentUser.getUsername();
 		String imagePath = currentUser.getAvatar();
 
+		_userText.setText(username);
+		if (imagePath != null) {
+			Log.i("Johan", imagePath);
+			setProfilePictureTask.execute(imagePath);
+		}
+		Log.i("Johan", "Done setting image");
 		return rootView;
 	}
 
@@ -62,9 +75,6 @@ public class ProfileFragment extends Fragment {
 		_userText.setText(s);
 	}
 
-	public void loadPosts() {
-		// Make a nice function for loading data here
-	}
 
 	public void setProfilePicture(Bitmap image) {
 		Log.i("Johan", "Setting profile picture");
@@ -137,13 +147,45 @@ public class ProfileFragment extends Fragment {
 			break;
 
 		}
-		
+
 		if (image != null) {
-			image = ThumbnailUtils.extractThumbnail(image, THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT);
+			image = ThumbnailUtils.extractThumbnail(image, THUMBNAIL_WIDTH,
+					THUMBNAIL_HEIGHT);
 			setProfilePicture(image);
 			UpdateProfilePictureTask updateProfilePictureTask = new UpdateProfilePictureTask();
 			updateProfilePictureTask.execute(image);
 		}
 	}
 
+	public void processFinish(Drawable output) {
+		// this you will received result fired from async class of
+		// onPostExecute(result) method.
+		_userProfilePicture.setImageDrawable(output);
+	}
+	
+	
+	private class SetProfilePictureTask extends AsyncTask<String, Void, Drawable> {
+
+		public AsyncResponse delegate=null;
+		
+		@Override
+		protected Drawable doInBackground(String... urls) {
+			Drawable image = null;
+			try {
+				Log.i("Johan", "We open the URL");
+				InputStream is = (InputStream) new URL(urls[0]).getContent();
+				Log.i("Johan", "We got the URL");
+				image = Drawable.createFromStream(is, "src");
+			} catch (Exception ex) {
+				Log.i("Johan", "Exception in setting image");
+				ex.printStackTrace();
+			}
+			return image;
+		}
+		
+		protected void onPostExecute(Drawable result) {
+			delegate.processFinish(result);
+		}
+
+	}
 }
