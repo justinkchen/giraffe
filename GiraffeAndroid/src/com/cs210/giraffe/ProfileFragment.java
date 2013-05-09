@@ -23,7 +23,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ProfileFragment extends Fragment implements AsyncResponse {
+public class ProfileFragment extends Fragment {
 
 	public static final int TAKE_CAMERA_PICTURE = 100;
 	public static final int CHOOSE_GALLERY_IMAGE = 101;
@@ -43,8 +43,6 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//Set call back for profile image loader
-		setProfilePictureTask.delegate = this;
 	}
 
 	@Override
@@ -65,7 +63,7 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
 		_userText.setText(username);
 		if (imagePath != null) {
 			Log.i("Johan", imagePath);
-			setProfilePictureTask.execute(imagePath);
+			setProfilePictureTask.execute(MainActivity.getBaseServerURI() + imagePath);
 		}
 		Log.i("Johan", "Done setting image");
 		return rootView;
@@ -156,17 +154,9 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
 			updateProfilePictureTask.execute(image);
 		}
 	}
-
-	public void processFinish(Drawable output) {
-		// this you will received result fired from async class of
-		// onPostExecute(result) method.
-		_userProfilePicture.setImageDrawable(output);
-	}
-	
 	
 	private class SetProfilePictureTask extends AsyncTask<String, Void, Drawable> {
 
-		public AsyncResponse delegate=null;
 		
 		@Override
 		protected Drawable doInBackground(String... urls) {
@@ -184,7 +174,7 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
 		}
 		
 		protected void onPostExecute(Drawable result) {
-			delegate.processFinish(result);
+			_userProfilePicture.setImageDrawable(result);
 		}
 
 	}

@@ -33,8 +33,9 @@ public class UpdateProfilePictureTask extends AsyncTask<Bitmap, Void, String> {
 
 		try {
 			HttpURLConnection httpUrlConnection = null;
+			Log.i("Johan", MainActivity.getBaseServerURI() + "/users/avatarupdate");
 			URL url = new URL(
-					"http://ec2-54-243-69-6.compute-1.amazonaws.com/users/avatarupdate");
+					MainActivity.getBaseServerURI() + "/users/avatarupdate");
 			httpUrlConnection = (HttpURLConnection) url.openConnection();
 			httpUrlConnection.setUseCaches(false);
 			httpUrlConnection.setDoOutput(true);
@@ -64,18 +65,17 @@ public class UpdateProfilePictureTask extends AsyncTask<Bitmap, Void, String> {
 			
 			
 			request.writeBytes(this.twoHyphens + this.boundary + this.crlf);
-//			request.writeBytes("Content-Disposition: form-data; name=\""
-//					+ "userid\";" + this.crlf);
-//			request.writeBytes(this.crlf);
-//			
-//			String userid = "5";
-//			byte[] bytes = userid.getBytes();
-//			request.write(bytes);
-//			
-//			request.writeBytes(this.crlf);
-//			request.writeBytes(this.crlf);
-//			request.writeBytes(this.twoHyphens + this.boundary
-//					+ this.crlf);
+			request.writeBytes("Content-Disposition: form-data; name=\""
+					+ "userid\"" + this.crlf);
+			request.writeBytes(this.crlf);
+			
+			String userid = Integer.toString(MainActivity.getCurrentUser().getId());
+			byte[] bytes = userid.getBytes();
+			request.write(bytes);
+			
+			request.writeBytes(this.crlf);
+			request.writeBytes(this.twoHyphens + this.boundary
+					+ this.crlf);
 			
 			request.writeBytes("Content-Disposition: form-data; name=\""
 					+ this.attachmentName + "\";filename=\""
@@ -130,6 +130,8 @@ public class UpdateProfilePictureTask extends AsyncTask<Bitmap, Void, String> {
 			responseStream.close();
 
 			httpUrlConnection.disconnect();
+			
+			MainActivity.getCurrentUser().setAvatar(response);
 
 		} catch (Exception e) {
 			Log.i("Johan", "Got an error.");
