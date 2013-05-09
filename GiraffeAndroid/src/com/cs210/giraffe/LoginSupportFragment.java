@@ -122,6 +122,23 @@ public class LoginSupportFragment extends DialogFragment {
 				wr.flush();
 				myInputStream = conn.getInputStream();
 				wr.close();
+				
+				String cookieStr = conn.getHeaderField("Set-Cookie");
+				if (cookieStr != null){
+					cookieStr = cookieStr.substring(0, cookieStr.indexOf(';'));
+					HttpCookie cookie = new HttpCookie(cookieStr.substring(0, cookieStr.indexOf('=')), cookieStr.substring(cookieStr.indexOf('='), cookieStr.length()));
+					cookie.setDomain(MainActivity.getBaseServerURI());
+					cookie.setPath("/");
+					cookie.setVersion(0);
+					try {
+						MainActivity.getCookieManager().getCookieStore().add(new URI(MainActivity.getBaseServerURI()), cookie);
+					} catch (URISyntaxException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				System.out.println("cookie store: " + MainActivity.getCookieManager().getCookieStore().getCookies().get(0).getValue());
+
 			} catch (Exception e) {
 				//handle the exception !
 				e.printStackTrace();

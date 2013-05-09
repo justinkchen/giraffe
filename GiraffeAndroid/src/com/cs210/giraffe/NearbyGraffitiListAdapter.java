@@ -43,6 +43,7 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 		
 		Graffiti item = getItem(position);
 		((TextView)view.findViewById(R.id.username)).setTypeface(null, Typeface.BOLD);
+		((TextView)view.findViewById(R.id.username)).setText(item.getUsername());
 		((TextView)view.findViewById(R.id.message)).setText(item.getText());
 		
 		System.out.println("item image url: " + item.getImageURL());

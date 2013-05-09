@@ -60,7 +60,11 @@ ActionBar.TabListener {
 	ViewPager mViewPager;
 	
 	protected static boolean isLoggedIn(){
-		return (currentUser != null);
+		if(currentUser != null){
+			System.out.println("User: " + currentUser.toString());
+			return true;
+		}
+		return false;
 	}
 	
 	protected static void loginUser(User user){
@@ -171,7 +175,7 @@ ActionBar.TabListener {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		// Handle disabling or enabling menu based on user login
 		if(!isLoggedIn()){
-			menu.getItem(0).setVisible(true);
+			menu.getItem(0).setVisible(false);
 		}else{
 			menu.getItem(0).setVisible(true);
 		}

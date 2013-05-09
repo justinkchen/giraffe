@@ -12,6 +12,7 @@ public class Graffiti {
 	private int _likeCount;
 	private boolean _flagged;
 	private int _radius;
+	private String _username;
 	
 	public Graffiti() {
 		// TODO Auto-generated constructor stub
@@ -95,6 +96,14 @@ public class Graffiti {
 
 	public void setRadius(int _radius) {
 		this._radius = _radius;
+	}
+
+	public String getUsername() {
+		return _username;
+	}
+
+	public void setUsername(String username) {
+		this._username = username;
 	}
 	
 	

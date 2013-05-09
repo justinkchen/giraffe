@@ -6,6 +6,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -119,7 +120,16 @@ public class GraffitiMapFragment extends Fragment implements LoaderManager.Loade
 			_map.animateCamera(CameraUpdateFactory.zoomIn());
 			Log.w("GraffitiMap", "Map settings added in");
 			
-	        _map.addMarker(new MarkerOptions().position(myLatLng));
+			_map.setOnMyLocationChangeListener(new OnMyLocationChangeListener(){
+
+				@Override
+				public void onMyLocationChange(Location newLoc) {
+					// TODO Auto-generated method stub
+					LatLng newLatLng = new LatLng(newLoc.getLatitude(), newLoc.getLongitude());
+					_map.moveCamera(CameraUpdateFactory.newLatLngZoom(newLatLng, 15));
+				}
+			});
+	        //_map.addMarker(new MarkerOptions().position(myLatLng));
 	        for (Graffiti point : data){
 	        	System.out.println("Graffiti Map Message: " + point.getText());
 	        	LatLng pointLatLng = new LatLng(point.getLatitude(), point.getLongitude());

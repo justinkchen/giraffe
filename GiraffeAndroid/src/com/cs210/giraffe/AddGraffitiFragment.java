@@ -1,12 +1,19 @@
 package com.cs210.giraffe;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpCookie;
 import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -23,6 +30,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -41,6 +49,7 @@ OnSeekBarChangeListener {
 	private GoogleMap _circleOverlayMap = null;
 	private SeekBar _radiusBar = null;
 	private EditText _messageBox = null;
+	private Graffiti _newGraffiti = null;
 	private int _currentProgress = 50;
 	private LoginSupportFragment _loginFragment;
 
@@ -81,65 +90,19 @@ OnSeekBarChangeListener {
 				if(MainActivity.isLoggedIn()){
 					// Perform action on click
 					Location myLocation = MainActivity.getGiraffeLocationListener().getCurrentLocation();
-					Graffiti newGraffiti = new Graffiti();
-					newGraffiti.setText(_messageBox.getText().toString());
-					newGraffiti.setLatitude(myLocation.getLatitude());
-					newGraffiti.setLongitude(myLocation.getLongitude());
-					newGraffiti.setRadius(_currentProgress);
+					_newGraffiti = new Graffiti();
+					_newGraffiti.setText(_messageBox.getText().toString());
+					_newGraffiti.setLatitude(myLocation.getLatitude());
+					_newGraffiti.setLongitude(myLocation.getLongitude());
+					_newGraffiti.setRadius(_currentProgress);
 					String uri = "http://ec2-54-243-69-6.compute-1.amazonaws.com/graffiti/new";
-					InputStream responseStream = postGraffiti(newGraffiti, uri);
-
-					// TODO: check response of server
-					boolean success = true;
-					if (success){
-						new AlertDialog.Builder(getActivity())
-						.setIcon(R.drawable.ic_navigation_accept)
-						.setTitle("Success!")
-						.setMessage("Graffiti Successfully Posted!")
-						.setCancelable(false)
-						.setPositiveButton("Okay", new DialogInterface.OnClickListener()
-						{
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								// Close dialog  
-							}
-						})
-						.show();
-						_messageBox.setText("");
-					}
+					new AddGraffitiTask().execute(uri);
 				}else{
 					_loginFragment = new LoginSupportFragment();
 					_loginFragment.show(getFragmentManager(), "loginFragment");
 				}
 			}
 		});
-		
-		//		} else {
-		//			rootView = inflater.inflate(R.layout.fragment_notloggedin,
-		//					container, false);
-		//			final Button loginButton = (Button) rootView.findViewById(R.id.loginbutton);
-		//			final Button registerButton = (Button) rootView.findViewById(R.id.registerbutton);
-		//
-		//			loginButton.setOnClickListener(new View.OnClickListener() {
-		//
-		//				@Override
-		//				public void onClick(View v) {
-		//					// Perform action on click
-		//					loginFragment = new LoginFragment();
-		//					loginFragment.show(getFragmentManager(), "loginFragment");
-		//				}
-		//			});
-		//
-		//			registerButton.setOnClickListener(new View.OnClickListener() {
-		//
-		//				@Override
-		//				public void onClick(View v) {
-		//					// Perform action on click
-		//					Intent intent = new Intent(getActivity(), RegisterActivity.class);
-		//					getActivity().startActivity(intent);
-		//				}
-		//			});
-		//		}
 		return rootView;
 	}
 
@@ -326,4 +289,108 @@ OnSeekBarChangeListener {
 			;
 		// Do something with photo
 	}
+	
+	private class AddGraffitiTask extends AsyncTask<String, Integer, InputStream> {
+		private boolean success = false;
+		String error_message = null;
+
+		protected InputStream doInBackground(String... urls) {
+			InputStream myInputStream = null;
+			StringBuilder sb = new StringBuilder();
+			// adding some data to send along with the request to the server
+
+			try {
+				sb.append("message=" + URLEncoder.encode(_newGraffiti.getText(), "UTF-8"));
+				sb.append("&latitude=" + URLEncoder.encode(String.valueOf(_newGraffiti.getLatitude()), "UTF-8"));
+				sb.append("&longitude=" + URLEncoder.encode(String.valueOf(_newGraffiti.getLongitude()), "UTF-8"));
+				sb.append("&radius=" + URLEncoder.encode(String.valueOf(_newGraffiti.getRadius()), "UTF-8"));
+				sb.append("&userid=" + URLEncoder.encode(String.valueOf(1), "UTF-8"));
+			} catch (UnsupportedEncodingException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			URL url = null;
+			//		HttpsTask task = new HttpsTask();
+			//		task.execute("https://ec2-54-243-69-6.compute-1.amazonaws.com/");
+			//		Log.d("Johan", "Posting URL");
+			try {
+				url = new URL(urls[0]);
+				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+				conn.setDoOutput(true);
+				conn.setRequestMethod("POST");
+				OutputStreamWriter wr = new OutputStreamWriter(
+						conn.getOutputStream());
+				// this is were we're adding post data to the request
+				wr.write(sb.toString());
+				wr.flush();
+				myInputStream = conn.getInputStream();
+				wr.close();
+			} catch (Exception e) {
+				// handle the exception !
+				System.out.println("Error Message: " + e.getMessage());
+			}
+			
+			JSONObject returnJSONObject = null;
+			try {
+				if(myInputStream != null){
+					returnJSONObject = new JSONObject(JSONHandler.convertStreamToString(myInputStream));
+					System.out.println("JSONObject Response: " + returnJSONObject.toString());
+					if(returnJSONObject.has("error")){
+						error_message = (String)returnJSONObject.get("error");
+						success = false;
+					}else{
+						success = true;
+					}
+				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			return myInputStream;
+		}
+
+		protected void onProgressUpdate(Integer... progress) {
+			// Check progress
+		}
+
+		protected void onPostExecute(InputStream responseStream) {
+			if (success){
+				new AlertDialog.Builder(getActivity())
+				.setIcon(R.drawable.ic_navigation_accept)
+				.setTitle("Success!")
+				.setMessage("Adding Graffiti Successful!")
+				.setCancelable(false)
+				.setPositiveButton("Okay", new DialogInterface.OnClickListener()
+				{
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// Close dialog  
+						_messageBox.setText("");
+					}
+				})
+				.show();
+
+			} else {
+				new AlertDialog.Builder(getActivity())
+				.setIcon(R.drawable.ic_navigation_cancel)
+				.setTitle("Failure!")
+				.setMessage("Adding Graffiti Unsuccessful:\n" + error_message)
+				.setCancelable(false)
+				.setPositiveButton("Okay", new DialogInterface.OnClickListener()
+				{
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// Close dialog  
+
+					}
+				})
+				.show();			
+			}
+		}
+	}
+	
 }
