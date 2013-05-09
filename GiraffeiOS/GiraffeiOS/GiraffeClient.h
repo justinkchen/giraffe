@@ -9,29 +9,34 @@
 #import <Foundation/Foundation.h>
 #import "AFHTTPClient.h"
 
+@class Graffiti;
+@class User;
+
 @interface GiraffeClient : AFHTTPClient
 
-+ (GiraffeClient *)getGiraffeClient;
++ (GiraffeClient *)sharedClient;
 
-+ (void)graffitiNearbyGetParameters:(NSDictionary *)parameters
-                            success:(void (^) (AFHTTPRequestOperation *operation, id responseObject))success
-                            failure:(void (^) (AFHTTPRequestOperation *operation, NSError *error))failure;
-+ (void)graffitiNewPostParameters:(NSDictionary *)parameters
-                          success:(void (^) (AFHTTPRequestOperation *operation, id responseObject))success
-                          failure:(void (^) (AFHTTPRequestOperation *operation, NSError *error))failure;
-+ (void)userLoginPostParameters:(NSDictionary *)parameters
-                        success:(void (^) (AFHTTPRequestOperation *operation, id responseObject))success
-                        failure:(void (^) (AFHTTPRequestOperation *operation, NSError *error))failure;
-+ (void)userSignupPostParameters:(NSDictionary *)parameters
-                         success:(void (^) (AFHTTPRequestOperation *operation, id responseObject))success
-                         failure:(void (^) (AFHTTPRequestOperation *operation, NSError *error))failure;
-+ (void)userUpdatePutParameters:(NSDictionary *)parameters
-                        success:(void (^) (AFHTTPRequestOperation *operation, id responseObject))success
-                        failure:(void (^) (AFHTTPRequestOperation *operation, NSError *error))failure;
-+ (void)userLogoutPostParameters:(NSDictionary *)parameters
-                         success:(void (^) (AFHTTPRequestOperation *operation, id responseObject))success
-                         failure:(void (^) (AFHTTPRequestOperation *operation, NSError *error))failure;
+typedef void (^GiraffeClientSuccessBlock)(AFHTTPRequestOperation *operation, id responseObject);
+typedef void (^GiraffeClientFailureBlock) (AFHTTPRequestOperation *operation, NSError *error);
 
-
+- (void)beginGraffitiNearbyGetWithLatitude:(CGFloat)latitude
+                                 longitude:(CGFloat)longitude
+                                   success:(GiraffeClientSuccessBlock)success
+                                   failure:(GiraffeClientFailureBlock)failure;
+- (void)beginGraffitiNewPostWithGraffiti:(Graffiti *)graffiti
+                                 success:(GiraffeClientSuccessBlock)success
+                                 failure:(GiraffeClientFailureBlock)failure;
+- (void)beginUserLoginPostWithUser:(User *)user
+                           success:(GiraffeClientSuccessBlock)success
+                           failure:(GiraffeClientFailureBlock)failure;
+- (void)beginUserSignupPostWithUser:(User *)user
+                            success:(GiraffeClientSuccessBlock)success
+                            failure:(GiraffeClientFailureBlock)failure;
+- (void)beginUserUpdatePutWithUser:(User *)user
+                           success:(GiraffeClientSuccessBlock)success
+                           failure:(GiraffeClientFailureBlock)failure;
+- (void)beginUserLogoutPostWithUser:(User *)user
+                            success:(GiraffeClientSuccessBlock)success
+                            failure:(GiraffeClientFailureBlock)failure;
 
 @end

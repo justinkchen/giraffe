@@ -25,4 +25,6 @@
 @property (nonatomic, retain) NSDate *dateCreated;
 @property (nonatomic, retain) User *author;
 
+- (NSDictionary *)parameterDictionary;
+
 @end

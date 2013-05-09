@@ -7,6 +7,8 @@
 //
 
 #import "GiraffeClient.h"
+#import "Graffiti.h"
+#import "User.h"
 
 NSString *const kBaseURL = @"http://ec2-54-243-69-6.compute-1.amazonaws.com/";
 
@@ -23,57 +25,65 @@ NSString *const kUserPosts = @"users/graffiti";
 NSString *const kUserStats = @"users/stats";
 NSString *const kUserLogout = @"users/logout";
 
-static GiraffeClient *_giraffeClientSingleton;
+NSString *const kParamNameLatitude = @"latitude";
+NSString *const kParamNameLongitude = @"longitude";
 
 @implementation GiraffeClient
 
-+ (GiraffeClient *)getGiraffeClient {
-    if (_giraffeClientSingleton == nil) {
-        _giraffeClientSingleton = [[GiraffeClient alloc] initWithBaseURL:[NSURL URLWithString:kBaseURL]];
-    }
-    return _giraffeClientSingleton;
++ (id)sharedClient
+{
+    // Create Singleton
+    static GiraffeClient *sharedClient = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedClient = [[GiraffeClient alloc] initWithBaseURL:[NSURL URLWithString:kBaseURL]];
+    });
+    
+    return sharedClient;
 }
 
-+ (void)graffitiNearbyGetParameters:(NSDictionary *)parameters
-                            success:(void (^) (AFHTTPRequestOperation *operation, id responseObject))success
-                            failure:(void (^) (AFHTTPRequestOperation *operation, NSError *error))failure {
-    GiraffeClient *client = [GiraffeClient getGiraffeClient];
-    [client getPath:kGraffitiNearby parameters:parameters success:success failure:failure];
+- (void)beginGraffitiNearbyGetWithLatitude:(CGFloat)latitude
+                                 longitude:(CGFloat)longitude
+                                   success:(GiraffeClientSuccessBlock)success
+                                   failure:(GiraffeClientFailureBlock)failure
+{
+    NSDictionary *parameters = @{kParamNameLatitude : @(latitude), kParamNameLongitude : @(longitude)};
+    [self getPath:kGraffitiNearby parameters:parameters success:success failure:failure];
 }
 
-+ (void)graffitiNewPostParameters:(NSDictionary *)parameters
-                          success:(void (^) (AFHTTPRequestOperation *operation, id responseObject))success
-                          failure:(void (^) (AFHTTPRequestOperation *operation, NSError *error))failure {
-    GiraffeClient *client = [GiraffeClient getGiraffeClient];
-    [client postPath:kGraffitiNew parameters:parameters success:success failure:failure];
+- (void)beginGraffitiNewPostWithGraffiti:(Graffiti *)graffiti
+                                 success:(GiraffeClientSuccessBlock)success
+                                 failure:(GiraffeClientFailureBlock)failure
+{
+    [self postPath:kGraffitiNew parameters:[graffiti parameterDictionary] success:success failure:failure];
 }
 
-+ (void)userLoginPostParameters:(NSDictionary *)parameters
-                        success:(void (^) (AFHTTPRequestOperation *operation, id responseObject))success
-                        failure:(void (^) (AFHTTPRequestOperation *operation, NSError *error))failure {
-    GiraffeClient *client = [GiraffeClient getGiraffeClient];
-    [client postPath:kUserLogin parameters:parameters success:success failure:failure];
+- (void)beginUserLoginPostWithUser:(User *)user
+                           success:(GiraffeClientSuccessBlock)success
+                           failure:(GiraffeClientFailureBlock)failure
+{
+    [self postPath:kUserLogin parameters:[user parameterDictionary] success:success failure:failure];
 }
 
-+ (void)userSignupPostParameters:(NSDictionary *)parameters
-                         success:(void (^) (AFHTTPRequestOperation *operation, id responseObject))success
-                         failure:(void (^) (AFHTTPRequestOperation *operation, NSError *error))failure {
-    GiraffeClient *client = [GiraffeClient getGiraffeClient];
-    [client postPath:kUserSignup parameters:parameters success:success failure:failure];
+- (void)beginUserSignupPostWithUser:(User *)user
+                            success:(GiraffeClientSuccessBlock)success
+                            failure:(GiraffeClientFailureBlock)failure
+{
+    [self postPath:kUserSignup parameters:[user parameterDictionary] success:success failure:failure];
 }
 
-+ (void)userUpdatePutParameters:(NSDictionary *)parameters
-                        success:(void (^) (AFHTTPRequestOperation *operation, id responseObject))success
-                        failure:(void (^) (AFHTTPRequestOperation *operation, NSError *error))failure {
-    GiraffeClient *client = [GiraffeClient getGiraffeClient];
-    [client putPath:kUserUpdate parameters:parameters success:success failure:failure];
+- (void)beginUserUpdatePutWithUser:(User *)user
+                           success:(GiraffeClientSuccessBlock)success
+                           failure:(GiraffeClientFailureBlock)failure
+{
+    [self putPath:kUserUpdate parameters:[user parameterDictionary] success:success failure:failure];
 }
 
-+ (void)userLogoutPostParameters:(NSDictionary *)parameters
-                         success:(void (^) (AFHTTPRequestOperation *operation, id responseObject))success
-                         failure:(void (^) (AFHTTPRequestOperation *operation, NSError *error))failure {
-    GiraffeClient *client = [GiraffeClient getGiraffeClient];
-    [client postPath:kUserLogout parameters:NULL success:success failure:failure];
+- (void)beginUserLogoutPostWithUser:(User *)user
+                            success:(GiraffeClientSuccessBlock)success
+                            failure:(GiraffeClientFailureBlock)failure
+{
+    [self postPath:kUserLogout parameters:[user parameterDictionary] success:success failure:failure];
 }
 
 @end

@@ -10,13 +10,16 @@
 
 @implementation User
 
-static User *_currentUser;
-
-+ (User *)currentUser {
-    if (_currentUser == nil) {
-        _currentUser = [[User alloc] init];
-    }
-    return _currentUser;
++ (User *)currentUser
+{
+    // Create Singleton
+    static User *currentUser = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        currentUser = [User new];
+    });
+    
+    return currentUser;
 }
 
 + (void)saveUser {
@@ -29,6 +32,12 @@ static User *_currentUser;
 
 - (void)clear {
     
+}
+
+- (NSDictionary *)parameterDictionary
+{
+    // Construct dictionary with expected paramter names
+    return nil;
 }
 
 @end

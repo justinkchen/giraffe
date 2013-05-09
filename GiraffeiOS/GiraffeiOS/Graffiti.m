@@ -10,4 +10,10 @@
 
 @implementation Graffiti
 
+- (NSDictionary *)parameterDictionary
+{
+    // Create dictionary with expected parameter names
+    return nil;
+}
+
 @end

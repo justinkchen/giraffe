@@ -56,13 +56,13 @@
 
 - (IBAction)postGraffiti:(UIButton *)sender {
     NSLog(@"lat%f - lon%f", self.location.coordinate.latitude, self.location.coordinate.longitude);
-    
-    [GiraffeClient graffitiNewPostParameters:[[NSDictionary alloc] initWithObjectsAndKeys:@"testing iOS", @"message", @"37.423236", @"latitude", @"-122.169731", @"longitude", nil] success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"success!");
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"failure...");
-    }];
-    //[HttpConnection graffitiNewPostConnection:self withParams:[[NSString stringWithFormat:@"abc%d", 1] dataUsingEncoding:NSUTF8StringEncoding]];
+//    
+//    [GiraffeClient graffitiNewPostParameters:[[NSDictionary alloc] initWithObjectsAndKeys:@"testing iOS", @"message", @"37.423236", @"latitude", @"-122.169731", @"longitude", nil] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        NSLog(@"success!");
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        NSLog(@"failure...");
+//    }];
+//    //[HttpConnection graffitiNewPostConnection:self withParams:[[NSString stringWithFormat:@"abc%d", 1] dataUsingEncoding:NSUTF8StringEncoding]];
 }
 
 

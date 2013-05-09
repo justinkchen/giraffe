@@ -22,4 +22,6 @@
 
 - (void)clear;
 
+- (NSDictionary *)parameterDictionary;
+
 @end
