@@ -57,7 +57,7 @@ public class LoginSupportFragment extends DialogFragment {
 		    		_errorMessage.setText("Please fill out all fields");		
 		    	} else {
 		    		// Check login credentials
-		    		new LoginTask().execute("http://ec2-54-243-69-6.compute-1.amazonaws.com/users/login");
+		    		new LoginTask().execute(MainActivity.getBaseServerURI() + "/users/login");
 		    	}
 			}
 		});

@@ -61,7 +61,7 @@ public class RegisterFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// Perform action on click
-				new RegisterTask().execute("http://ec2-54-243-69-6.compute-1.amazonaws.com/users/signup");
+				new RegisterTask().execute(MainActivity.getBaseServerURI() + "/users/signup");
 			}
 		});
 

@@ -97,7 +97,7 @@ OnSeekBarChangeListener {
 					_newGraffiti.setLatitude(myLocation.getLatitude());
 					_newGraffiti.setLongitude(myLocation.getLongitude());
 					_newGraffiti.setRadius(_currentProgress);
-					String uri = "http://ec2-54-243-69-6.compute-1.amazonaws.com/graffiti/new";
+					String uri = MainActivity.getBaseServerURI() + "/graffiti/new";
 					new AddGraffitiTask().execute(uri);
 				}else{
 					_loginFragment = new LoginSupportFragment();
