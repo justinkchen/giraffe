@@ -7,6 +7,7 @@ import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -49,10 +50,33 @@ public class UpdateProfilePictureTask extends AsyncTask<Bitmap, Void, String> {
 
 			Log.i("Johan", "Completed setup.");
 
+//			OutputStreamWriter wr = new OutputStreamWriter(
+//					httpUrlConnection.getOutputStream());
+//			// this is were we're adding post data to the request
+//			wr.write("userid=5");
+//			wr.flush();
+//			wr.close();
+//			
+			Log.i("Johan", "Wrote body.");
+//			OutputStream output = httpUrlConnection.getOutputStream();
 			DataOutputStream request = new DataOutputStream(
 					httpUrlConnection.getOutputStream());
-
+			
+			
 			request.writeBytes(this.twoHyphens + this.boundary + this.crlf);
+//			request.writeBytes("Content-Disposition: form-data; name=\""
+//					+ "userid\";" + this.crlf);
+//			request.writeBytes(this.crlf);
+//			
+//			String userid = "5";
+//			byte[] bytes = userid.getBytes();
+//			request.write(bytes);
+//			
+//			request.writeBytes(this.crlf);
+//			request.writeBytes(this.crlf);
+//			request.writeBytes(this.twoHyphens + this.boundary
+//					+ this.crlf);
+			
 			request.writeBytes("Content-Disposition: form-data; name=\""
 					+ this.attachmentName + "\";filename=\""
 					+ this.attachmentFileName + "\"" + this.crlf);
