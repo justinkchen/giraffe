@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -157,6 +158,16 @@ OnSeekBarChangeListener {
 					.radius(_radiusBar.getProgress()).fillColor(0x1fff0000)
 					.strokeWidth(5.0f)); // In meters
 			_circleOverlayMap.addMarker(new MarkerOptions().position(myLatLng));
+			
+			_circleOverlayMap.setOnMyLocationChangeListener(new OnMyLocationChangeListener(){
+
+				@Override
+				public void onMyLocationChange(Location newLoc) {
+					// TODO Auto-generated method stub
+					LatLng newLatLng = new LatLng(newLoc.getLatitude(), newLoc.getLongitude());
+					_circleOverlayMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newLatLng, 15));
+				}
+			});
 			Log.w("AddGraffitiFragment", "Map settings added in");
 		}
 	}

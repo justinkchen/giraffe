@@ -2,13 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
     
     <PreferenceCategory
-        android:title="@string/subsetting">
-	    
-	    <CheckBoxPreference
-	        android:key="pref_sync"
-	        android:title="Test"
-	        android:summary="Test summary"
-	        android:defaultValue="true" />
+        android:title="@string/useroptions">
 	    
 	    <Preference android:key="change_password"
 		    android:title="@string/change_password" />
