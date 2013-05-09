@@ -23,5 +23,6 @@
 - (void)clear;
 
 - (NSDictionary *)parameterDictionary;
+- (void)updateWithDictionary:(NSDictionary *)dictionary;
 
 @end

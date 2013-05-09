@@ -16,4 +16,9 @@
     return nil;
 }
 
+- (void)updateWithDictionary:(NSDictionary *)dictionary
+{
+    // Perform reverse of paramterDictionary...unpack json into properties
+}
+
 @end

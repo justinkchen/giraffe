@@ -26,5 +26,6 @@
 @property (nonatomic, retain) User *author;
 
 - (NSDictionary *)parameterDictionary;
+- (void)updateWithDictionary:(NSDictionary *)dictionary;
 
 @end
