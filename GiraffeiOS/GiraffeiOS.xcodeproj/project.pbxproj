@@ -50,6 +50,8 @@
 		F04B9E2E17383100007B645B /* HelveticaNeueLTW1G-Cn.otf in Resources */ = {isa = PBXBuildFile; fileRef = F04B9E29173830C7007B645B /* HelveticaNeueLTW1G-Cn.otf */; };
 		F04B9E2F17383103007B645B /* HelveticaNeueLTW1G-MdCn.otf in Resources */ = {isa = PBXBuildFile; fileRef = F04B9E2A173830C7007B645B /* HelveticaNeueLTW1G-MdCn.otf */; };
 		F04B9E3017383107007B645B /* HelveticaNeueLTW1G-BdCn.otf in Resources */ = {isa = PBXBuildFile; fileRef = F04B9E2B173830C7007B645B /* HelveticaNeueLTW1G-BdCn.otf */; };
+		F0C10C9F173B584D0093EBB1 /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C10C9E173B584D0093EBB1 /* LocationManager.m */; };
+		F0C10CA3173B5BAA0093EBB1 /* Foundation-Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C10CA2173B5BAA0093EBB1 /* Foundation-Utility.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -121,6 +123,10 @@
 		F04B9E29173830C7007B645B /* HelveticaNeueLTW1G-Cn.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "HelveticaNeueLTW1G-Cn.otf"; sourceTree = "<group>"; };
 		F04B9E2A173830C7007B645B /* HelveticaNeueLTW1G-MdCn.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "HelveticaNeueLTW1G-MdCn.otf"; sourceTree = "<group>"; };
 		F04B9E2B173830C7007B645B /* HelveticaNeueLTW1G-BdCn.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "HelveticaNeueLTW1G-BdCn.otf"; sourceTree = "<group>"; };
+		F0C10C9D173B584D0093EBB1 /* LocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationManager.h; sourceTree = "<group>"; };
+		F0C10C9E173B584D0093EBB1 /* LocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationManager.m; sourceTree = "<group>"; };
+		F0C10CA1173B5BAA0093EBB1 /* Foundation-Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Foundation-Utility.h"; sourceTree = "<group>"; };
+		F0C10CA2173B5BAA0093EBB1 /* Foundation-Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Foundation-Utility.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -310,6 +316,10 @@
 				F04B9E2317382EF6007B645B /* UIKit-Utility.m */,
 				BB89349417386FA30056F035 /* GiraffeClient.h */,
 				BB89349517386FA30056F035 /* GiraffeClient.m */,
+				F0C10C9D173B584D0093EBB1 /* LocationManager.h */,
+				F0C10C9E173B584D0093EBB1 /* LocationManager.m */,
+				F0C10CA1173B5BAA0093EBB1 /* Foundation-Utility.h */,
+				F0C10CA2173B5BAA0093EBB1 /* Foundation-Utility.m */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -433,6 +443,8 @@
 				BB89348E17386DEE0056F035 /* AFXMLRequestOperation.m in Sources */,
 				BB89348F17386DEE0056F035 /* UIImageView+AFNetworking.m in Sources */,
 				BB89349617386FA30056F035 /* GiraffeClient.m in Sources */,
+				F0C10C9F173B584D0093EBB1 /* LocationManager.m in Sources */,
+				F0C10CA3173B5BAA0093EBB1 /* Foundation-Utility.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
