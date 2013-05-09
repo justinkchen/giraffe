@@ -10,6 +10,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Locale;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
@@ -41,7 +44,7 @@ ActionBar.TabListener {
 	static final int NUM_TABS = 3;
 	private static GiraffeLocationListener locationListener = null;
 	private static CookieManager cookieManager = null;
-	private static String baseServerURI = "http://ec2-54-243-69-6.compute-1.amazonaws.com";
+	private static String baseServerURI = "http://thegiraffeapp.com";
 	private static User currentUser = null;
 	
 	/**
@@ -75,6 +78,36 @@ ActionBar.TabListener {
 	protected void onResume(){
 		super.onResume();
 		System.out.println("onResume MainActivity");
+		int result = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this.getApplicationContext());
+		Log.w("GraffitiMap", "Checking Google Play Services status");
+		switch(result) {
+		case ConnectionResult.SUCCESS:
+			//				toast = Toast.makeText(this.getActivity().getApplicationContext(), "Google Play Services Found",Toast.LENGTH_LONG);
+			//				toast.show();
+			Log.w("MainActivity", "Google Play Services Found");
+			break;
+		case ConnectionResult.SERVICE_MISSING:
+			//				toast = Toast.makeText(this.getActivity().getApplicationContext(), "Need Google Play Services: SERVICE_MISSING",Toast.LENGTH_LONG);
+			//				toast.show();
+			Log.e("MainActivity", "Need Google Play Services: SERVICE_MISSING");
+			GooglePlayServicesUtil.getErrorDialog(result, this, result).show();
+			//				TODO: Set the Error Dialog: GooglePlayServicesUtil.getErrorDialog(result, arg1, arg2)
+			break;
+		case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED:
+			//				toast = Toast.makeText(this.getActivity().getApplicationContext(), "Need Google Play Services: SERVICE_VERSION_UPDATE_REQUIRED" ,Toast.LENGTH_LONG);
+			//				toast.show();
+			Log.e("MainActivity", "Need Google Play Services: SERVICE_VERSION_UPDATE_REQUIRED");
+			GooglePlayServicesUtil.getErrorDialog(result, this, result).show();
+			//				TODO: Set the Error Dialog: GooglePlayServicesUtil.getErrorDialog(result, arg1, arg2)
+			break;
+		case ConnectionResult.SERVICE_DISABLED:
+			//				toast = Toast.makeText(this.getActivity().getApplicationContext(), "Need Google Play Services: SERVICE_DISABLED",Toast.LENGTH_LONG);
+			//				toast.show();
+			Log.e("MainActivity", "Need Google Play Services: SERVICE_DISABLED");
+			GooglePlayServicesUtil.getErrorDialog(result, this, result).show();
+			//				TODO: Set the Error Dialog: GooglePlayServicesUtil.getErrorDialog(result, arg1, arg2)
+			break;
+		}
 	}
 	
 	

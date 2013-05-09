@@ -19,6 +19,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -178,7 +179,7 @@ OnSeekBarChangeListener {
 					.radius(_radiusBar.getProgress()).fillColor(0x1fff0000)
 					.strokeWidth(5.0f)); // In meters
 			_circleOverlayMap.addMarker(new MarkerOptions().position(myLatLng));
-			
+			_circleOverlayMap.getUiSettings().setZoomControlsEnabled(false);
 			_circleOverlayMap.setOnMyLocationChangeListener(new OnMyLocationChangeListener(){
 
 				@Override
