@@ -50,6 +50,10 @@ public class ProfileFragment extends Fragment {
 		_userProfilePicture = (ImageView) rootView
 				.findViewById(R.id.userImageView);
 		_userProfilePicture.setOnClickListener(new profileImageClickListener());
+		
+		User currentUser = MainActivity.getCurrentUser();
+		String username = currentUser.getUsername();
+		String imagePath = currentUser.getAvatar();
 
 		return rootView;
 	}

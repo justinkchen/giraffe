@@ -22,12 +22,7 @@ public class ProfileActivity extends FragmentActivity {
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        _pf = new ProfileFragment();
-        getActionBar().setTitle(R.string.action_profile);
-        getSupportFragmentManager().beginTransaction()
-    		.replace(android.R.id.content, _pf)
-    		.commit();
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        setContentView(R.layout.activity_profile);
     }
 	
     @Override

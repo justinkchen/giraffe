@@ -171,7 +171,7 @@ ActionBar.TabListener {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		// Handle disabling or enabling menu based on user login
 		if(!isLoggedIn()){
-			menu.getItem(0).setVisible(true);
+			menu.getItem(0).setVisible(false);
 		}else{
 			menu.getItem(0).setVisible(true);
 		}
