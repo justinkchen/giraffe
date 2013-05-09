@@ -120,15 +120,15 @@ public class GraffitiMapFragment extends Fragment implements LoaderManager.Loade
 			_map.animateCamera(CameraUpdateFactory.zoomIn());
 			Log.w("GraffitiMap", "Map settings added in");
 			
-			_map.setOnMyLocationChangeListener(new OnMyLocationChangeListener(){
-
-				@Override
-				public void onMyLocationChange(Location newLoc) {
-					// TODO Auto-generated method stub
-					LatLng newLatLng = new LatLng(newLoc.getLatitude(), newLoc.getLongitude());
-					_map.moveCamera(CameraUpdateFactory.newLatLngZoom(newLatLng, 15));
-				}
-			});
+//			_map.setOnMyLocationChangeListener(new OnMyLocationChangeListener(){
+//
+//				@Override
+//				public void onMyLocationChange(Location newLoc) {
+//					// TODO Auto-generated method stub
+//					LatLng newLatLng = new LatLng(newLoc.getLatitude(), newLoc.getLongitude());
+//					_map.moveCamera(CameraUpdateFactory.newLatLngZoom(newLatLng, 15));
+//				}
+//			});
 	        //_map.addMarker(new MarkerOptions().position(myLatLng));
 	        for (Graffiti point : data){
 	        	System.out.println("Graffiti Map Message: " + point.getText());
