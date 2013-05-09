@@ -41,7 +41,7 @@ ActionBar.TabListener {
 	static final int NUM_TABS = 3;
 	private static GiraffeLocationListener locationListener = null;
 	private static CookieManager cookieManager = null;
-	private static String baseServerURI = "https://ec2-54-243-69-6.compute-1.amazonaws.com";
+	private static String baseServerURI = "http://ec2-54-243-69-6.compute-1.amazonaws.com";
 	private static User currentUser = null;
 	
 	/**

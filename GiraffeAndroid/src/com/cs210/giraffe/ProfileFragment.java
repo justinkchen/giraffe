@@ -63,7 +63,7 @@ public class ProfileFragment extends Fragment {
 		_userText.setText(username);
 		if (imagePath != null) {
 			Log.i("Johan", imagePath);
-			setProfilePictureTask.execute(imagePath);
+			setProfilePictureTask.execute(MainActivity.getBaseServerURI() + imagePath);
 		}
 		Log.i("Johan", "Done setting image");
 		return rootView;
