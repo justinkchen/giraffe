@@ -41,5 +41,6 @@ extern NSString *const kParamNameGraffitiAuthor;
 
 - (NSDictionary *)parameterDictionary;
 - (void)updateWithDictionary:(NSDictionary *)dictionary;
+- (id)initWithDictionary:(NSDictionary *)dictionary;
 
 @end

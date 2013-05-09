@@ -31,5 +31,6 @@ extern NSString *const kParamNameUserDateCreated;
 
 - (NSDictionary *)parameterDictionary;
 - (void)updateWithDictionary:(NSDictionary *)dictionary;
+- (id)initWithDictionary:(NSDictionary *)dictionary;
 
 @end

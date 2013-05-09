@@ -35,4 +35,13 @@ NSString *const kParamNameGraffitiAuthor = @"author";
     // Perform reverse of paramterDictionary...unpack json into properties
 }
 
+- (id)initWithDictionary:(NSDictionary *)dictionary
+{
+    self = [super init];
+    if (self) {
+        [self updateWithDictionary:dictionary];
+    }
+    return self;
+}
+
 @end
