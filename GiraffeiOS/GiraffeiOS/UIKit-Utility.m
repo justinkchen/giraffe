@@ -107,6 +107,14 @@
     self.frame = rect;
 }
 
+- (void)animateLayoutWithDuration:(NSTimeInterval)duration
+{
+    [UIView animateWithDuration:duration animations:^{
+        [self setNeedsLayout];
+        [self layoutIfNeeded];
+    }];
+}
+
 @end
 
 

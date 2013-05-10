@@ -20,6 +20,8 @@
 @property (nonatomic) CGFloat rightEdge;
 @property (nonatomic) CGFloat bottomEdge;
 
+- (void)animateLayoutWithDuration:(NSTimeInterval)duration;
+
 @end
 
 @interface UIFont (Utility)
