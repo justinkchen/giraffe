@@ -43,5 +43,6 @@
     <string name="notregisteredyet">Not registered yet? Click here!</string>
     <string name="useroptions">User Options</string>
     <string name="refresh">Refresh</string>
+    <string name="logout">Logout</string>
 
 </resources>

@@ -7,6 +7,9 @@
 	    <Preference android:key="change_password"
 		    android:title="@string/change_password" />
 	    
+	    <Preference android:key="logout"
+		    android:title="@string/logout" />
+	    
     </PreferenceCategory>
 	    
 </PreferenceScreen>
