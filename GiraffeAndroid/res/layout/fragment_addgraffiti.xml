@@ -21,24 +21,40 @@
         android:layout_toLeftOf="@+id/radiusSeekBar"
         android:text="@string/min_radius" />
     
-    <Button
+    <ImageButton
         android:id="@+id/addImageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="21dp"
-        android:minWidth="150dip"
-        android:text="@string/action_add_image" />
-
+        android:layout_above="@+id/graffitiEditText"
+        android:layout_marginBottom="7dp"
+        android:src="@drawable/ic_content_attachment" />
+	
+    <TextView
+        android:id="@+id/addedImageText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/graffitiEditText"
+        android:layout_marginBottom="22dp"
+        android:layout_toRightOf="@+id/addImageButton" />
+    
+    <ImageButton
+        android:id="@+id/removeImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/graffitiEditText"
+        android:layout_toRightOf="@+id/addedImageText"
+        android:layout_marginBottom="7dp"
+        android:visibility="gone"
+        android:src="@drawable/ic_content_remove" />
+    
+    
     <Button
         android:id="@+id/submitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="21dp"
-        android:layout_toRightOf="@+id/addImageButton"
+        android:layout_marginBottom="15dp"
         android:minWidth="150dip"
         android:text="@string/action_submit" />
 
@@ -57,7 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/submitButton"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="18dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/editbox_background_focus_yellow"
         android:ems="10"
         android:hint="Enter Messsage Here"
@@ -78,9 +94,9 @@
         android:id="@+id/radiusSeekBar"
         android:layout_width="300dip"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/graffitiEditText"
+        android:layout_above="@+id/addImageButton"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="25dp"
+        android:layout_marginBottom="10dp"
         android:indeterminate="false"
         android:max="290"
         android:progress="40" />
