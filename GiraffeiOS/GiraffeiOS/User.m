@@ -37,6 +37,11 @@ NSString *const kParamNameUserDateCreated = @"dateCreated";
     
 }
 
+- (BOOL)isSignedIn
+{
+    return [self.username length] > 0;
+}
+
 - (void)clear {
     
 }

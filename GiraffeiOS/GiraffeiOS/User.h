@@ -22,6 +22,7 @@ extern NSString *const kParamNameUserDateCreated;
 @property (nonatomic, strong) NSString *email;
 @property (nonatomic, strong) NSString *imageUrl;
 @property (nonatomic, strong) NSDate *dateCreated;
+@property (nonatomic, readonly) BOOL isSignedIn;
 
 + (User *)currentUser;
 + (void)saveUser;
