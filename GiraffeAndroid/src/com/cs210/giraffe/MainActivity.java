@@ -317,7 +317,7 @@ ActionBar.TabListener {
 			Bundle args = new Bundle();
 			switch(position) {
 			case 0:
-				fragment = new NearbyListFragment();	
+				fragment = new NearbyGraffitiFragment();	
 				break;
 			case 1:
 				fragment = new AddGraffitiFragment();
