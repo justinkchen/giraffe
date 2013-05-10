@@ -61,7 +61,7 @@ public class RegisterFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// Perform action on click
-				new RegisterTask().execute("http://ec2-54-243-69-6.compute-1.amazonaws.com/users/signup");
+				new RegisterTask().execute(MainActivity.getBaseServerURI() + "/users/signup");
 			}
 		});
 
@@ -156,7 +156,9 @@ public class RegisterFragment extends Fragment {
 					cookie.setPath("/");
 					cookie.setVersion(0);
 					try {
-						MainActivity.getCookieManager().getCookieStore().add(new URI(MainActivity.getBaseServerURI()), cookie);
+						if(MainActivity.getCookieManager().getCookieStore().get(new URI(MainActivity.getBaseServerURI())).size() == 0){
+							MainActivity.getCookieManager().getCookieStore().add(new URI(MainActivity.getBaseServerURI()), cookie);
+						}
 					} catch (URISyntaxException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

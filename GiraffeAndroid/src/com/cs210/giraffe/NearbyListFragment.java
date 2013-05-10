@@ -29,7 +29,8 @@ public class NearbyListFragment extends ListFragment implements LoaderManager.Lo
 		
 		setListShown(false);
 		
-		getLoaderManager().initLoader(0, null, this);
+//		getLoaderManager().initLoader(0, null, this);
+		this.getActivity().getSupportLoaderManager().initLoader(0, null, this);
 	}
 
 	@Override

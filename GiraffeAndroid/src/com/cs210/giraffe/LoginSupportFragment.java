@@ -57,7 +57,7 @@ public class LoginSupportFragment extends DialogFragment {
 		    		_errorMessage.setText("Please fill out all fields");		
 		    	} else {
 		    		// Check login credentials
-		    		new LoginTask().execute("http://ec2-54-243-69-6.compute-1.amazonaws.com/users/login");
+		    		new LoginTask().execute(MainActivity.getBaseServerURI() + "/users/login");
 		    	}
 			}
 		});
@@ -131,7 +131,9 @@ public class LoginSupportFragment extends DialogFragment {
 					cookie.setPath("/");
 					cookie.setVersion(0);
 					try {
-						MainActivity.getCookieManager().getCookieStore().add(new URI(MainActivity.getBaseServerURI()), cookie);
+						if(MainActivity.getCookieManager().getCookieStore().get(new URI(MainActivity.getBaseServerURI())).size() == 0){
+							MainActivity.getCookieManager().getCookieStore().add(new URI(MainActivity.getBaseServerURI()), cookie);
+						}
 					} catch (URISyntaxException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

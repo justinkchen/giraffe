@@ -23,6 +23,9 @@ public class ProfileActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        
+        getActionBar().setTitle(R.string.action_profile);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 	
     @Override

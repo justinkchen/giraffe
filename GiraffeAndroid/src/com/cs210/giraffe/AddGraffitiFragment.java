@@ -24,6 +24,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -40,8 +41,10 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -116,7 +119,7 @@ public class AddGraffitiFragment extends Fragment implements
 					_newGraffiti.setLatitude(myLocation.getLatitude());
 					_newGraffiti.setLongitude(myLocation.getLongitude());
 					_newGraffiti.setRadius(_currentProgress);
-					String uri = "http://ec2-54-243-69-6.compute-1.amazonaws.com/graffiti/new";
+					String uri = MainActivity.getBaseServerURI() + "/graffiti/new";
 					new AddGraffitiTask().execute(uri);
 				} else {
 					_loginFragment = new LoginSupportFragment();
@@ -124,6 +127,8 @@ public class AddGraffitiFragment extends Fragment implements
 				}
 			}
 		});
+		
+		setMapTransparent((ViewGroup) rootView);
 		return rootView;
 	}
 
@@ -137,19 +142,40 @@ public class AddGraffitiFragment extends Fragment implements
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
-		Log.w("AddGraffitiFragment", "Destroying View");
-		SupportMapFragment f = (SupportMapFragment) this.getActivity()
-				.getSupportFragmentManager()
-				.findFragmentById(R.id.addGraffitiMap);
-		if (f != null) {
-			this.getActivity().getSupportFragmentManager().beginTransaction()
-					.remove(f).commit();
-			_circleOverlayMap = null;
-		}
 
+		if(!getActivity().isFinishing()){
+			Log.w("AddGraffitiFragment", "Destroying View");
+			SupportMapFragment f = (SupportMapFragment) this.getActivity()
+					.getSupportFragmentManager()
+					.findFragmentById(R.id.addGraffitiMap);
+			if (f != null) {
+				FragmentTransaction ft = this.getActivity().getSupportFragmentManager().beginTransaction();
+	//			ft.commitAllowingStateLoss();
+				ft.remove(f).commit();
+				_circleOverlayMap = null;
+				
+			}
+
+		}
+	}
+	
+	@Override
+	public void onPause(){
+		super.onPause();
+//		Log.w("AddGraffitiFragment", "Pausing AddGraffitiFragment");
+//		SupportMapFragment f = (SupportMapFragment) this.getActivity()
+//				.getSupportFragmentManager()
+//				.findFragmentById(R.id.addGraffitiMap);
+//		if (f != null) {
+//			FragmentTransaction ft = this.getActivity().getSupportFragmentManager().beginTransaction();
+////			ft.commitAllowingStateLoss();
+//			ft.remove(f).commit();
+//			_circleOverlayMap = null;
+//			
+//		}
 	}
 
-	private void setUpMapIfNeeded() {
+	public void setUpMapIfNeeded() {
 		Log.w("AddGraffitiFragment", "Setting up map");
 		// Do a null check to confirm that we have not already instantiated the
 		// map.
@@ -179,18 +205,28 @@ public class AddGraffitiFragment extends Fragment implements
 					.strokeWidth(5.0f)); // In meters
 			_circleOverlayMap.addMarker(new MarkerOptions().position(myLatLng));
 
-			_circleOverlayMap
-					.setOnMyLocationChangeListener(new OnMyLocationChangeListener() {
+			
+			_circleOverlayMap.setOnMyLocationChangeListener(new OnMyLocationChangeListener(){
 
-						@Override
-						public void onMyLocationChange(Location newLoc) {
-							// TODO Auto-generated method stub
-							LatLng newLatLng = new LatLng(newLoc.getLatitude(),
-									newLoc.getLongitude());
-							_circleOverlayMap.moveCamera(CameraUpdateFactory
-									.newLatLngZoom(newLatLng, 15));
-						}
-					});
+				@Override
+				public void onMyLocationChange(Location newLoc) {
+					// TODO Auto-generated method stub
+					LatLng newLatLng = new LatLng(newLoc.getLatitude(), newLoc.getLongitude());
+					_circleOverlayMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newLatLng, 15));
+				}
+			});
+
+			_circleOverlayMap.getUiSettings().setZoomControlsEnabled(false);
+			_circleOverlayMap.setOnMyLocationChangeListener(new OnMyLocationChangeListener(){
+
+				@Override
+				public void onMyLocationChange(Location newLoc) {
+					// TODO Auto-generated method stub
+					LatLng newLatLng = new LatLng(newLoc.getLatitude(), newLoc.getLongitude());
+					_circleOverlayMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newLatLng, 15));
+				}
+			});
+
 			Log.w("AddGraffitiFragment", "Map settings added in");
 		}
 	}
@@ -632,6 +668,18 @@ public class AddGraffitiFragment extends Fragment implements
 
 									}
 								}).show();
+			}
+		}
+	}
+	private void setMapTransparent(ViewGroup group) {
+		int childCount = group.getChildCount();
+		for (int i = 0; i < childCount; i++) {
+			View child = group.getChildAt(i);
+
+			if (child instanceof ViewGroup) {
+				setMapTransparent((ViewGroup) child);
+			} else if (child instanceof SurfaceView) {
+				child.setBackgroundColor(0x00000000);
 			}
 		}
 	}
