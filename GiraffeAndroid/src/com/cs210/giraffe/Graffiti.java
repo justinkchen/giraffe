@@ -9,6 +9,7 @@ public class Graffiti {
 	private double _directionZ;
 	private String _text;
 	private String _imageURL;
+	private String _avatar;
 	private int _likeCount;
 	private boolean _flagged;
 	private int _radius;
@@ -74,6 +75,14 @@ public class Graffiti {
 		this._imageURL = _imageURL;
 	}
 
+	public String getAvatar() {
+		return _avatar;
+	}
+
+	public void setAvatar(String _avatar) {
+		this._avatar = _avatar;
+	}
+	
 	public int getLikeCount() {
 		return _likeCount;
 	}

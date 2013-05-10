@@ -2,32 +2,53 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
- 
-    <TextView
-        android:id="@+id/username"
+    android:orientation="horizontal" >
+
+    <LinearLayout
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="CS210 Student"
+            android:textSize="20sp" >
+        </TextView>
+        
+        <ImageView
+            android:id="@+id/profile_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp" />
+        
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="CS210 Student"
-        android:textSize="20sp" >
+        android:orientation="vertical" >
 
-    </TextView>
-    
-    <TextView
-        android:id="@+id/message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:text="Message"
-        android:textSize="20sp" >
+        <TextView
+            android:id="@+id/message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:text="Message"
+            android:textSize="20sp" >
+        </TextView>
 
-    </TextView>
+        <ImageView
+            android:id="@+id/graffiti_image"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
 
-    <ImageView
-        android:id="@+id/graffiti_image"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" 
-        android:layout_gravity="center_horizontal" />
-    
-</LinearLayout> 
+</LinearLayout>

@@ -36,6 +36,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.location.Location;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
@@ -389,7 +390,18 @@ public class AddGraffitiFragment extends Fragment implements
 
 		if (_photo != null) {
 			_addedImageText.setText(picturePath);
-			_photo = ThumbnailUtils.extractThumbnail(_photo, 66, 66);
+			//Rescale if too big
+			if(_photo.getWidth() > 150 || _photo.getHeight() > 150) {
+				float widthRatio = (float) 150 / _photo.getWidth();
+				float heightRatio = (float) 150 / _photo.getHeight();
+				Log.i("Johan", Integer.toString(_photo.getWidth()));
+				Log.i("Johan", Integer.toString(_photo.getHeight()));
+				Log.i("Johan", Float.toString(widthRatio));
+				Log.i("Johan", Float.toString(heightRatio));
+				Matrix matrix = new Matrix();
+			    matrix.postScale(widthRatio, heightRatio);
+			    _photo = Bitmap.createBitmap(_photo, 0, 0, _photo.getWidth(), _photo.getHeight(), matrix, false);
+			}
 			_removeImageButton.setVisibility(0);
 		}
 		// Do something with photo

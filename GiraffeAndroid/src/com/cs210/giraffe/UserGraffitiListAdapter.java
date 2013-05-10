@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,11 @@ public class UserGraffitiListAdapter extends ArrayAdapter<Graffiti> implements L
 		if(item.getImageURL() != null){
 			new DownloadImageTask((ImageView) view.findViewById(R.id.graffiti_image))
 			.execute(item.getImageURL());
+		}
+		if(item.getAvatar() != null){
+			Log.i("Johan", "Loading profilepic" + item.getAvatar());
+			new DownloadImageTask((ImageView) view.findViewById(R.id.profile_image))
+			.execute(MainActivity.getBaseServerURI() + item.getAvatar());
 		}
 		return view;
 	}

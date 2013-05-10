@@ -61,6 +61,7 @@ public class UserGraffitiListLoader extends AsyncTaskLoader<List<Graffiti>> {
 				newGraffiti.setRadius(graffitiRadius);
 				newGraffiti.setLatitude(graffitiLatitude);
 				newGraffiti.setLongitude(graffitiLongitude);
+				newGraffiti.setAvatar(MainActivity.getCurrentUser().getAvatar());
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
