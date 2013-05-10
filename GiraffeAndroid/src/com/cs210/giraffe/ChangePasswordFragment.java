@@ -1,10 +1,23 @@
 package com.cs210.giraffe;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -41,14 +54,95 @@ public class ChangePasswordFragment extends DialogFragment{
     		_errorMessage.setText("	New password doesn't match");	
     	else {
     		changePassword(_oldPassword, _newPassword1);
-    		getDialog().cancel();
+    		
     	}
     		
     }
     
     private void changePassword(String oldPassword, String newPassword) {
-    	//TODO: Change password
+    	ChangePasswordTask changePasswordTask = new ChangePasswordTask();
+    	changePasswordTask.execute(MainActivity.getBaseServerURI() + "/users/update", oldPassword, newPassword);
     }
 
-    
+    private class ChangePasswordTask extends AsyncTask<String, Void, InputStream> {
+
+    	private boolean success = false;
+    	String error_message = null;
+    	
+    	@Override
+    	protected InputStream doInBackground(String... params) {
+    		InputStream myInputStream = null;
+    		StringBuilder sb = new StringBuilder();
+    		try {
+    			sb.append("oldPassword="
+    					+ URLEncoder.encode(params[1], "UTF-8"));
+    			sb.append("&password="
+    					+ URLEncoder.encode(params[2],"UTF-8"));
+    			
+    		} catch (UnsupportedEncodingException e1) {
+    			// TODO Auto-generated catch block
+    			e1.printStackTrace();
+    		}
+    		URL url = null;
+    		
+    		try {
+    			Log.i("Johan", params[0]);
+    			url = new URL(params[0]);
+    			HttpURLConnection conn = (HttpURLConnection) url
+    					.openConnection();
+    			conn.setDoOutput(true);
+    			conn.setRequestMethod("PUT");
+    			OutputStreamWriter wr = new OutputStreamWriter(
+    					conn.getOutputStream());
+    			// this is were we're adding post data to the request
+    			Log.i("Johan", "Before writing");
+    			wr.write(sb.toString());
+    			Log.i("Johan", "Finished writing");
+    			wr.flush();
+    			myInputStream = conn.getInputStream();
+    			wr.close();
+    		} catch (Exception e) {
+    			// handle the exception !
+    			Log.i("Johan", "Write exception");
+    			e.printStackTrace();
+    			System.out.println("Error Message: " + e.getMessage());
+    		}
+
+    		
+    		JSONObject returnJSONObject = null;
+    		try {
+    			if (myInputStream != null) {
+    				returnJSONObject = new JSONObject(
+    						JSONHandler
+    								.convertStreamToString(myInputStream));
+    				System.out.println("JSONObject Response: "
+    						+ returnJSONObject.toString());
+    				if (returnJSONObject.has("error")) {
+    					error_message = (String) returnJSONObject
+    							.get("error");
+    					success = false;
+    				} else {
+    					success = true;
+    				}
+    			}
+    		} catch (JSONException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		} catch (IOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+    		return myInputStream;
+    	}
+    	
+    	protected void onPostExecute(InputStream responseStream) {
+    		if (success) {
+    			Log.i("Johan", "Successful change");
+    			getDialog().cancel();
+    		} else {
+    			Log.i("Johan", "Unsuccessful change");
+    			_errorMessage.setText('\t' + error_message);	
+    		}
+    	}	
+    }
 }
