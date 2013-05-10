@@ -10,6 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="13.31" />
+    
+    <View 
+   android:layout_width="fill_parent"
+   android:layout_height="2dp"       
+   android:background="#000000"/>
+    
     <ImageButton
         android:id="@+id/refreshbutton"
         style="?android:attr/borderlessButtonStyle"
