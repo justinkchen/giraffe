@@ -5,8 +5,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.CookieHandler;
 import java.net.CookieManager;
+import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Locale;
 
@@ -19,6 +22,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Criteria;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -40,13 +44,13 @@ import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity implements
 ActionBar.TabListener {
-
+	public static final String PREFS_NAME = "GiraffePrefs";
 	static final int NUM_TABS = 3;
 	private static GiraffeLocationListener locationListener = null;
 	private static CookieManager cookieManager = null;
 	private static String baseServerURI = "http://thegiraffeapp.com";
 	private static User currentUser = null;
-	
+
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
 	 * fragments for each of the sections. We use a
@@ -61,7 +65,7 @@ ActionBar.TabListener {
 	 * The {@link ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
-	
+
 	protected static boolean isLoggedIn(){
 		if(currentUser != null){
 			System.out.println("User: " + currentUser.toString());
@@ -69,11 +73,11 @@ ActionBar.TabListener {
 		}
 		return false;
 	}
-	
+
 	protected static void loginUser(User user){
 		currentUser = user;
 	}
-	
+
 	@Override
 	protected void onResume(){
 		super.onResume();
@@ -109,30 +113,46 @@ ActionBar.TabListener {
 			break;
 		}
 	}
-	
-	
+
+
 	@Override
 	protected void onResumeFragments(){
 		super.onResumeFragments();
 		System.out.println("onResumeFragments MainActivity");
 		this.invalidateOptionsMenu();
 	}
-	
+
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-	    outState.putString("WORKAROUND_FOR_BUG_19917_KEY", "WORKAROUND_FOR_BUG_19917_VALUE");
-	    super.onSaveInstanceState(outState);
+		outState.putString("WORKAROUND_FOR_BUG_19917_KEY", "WORKAROUND_FOR_BUG_19917_VALUE");
+		super.onSaveInstanceState(outState);
 	}
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		// Restore preferences
+//		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+//		String cookieStr = settings.getString("cookie", null);
+//		if(cookieStr != null){
+//			HttpCookie cookie = new HttpCookie(cookieStr.substring(0, cookieStr.indexOf('=')), cookieStr.substring(cookieStr.indexOf('='), cookieStr.length()));
+//			cookie.setDomain(MainActivity.getBaseServerURI());
+//			cookie.setPath("/");
+//			cookie.setVersion(0);
+//			try {
+//				MainActivity.getCookieManager().getCookieStore().add(new URI(MainActivity.getBaseServerURI()), cookie);
+//			} catch (URISyntaxException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
 		
+		setContentView(R.layout.activity_main);
+
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		
+
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
 		mSectionsPagerAdapter = new SectionsPagerAdapter(
@@ -161,7 +181,7 @@ ActionBar.TabListener {
 			// this tab is selected.
 			actionBar.addTab(actionBar.newTab()
 					.setTabListener(this));
-//			.setText(mSectionsPagerAdapter.getPageTitle(i))
+			//			.setText(mSectionsPagerAdapter.getPageTitle(i))
 			switch(i){
 			case 0:
 				actionBar.getTabAt(i).setIcon(R.drawable.ic_collections_view_as_list_holodark);
@@ -176,36 +196,36 @@ ActionBar.TabListener {
 				break;
 			}
 		}
-		
+
 		// Acquire a reference to the system Location Manager
 		LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 		Criteria criteria = new Criteria();
 		String bestProvider = locationManager.getBestProvider(criteria, false);
-		
+
 		// Register the listener with the Location Manager to receive location updates
 		locationListener = new GiraffeLocationListener(locationManager, bestProvider);
-		
+
 		if (bestProvider == null || !locationListener.isLocationFound()){
 			new AlertDialog.Builder(this)
-	        .setIcon(R.drawable.ic_device_access_location_off)
-	        .setTitle("No location provider accessible")
-	        .setMessage("Please turn on GPS location services and try again")
-	        .setCancelable(false)
-	        .setPositiveButton("Close App", new DialogInterface.OnClickListener()
-	        {
-	        	@Override
-	        	public void onClick(DialogInterface dialog, int which) {
-	        		finish();    
-	        	}
-	        })
-	        .show();
+			.setIcon(R.drawable.ic_device_access_location_off)
+			.setTitle("No location provider accessible")
+			.setMessage("Please turn on GPS location services and try again")
+			.setCancelable(false)
+			.setPositiveButton("Close App", new DialogInterface.OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					finish();    
+				}
+			})
+			.show();
 		}
-		
+
 		locationManager.requestLocationUpdates(bestProvider, 0, 0, locationListener);
-		
+
 		setCookieManager(new CookieManager());
 		CookieHandler.setDefault(cookieManager);
-		
+
 		HttpsTask.setContext(getApplicationContext());
 
 	}
@@ -217,7 +237,7 @@ ActionBar.TabListener {
 		menu.getItem(0).setIcon(R.drawable.ic_action_user);
 		return true;
 	}
-	
+
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		// Handle disabling or enabling menu based on user login
@@ -231,27 +251,27 @@ ActionBar.TabListener {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-	    // Handle item selection
+		// Handle item selection
 		Intent intent;
-	    switch (item.getItemId()) {
-	        case R.id.action_profile:
-	            // Show current user profile
-	        	intent = new Intent(this, ProfileActivity.class);
-	        	startActivity(intent);
-	            return true;
-	        case R.id.action_settings:
-	            // Start settings activity
-	        	intent = new Intent(this, SettingsActivity.class);
-	        	startActivity(intent);
-	            return true;
-	        case R.id.action_help:
-	            //showHelp();
-	            return true;
-	        default:
-	            return super.onOptionsItemSelected(item);
-	    }
+		switch (item.getItemId()) {
+		case R.id.action_profile:
+			// Show current user profile
+			intent = new Intent(this, ProfileActivity.class);
+			startActivity(intent);
+			return true;
+		case R.id.action_settings:
+			// Start settings activity
+			intent = new Intent(this, SettingsActivity.class);
+			startActivity(intent);
+			return true;
+		case R.id.action_help:
+			//showHelp();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
-	
+
 	@Override
 	public void onTabSelected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
@@ -273,7 +293,7 @@ ActionBar.TabListener {
 	public static GiraffeLocationListener getGiraffeLocationListener(){
 		return locationListener;
 	}
-	
+
 	public static User getCurrentUser() {
 		return currentUser;
 	}
@@ -377,4 +397,25 @@ ActionBar.TabListener {
 		}
 	}
 
+
+	@Override
+	protected void onStop(){
+		super.onStop();
+
+		// We need an Editor object to make preference changes.
+		// All objects are from android.context.Context
+//		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+//		SharedPreferences.Editor editor = settings.edit();
+//
+//		String value;
+//		try {
+//			value = MainActivity.getCookieManager().getCookieStore().get(new URI(MainActivity.getBaseServerURI())).get(0).toString();
+//			editor.putString("cookie", value);
+//		} catch (URISyntaxException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		// Commit the edits!
+//		editor.commit();
+	}
 }

@@ -156,7 +156,9 @@ public class RegisterFragment extends Fragment {
 					cookie.setPath("/");
 					cookie.setVersion(0);
 					try {
-						MainActivity.getCookieManager().getCookieStore().add(new URI(MainActivity.getBaseServerURI()), cookie);
+						if(MainActivity.getCookieManager().getCookieStore().get(new URI(MainActivity.getBaseServerURI())).size() == 0){
+							MainActivity.getCookieManager().getCookieStore().add(new URI(MainActivity.getBaseServerURI()), cookie);
+						}
 					} catch (URISyntaxException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

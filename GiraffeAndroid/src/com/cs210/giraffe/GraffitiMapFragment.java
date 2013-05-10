@@ -38,7 +38,8 @@ public class GraffitiMapFragment extends Fragment implements LoaderManager.Loade
 
 		System.out.println("GraffitiMapFragment.onActivityCreated");
 
-		getLoaderManager().initLoader(0, null, this);
+//		getLoaderManager().initLoader(0, null, this);
+		this.getActivity().getSupportLoaderManager().initLoader(0, null, this);
 	}
 
 	@Override
