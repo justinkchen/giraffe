@@ -38,6 +38,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -106,6 +107,8 @@ OnSeekBarChangeListener {
 				}
 			}
 		});
+		
+		setMapTransparent((ViewGroup) rootView);
 		return rootView;
 	}
 
@@ -425,4 +428,17 @@ OnSeekBarChangeListener {
 		}
 	}
 	
+	
+	private void setMapTransparent(ViewGroup group) {
+		int childCount = group.getChildCount();
+		for (int i = 0; i < childCount; i++) {
+			View child = group.getChildAt(i);
+
+			if (child instanceof ViewGroup) {
+				setMapTransparent((ViewGroup) child);
+			} else if (child instanceof SurfaceView) {
+				child.setBackgroundColor(0x00000000);
+			}
+		}
+	}
 }
