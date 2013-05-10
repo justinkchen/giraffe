@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -40,6 +41,7 @@ import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -49,6 +51,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Button;
 import android.widget.TextView;
@@ -347,7 +350,7 @@ public class AddGraffitiFragment extends Fragment implements
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		Log.i("Johan", "Getting here");
-
+		String picturePath = null;
 		switch (requestCode) {
 
 		case TAKE_CAMERA_PICTURE:
@@ -359,9 +362,20 @@ public class AddGraffitiFragment extends Fragment implements
 			if (resultCode == RESULT_OK) {
 				Uri targetUri = data.getData();
 				try {
-					_photo = BitmapFactory.decodeStream(getActivity()
-							.getContentResolver().openInputStream(targetUri));
-				} catch (FileNotFoundException e) {
+					Uri selectedImage = data.getData();
+		            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+		            Cursor cursor = getActivity().getContentResolver().query(selectedImage,filePathColumn, null, null, null);
+		            cursor.moveToFirst();
+		            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+		            picturePath = cursor.getString(columnIndex);		            
+		            _photo = BitmapFactory.decodeFile(picturePath);
+		            
+		            Log.i("Johan", picturePath);
+		            picturePath = picturePath.substring(picturePath.lastIndexOf('/')+1);
+		            Log.i("Johan", picturePath);
+		            cursor.close();
+
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -374,7 +388,7 @@ public class AddGraffitiFragment extends Fragment implements
 		}
 
 		if (_photo != null) {
-			_addedImageText.setText("Image added");
+			_addedImageText.setText(picturePath);
 			_photo = ThumbnailUtils.extractThumbnail(_photo, 66, 66);
 			_removeImageButton.setVisibility(0);
 		}

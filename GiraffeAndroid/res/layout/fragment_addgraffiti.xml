@@ -39,14 +39,13 @@
     
     <ImageButton
         android:id="@+id/removeImageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_above="@+id/graffitiEditText"
+        android:layout_marginBottom="14dp"
         android:layout_toRightOf="@+id/addedImageText"
-        android:layout_marginBottom="7dp"
-        android:visibility="gone"
-        android:src="@drawable/ic_content_remove" />
-    
+        android:src="@drawable/ic_content_remove"
+        android:visibility="gone" />
     
     <Button
         android:id="@+id/submitButton"
