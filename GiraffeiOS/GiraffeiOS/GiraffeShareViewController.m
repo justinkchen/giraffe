@@ -7,75 +7,59 @@
 //
 
 #import "GiraffeShareViewController.h"
+#import "GiraffeShareView.h"
+#import "UIKit-Utility.h"
 
-@interface GiraffeShareViewController ()
+@interface GiraffeShareViewController () <GiraffeShareViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UITextView *message;
-@property (weak, nonatomic) IBOutlet UIWebView *mapView;
-@property (weak, nonatomic) IBOutlet UILabel *radiusDisplay;
-@property (weak, nonatomic) IBOutlet UISlider *radiusSlider;
-@property (weak, nonatomic) IBOutlet UIButton *postButton;
-
-@property (strong, nonatomic) CLLocation *location;
+@property (nonatomic, retain) GiraffeShareView *shareView;
 
 @end
 
 @implementation GiraffeShareViewController
 
-@synthesize message = _message;
-@synthesize mapView = _mapView;
-@synthesize radiusDisplay = _radiusDisplay;
-@synthesize radiusSlider = _radiusSlider;
-@synthesize postButton = _postButton;
-
-@synthesize locationManager = _locationManager;
-@synthesize location = _location;
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
-        locationManager = [[CLLocationManager alloc] init];
-        locationManager.delegate = self;
-        locationManager.distanceFilter = kCLDistanceFilterNone;
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-        [locationManager startUpdatingLocation];
     }
     return self;
 }
 
-- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
-    NSLog(@"updating!");
-    self.location = [locations objectAtIndex:0];
-}
-
-- (IBAction)radiusChanged:(UISlider *)sender {
-    self.radiusDisplay.text = [NSString stringWithFormat:@"%d", (int)sender.value];
-}
-
-- (IBAction)postGraffiti:(UIButton *)sender {
-    NSLog(@"lat%f - lon%f", self.location.coordinate.latitude, self.location.coordinate.longitude);
-//    
-//    [GiraffeClient graffitiNewPostParameters:[[NSDictionary alloc] initWithObjectsAndKeys:@"testing iOS", @"message", @"37.423236", @"latitude", @"-122.169731", @"longitude", nil] success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        NSLog(@"success!");
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        NSLog(@"failure...");
-//    }];
-//    //[HttpConnection graffitiNewPostConnection:self withParams:[[NSString stringWithFormat:@"abc%d", 1] dataUsingEncoding:NSUTF8StringEncoding]];
-}
-
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+    
+    self.shareView = [GiraffeShareView new];
+    self.shareView.backgroundColor = [UIColor whiteColor];
+    self.shareView.frame = self.view.bounds;
+    self.shareView.delegate = self;
+    [self.view addSubview:self.shareView];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self.shareView updateMapView];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - GiraffeShareViewDelegate
+
+- (void)postButtonTappedWithGraffiti:(Graffiti *)graffiti
+{
+    // Post graffiti to server
+}
+
+- (void)showUserLogin
+{
+    // Show user login screen
 }
 
 @end
