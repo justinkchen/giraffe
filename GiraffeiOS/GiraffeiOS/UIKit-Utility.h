@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+#define centerOffset(smaller, bigger) ((bigger - smaller) / 2.0)
+
 @interface UIView (Utility)
 
 @property (nonatomic) CGSize frameSize;

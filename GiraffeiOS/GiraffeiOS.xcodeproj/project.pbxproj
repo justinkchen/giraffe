@@ -50,6 +50,8 @@
 		F04B9E2E17383100007B645B /* HelveticaNeueLTW1G-Cn.otf in Resources */ = {isa = PBXBuildFile; fileRef = F04B9E29173830C7007B645B /* HelveticaNeueLTW1G-Cn.otf */; };
 		F04B9E2F17383103007B645B /* HelveticaNeueLTW1G-MdCn.otf in Resources */ = {isa = PBXBuildFile; fileRef = F04B9E2A173830C7007B645B /* HelveticaNeueLTW1G-MdCn.otf */; };
 		F04B9E3017383107007B645B /* HelveticaNeueLTW1G-BdCn.otf in Resources */ = {isa = PBXBuildFile; fileRef = F04B9E2B173830C7007B645B /* HelveticaNeueLTW1G-BdCn.otf */; };
+		F06A49A2173E087400FCA95B /* UserLoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06A49A1173E087400FCA95B /* UserLoginController.m */; };
+		F06A49A7173E098F00FCA95B /* UserLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = F06A49A6173E098F00FCA95B /* UserLoginView.m */; };
 		F0C10C9F173B584D0093EBB1 /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C10C9E173B584D0093EBB1 /* LocationManager.m */; };
 		F0C10CA3173B5BAA0093EBB1 /* Foundation-Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C10CA2173B5BAA0093EBB1 /* Foundation-Utility.m */; };
 		F0C10CA6173B7D470093EBB1 /* GiraffeShareView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C10CA5173B7D470093EBB1 /* GiraffeShareView.m */; };
@@ -124,6 +126,10 @@
 		F04B9E29173830C7007B645B /* HelveticaNeueLTW1G-Cn.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "HelveticaNeueLTW1G-Cn.otf"; sourceTree = "<group>"; };
 		F04B9E2A173830C7007B645B /* HelveticaNeueLTW1G-MdCn.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "HelveticaNeueLTW1G-MdCn.otf"; sourceTree = "<group>"; };
 		F04B9E2B173830C7007B645B /* HelveticaNeueLTW1G-BdCn.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "HelveticaNeueLTW1G-BdCn.otf"; sourceTree = "<group>"; };
+		F06A49A0173E087400FCA95B /* UserLoginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserLoginController.h; sourceTree = "<group>"; };
+		F06A49A1173E087400FCA95B /* UserLoginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserLoginController.m; sourceTree = "<group>"; };
+		F06A49A5173E098F00FCA95B /* UserLoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserLoginView.h; sourceTree = "<group>"; };
+		F06A49A6173E098F00FCA95B /* UserLoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserLoginView.m; sourceTree = "<group>"; };
 		F0C10C9D173B584D0093EBB1 /* LocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationManager.h; sourceTree = "<group>"; };
 		F0C10C9E173B584D0093EBB1 /* LocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationManager.m; sourceTree = "<group>"; };
 		F0C10CA1173B5BAA0093EBB1 /* Foundation-Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Foundation-Utility.h"; sourceTree = "<group>"; };
@@ -288,6 +294,7 @@
 			children = (
 				BBAC6413172DF0D2002A5658 /* GiraffeProfileViewController.h */,
 				BBAC6414172DF0D3002A5658 /* GiraffeProfileViewController.m */,
+				F06A49A4173E097500FCA95B /* User Login */,
 			);
 			name = Profile;
 			sourceTree = "<group>";
@@ -347,6 +354,17 @@
 				F04B9E2B173830C7007B645B /* HelveticaNeueLTW1G-BdCn.otf */,
 			);
 			name = Fonts;
+			sourceTree = "<group>";
+		};
+		F06A49A4173E097500FCA95B /* User Login */ = {
+			isa = PBXGroup;
+			children = (
+				F06A49A0173E087400FCA95B /* UserLoginController.h */,
+				F06A49A1173E087400FCA95B /* UserLoginController.m */,
+				F06A49A5173E098F00FCA95B /* UserLoginView.h */,
+				F06A49A6173E098F00FCA95B /* UserLoginView.m */,
+			);
+			name = "User Login";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -451,6 +469,8 @@
 				F0C10C9F173B584D0093EBB1 /* LocationManager.m in Sources */,
 				F0C10CA3173B5BAA0093EBB1 /* Foundation-Utility.m in Sources */,
 				F0C10CA6173B7D470093EBB1 /* GiraffeShareView.m in Sources */,
+				F06A49A2173E087400FCA95B /* UserLoginController.m in Sources */,
+				F06A49A7173E098F00FCA95B /* UserLoginView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

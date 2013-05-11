@@ -17,6 +17,8 @@ NSString *const kParamNameUserEmail = @"email";
 NSString *const kParamNameUserImageUrl = @"imageUrl";
 NSString *const kParamNameUserDateCreated = @"dateCreated";
 
+NSString *const kAvatarImagePlaceholderFilename = @"avatarImagePlaceholder.png";
+
 + (User *)currentUser
 {
     // Create Singleton

@@ -17,6 +17,8 @@ extern NSString *const kParamNameUserEmail;
 extern NSString *const kParamNameUserImageUrl;
 extern NSString *const kParamNameUserDateCreated;
 
+extern NSString *const kAvatarImagePlaceholderFilename;
+
 @property (nonatomic, assign) int identifier;
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *email;
