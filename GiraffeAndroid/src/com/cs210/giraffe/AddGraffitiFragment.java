@@ -274,7 +274,7 @@ public class AddGraffitiFragment extends Fragment implements
 					+ URLEncoder.encode(
 							String.valueOf(newGraffiti.getRadius()), "UTF-8"));
 			sb.append("&userid="
-					+ URLEncoder.encode(String.valueOf(1), "UTF-8"));
+					+ URLEncoder.encode(String.valueOf(MainActivity.getCurrentUser().getId()), "UTF-8"));
 		} catch (UnsupportedEncodingException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -440,7 +440,7 @@ public class AddGraffitiFragment extends Fragment implements
 									String.valueOf(_newGraffiti.getRadius()),
 									"UTF-8"));
 					sb.append("&userid="
-							+ URLEncoder.encode(String.valueOf(1), "UTF-8"));
+							+ URLEncoder.encode(String.valueOf(MainActivity.getCurrentUser().getId()), "UTF-8"));
 				} catch (UnsupportedEncodingException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
