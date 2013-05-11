@@ -29,8 +29,8 @@ public class ProfileFragment extends Fragment {
 	public static final int TAKE_CAMERA_PICTURE = 100;
 	public static final int CHOOSE_GALLERY_IMAGE = 101;
 	public static final int RESULT_OK = -1;
-	public static final int THUMBNAIL_HEIGHT = 116;
-	public static final int THUMBNAIL_WIDTH = 116;
+	public static final int THUMBNAIL_HEIGHT = 180;
+	public static final int THUMBNAIL_WIDTH = 180;
 
 	private TextView _userText;
 	private ImageView _userProfilePicture;

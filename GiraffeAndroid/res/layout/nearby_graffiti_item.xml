@@ -46,8 +46,9 @@
 
         <ImageView
             android:id="@+id/graffiti_image"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
             android:layout_gravity="center_horizontal" />
     </LinearLayout>
 

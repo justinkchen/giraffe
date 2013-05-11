@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/graffitiEditText"
-        android:layout_marginBottom="7dp"
+        android:layout_marginBottom="3dp"
         android:src="@drawable/ic_content_attachment" />
 	
     <TextView
@@ -34,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/graffitiEditText"
-        android:layout_marginBottom="22dp"
+        android:layout_marginBottom="18dp"
         android:layout_toRightOf="@+id/addImageButton" />
     
     <ImageButton
@@ -42,7 +42,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_above="@+id/graffitiEditText"
-        android:layout_marginBottom="14dp"
+        android:layout_marginBottom="10dp"
         android:layout_toRightOf="@+id/addedImageText"
         android:src="@drawable/ic_content_remove"
         android:visibility="gone" />
@@ -51,10 +51,10 @@
         android:id="@+id/submitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="15dp"
-        android:minWidth="150dip"
+        android:layout_above="@+id/graffitiEditText"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="3dp"
+        android:minWidth="80dip"
         android:text="@string/action_submit" />
 
     <include 
@@ -70,12 +70,13 @@
         android:id="@+id/graffitiEditText"
         android:layout_width="400dp"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/submitButton"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="2dp"
         android:background="@drawable/editbox_background_focus_yellow"
         android:ems="10"
-        android:hint="Enter Messsage Here"
+        android:gravity="left|top"
+        android:hint="@string/addgraffiti_hint"
         android:inputType="textMultiLine"
         android:minLines="5" />
 
