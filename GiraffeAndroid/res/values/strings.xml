@@ -44,5 +44,6 @@
     <string name="useroptions">User Options</string>
     <string name="refresh">Refresh</string>
     <string name="logout">Logout</string>
+    <string name="action_login">Login</string>
 
 </resources>

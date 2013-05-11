@@ -258,8 +258,10 @@ ActionBar.TabListener {
 		// Handle disabling or enabling menu based on user login
 		if(!isLoggedIn()){
 			menu.getItem(0).setVisible(false);
+			menu.getItem(1).setVisible(true);
 		}else{
 			menu.getItem(0).setVisible(true);
+			menu.getItem(1).setVisible(false);
 		}
 		return true;
 	}
@@ -273,6 +275,11 @@ ActionBar.TabListener {
 			// Show current user profile
 			intent = new Intent(this, ProfileActivity.class);
 			startActivity(intent);
+			return true;
+		case R.id.action_login:
+			// Start settings activity
+			LoginFragment loginFragment = new LoginFragment();
+			loginFragment.show(getFragmentManager(), "loginFragment");
 			return true;
 		case R.id.action_settings:
 			// Start settings activity
