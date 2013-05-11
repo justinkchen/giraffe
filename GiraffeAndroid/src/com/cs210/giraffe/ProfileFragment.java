@@ -1,8 +1,18 @@
 package com.cs210.giraffe;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -33,10 +43,13 @@ public class ProfileFragment extends Fragment {
 	public static final int THUMBNAIL_WIDTH = 180;
 
 	private TextView _userText;
+	private TextView _postsText;
+	private TextView _likesText;
 	private ImageView _userProfilePicture;
-	
+
 	SetProfilePictureTask setProfilePictureTask = new SetProfilePictureTask();
-	
+	GetProfileStatsTask getProfileStatsTask = new GetProfileStatsTask();
+
 	public ProfileFragment() {
 
 	}
@@ -53,6 +66,9 @@ public class ProfileFragment extends Fragment {
 				false);
 
 		_userText = (TextView) rootView.findViewById(R.id.userTextView);
+		_postsText = (TextView) rootView.findViewById(R.id.postsTextView);
+		_likesText = (TextView) rootView.findViewById(R.id.likesTextView);
+		
 		_userProfilePicture = (ImageView) rootView
 				.findViewById(R.id.userImageView);
 		_userProfilePicture.setOnClickListener(new profileImageClickListener());
@@ -61,11 +77,14 @@ public class ProfileFragment extends Fragment {
 		String username = currentUser.getUsername();
 		String imagePath = currentUser.getAvatar();
 
-		_userText.setText(username);
+		_userText.setText("Username: " + username);
 		if (imagePath != null) {
 			Log.i("Johan", imagePath);
-			setProfilePictureTask.execute(MainActivity.getBaseServerURI() + imagePath);
+			setProfilePictureTask.execute(MainActivity.getBaseServerURI()
+					+ imagePath);
 		}
+		getProfileStatsTask.execute(MainActivity.getBaseServerURI()
+				+ "/users/stats");
 		Log.i("Johan", "Done setting image");
 		return rootView;
 	}
@@ -73,7 +92,6 @@ public class ProfileFragment extends Fragment {
 	public void setUsername(String s) {
 		_userText.setText(s);
 	}
-
 
 	public void setProfilePicture(Bitmap image) {
 		Log.i("Johan", "Setting profile picture");
@@ -155,10 +173,10 @@ public class ProfileFragment extends Fragment {
 			updateProfilePictureTask.execute(image);
 		}
 	}
-	
-	private class SetProfilePictureTask extends AsyncTask<String, Void, Drawable> {
 
-		
+	private class SetProfilePictureTask extends
+			AsyncTask<String, Void, Drawable> {
+
 		@Override
 		protected Drawable doInBackground(String... urls) {
 			Drawable image = null;
@@ -173,10 +191,91 @@ public class ProfileFragment extends Fragment {
 			}
 			return image;
 		}
-		
+
 		protected void onPostExecute(Drawable result) {
 			_userProfilePicture.setImageDrawable(result);
 		}
 
+	}
+
+	private class GetProfileStatsTask extends
+			AsyncTask<String, Void, JSONObject> {
+
+		String error_message;
+		boolean success = false;
+
+		@Override
+		protected JSONObject doInBackground(String... urls) {
+			Log.i("Johan", "Starting stats query");
+			URL url;
+			HttpURLConnection conn = null;
+			try {
+				url = new URL(urls[0]);
+				conn = (HttpURLConnection) url.openConnection();
+				conn.setDoInput(true);
+				conn.setRequestMethod("GET");
+			} catch (ProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			InputStream myInputStream = null;
+			try {
+				myInputStream = conn.getInputStream();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			Log.i("Johan", "Opened input");
+			JSONObject returnJSONObject = null;
+			try {
+				if (myInputStream != null) {
+					returnJSONObject = new JSONObject(
+							JSONHandler.convertStreamToString(myInputStream));
+					System.out.println("JSONObject: "
+							+ returnJSONObject.toString());
+					if (returnJSONObject.has("error")) {
+						error_message = (String) returnJSONObject.get("error");
+						success = false;
+						return returnJSONObject;
+					} else {
+
+						success = true;
+						return returnJSONObject;
+					}
+				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return returnJSONObject;
+
+		}
+
+		protected void onPostExecute(JSONObject returnJSONObject) {
+			if (success) {
+				try {
+					JSONObject statsObject = (JSONObject) returnJSONObject
+							.get("stats");
+					String posts = statsObject.getString("graffiti");
+					String likes = statsObject.getString("likes");
+					_postsText.setText("Posts: " + posts);
+					_likesText.setText("Likes: " + likes);
+					Log.i("Johan", posts);
+					Log.i("Johan", likes);
+				} catch (JSONException e) {
+					Log.i("Johan", "JSON Exception");
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		}
 	}
 }
