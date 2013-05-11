@@ -149,6 +149,7 @@ public class MainActivity extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 
 		// Restore preferences
+
 //		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 //		String cookieStr = settings.getString("cookie", null);
 //		if(cookieStr != null){
@@ -163,7 +164,6 @@ public class MainActivity extends FragmentActivity implements
 //				e.printStackTrace();
 //			}
 //		}
-		
 
 		setContentView(R.layout.activity_main);
 
