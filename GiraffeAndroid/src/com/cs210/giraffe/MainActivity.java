@@ -163,8 +163,6 @@ public class MainActivity extends FragmentActivity implements
 //				e.printStackTrace();
 //			}
 //		}
-		
-
 		setContentView(R.layout.activity_main);
 
 		// Set up the action bar.
@@ -252,7 +250,6 @@ public class MainActivity extends FragmentActivity implements
 		CookieHandler.setDefault(cookieManager);
 
 		HttpsTask.setContext(getApplicationContext());
-
 
 
 		// Retrieve persistent login stuff
