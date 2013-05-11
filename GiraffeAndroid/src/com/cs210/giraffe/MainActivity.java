@@ -66,8 +66,9 @@ public class MainActivity extends FragmentActivity implements
 	 */
 	ViewPager mViewPager;
 
-	protected static boolean isLoggedIn() {
-		if (currentUser != null) {
+
+	protected static boolean isLoggedIn(){
+		if(currentUser != null){
 			System.out.println("User: " + currentUser.getUsername());
 			return true;
 		}
@@ -148,58 +149,20 @@ public class MainActivity extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 		// Restore preferences
 
-		// SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-		// String cookieStr = settings.getString("cookie", null);
-		// if(cookieStr != null){
-		// HttpCookie cookie = new HttpCookie(cookieStr.substring(0,
-		// cookieStr.indexOf('=')), cookieStr.substring(cookieStr.indexOf('='),
-		// cookieStr.length()));
-		// cookie.setDomain(MainActivity.getBaseServerURI());
-		// cookie.setPath("/");
-		// cookie.setVersion(0);
-		// try {
-		// MainActivity.getCookieManager().getCookieStore().add(new
-		// URI(MainActivity.getBaseServerURI()), cookie);
-		// } catch (URISyntaxException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// }
-
-		// SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-		// String cookieStr = settings.getString("cookie", null);
-		// if(cookieStr != null){
-		// HttpCookie cookie = new HttpCookie(cookieStr.substring(0,
-		// cookieStr.indexOf('=')), cookieStr.substring(cookieStr.indexOf('='),
-		// cookieStr.length()));
-		// cookie.setDomain(MainActivity.getBaseServerURI());
-		// cookie.setPath("/");
-		// cookie.setVersion(0);
-		// try {
-		// MainActivity.getCookieManager().getCookieStore().add(new
-		// URI(MainActivity.getBaseServerURI()), cookie);
-		// } catch (URISyntaxException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// }
-		// SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-		// String cookieStr = settings.getString("cookie", null);
-		// if(cookieStr != null){
-		// HttpCookie cookie = new HttpCookie(cookieStr.substring(0,
-		// cookieStr.indexOf('=')), cookieStr.substring(cookieStr.indexOf('='),
-		// cookieStr.length()));
-		// cookie.setDomain(MainActivity.getBaseServerURI());
-		// cookie.setPath("/");
-		// cookie.setVersion(0);
-		// try {
-		// MainActivity.getCookieManager().getCookieStore().add(new
-		// URI(MainActivity.getBaseServerURI()), cookie);
-		// } catch (URISyntaxException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// }
+//		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+//		String cookieStr = settings.getString("cookie", null);
+//		if(cookieStr != null){
+//			HttpCookie cookie = new HttpCookie(cookieStr.substring(0, cookieStr.indexOf('=')), cookieStr.substring(cookieStr.indexOf('='), cookieStr.length()));
+//			cookie.setDomain(MainActivity.getBaseServerURI());
+//			cookie.setPath("/");
+//			cookie.setVersion(0);
+//			try {
+//				MainActivity.getCookieManager().getCookieStore().add(new URI(MainActivity.getBaseServerURI()), cookie);
+//			} catch (URISyntaxException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
 
 		setContentView(R.layout.activity_main);
 
@@ -292,25 +255,22 @@ public class MainActivity extends FragmentActivity implements
 		// Retrieve persistent login stuff
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 		String cookieStr = "connect.sid=" + settings.getString("cookie", null);
-		if (settings.getString("cookie", null) != null) {
+		if(settings.getString("cookie", null) != null){
 			Log.w("MainActivity", "retrieving saved cookie: " + cookieStr);
-			HttpCookie cookie = new HttpCookie(cookieStr.substring(0,
-					cookieStr.indexOf('=')), cookieStr.substring(
-					cookieStr.indexOf('=') + 1, cookieStr.length()));
+			HttpCookie cookie = new HttpCookie(cookieStr.substring(0, cookieStr.indexOf('=')), cookieStr.substring(cookieStr.indexOf('=')+1, cookieStr.length()));
 			cookie.setDomain(MainActivity.getBaseServerURI());
 			cookie.setPath("/");
 			cookie.setVersion(0);
 			try {
 				MainActivity.getCookieManager().getCookieStore().removeAll();
-				MainActivity.getCookieManager().getCookieStore()
-						.add(new URI(MainActivity.getBaseServerURI()), cookie);
+				MainActivity.getCookieManager().getCookieStore().add(new URI(MainActivity.getBaseServerURI()), cookie);
 			} catch (URISyntaxException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		String currentUsername = settings.getString("username", null);
-		if (currentUsername != null) {
+		if(currentUsername != null){
 			User currentUser = new User();
 			currentUser.setEmail(settings.getString("email", ""));
 			currentUser.setAvatar(settings.getString("avatar", null));
@@ -335,7 +295,7 @@ public class MainActivity extends FragmentActivity implements
 		if (!isLoggedIn()) {
 			menu.getItem(0).setVisible(false);
 			menu.getItem(1).setVisible(true);
-		} else {
+		}else{
 			menu.getItem(0).setVisible(true);
 			menu.getItem(1).setVisible(false);
 		}
@@ -602,22 +562,19 @@ public class MainActivity extends FragmentActivity implements
 	protected void onStop() {
 		super.onStop();
 		Log.w("MainActivity", "Saving Preferences");
-
+		// We need an Editor object to make preference changes.
+		// All objects are from android.context.Context
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 		SharedPreferences.Editor editor = settings.edit();
 
 		String cookieValue;
-		if (!MainActivity.isLoggedIn()) {
+		if(!MainActivity.isLoggedIn()){
 			editor.clear();
-		} else {
+		}else{
 			try {
-				if (MainActivity.getCookieManager().getCookieStore()
-						.get(new URI(MainActivity.getBaseServerURI())).size() > 0) {
+				if(MainActivity.getCookieManager().getCookieStore().get(new URI(MainActivity.getBaseServerURI())).size() > 0){
 					Log.w("MainActivity", "Saving cookie");
-					cookieValue = MainActivity.getCookieManager()
-							.getCookieStore()
-							.get(new URI(MainActivity.getBaseServerURI()))
-							.get(0).getValue();
+					cookieValue = MainActivity.getCookieManager().getCookieStore().get(new URI(MainActivity.getBaseServerURI())).get(0).getValue();
 					Log.w("MainActivity", "saved cookie value: " + cookieValue);
 					editor.putString("cookie", cookieValue);
 				}
@@ -629,11 +586,9 @@ public class MainActivity extends FragmentActivity implements
 			Log.w("MainActivity", "Saving user");
 			editor.putInt("id", MainActivity.getCurrentUser().getId());
 			editor.putString("email", MainActivity.getCurrentUser().getEmail());
-			editor.putString("username", MainActivity.getCurrentUser()
-					.getUsername());
-			if (MainActivity.getCurrentUser().getAvatar() != null) {
-				editor.putString("avatar", MainActivity.getCurrentUser()
-						.getAvatar());
+			editor.putString("username", MainActivity.getCurrentUser().getUsername());
+			if(MainActivity.getCurrentUser().getAvatar() != null){
+				editor.putString("avatar", MainActivity.getCurrentUser().getAvatar());
 			}
 
 		}
