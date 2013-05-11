@@ -163,7 +163,7 @@ public class MainActivity extends FragmentActivity implements
 //				e.printStackTrace();
 //			}
 //		}
-
+		
 		setContentView(R.layout.activity_main);
 
 		// Set up the action bar.

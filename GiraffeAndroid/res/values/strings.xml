@@ -44,7 +44,7 @@
     <string name="useroptions">User Options</string>
     <string name="refresh">Refresh</string>
     <string name="logout">Logout</string>
-    <string name="action_login">Login</string>
+
     <string name="addgraffiti_hint">Enter message here…</string>
     <string name="help_text">Welcome to the Giraffe app!
 \n
@@ -62,4 +62,8 @@ Up to your right you have your profile icon if you are logged in, click it to se
 \n
 \n
 Finally you have the options menu which lead you to this dialog, there you can change some settings, login or even logout, not that you\'d ever want to!</string>
+
+
+    <string name="action_login">Login</string>
+
 </resources>
