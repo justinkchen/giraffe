@@ -151,10 +151,14 @@ public class RegisterFragment extends Fragment {
 				String cookieStr = conn.getHeaderField("Set-Cookie");
 				if (cookieStr != null){
 					cookieStr = cookieStr.substring(0, cookieStr.indexOf(';'));
-					HttpCookie cookie = new HttpCookie(cookieStr.substring(0, cookieStr.indexOf('=')), cookieStr.substring(cookieStr.indexOf('='), cookieStr.length()));
+					System.out.println("Register"); 
+					System.out.println("Key: " + cookieStr.substring(0, cookieStr.indexOf('=')));
+					System.out.println("Value: " + cookieStr.substring(cookieStr.indexOf('=')+1, cookieStr.length()));
+					HttpCookie cookie = new HttpCookie(cookieStr.substring(0, cookieStr.indexOf('=')), cookieStr.substring(cookieStr.indexOf('=')+1, cookieStr.length()));
 					cookie.setDomain(MainActivity.getBaseServerURI());
 					cookie.setPath("/");
 					cookie.setVersion(0);
+					System.out.println("Cookie Value: " + cookie.getValue());
 					try {
 						if(MainActivity.getCookieManager().getCookieStore().get(new URI(MainActivity.getBaseServerURI())).size() == 0){
 							MainActivity.getCookieManager().getCookieStore().add(new URI(MainActivity.getBaseServerURI()), cookie);
@@ -222,17 +226,6 @@ public class RegisterFragment extends Fragment {
 					}
 				})
 				.show();
-				
-				HttpCookie cookie = new HttpCookie("user", "fr");
-				cookie.setDomain(MainActivity.getBaseServerURI());
-				cookie.setPath("/");
-				cookie.setVersion(0);
-				try {
-					MainActivity.getCookieManager().getCookieStore().add(new URI(MainActivity.getBaseServerURI()), cookie);
-				} catch (URISyntaxException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 			} else {
 				new AlertDialog.Builder(getActivity())
 				.setIcon(R.drawable.ic_navigation_cancel)

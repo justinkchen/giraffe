@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
@@ -52,6 +57,8 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 			new DownloadImageTask((ImageView) view.findViewById(R.id.graffiti_image))
 			.execute(item.getImageURL());
 		}
+		
+		
 		if(!item.getAvatar().equals("null")){
 			new DownloadImageTask((ImageView) view.findViewById(R.id.profile_image))
 			.execute(MainActivity.getBaseServerURI() + item.getAvatar());

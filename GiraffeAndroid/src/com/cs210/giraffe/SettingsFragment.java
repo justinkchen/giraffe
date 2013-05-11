@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -119,7 +120,7 @@ public class SettingsFragment extends PreferenceFragment {
 		
 		protected void onPostExecute(InputStream responseStream) {
 			if (success) {
-				MainActivity.getCookieManager().getCookieStore().removeAll();
+//				MainActivity.getCookieManager().getCookieStore().removeAll();
 				MainActivity.setCurrentUser(null);
 				NotLoggedInFragment _notLoggedInFragment = new NotLoggedInFragment();
 		        getFragmentManager().beginTransaction()

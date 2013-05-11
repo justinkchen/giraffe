@@ -68,9 +68,10 @@ ActionBar.TabListener {
 
 	protected static boolean isLoggedIn(){
 		if(currentUser != null){
-			System.out.println("User: " + currentUser.toString());
+			System.out.println("User: " + currentUser.getUsername());
 			return true;
 		}
+		System.out.println("Not logged in");
 		return false;
 	}
 
@@ -132,21 +133,7 @@ ActionBar.TabListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// Restore preferences
-//		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-//		String cookieStr = settings.getString("cookie", null);
-//		if(cookieStr != null){
-//			HttpCookie cookie = new HttpCookie(cookieStr.substring(0, cookieStr.indexOf('=')), cookieStr.substring(cookieStr.indexOf('='), cookieStr.length()));
-//			cookie.setDomain(MainActivity.getBaseServerURI());
-//			cookie.setPath("/");
-//			cookie.setVersion(0);
-//			try {
-//				MainActivity.getCookieManager().getCookieStore().add(new URI(MainActivity.getBaseServerURI()), cookie);
-//			} catch (URISyntaxException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
-		
+
 		setContentView(R.layout.activity_main);
 
 		// Set up the action bar.
@@ -227,6 +214,34 @@ ActionBar.TabListener {
 		CookieHandler.setDefault(cookieManager);
 
 		HttpsTask.setContext(getApplicationContext());
+
+
+		// Retrieve persistent login stuff
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		System.out.println("Shared settings: " + settings.toString());
+		String cookieStr = "connect.sid=" + settings.getString("cookie", null);
+		if(cookieStr != null){
+			System.out.println("retrieving saved cookie: " + cookieStr);
+			HttpCookie cookie = new HttpCookie(cookieStr.substring(0, cookieStr.indexOf('=')), cookieStr.substring(cookieStr.indexOf('='), cookieStr.length()));
+			cookie.setDomain(MainActivity.getBaseServerURI());
+			cookie.setPath("/");
+			cookie.setVersion(0);
+			try {
+				MainActivity.getCookieManager().getCookieStore().add(new URI(MainActivity.getBaseServerURI()), cookie);
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		String currentUsername = settings.getString("username", null);
+		if(currentUsername != null){
+			User currentUser = new User();
+			currentUser.setEmail(settings.getString("email", ""));
+			currentUser.setAvatar(settings.getString("avatar", null));
+			currentUser.setId(settings.getInt("id", 0));
+			currentUser.setUsername(settings.getString("username", ""));
+			MainActivity.setCurrentUser(currentUser);
+		}
 
 	}
 
@@ -401,21 +416,38 @@ ActionBar.TabListener {
 	@Override
 	protected void onStop(){
 		super.onStop();
-
+		System.out.println("Saving Preferences");
 		// We need an Editor object to make preference changes.
 		// All objects are from android.context.Context
-//		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-//		SharedPreferences.Editor editor = settings.edit();
-//
-//		String value;
-//		try {
-//			value = MainActivity.getCookieManager().getCookieStore().get(new URI(MainActivity.getBaseServerURI())).get(0).toString();
-//			editor.putString("cookie", value);
-//		} catch (URISyntaxException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		// Commit the edits!
-//		editor.commit();
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		SharedPreferences.Editor editor = settings.edit();
+
+		String cookieValue;
+		if(!MainActivity.isLoggedIn()){
+			editor.clear();
+		}else{
+			try {
+				if(MainActivity.getCookieManager().getCookieStore().get(new URI(MainActivity.getBaseServerURI())).size() > 0){
+					System.out.println("Saving cookie");
+					cookieValue = MainActivity.getCookieManager().getCookieStore().get(new URI(MainActivity.getBaseServerURI())).get(0).getValue();
+					System.out.println("saved cookie value: " + cookieValue);
+					editor.putString("cookie", cookieValue);
+				}
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			System.out.println("Saving user");
+			editor.putInt("id", MainActivity.getCurrentUser().getId());
+			editor.putString("email", MainActivity.getCurrentUser().getEmail());
+			editor.putString("username", MainActivity.getCurrentUser().getUsername());
+			if(MainActivity.getCurrentUser().getAvatar() != null){
+				editor.putString("avatar", MainActivity.getCurrentUser().getAvatar());
+			}
+
+		}
+		// Commit the edits!
+		editor.commit();
 	}
 }

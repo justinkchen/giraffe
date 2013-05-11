@@ -39,10 +39,14 @@ public class JSONHandler {
 			String cookieStr = urlConnection.getHeaderField("Set-Cookie");
 			if (cookieStr != null){
 				cookieStr = cookieStr.substring(0, cookieStr.indexOf(';'));
-				HttpCookie cookie = new HttpCookie(cookieStr.substring(0, cookieStr.indexOf('=')), cookieStr.substring(cookieStr.indexOf('='), cookieStr.length()));
+				System.out.println("Nearby"); 
+				System.out.println("Key: " + cookieStr.substring(0, cookieStr.indexOf('=')));
+				System.out.println("Value: " + cookieStr.substring(cookieStr.indexOf('=')+1, cookieStr.length()));
+				HttpCookie cookie = new HttpCookie(cookieStr.substring(0, cookieStr.indexOf('=')), cookieStr.substring(cookieStr.indexOf('=')+1, cookieStr.length()));
 				cookie.setDomain(MainActivity.getBaseServerURI());
 				cookie.setPath("/");
 				cookie.setVersion(0);
+				System.out.println("Cookie Value: " + cookie.getValue());
 				try {
 					if(MainActivity.getCookieManager().getCookieStore().get(new URI(MainActivity.getBaseServerURI())).size() == 0){
 						MainActivity.getCookieManager().getCookieStore().add(new URI(MainActivity.getBaseServerURI()), cookie);
