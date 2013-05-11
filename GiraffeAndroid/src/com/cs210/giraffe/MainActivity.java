@@ -13,6 +13,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Locale;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
@@ -25,6 +28,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Criteria;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -83,6 +87,7 @@ public class MainActivity extends FragmentActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
+
 		System.out.println("onResume MainActivity");
 		int result = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this
 				.getApplicationContext());
@@ -297,9 +302,11 @@ public class MainActivity extends FragmentActivity implements
 		if (!isLoggedIn()) {
 			menu.getItem(0).setVisible(false);
 			menu.getItem(1).setVisible(true);
+			menu.getItem(3).setVisible(false);
 		}else{
 			menu.getItem(0).setVisible(true);
 			menu.getItem(1).setVisible(false);
+			menu.getItem(3).setVisible(true);
 		}
 		return true;
 	}
@@ -323,6 +330,11 @@ public class MainActivity extends FragmentActivity implements
 			// Start settings activity
 			intent = new Intent(this, SettingsActivity.class);
 			startActivity(intent);
+			return true;
+		case R.id.action_logout:
+			// Start settings activity
+			LogoutTask logoutTask = new LogoutTask();
+			logoutTask.execute(getBaseServerURI() + "/users/logout");
 			return true;
 		case R.id.action_help:
 			showHelp();
@@ -597,5 +609,65 @@ public class MainActivity extends FragmentActivity implements
 		// Commit the edits!
 		editor.commit();
 	}
+	
+	private class LogoutTask extends AsyncTask<String, Void, InputStream> {
+		private String error_message = null;
+		private boolean success = false;
+		@Override
+		protected InputStream doInBackground(String... urls) {
+			URL url = null;
+			JSONObject returnJSONObject = null;
+			InputStream myInputStream = null;
+			try {
+				Log.i("Johan", "About to post");
+				url = new URL(urls[0]);
+				HttpURLConnection conn = (HttpURLConnection) url
+						.openConnection();
+				conn.setDoOutput(true);
+				conn.setRequestMethod("POST");
+				conn.connect();
+				Log.i("Johan", "Posted");
+				myInputStream = conn.getInputStream();
+				
+			} catch (Exception e) {
+				// handle the exception !
+				System.out.println("Error Message: " + e.getMessage());
+			}
+
+			returnJSONObject = null;
+			try {
+				if (myInputStream != null) {
+					returnJSONObject = new JSONObject(
+							JSONHandler.convertStreamToString(myInputStream));
+					System.out.println("JSONObject Response: "
+							+ returnJSONObject.toString());
+					if (returnJSONObject.has("error")) {
+						error_message = (String) returnJSONObject.get("error");
+						success = false;
+					} else {
+						success = true;
+					}
+				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return myInputStream;
+		}
+		
+		protected void onPostExecute(InputStream responseStream) {
+			if (success) {
+				MainActivity.getCookieManager().getCookieStore().removeAll();
+				MainActivity.setCurrentUser(null);
+			} else {
+				
+			}
+		}
+
+	}
+	
 
 }
