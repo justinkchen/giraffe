@@ -44,26 +44,6 @@
     <string name="useroptions">User Options</string>
     <string name="refresh">Refresh</string>
     <string name="logout">Logout</string>
-
-    <string name="addgraffiti_hint">Enter message here…</string>
-    <string name="help_text">Welcome to the Giraffe app!
-\n
-\n
-You can see three different tabs on the top of your screen. The first tab will show you the most recent posts you are in range of, check them out!
-\n
-\n
-The second tab will let you post graffiti of your own, you can add an image if you want to as well. The map at the top will show you how far your graffiti will be broadcast, set it using the slider underneath. Max it out if you want to be heard, or minimize it to leave a more concentrated gem!
-\n
-\n    
-The third tab will let you view a heat map of your surroundings, showing you the concentration of hot graffiti near you!
-\n
-\n
-Up to your right you have your profile icon if you are logged in, click it to see your posts and stats!
-\n
-\n
-Finally you have the options menu which lead you to this dialog, there you can change some settings, login or even logout, not that you\'d ever want to!</string>
-
-
     <string name="action_login">Login</string>
 
 </resources>

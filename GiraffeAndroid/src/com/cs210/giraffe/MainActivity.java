@@ -164,6 +164,7 @@ public class MainActivity extends FragmentActivity implements
 //			}
 //		}
 		
+
 		setContentView(R.layout.activity_main);
 
 		// Set up the action bar.
@@ -251,6 +252,8 @@ public class MainActivity extends FragmentActivity implements
 		CookieHandler.setDefault(cookieManager);
 
 		HttpsTask.setContext(getApplicationContext());
+
+
 
 		// Retrieve persistent login stuff
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
