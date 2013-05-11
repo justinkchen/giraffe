@@ -164,7 +164,7 @@ public class MainActivity extends FragmentActivity implements
 //			}
 //		}
 		
-
+		
 		setContentView(R.layout.activity_main);
 
 		// Set up the action bar.
