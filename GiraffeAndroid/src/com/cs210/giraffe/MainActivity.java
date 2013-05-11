@@ -148,6 +148,23 @@ public class MainActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// Restore preferences
+
+//		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+//		String cookieStr = settings.getString("cookie", null);
+//		if(cookieStr != null){
+//			HttpCookie cookie = new HttpCookie(cookieStr.substring(0, cookieStr.indexOf('=')), cookieStr.substring(cookieStr.indexOf('='), cookieStr.length()));
+//			cookie.setDomain(MainActivity.getBaseServerURI());
+//			cookie.setPath("/");
+//			cookie.setVersion(0);
+//			try {
+//				MainActivity.getCookieManager().getCookieStore().add(new URI(MainActivity.getBaseServerURI()), cookie);
+//			} catch (URISyntaxException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+		
+
 		setContentView(R.layout.activity_main);
 
 		// Set up the action bar.
