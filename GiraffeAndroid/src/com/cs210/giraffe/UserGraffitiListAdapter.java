@@ -51,11 +51,11 @@ public class UserGraffitiListAdapter extends ArrayAdapter<Graffiti> implements L
 			new DownloadImageTask((ImageView) view.findViewById(R.id.graffiti_image))
 			.execute(item.getImageURL());
 		}
-		if(item.getAvatar() != null){
-			Log.i("Johan", "Loading profilepic" + item.getAvatar());
-			new DownloadImageTask((ImageView) view.findViewById(R.id.profile_image))
-			.execute(MainActivity.getBaseServerURI() + item.getAvatar());
-		}
+//		if(item.getAvatar() != null){
+//			Log.i("Johan", "Loading profilepic" + item.getAvatar());
+//			new DownloadImageTask((ImageView) view.findViewById(R.id.profile_image))
+//			.execute(MainActivity.getBaseServerURI() + item.getAvatar());
+//		}
 		return view;
 	}
 

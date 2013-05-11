@@ -343,9 +343,7 @@ public class AddGraffitiFragment extends Fragment implements
 	private class RemoveImageButtonClickListener implements
 			View.OnClickListener {
 		public void onClick(View v) {
-			_photo = null;
-			_addedImageText.setText("");
-			_removeImageButton.setVisibility(8);
+			removeAttachedImage();
 		}
 	}
 
@@ -355,8 +353,10 @@ public class AddGraffitiFragment extends Fragment implements
 		switch (requestCode) {
 
 		case TAKE_CAMERA_PICTURE:
-			if (resultCode == RESULT_OK)
+			if (resultCode == RESULT_OK) {
 				_photo = (Bitmap) data.getExtras().get("data");
+				picturePath = "Camera picture added";
+			}
 			break;
 
 		case CHOOSE_GALLERY_PHOTO:
@@ -391,9 +391,9 @@ public class AddGraffitiFragment extends Fragment implements
 		if (_photo != null) {
 			_addedImageText.setText(picturePath);
 			//Rescale if too big
-			if(_photo.getWidth() > 150 || _photo.getHeight() > 150) {
-				float widthRatio = (float) 150 / _photo.getWidth();
-				float heightRatio = (float) 150 / _photo.getHeight();
+			if(_photo.getWidth() > 270 || _photo.getHeight() > 270) {
+				float widthRatio = (float) 270 / _photo.getWidth();
+				float heightRatio = (float) 270 / _photo.getHeight();
 				Log.i("Johan", Integer.toString(_photo.getWidth()));
 				Log.i("Johan", Integer.toString(_photo.getHeight()));
 				Log.i("Johan", Float.toString(widthRatio));
@@ -662,6 +662,7 @@ public class AddGraffitiFragment extends Fragment implements
 
 		protected void onPostExecute(InputStream responseStream) {
 			if (success) {
+				removeAttachedImage();
 				new AlertDialog.Builder(getActivity())
 						.setIcon(R.drawable.ic_navigation_accept)
 						.setTitle("Success!")
@@ -708,6 +709,12 @@ public class AddGraffitiFragment extends Fragment implements
 				child.setBackgroundColor(0x00000000);
 			}
 		}
+	}
+	
+	private void removeAttachedImage() {
+		_photo = null;
+		_addedImageText.setText("");
+		_removeImageButton.setVisibility(8);
 	}
 
 }

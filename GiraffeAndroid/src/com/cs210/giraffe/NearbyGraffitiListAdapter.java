@@ -52,10 +52,10 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 			new DownloadImageTask((ImageView) view.findViewById(R.id.graffiti_image))
 			.execute(item.getImageURL());
 		}
-		if(!item.getAvatar().equals("null")){
-			new DownloadImageTask((ImageView) view.findViewById(R.id.profile_image))
-			.execute(MainActivity.getBaseServerURI() + item.getAvatar());
-		}
+//		if(!item.getAvatar().equals("null")){
+//			new DownloadImageTask((ImageView) view.findViewById(R.id.profile_image))
+//			.execute(MainActivity.getBaseServerURI() + item.getAvatar());
+//		}
 		
 		return view;
 	}
