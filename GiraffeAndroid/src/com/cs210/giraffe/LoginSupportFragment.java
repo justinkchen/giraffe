@@ -21,6 +21,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -126,9 +127,9 @@ public class LoginSupportFragment extends DialogFragment {
 				String cookieStr = conn.getHeaderField("Set-Cookie");
 				if (cookieStr != null){
 					cookieStr = cookieStr.substring(0, cookieStr.indexOf(';'));
-					System.out.println("LoginSupport"); 
-					System.out.println("Key: " + cookieStr.substring(0, cookieStr.indexOf('=')));
-					System.out.println("Value: " + cookieStr.substring(cookieStr.indexOf('=')+1, cookieStr.length()));
+					Log.w("LoginSupportFragment", "LoginSupport"); 
+					Log.w("LoginSupportFragment", "Key: " + cookieStr.substring(0, cookieStr.indexOf('=')));
+					Log.w("LoginSupportFragment", "Value: " + cookieStr.substring(cookieStr.indexOf('=')+1, cookieStr.length()));
 					HttpCookie cookie = new HttpCookie(cookieStr.substring(0, cookieStr.indexOf('=')), cookieStr.substring(cookieStr.indexOf('=')+1, cookieStr.length()));
 					cookie.setDomain(MainActivity.getBaseServerURI());
 					cookie.setPath("/");
@@ -143,7 +144,7 @@ public class LoginSupportFragment extends DialogFragment {
 						e.printStackTrace();
 					}
 				}
-				System.out.println("cookie store: " + MainActivity.getCookieManager().getCookieStore().getCookies().get(0).getValue());
+				Log.w("LoginSupportFragment", "cookie store: " + MainActivity.getCookieManager().getCookieStore().getCookies().get(0).getValue());
 
 			} catch (Exception e) {
 				//handle the exception !

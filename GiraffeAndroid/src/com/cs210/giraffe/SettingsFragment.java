@@ -120,7 +120,7 @@ public class SettingsFragment extends PreferenceFragment {
 		
 		protected void onPostExecute(InputStream responseStream) {
 			if (success) {
-//				MainActivity.getCookieManager().getCookieStore().removeAll();
+				MainActivity.getCookieManager().getCookieStore().removeAll();
 				MainActivity.setCurrentUser(null);
 				NotLoggedInFragment _notLoggedInFragment = new NotLoggedInFragment();
 		        getFragmentManager().beginTransaction()
