@@ -46,6 +46,7 @@ public class ProfileFragment extends Fragment {
 	private TextView _postsText;
 	private TextView _likesText;
 	private ImageView _userProfilePicture;
+	private String _userid;
 
 	SetProfilePictureTask setProfilePictureTask = new SetProfilePictureTask();
 	GetProfileStatsTask getProfileStatsTask = new GetProfileStatsTask();
@@ -73,10 +74,12 @@ public class ProfileFragment extends Fragment {
 				.findViewById(R.id.userImageView);
 		_userProfilePicture.setOnClickListener(new profileImageClickListener());
 
+		_userid = Integer.toString(((ProfileActivity) getActivity()).getUserid());
+		
 		User currentUser = MainActivity.getCurrentUser();
 		String username = currentUser.getUsername();
 		String imagePath = currentUser.getAvatar();
-
+		
 		_userText.setText("Username: " + username);
 		if (imagePath != null) {
 			Log.i("Johan", imagePath);
@@ -84,7 +87,7 @@ public class ProfileFragment extends Fragment {
 					+ imagePath);
 		}
 		getProfileStatsTask.execute(MainActivity.getBaseServerURI()
-				+ "/users/stats");
+				+ "/users/stats?userid=" + _userid);
 		Log.i("Johan", "Done setting image");
 		return rootView;
 	}

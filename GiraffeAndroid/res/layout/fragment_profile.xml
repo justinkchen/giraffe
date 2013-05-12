@@ -18,8 +18,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/userImageView"
         android:layout_marginLeft="25dp"
+        android:layout_toRightOf="@+id/userImageView"
         android:orientation="vertical" >
 
         <TextView
@@ -43,5 +43,15 @@
             android:layout_marginTop="12dp"
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/usersPostsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="3dp"
+        android:text="@string/users_posts"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>

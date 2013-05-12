@@ -47,6 +47,7 @@
     <string name="action_login">Login</string>
     <string name="action_logout">Logout</string>
     <string name="addgraffiti_hint">Enter message here…</string>
+    <string name="users_posts">Recent posts:</string>
     <string name="help_text">Welcome to the Giraffe app!
 \n
 \n

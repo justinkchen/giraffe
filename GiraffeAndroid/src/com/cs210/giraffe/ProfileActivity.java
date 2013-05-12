@@ -14,16 +14,17 @@ public class ProfileActivity extends FragmentActivity {
 	private ProfileFragment _pf;
 	private ChangePasswordFragment _df;
 	TextView _passwordErrorMessage;
+	private int _userid;
 	
 	public ProfileActivity() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        
+        _userid = getIntent().getExtras().getInt("userid");
+        Log.i("Johan", Integer.toString(_userid));
         getActionBar().setTitle(R.string.action_profile);
         getActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -45,6 +46,12 @@ public class ProfileActivity extends FragmentActivity {
         return super.onOptionsItemSelected(item);
     }
 	
+	public int getUserid() {
+		return _userid;
+	}
 	
+	public void setUserid(int userid) {
+		_userid = userid;
+	}
 	
 }
