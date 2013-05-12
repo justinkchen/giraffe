@@ -3,10 +3,12 @@ package com.cs210.giraffe;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,19 +73,20 @@ public class ProfileFragment extends Fragment {
 		_userText = (TextView) rootView.findViewById(R.id.userTextView);
 		_postsText = (TextView) rootView.findViewById(R.id.postsTextView);
 		_likesText = (TextView) rootView.findViewById(R.id.likesTextView);
-		
+
 		_userProfilePicture = (ImageView) rootView
 				.findViewById(R.id.userImageView);
 		_userProfilePicture.setOnClickListener(new profileImageClickListener());
 
-		_userid = Integer.toString(((ProfileActivity) getActivity()).getUserid());
+		_userid = Integer.toString(((ProfileActivity) getActivity())
+				.getUserid());
 		_username = ((ProfileActivity) getActivity()).getUsername();
 		_imagePath = ((ProfileActivity) getActivity()).getImagePath();
 		Log.i("Johan", "Current userid: " + _userid);
 		User currentUser = MainActivity.getCurrentUser();
 		String username = currentUser.getUsername();
 		String imagePath = currentUser.getAvatar();
-		
+
 		_userText.setText("Name: " + _username);
 		if (imagePath != null) {
 			Log.i("Johan", imagePath);
@@ -109,7 +112,7 @@ public class ProfileFragment extends Fragment {
 
 		public void onClick(View v) {
 
-			final CharSequence[] items = { "Camera", "Gallery" };
+			final CharSequence[] items = { "Camera", "Gallery", "Clear Picture" };
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 			builder.setTitle("Get image from");
@@ -133,6 +136,12 @@ public class ProfileFragment extends Fragment {
 						startActivityForResult(pickimage, CHOOSE_GALLERY_IMAGE);
 						break;
 
+					case 2:
+						// Clear picture
+						ClearProfilePictureTask clearProfilePictureTask = new ClearProfilePictureTask();
+						clearProfilePictureTask.execute(MainActivity.getBaseServerURI() + "/users/clearavatar");
+						break;
+
 					default:
 						break;
 
@@ -145,7 +154,6 @@ public class ProfileFragment extends Fragment {
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		Log.i("Johan", "Getting here");
 		Bitmap image = null;
 		switch (requestCode) {
 
@@ -211,7 +219,6 @@ public class ProfileFragment extends Fragment {
 
 		@Override
 		protected JSONObject doInBackground(String... urls) {
-			Log.i("Johan", "Starting stats query");
 			URL url;
 			HttpURLConnection conn = null;
 			try {
@@ -234,7 +241,6 @@ public class ProfileFragment extends Fragment {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			Log.i("Johan", "Opened input");
 			JSONObject returnJSONObject = null;
 			try {
 				if (myInputStream != null) {
@@ -272,8 +278,6 @@ public class ProfileFragment extends Fragment {
 					String likes = statsObject.getString("likes");
 					_postsText.setText("Posts: " + posts);
 					_likesText.setText("Likes: " + likes);
-					Log.i("Johan", posts);
-					Log.i("Johan", likes);
 				} catch (JSONException e) {
 					Log.i("Johan", "JSON Exception");
 					// TODO Auto-generated catch block
@@ -283,4 +287,81 @@ public class ProfileFragment extends Fragment {
 			}
 		}
 	}
+
+	private class ClearProfilePictureTask extends
+			AsyncTask<String, Void, Boolean> {
+
+		String error_message;
+		boolean success = false;
+
+		@Override
+		protected Boolean doInBackground(String... urls) {
+			URL url;
+			HttpURLConnection conn = null;
+			StringBuilder sb = new StringBuilder();
+			try {
+				url = new URL(urls[0]);
+				conn = (HttpURLConnection) url.openConnection();
+				conn.setDoOutput(true);
+				conn.setRequestMethod("POST");
+				sb.append("userid=" + URLEncoder.encode(_userid, "UTF-8"));
+				OutputStreamWriter wr = new OutputStreamWriter(conn
+						.getOutputStream());
+				// this is were we're adding post data to the request
+				wr.write(sb.toString());
+				wr.flush();
+
+				
+			} catch (ProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			InputStream myInputStream = null;
+			try {
+				myInputStream = conn.getInputStream();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			JSONObject returnJSONObject = null;
+			try {
+				if (myInputStream != null) {
+					returnJSONObject = new JSONObject(
+							JSONHandler.convertStreamToString(myInputStream));
+					System.out.println("JSONObject: "
+							+ returnJSONObject.toString());
+					if (returnJSONObject.has("error")) {
+						error_message = (String) returnJSONObject.get("error");
+						success = false;
+						return success;
+					} else {
+
+						success = true;
+						return success;
+					}
+				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return success;
+
+		}
+
+		protected void onPostExecute(Boolean success) {
+			if (success) {
+				MainActivity.getCurrentUser().setAvatar(null);
+				_userProfilePicture.setImageResource(R.drawable.ic_social_person);
+			}
+			
+		}
+	}
+
 }
