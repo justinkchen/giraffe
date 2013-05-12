@@ -18,14 +18,14 @@
             android:text="CS210 Student"
             android:textSize="20sp" >
         </TextView>
-		<!--  
+        <!--
         <ImageView
             android:id="@+id/profile_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp" />-->
+        -->
     </LinearLayout>
 
     <LinearLayout
@@ -48,7 +48,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="5dp"/>
+            android:layout_marginBottom="5dp" />
+
+        <LinearLayout
+            android:id="@+id/button_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone" >
+
+            <Button
+                android:id="@+id/like_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/flag" />
+
+            <Button
+                android:id="@+id/flag_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/like" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
