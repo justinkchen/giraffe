@@ -15,6 +15,8 @@ public class ProfileActivity extends FragmentActivity {
 	private ChangePasswordFragment _df;
 	TextView _passwordErrorMessage;
 	private int _userid;
+	private String _username;
+	private String _imagePath;
 	
 	public ProfileActivity() {
 	}
@@ -22,12 +24,18 @@ public class ProfileActivity extends FragmentActivity {
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
         _userid = getIntent().getExtras().getInt("userid");
-        Log.i("Johan", Integer.toString(_userid));
+        _username = getIntent().getExtras().getString("username");
+        _imagePath = getIntent().getExtras().getString("imagePath");
+        Log.i("Johan", "Current userid inside ProfileActivity" + _userid);
+        Log.i("Johan", "Current username inside ProfileActivity" + _username);
+        setContentView(R.layout.activity_profile);
+        
+        Log.i("Johan", "At the Activity start: " + _userid);
         getActionBar().setTitle(R.string.action_profile);
         getActionBar().setDisplayHomeAsUpEnabled(true);
     }
+	
 	
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -47,11 +55,18 @@ public class ProfileActivity extends FragmentActivity {
     }
 	
 	public int getUserid() {
+		Log.i("Johan", "At the Activity userid: " + _userid);
 		return _userid;
 	}
 	
-	public void setUserid(int userid) {
-		_userid = userid;
+	public String getUsername() {
+		Log.i("Johan", "At the Activity userid: " + _userid);
+		return _username;
+	}
+	
+	public String getImagePath() {
+		Log.i("Johan", "At the Activity userid: " + _userid);
+		return _imagePath;
 	}
 	
 }

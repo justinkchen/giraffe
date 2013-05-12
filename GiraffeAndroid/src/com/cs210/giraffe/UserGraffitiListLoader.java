@@ -21,9 +21,11 @@ import android.content.Context;
 public class UserGraffitiListLoader extends AsyncTaskLoader<List<Graffiti>> {
 	
 	List<Graffiti> _graffitiData;
+	private int _userid;
 	
-	public UserGraffitiListLoader(Context context) {
+	public UserGraffitiListLoader(Context context, int userid) {
 		super(context);
+		_userid = userid;
 		System.out.println("UserGraffitiListLoader constructed");
 	}
 
@@ -34,8 +36,8 @@ public class UserGraffitiListLoader extends AsyncTaskLoader<List<Graffiti>> {
 		Location currLocation = MainActivity.getGiraffeLocationListener().getCurrentLocation();
 		try {
 			//url = new URL("http://ec2-54-243-69-6.compute-1.amazonaws.com/graffiti/User" + "?latitude=" + currLocation.getLatitude() + "&longitude=" + currLocation.getLongitude());
-			String userid = Integer.toString(MainActivity.getCurrentUser().getId());
-			url = new URL("http://ec2-54-243-69-6.compute-1.amazonaws.com/users/graffiti?id=" + userid);
+			//String userid = Integer.toString(MainActivity.getCurrentUser().getId());
+			url = new URL(MainActivity.getBaseServerURI() + "/users/graffiti?id=" + _userid);
 			Log.i("Johan", "Trying url");
 		} 
 		catch (MalformedURLException e1) {

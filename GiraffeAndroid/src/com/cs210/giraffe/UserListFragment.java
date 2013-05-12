@@ -15,6 +15,8 @@ import android.widget.ListView;
 public class UserListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<List<Graffiti>>{
 
 	UserGraffitiListAdapter _adapter;
+	private int _userid;
+	private String	 _username;
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState){
@@ -23,8 +25,9 @@ public class UserListFragment extends ListFragment implements LoaderManager.Load
 		System.out.println("UserListFragment.onActivityCreated");
 		
 		setEmptyText("No User graffiti");
-		
-		_adapter = new UserGraffitiListAdapter(getActivity());
+		_username = ((ProfileActivity) getActivity()).getUsername();
+		Log.i("Johan", "Username for adapter: " + _username);
+		_adapter = new UserGraffitiListAdapter(getActivity(), _username);
 		setListAdapter(_adapter);
 		
 		setListShown(false);
@@ -42,7 +45,9 @@ public class UserListFragment extends ListFragment implements LoaderManager.Load
 	public Loader<List<Graffiti>> onCreateLoader(int arg0, Bundle arg1) {
 		System.out.println("UserListFragment.onCreateLoader");
 		Log.i("Johan", "onCreateLoader");
-		return new UserGraffitiListLoader(getActivity());
+		_userid = ((ProfileActivity) getActivity()).getUserid();
+		Log.i("Johan", "Userid for loader: " + _userid);
+		return new UserGraffitiListLoader(getActivity(), _userid);
 	}
 
 	@Override

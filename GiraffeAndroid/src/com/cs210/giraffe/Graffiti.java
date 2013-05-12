@@ -14,6 +14,7 @@ public class Graffiti {
 	private boolean _flagged;
 	private int _radius;
 	private String _username;
+	private int _userid;
 	
 	public Graffiti() {
 		// TODO Auto-generated constructor stub
@@ -115,6 +116,12 @@ public class Graffiti {
 		this._username = username;
 	}
 	
-	
+	public int getUserid() {
+		return _userid;
+	}
+
+	public void setUserid(int userid) {
+		this._userid = userid;
+	}
 
 }

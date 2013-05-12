@@ -47,6 +47,8 @@ public class ProfileFragment extends Fragment {
 	private TextView _likesText;
 	private ImageView _userProfilePicture;
 	private String _userid;
+	private String _username;
+	private String _imagePath;
 
 	SetProfilePictureTask setProfilePictureTask = new SetProfilePictureTask();
 	GetProfileStatsTask getProfileStatsTask = new GetProfileStatsTask();
@@ -75,16 +77,18 @@ public class ProfileFragment extends Fragment {
 		_userProfilePicture.setOnClickListener(new profileImageClickListener());
 
 		_userid = Integer.toString(((ProfileActivity) getActivity()).getUserid());
-		
+		_username = ((ProfileActivity) getActivity()).getUsername();
+		_imagePath = ((ProfileActivity) getActivity()).getImagePath();
+		Log.i("Johan", "Current userid: " + _userid);
 		User currentUser = MainActivity.getCurrentUser();
 		String username = currentUser.getUsername();
 		String imagePath = currentUser.getAvatar();
 		
-		_userText.setText("Username: " + username);
+		_userText.setText("Name: " + _username);
 		if (imagePath != null) {
 			Log.i("Johan", imagePath);
 			setProfilePictureTask.execute(MainActivity.getBaseServerURI()
-					+ imagePath);
+					+ _imagePath);
 		}
 		getProfileStatsTask.execute(MainActivity.getBaseServerURI()
 				+ "/users/stats?userid=" + _userid);
@@ -184,9 +188,7 @@ public class ProfileFragment extends Fragment {
 		protected Drawable doInBackground(String... urls) {
 			Drawable image = null;
 			try {
-				Log.i("Johan", "We open the URL");
 				InputStream is = (InputStream) new URL(urls[0]).getContent();
-				Log.i("Johan", "We got the URL");
 				image = Drawable.createFromStream(is, "src");
 			} catch (Exception ex) {
 				Log.i("Johan", "Exception in setting image");

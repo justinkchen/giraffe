@@ -28,6 +28,7 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 	private TextView username;
 	private TextView message;
 	private ImageView graffitiImage;
+	private Graffiti item;
 	
 	
 	public NearbyGraffitiListAdapter(Context context) {
@@ -53,7 +54,7 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 			view = convertView;
 		}
 		
-		Graffiti item = getItem(position);
+		item = getItem(position);
 		username = (TextView) view.findViewById(R.id.username);
 		message = (TextView) view.findViewById(R.id.message);
 		graffitiImage = (ImageView) view.findViewById(R.id.graffiti_image);
@@ -84,7 +85,9 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 		@Override
 		public void onClick(View v) {
 			Intent intent = new Intent(getContext(), ProfileActivity.class);
-			intent.putExtra("userid", MainActivity.getCurrentUser().getId());
+			intent.putExtra("userid", item.getUserid());
+			intent.putExtra("username", item.getUsername());
+			intent.putExtra("imagePath", item.getAvatar());
 			getContext().startActivity(intent);
 		}
 	}

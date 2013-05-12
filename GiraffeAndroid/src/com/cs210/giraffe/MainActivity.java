@@ -323,7 +323,11 @@ public class MainActivity extends FragmentActivity implements
 		case R.id.action_profile:
 			// Show current user profile
 			intent = new Intent(this, ProfileActivity.class);
+			Log.i("Johan", "Current userid inside MainActivity" + MainActivity.getCurrentUser().getId());
+			Log.i("Johan", "Current userid inside MainActivity" + MainActivity.getCurrentUser().getUsername());
 			intent.putExtra("userid", MainActivity.getCurrentUser().getId());
+			intent.putExtra("username", MainActivity.getCurrentUser().getUsername());
+			intent.putExtra("imagePath", MainActivity.getCurrentUser().getAvatar());
 			startActivity(intent);
 			return true;
 		case R.id.action_login:

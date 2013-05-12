@@ -18,9 +18,11 @@ import android.widget.TextView;
 public class UserGraffitiListAdapter extends ArrayAdapter<Graffiti> implements ListAdapter{
 
 	private final LayoutInflater _inflater;
+	private String _username;
 	
-	public UserGraffitiListAdapter(Context context) {
+	public UserGraffitiListAdapter(Context context, String username) {
 		super(context, android.R.layout.simple_list_item_2);
+		_username = username;
 		_inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
@@ -44,7 +46,7 @@ public class UserGraffitiListAdapter extends ArrayAdapter<Graffiti> implements L
 		
 		Graffiti item = getItem(position);
 		((TextView)view.findViewById(R.id.username)).setTypeface(null, Typeface.BOLD);
-		((TextView)view.findViewById(R.id.username)).setText(MainActivity.getCurrentUser().getUsername());
+		((TextView)view.findViewById(R.id.username)).setText(_username);
 		((TextView)view.findViewById(R.id.message)).setText(item.getText());
 		
 		if(item.getImageURL() != null){

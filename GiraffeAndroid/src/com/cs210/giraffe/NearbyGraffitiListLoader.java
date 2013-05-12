@@ -52,15 +52,17 @@ public class NearbyGraffitiListLoader extends AsyncTaskLoader<List<Graffiti>> {
 				double graffitiLatitude = ((JSONObject)graffitiJSONArray.get(i)).getDouble("latitude");
 				double graffitiLongitude = ((JSONObject)graffitiJSONArray.get(i)).getDouble("longitude");
 				String graffitiImageUrl = ((JSONObject)graffitiJSONArray.get(i)).getString("imageUrl");
-				//String graffitiAvatar = ((JSONObject)graffitiJSONArray.get(i)).getString("avatar");
+				String graffitiAvatar = ((JSONObject)graffitiJSONArray.get(i)).getString("avatar");
 				String graffitiUsername = ((JSONObject)graffitiJSONArray.get(i)).getString("username");
+				int graffitiUserid = ((JSONObject)graffitiJSONArray.get(i)).getInt("userId");
 				newGraffiti.setText(graffitiMessage);
 				newGraffiti.setImageURL(graffitiImageUrl);
 				newGraffiti.setRadius(graffitiRadius);
 				newGraffiti.setLatitude(graffitiLatitude);
 				newGraffiti.setLongitude(graffitiLongitude);
 				newGraffiti.setUsername(graffitiUsername);
-				//newGraffiti.setAvatar(graffitiAvatar);
+				newGraffiti.setUserid(graffitiUserid);
+				newGraffiti.setAvatar(graffitiAvatar);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

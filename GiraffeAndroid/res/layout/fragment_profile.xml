@@ -9,6 +9,8 @@
         android:id="@+id/userImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:minWidth="180px"
+        android:minHeight="180px"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="10dp"
