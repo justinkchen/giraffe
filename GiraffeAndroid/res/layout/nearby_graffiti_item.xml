@@ -61,13 +61,13 @@
                 android:id="@+id/like_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/flag" />
+                android:text="@string/like" />
 
             <Button
                 android:id="@+id/flag_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/like" />
+                android:text="@string/flag" />
         </LinearLayout>
     </LinearLayout>
 

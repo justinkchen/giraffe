@@ -37,6 +37,10 @@ public class NearbyListFragment extends ListFragment implements LoaderManager.Lo
     public void onListItemClick(ListView l, View v, int position, long id) {
         // Insert desired behavior here.
         Log.i("NearbyListFragment", "Item clicked: " + id);
+        if (v.findViewById(R.id.button_layout).getVisibility() == 0)
+        	v.findViewById(R.id.button_layout).setVisibility(8);
+        else
+        	v.findViewById(R.id.button_layout).setVisibility(0);
     }
 	
 	@Override

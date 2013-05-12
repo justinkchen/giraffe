@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
     <fragment
         android:id="@+id/nearbyListFragment"
@@ -10,12 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="13.31" />
-    
-    <View 
-   android:layout_width="fill_parent"
-   android:layout_height="2dp"       
-   android:background="#000000"/>
-    
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="#000000" />
+
     <ImageButton
         android:id="@+id/refreshbutton"
         style="?android:attr/borderlessButtonStyle"

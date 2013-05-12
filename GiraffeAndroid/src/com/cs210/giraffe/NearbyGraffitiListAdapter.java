@@ -15,6 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -68,7 +70,7 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 		username.setText(item.getUsername());
 		username.setOnClickListener(new ProfileOnClickListener());
 		message.setText(item.getText());
-		message.setOnClickListener(new MessageOnClickListener());
+		//message.setOnClickListener(new MessageOnClickListener());
 		
 		buttonLayout = (LinearLayout) view.findViewById(R.id.button_layout);
 		
@@ -80,7 +82,7 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 		System.out.println("item image url: " + item.getImageURL());
 		if (!item.getImageURL().equals("null")) {
 			new DownloadImageTask(graffitiImage).execute(item.getImageURL());
-			graffitiImage.setOnClickListener(new MessageOnClickListener());
+			//graffitiImage.setOnClickListener(new MessageOnClickListener());
 		}
 
 		// if(!item.getAvatar().equals("null")){
@@ -109,11 +111,14 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 		@Override
 		public void onClick(View v) {
 			// Add functionality for likes
-			if (buttonLayout.getVisibility() == 0) {
-				buttonLayout.setVisibility(8);
-			} else {
-				buttonLayout.setVisibility(0);
-			}
+			v.findViewById(R.id.button_layout).setVisibility(0);
+			
+			
+//			if (buttonLayout.getVisibility() == 0) {
+//				buttonLayout.setVisibility(8);
+//			} else {
+//				buttonLayout.setVisibility(0);
+//			}
 		}
 	}
 	
@@ -121,7 +126,7 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
+			Log.i("Johan", "Clicked Like Button");
 			
 		}
 		
@@ -131,9 +136,11 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
+			Log.i("Johan", "Clicked Flag Button");
 			
 		}
 		
 	}
+	
+	
 }
