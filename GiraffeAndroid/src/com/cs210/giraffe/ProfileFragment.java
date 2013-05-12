@@ -76,10 +76,15 @@ public class ProfileFragment extends Fragment {
 
 		_userProfilePicture = (ImageView) rootView
 				.findViewById(R.id.userImageView);
-		_userProfilePicture.setOnClickListener(new profileImageClickListener());
-
+		
 		_userid = Integer.toString(((ProfileActivity) getActivity())
 				.getUserid());
+		
+		//You can only change your own profile picture
+		if (_userid.equals(Integer.toString(MainActivity.getCurrentUser().getId()))) {
+			_userProfilePicture.setOnClickListener(new profileImageClickListener());
+		}
+		
 		_username = ((ProfileActivity) getActivity()).getUsername();
 		_imagePath = ((ProfileActivity) getActivity()).getImagePath();
 		Log.i("Johan", "Current userid: " + _userid);
