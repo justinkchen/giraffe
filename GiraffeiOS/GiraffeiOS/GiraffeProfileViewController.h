@@ -10,4 +10,6 @@
 
 @interface GiraffeProfileViewController : UIViewController
 
+@property (weak, nonatomic) IBOutlet UIImageView *avatar;
+
 @end

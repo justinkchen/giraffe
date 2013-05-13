@@ -7,12 +7,15 @@
 //
 
 #import "GiraffeProfileViewController.h"
+#import "UIImageView+AFNetworking.h"
 
 @interface GiraffeProfileViewController ()
 
 @end
 
 @implementation GiraffeProfileViewController
+
+@synthesize avatar = _avatar;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -27,6 +30,9 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
+    //[self.avatar setImageWithURL:[NSURL URLWithString:@"http://www.thegiraffeapp.com/images/user/d6a49c99211136c42557c3ae966ae155c929c71b97a269531af541bdb84a6edc.jpg"] placeholderImage:[UIImage imageNamed:@"first.png"]];
+    [self.avatar setImageWithURL:[NSURL URLWithString:@"http://www.thegiraffeapp.com/images/user/d6a49c99211136c42557c3ae966ae155c929c71b97a269531af541bdb84a6edc.jpg"]];
 }
 
 - (void)didReceiveMemoryWarning
