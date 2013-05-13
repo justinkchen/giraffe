@@ -56,7 +56,7 @@ NSString *const kUserLoginControllerTitle = @"Log In";
     [self.view addSubview:self.loginView];
     
     // Customize nav bar
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(handleRightBarButtonTapped:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]  initWithTitle:@"Log In" style:UIBarButtonItemStylePlain target:self action:@selector(handleRightBarButtonTapped:)];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(handleLeftBarButtonTapped:)];
 }
 
@@ -97,13 +97,37 @@ NSString *const kUserLoginControllerTitle = @"Log In";
 
 - (void)handleRightBarButtonTapped:(id)sender
 {
-    [[GiraffeClient sharedClient] beginUserLoginPostWithUser:self.loginView.userFromInput
+    NSDictionary *loginParameters = [self.loginView userParameters];
+    if (loginParameters == nil) {
+        return;
+    }
+    NSLog(@"log in pressed");
+    [[GiraffeClient sharedClient] beginUserLoginPostWithUserParameters:loginParameters
                                                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                                          // User response data to update currentUser singleton
+                                                         
+                                                         if ([responseObject valueForKey:@"error"] == nil) {
+                                                             // set user parameters
+                                                             NSLog(@"%@", responseObject);
+                                                             NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"responseObject is supposed to be a NSData"); // it should be a NSData class
+
+                                                             NSLog(@"%@", [responseObject valueForKey:@"message"]);
+                                                             [[User currentUser] updateWithDictionary: [responseObject valueForKey:@"user"]];
+                                                             
+                                                             [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+                                                         } else {
+                                                             // TODO: print error message
+                                                             NSLog(@"%@", [responseObject valueForKey:@"error"]);
+                                                         }
                                                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                                          // Show an alert view notifying of failure.
+                                                         NSLog(@"failure to login");
+                                                         NSDictionary *JSON =
+                                                         [NSJSONSerialization JSONObjectWithData: [error.localizedRecoverySuggestion dataUsingEncoding:NSUTF8StringEncoding]
+                                                                                         options: NSJSONReadingMutableContainers
+                                                                                           error:nil];
+                                                         NSLog(@"%@", JSON[@"message"]);
                                                      }];
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)handleLeftBarButtonTapped:(id)sender

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "AFHTTPClient.h"
+#import "AFJSONRequestOperation.h"
 
 @class Graffiti;
 @class User;
@@ -26,7 +27,7 @@ typedef void (^GiraffeClientFailureBlock) (AFHTTPRequestOperation *operation, NS
 - (void)beginGraffitiNewPostWithGraffiti:(Graffiti *)graffiti
                                  success:(GiraffeClientSuccessBlock)success
                                  failure:(GiraffeClientFailureBlock)failure;
-- (void)beginUserLoginPostWithUser:(User *)user
+- (void)beginUserLoginPostWithUserParameters:(NSDictionary *)parameters
                            success:(GiraffeClientSuccessBlock)success
                            failure:(GiraffeClientFailureBlock)failure;
 - (void)beginUserSignupPostWithUser:(User *)user

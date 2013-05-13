@@ -14,10 +14,11 @@
 @interface UserLoginView () <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate>
 
 // Subviews
-@property (nonatomic, retain) UITextField *usernameField;
-@property (nonatomic, retain) UITextField *emailField;
+@property (nonatomic, retain) UILabel *errorLabel;
+@property (nonatomic, retain) UITextField *usernameEmailField;
+//@property (nonatomic, retain) UITextField *emailField;
 @property (nonatomic, retain) UITextField *passwordField;
-@property (nonatomic, retain) UITextField *passwordConfirmField;
+//@property (nonatomic, retain) UITextField *passwordConfirmField;
 @property (nonatomic, retain) UIImageView *avatarImageView;
 @property (nonatomic, retain) UIControl *avatarImageControl;
 @property (nonatomic, retain) UIControl *firstResponderControl;
@@ -47,36 +48,52 @@
 
 #pragma mark - Accessors
 
-- (NSString *)password
+//- (NSString *)password
+//{
+//    NSString *password = nil;
+//    if ([self.passwordField.text length] > 0 && [self.passwordConfirmField.text length] > 0 &&
+//        [self.passwordField.text isEqualToString:self.passwordConfirmField.text]) {
+//        password = self.passwordField.text;
+//    }
+//    return password;
+//}
+//
+//- (User *)userFromInput
+//{
+//    User *user = nil;
+//    if ([self.usernameEmailField.text length] && [self.emailField.text length] && [self.password length]) {
+//        user = [User new];
+//        user.username = self.usernameEmailField.text;
+//        user.email = self.emailField.text;
+//        user.dateCreated = [NSDate date];
+//    }
+//    return user;
+//}
+
+- (NSDictionary *)userParameters
 {
-    NSString *password = nil;
-    if ([self.passwordField.text length] > 0 && [self.passwordConfirmField.text length] > 0 &&
-        [self.passwordField.text isEqualToString:self.passwordConfirmField.text]) {
-        password = self.passwordField.text;
+    NSDictionary *parameters = nil;
+    
+    if ([self.usernameEmailField.text length] > 0 &&
+        [self.passwordField.text length] > 0) {
+        parameters = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:self.usernameEmailField.text, self.passwordField.text, nil]  forKeys:[NSArray arrayWithObjects:@"usernameEmail", @"password", nil]];
     }
-    return password;
+    
+    return parameters;
 }
 
-- (User *)userFromInput
-{
-    User *user = nil;
-    if ([self.usernameField.text length] && [self.emailField.text length] && [self.password length]) {
-        user = [User new];
-        user.username = self.usernameField.text;
-        user.email = self.emailField.text;
-        user.dateCreated = [NSDate date];
-    }
-    return user;
+- (void)displayError:(NSString *)errorMessage {
+//    [self.errorLabel setText:errorMessage];
 }
 
 #pragma mark - Layout
 
 const CGFloat kUserLoginPadding = 10.0;
 const CGFloat kAvatarImageSize = 55.0;
-NSString *const kUsernamePlaceholderString = @"Username";
-NSString *const kEmailPlaceholderString = @"Email";
+NSString *const kUsernamePlaceholderString = @"Username or Email";
+//NSString *const kEmailPlaceholderString = @"Email";
 NSString *const kPasswordPlaceholderString = @"Password";
-NSString *const kPasswordConfirmPlaceholderString = @"Confirm Password";
+//NSString *const kPasswordConfirmPlaceholderString = @"Confirm Password";
 
 - (void)layoutSubviews
 {
@@ -118,23 +135,28 @@ NSString *const kPasswordConfirmPlaceholderString = @"Confirm Password";
     }
     self.avatarImageControl.frame = self.avatarImageView.frame;
     
-    // Username
-    if (!self.usernameField) {
-        self.usernameField = [UITextField new];
-        self.usernameField.delegate = self;
-        self.usernameField.borderStyle = UITextBorderStyleBezel;
-        self.usernameField.backgroundColor = self.backgroundColor;
-        self.usernameField.textColor = [UIColor blackColor];
-        self.usernameField.placeholder = kUsernamePlaceholderString;
-        self.usernameField.font = [UIFont helveticaNeueCondensedOfSize:18.0 weight:UIFontWeightRegular];
-        self.usernameField.layer.cornerRadius = 4.0;
-        [self addSubview:self.usernameField];
-    }
-    self.usernameField.frameHeight = 1.5 * self.usernameField.font.lineHeight;
-    self.usernameField.frameWidth = self.frameWidth - 2 * kUserLoginPadding;
-    self.usernameField.frameOriginX = kUserLoginPadding;
-    self.usernameField.frameOriginY = self.avatarImageView.bottomEdge + kUserLoginPadding;
+    // Error message
+    // TODO: add error message label
     
+    // Username
+    if (!self.usernameEmailField) {
+        self.usernameEmailField = [UITextField new];
+        self.usernameEmailField.delegate = self;
+        self.usernameEmailField.borderStyle = UITextBorderStyleBezel;
+        self.usernameEmailField.backgroundColor = self.backgroundColor;
+        self.usernameEmailField.textColor = [UIColor blackColor];
+        self.usernameEmailField.placeholder = kUsernamePlaceholderString;
+        self.usernameEmailField.font = [UIFont helveticaNeueCondensedOfSize:18.0 weight:UIFontWeightRegular];
+        self.usernameEmailField.layer.cornerRadius = 4.0;
+        self.usernameEmailField.autocorrectionType = UITextAutocorrectionTypeNo;
+        [self addSubview:self.usernameEmailField];
+    }
+    self.usernameEmailField.frameHeight = 1.5 * self.usernameEmailField.font.lineHeight;
+    self.usernameEmailField.frameWidth = self.frameWidth - 2 * kUserLoginPadding;
+    self.usernameEmailField.frameOriginX = kUserLoginPadding;
+    self.usernameEmailField.frameOriginY = self.avatarImageView.bottomEdge + kUserLoginPadding;
+    
+    /*
     // Email
     if (!self.emailField) {
         self.emailField = [UITextField new];
@@ -147,10 +169,10 @@ NSString *const kPasswordConfirmPlaceholderString = @"Confirm Password";
         self.emailField.layer.cornerRadius = 4.0;
         [self addSubview:self.emailField];
     }
-    self.emailField.frameSize = self.usernameField.frameSize;
-    self.emailField.frameOriginX = self.usernameField.frameOriginX;
-    self.emailField.frameOriginY = self.usernameField.bottomEdge + kUserLoginPadding;
-    
+    self.emailField.frameSize = self.usernameEmailField.frameSize;
+    self.emailField.frameOriginX = self.usernameEmailField.frameOriginX;
+    self.emailField.frameOriginY = self.usernameEmailField.bottomEdge + kUserLoginPadding;
+    */
     // Password
     if (!self.passwordField) {
         self.passwordField = [UITextField new];
@@ -162,12 +184,14 @@ NSString *const kPasswordConfirmPlaceholderString = @"Confirm Password";
         self.passwordField.font = [UIFont helveticaNeueCondensedOfSize:18.0 weight:UIFontWeightRegular];
         self.passwordField.layer.cornerRadius = 4.0;
         self.passwordField.secureTextEntry = YES;
+        self.passwordField.autocorrectionType = UITextAutocorrectionTypeNo;
         [self addSubview:self.passwordField];
     }
-    self.passwordField.frameSize = self.emailField.frameSize;
-    self.passwordField.frameOriginX = self.emailField.frameOriginX;
-    self.passwordField.frameOriginY = self.emailField.bottomEdge + kUserLoginPadding;
+    self.passwordField.frameSize = self.usernameEmailField.frameSize;
+    self.passwordField.frameOriginX = self.usernameEmailField.frameOriginX;
+    self.passwordField.frameOriginY = self.usernameEmailField.bottomEdge + kUserLoginPadding;
     
+    /*
     // Password
     if (!self.passwordConfirmField) {
         self.passwordConfirmField = [UITextField new];
@@ -184,6 +208,7 @@ NSString *const kPasswordConfirmPlaceholderString = @"Confirm Password";
     self.passwordConfirmField.frameSize = self.passwordField.frameSize;
     self.passwordConfirmField.frameOriginX = self.passwordField.frameOriginX;
     self.passwordConfirmField.frameOriginY = self.passwordField.bottomEdge + kUserLoginPadding;
+     */
 }
 
 #pragma mark - Buttons

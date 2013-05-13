@@ -32,11 +32,11 @@ NSString *const kAvatarImagePlaceholderFilename = @"avatarImagePlaceholder.png";
 }
 
 + (void)saveUser {
-    
+    // save to nsuserdefaults?
 }
 
 + (void)loadUser {
-    
+    // load from nsuserdefaults
 }
 
 - (BOOL)isSignedIn

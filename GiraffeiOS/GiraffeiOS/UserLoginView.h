@@ -14,8 +14,11 @@
 @interface UserLoginView : UIView
 
 @property (nonatomic, assign) id<UserLoginViewDelegate> delegate;
-@property (nonatomic, readonly) User *userFromInput;
-@property (nonatomic, readonly) NSString *password;
+//@property (nonatomic, readonly) User *userFromInput;
+//@property (nonatomic, readonly) NSString *password;
+
+- (NSDictionary *)userParameters;
+- (void)displayError:(NSString *)errorMessage;
 
 @end
 

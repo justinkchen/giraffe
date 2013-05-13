@@ -37,6 +37,10 @@ NSString *const kParamNameLongitude = @"longitude";
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedClient = [[GiraffeClient alloc] initWithBaseURL:[NSURL URLWithString:kBaseURL]];
+//        sharedClient.parameterEncoding = AFJSONParameterEncoding;
+        [sharedClient setDefaultHeader:@"Accept" value:@"application/json"];
+        [sharedClient registerHTTPOperationClass:[AFJSONRequestOperation class]];
+        
     });
     
     return sharedClient;
@@ -58,11 +62,11 @@ NSString *const kParamNameLongitude = @"longitude";
     [self postPath:kGraffitiNew parameters:[graffiti parameterDictionary] success:success failure:failure];
 }
 
-- (void)beginUserLoginPostWithUser:(User *)user
-                           success:(GiraffeClientSuccessBlock)success
-                           failure:(GiraffeClientFailureBlock)failure
+- (void)beginUserLoginPostWithUserParameters:(NSDictionary *)parameters
+                                     success:(GiraffeClientSuccessBlock)success
+                                     failure:(GiraffeClientFailureBlock)failure
 {
-    [self postPath:kUserLogin parameters:[user parameterDictionary] success:success failure:failure];
+   [self postPath:kUserLogin parameters:parameters success:success failure:failure];
 }
 
 - (void)beginUserSignupPostWithUser:(User *)user
