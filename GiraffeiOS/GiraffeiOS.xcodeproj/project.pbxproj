@@ -43,6 +43,7 @@
 		BBAC641E172DF4B1002A5658 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = BBAC641D172DF4B1002A5658 /* User.m */; };
 		BBD0151D172F3C2B00DB2ACC /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBD0151C172F3C2B00DB2ACC /* CoreLocation.framework */; };
 		BBD01520172F3EF700DB2ACC /* HttpConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = BBD0151F172F3EF700DB2ACC /* HttpConnection.m */; };
+		F02151CA1740DCDF007DCF37 /* avatarImagePlaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = F02151C91740DCDF007DCF37 /* avatarImagePlaceholder.png */; };
 		F04B9E15173825B7007B645B /* GraffitiCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F04B9E14173825B7007B645B /* GraffitiCell.m */; };
 		F04B9E2417382EF6007B645B /* UIKit-Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = F04B9E2317382EF6007B645B /* UIKit-Utility.m */; };
 		F04B9E2C173830F9007B645B /* HelveticaNeueLTW1G-ThCn.otf in Resources */ = {isa = PBXBuildFile; fileRef = F04B9E27173830C7007B645B /* HelveticaNeueLTW1G-ThCn.otf */; };
@@ -117,6 +118,7 @@
 		BBD0151C172F3C2B00DB2ACC /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		BBD0151E172F3EF700DB2ACC /* HttpConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HttpConnection.h; path = ../HttpConnection.h; sourceTree = "<group>"; };
 		BBD0151F172F3EF700DB2ACC /* HttpConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HttpConnection.m; path = ../HttpConnection.m; sourceTree = "<group>"; };
+		F02151C91740DCDF007DCF37 /* avatarImagePlaceholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = avatarImagePlaceholder.png; sourceTree = "<group>"; };
 		F04B9E13173825B7007B645B /* GraffitiCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraffitiCell.h; sourceTree = "<group>"; };
 		F04B9E14173825B7007B645B /* GraffitiCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GraffitiCell.m; sourceTree = "<group>"; };
 		F04B9E2217382EF6007B645B /* UIKit-Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIKit-Utility.h"; sourceTree = "<group>"; };
@@ -250,6 +252,14 @@
 			path = AFNetworking;
 			sourceTree = "<group>";
 		};
+		F02151C71740DCCB007DCF37 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				F02151C91740DCDF007DCF37 /* avatarImagePlaceholder.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
 		F04B9E1717382616007B645B /* Table View */ = {
 			isa = PBXGroup;
 			children = (
@@ -339,6 +349,7 @@
 		F04B9E25173830A3007B645B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F02151C71740DCCB007DCF37 /* Images */,
 				F04B9E26173830AF007B645B /* Fonts */,
 			);
 			name = Resources;
@@ -434,6 +445,7 @@
 				F04B9E2E17383100007B645B /* HelveticaNeueLTW1G-Cn.otf in Resources */,
 				F04B9E2F17383103007B645B /* HelveticaNeueLTW1G-MdCn.otf in Resources */,
 				F04B9E3017383107007B645B /* HelveticaNeueLTW1G-BdCn.otf in Resources */,
+				F02151CA1740DCDF007DCF37 /* avatarImagePlaceholder.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

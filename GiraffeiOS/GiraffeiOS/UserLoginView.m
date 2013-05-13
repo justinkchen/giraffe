@@ -11,16 +11,22 @@
 #import "UIKit-Utility.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface UserLoginView () <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface UserLoginView () <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate>
 
+// Subviews
 @property (nonatomic, retain) UITextField *usernameField;
 @property (nonatomic, retain) UITextField *emailField;
 @property (nonatomic, retain) UITextField *passwordField;
 @property (nonatomic, retain) UITextField *passwordConfirmField;
 @property (nonatomic, retain) UIImageView *avatarImageView;
 @property (nonatomic, retain) UIControl *avatarImageControl;
+@property (nonatomic, retain) UIControl *firstResponderControl;
 
+// Model
 @property (nonatomic, retain) UIImage *avatarImage;
+@property (nonatomic, assign) CGFloat baseFrameOriginY;
+@property (nonatomic, assign) CGFloat visibleFrameHeight;
+@property (nonatomic, assign) NSTimeInterval keyboardAnimationDuration;
 
 @end
 
@@ -30,7 +36,6 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardFrameChange:) name:UIKeyboardDidChangeFrameNotification object:nil];
     }
     return self;
 }
@@ -67,7 +72,7 @@
 #pragma mark - Layout
 
 const CGFloat kUserLoginPadding = 10.0;
-const CGFloat kAvatarImageSize = 45.0;
+const CGFloat kAvatarImageSize = 55.0;
 NSString *const kUsernamePlaceholderString = @"Username";
 NSString *const kEmailPlaceholderString = @"Email";
 NSString *const kPasswordPlaceholderString = @"Password";
@@ -75,18 +80,34 @@ NSString *const kPasswordConfirmPlaceholderString = @"Confirm Password";
 
 - (void)layoutSubviews
 {
+    [super layoutSubviews];
+    
     // Avatar image
     if (!self.avatarImageView) {
         self.avatarImageView = [UIImageView new];
         self.avatarImageView.image = [UIImage imageNamed:kAvatarImagePlaceholderFilename];
         self.avatarImageView.frameSize = CGSizeMake(kAvatarImageSize, kAvatarImageSize);
+        self.avatarImageView.layer.cornerRadius = 4.0;
         [self addSubview:self.avatarImageView];
     }
     if (self.avatarImage) {
         self.avatarImageView.image = self.avatarImage;
+        self.avatarImageView.layer.borderWidth = 0.0;
+    } else {
+        self.avatarImageView.layer.borderWidth = 1.0;
+        self.avatarImageView.layer.borderColor = [UIColor grayColor].CGColor;
     }
     self.avatarImageView.frameOriginY = kUserLoginPadding;
     self.avatarImageView.frameOriginX = centerOffset(self.avatarImageView.frameWidth, self.frameWidth);
+    
+    // First responder contro
+    if (!self.firstResponderControl) {
+        self.firstResponderControl = [UIControl new];
+        self.firstResponderControl.backgroundColor = [UIColor clearColor];
+        [self.firstResponderControl addTarget:self action:@selector(handleFirstResponderControlTapped:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:self.firstResponderControl];
+    }
+    self.firstResponderControl.frame = self.bounds;
     
     // Avatar control
     if (!self.avatarImageControl) {
@@ -100,16 +121,16 @@ NSString *const kPasswordConfirmPlaceholderString = @"Confirm Password";
     // Username
     if (!self.usernameField) {
         self.usernameField = [UITextField new];
+        self.usernameField.delegate = self;
+        self.usernameField.borderStyle = UITextBorderStyleBezel;
         self.usernameField.backgroundColor = self.backgroundColor;
         self.usernameField.textColor = [UIColor blackColor];
         self.usernameField.placeholder = kUsernamePlaceholderString;
         self.usernameField.font = [UIFont helveticaNeueCondensedOfSize:18.0 weight:UIFontWeightRegular];
         self.usernameField.layer.cornerRadius = 4.0;
-        self.usernameField.layer.borderColor = [UIColor blackColor].CGColor;
-        self.usernameField.layer.borderWidth = 1.0;
         [self addSubview:self.usernameField];
     }
-    [self.usernameField sizeToFit];
+    self.usernameField.frameHeight = 1.5 * self.usernameField.font.lineHeight;
     self.usernameField.frameWidth = self.frameWidth - 2 * kUserLoginPadding;
     self.usernameField.frameOriginX = kUserLoginPadding;
     self.usernameField.frameOriginY = self.avatarImageView.bottomEdge + kUserLoginPadding;
@@ -117,49 +138,51 @@ NSString *const kPasswordConfirmPlaceholderString = @"Confirm Password";
     // Email
     if (!self.emailField) {
         self.emailField = [UITextField new];
+        self.emailField.delegate = self;
+        self.emailField.borderStyle = UITextBorderStyleBezel;
         self.emailField.backgroundColor = self.backgroundColor;
         self.emailField.textColor = [UIColor blackColor];
         self.emailField.placeholder = kEmailPlaceholderString;
         self.emailField.font = [UIFont helveticaNeueCondensedOfSize:18.0 weight:UIFontWeightRegular];
         self.emailField.layer.cornerRadius = 4.0;
-        self.emailField.layer.borderColor = [UIColor blackColor].CGColor;
-        self.emailField.layer.borderWidth = 1.0;
         [self addSubview:self.emailField];
     }
-    [self.emailField sizeToFit];
-    self.emailField.frame = self.usernameField.frame;
+    self.emailField.frameSize = self.usernameField.frameSize;
+    self.emailField.frameOriginX = self.usernameField.frameOriginX;
     self.emailField.frameOriginY = self.usernameField.bottomEdge + kUserLoginPadding;
     
     // Password
     if (!self.passwordField) {
         self.passwordField = [UITextField new];
+        self.passwordField.delegate = self;
+        self.passwordField.borderStyle = UITextBorderStyleBezel;
         self.passwordField.backgroundColor = self.backgroundColor;
         self.passwordField.textColor = [UIColor blackColor];
         self.passwordField.placeholder = kPasswordPlaceholderString;
         self.passwordField.font = [UIFont helveticaNeueCondensedOfSize:18.0 weight:UIFontWeightRegular];
         self.passwordField.layer.cornerRadius = 4.0;
-        self.passwordField.layer.borderColor = [UIColor blackColor].CGColor;
-        self.passwordField.layer.borderWidth = 1.0;
+        self.passwordField.secureTextEntry = YES;
         [self addSubview:self.passwordField];
     }
-    [self.passwordField sizeToFit];
-    self.passwordField.frame = self.emailField.frame;
+    self.passwordField.frameSize = self.emailField.frameSize;
+    self.passwordField.frameOriginX = self.emailField.frameOriginX;
     self.passwordField.frameOriginY = self.emailField.bottomEdge + kUserLoginPadding;
     
     // Password
     if (!self.passwordConfirmField) {
         self.passwordConfirmField = [UITextField new];
+        self.passwordConfirmField.delegate = self;
+        self.passwordConfirmField.borderStyle = UITextBorderStyleBezel;
         self.passwordConfirmField.backgroundColor = self.backgroundColor;
         self.passwordConfirmField.textColor = [UIColor blackColor];
         self.passwordConfirmField.placeholder = kPasswordConfirmPlaceholderString;
         self.passwordConfirmField.font = [UIFont helveticaNeueCondensedOfSize:18.0 weight:UIFontWeightRegular];
         self.passwordConfirmField.layer.cornerRadius = 4.0;
-        self.passwordConfirmField.layer.borderColor = [UIColor blackColor].CGColor;
-        self.passwordConfirmField.layer.borderWidth = 1.0;
+        self.passwordConfirmField.secureTextEntry = YES;
         [self addSubview:self.passwordConfirmField];
     }
-    [self.passwordConfirmField sizeToFit];
-    self.passwordConfirmField.frame = self.passwordField.frame;
+    self.passwordConfirmField.frameSize = self.passwordField.frameSize;
+    self.passwordConfirmField.frameOriginX = self.passwordField.frameOriginX;
     self.passwordConfirmField.frameOriginY = self.passwordField.bottomEdge + kUserLoginPadding;
 }
 
@@ -172,12 +195,28 @@ NSString *const kImageActionSheetCancel = @"Cancel";
 - (void)handleAvatarImageTapped:(UIControl *)sender
 {
     if ([self.avatarImageControl isEqual:sender]) {
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                 delegate:self
-                                                        cancelButtonTitle:kImageActionSheetCancel
-                                                   destructiveButtonTitle:nil
-                                                        otherButtonTitles:kImageActionSheetCamera, kImageActionSheetLibrary, nil];
+        UIActionSheet *actionSheet = nil;
+        if ([UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear]) {
+            actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                                     delegate:self
+                                                            cancelButtonTitle:kImageActionSheetCancel
+                                                       destructiveButtonTitle:nil
+                                                            otherButtonTitles:kImageActionSheetCamera, kImageActionSheetLibrary, nil];
+        } else {
+            actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                      delegate:self
+                                             cancelButtonTitle:kImageActionSheetCancel
+                                        destructiveButtonTitle:nil
+                                             otherButtonTitles:kImageActionSheetLibrary, nil];
+        }
         [actionSheet showInView:self];
+    }
+}
+
+- (void)handleFirstResponderControlTapped:(UIControl *)sender
+{
+    if ([self.firstResponderControl isEqual:sender]) {
+        [self endEditing:YES];
     }
 }
 
@@ -208,12 +247,11 @@ NSString *const kImageActionSheetCancel = @"Cancel";
     [self.delegate userLoginView:self didPickAvatarImage:self.avatarImage];
 }
 
-#pragma mark - Keyboard
+#pragma mark - UITextFieldDelegate
 
-- (void)handleKeyboardFrameChange:(NSNotification *)notification
+- (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    NSTimeInterval animationDuration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    [self animateLayoutWithDuration:animationDuration];
+    [self.delegate userLoginView:self shouldCenterAroundView:textField];
 }
 
 @end
