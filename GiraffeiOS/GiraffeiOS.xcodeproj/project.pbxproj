@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BB11CA18173E408400B64F9E /* GiraffeProfileView.m in Sources */ = {isa = PBXBuildFile; fileRef = BB11CA17173E408400B64F9E /* GiraffeProfileView.m */; };
 		BB52B484172896330077591D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB52B483172896330077591D /* UIKit.framework */; };
 		BB52B486172896330077591D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB52B485172896330077591D /* Foundation.framework */; };
 		BB52B488172896330077591D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB52B487172896330077591D /* CoreGraphics.framework */; };
@@ -58,6 +59,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BB11CA16173E408400B64F9E /* GiraffeProfileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GiraffeProfileView.h; sourceTree = "<group>"; };
+		BB11CA17173E408400B64F9E /* GiraffeProfileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GiraffeProfileView.m; sourceTree = "<group>"; };
 		BB52B480172896330077591D /* GiraffeiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiraffeiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB52B483172896330077591D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		BB52B485172896330077591D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -295,6 +298,8 @@
 				BBAC6413172DF0D2002A5658 /* GiraffeProfileViewController.h */,
 				BBAC6414172DF0D3002A5658 /* GiraffeProfileViewController.m */,
 				F06A49A4173E097500FCA95B /* User Login */,
+				BB11CA16173E408400B64F9E /* GiraffeProfileView.h */,
+				BB11CA17173E408400B64F9E /* GiraffeProfileView.m */,
 			);
 			name = Profile;
 			sourceTree = "<group>";
@@ -471,6 +476,7 @@
 				F0C10CA6173B7D470093EBB1 /* GiraffeShareView.m in Sources */,
 				F06A49A2173E087400FCA95B /* UserLoginController.m in Sources */,
 				F06A49A7173E098F00FCA95B /* UserLoginView.m in Sources */,
+				BB11CA18173E408400B64F9E /* GiraffeProfileView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
