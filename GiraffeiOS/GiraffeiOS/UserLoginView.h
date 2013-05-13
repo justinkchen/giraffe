@@ -23,5 +23,6 @@
 
 - (void)userLoginView:(UserLoginView *)loginView showImagePicker:(UIImagePickerController *)imagePicker;
 - (void)userLoginView:(UserLoginView *)loginView didPickAvatarImage:(UIImage *)avatarImage;
+- (void)userLoginView:(UserLoginView *)loginView shouldCenterAroundView:(UIView *)viewToCenter;
 
 @end

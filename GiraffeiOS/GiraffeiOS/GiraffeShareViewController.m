@@ -8,6 +8,7 @@
 
 #import "GiraffeShareViewController.h"
 #import "GiraffeShareView.h"
+#import "UserLoginController.h"
 #import "UIKit-Utility.h"
 
 @interface GiraffeShareViewController () <GiraffeShareViewDelegate>
@@ -60,6 +61,11 @@
 - (void)showUserLogin
 {
     // Show user login screen
+    UserLoginController *loginController = [UserLoginController new];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:loginController];
+    navController.modalPresentationStyle = UIModalPresentationFullScreen;
+    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 @end

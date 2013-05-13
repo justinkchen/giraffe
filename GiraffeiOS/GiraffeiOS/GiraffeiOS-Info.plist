@@ -26,11 +26,11 @@
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>HelveticaNeueLTW1G-BdCn</string>
-		<string>HelveticaNeueLTW1G-MdCn</string>
-		<string>HelveticaNeueLTW1G-Cn</string>
-		<string>HelveticaNeueLTW1G-ThCn</string>
-		<string>HelveticaNeueLTW1G-LtCn</string>
+		<string>HelveticaNeueLTW1G-BdCn.otf</string>
+		<string>HelveticaNeueLTW1G-MdCn.otf</string>
+		<string>HelveticaNeueLTW1G-Cn.otf</string>
+		<string>HelveticaNeueLTW1G-ThCn.otf</string>
+		<string>HelveticaNeueLTW1G-LtCn.otf</string>
 	</array>
 	<key>UIMainStoryboardFile</key>
 	<string>MainStoryboard_iPhone</string>
