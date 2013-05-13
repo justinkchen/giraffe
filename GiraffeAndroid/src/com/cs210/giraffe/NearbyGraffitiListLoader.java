@@ -21,9 +21,11 @@ import android.content.Context;
 public class NearbyGraffitiListLoader extends AsyncTaskLoader<List<Graffiti>> {
 	
 	List<Graffiti> _graffitiData;
+	private String urlString;
 	
-	public NearbyGraffitiListLoader(Context context) {
+	public NearbyGraffitiListLoader(Context context, String urlString) {
 		super(context);
+		this.urlString = urlString;
 		System.out.println("NearbyGraffitiListLoader constructed");
 	}
 
@@ -33,7 +35,7 @@ public class NearbyGraffitiListLoader extends AsyncTaskLoader<List<Graffiti>> {
 		URL url = null;
 		Location currLocation = MainActivity.getGiraffeLocationListener().getCurrentLocation();
 		try {
-			url = new URL(MainActivity.getBaseServerURI() + "/graffiti/nearby" + "?latitude=" + currLocation.getLatitude() + "&longitude=" + currLocation.getLongitude());
+			url = new URL(urlString);
 			//url = new URL("http://ec2-54-243-69-6.compute-1.amazonaws.com/graffiti/nearby?latitude=37.4280040&longitude=-122.1706350");
 		} 
 		catch (MalformedURLException e1) {

@@ -2,6 +2,7 @@ package com.cs210.giraffe;
 
 import java.util.List;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
@@ -46,7 +47,8 @@ public class NearbyListFragment extends ListFragment implements LoaderManager.Lo
 	@Override
 	public Loader<List<Graffiti>> onCreateLoader(int arg0, Bundle arg1) {
 		System.out.println("NearbyListFragment.onCreateLoader");
-		return new NearbyGraffitiListLoader(getActivity());
+		Location currLocation = MainActivity.getGiraffeLocationListener().getCurrentLocation();
+		return new NearbyGraffitiListLoader(getActivity(), MainActivity.getBaseServerURI() + "/graffiti/nearby" + "?latitude=" + currLocation.getLatitude() + "&longitude=" + currLocation.getLongitude());
 	}
 
 	@Override

@@ -164,7 +164,8 @@ public class GraffitiMapFragment extends Fragment implements LoaderManager.Loade
 	@Override
 	public Loader<List<Graffiti>> onCreateLoader(int arg0, Bundle arg1) {
 		System.out.println("GraffitiMapFragment.onCreateLoader");
-		return new NearbyGraffitiListLoader(getActivity());
+		Location currLocation = MainActivity.getGiraffeLocationListener().getCurrentLocation();
+		return new NearbyGraffitiListLoader(getActivity(), MainActivity.getBaseServerURI() + "/graffiti/nearby" + "?latitude=" + currLocation.getLatitude() + "&longitude=" + currLocation.getLongitude());
 	}
 
 	@Override
