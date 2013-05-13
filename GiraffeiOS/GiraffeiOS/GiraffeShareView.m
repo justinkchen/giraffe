@@ -118,7 +118,7 @@ const CGFloat kShareViewPadding = 8.0;
         self.textView.layer.borderColor = [UIColor grayColor].CGColor;
         self.textView.layer.borderWidth = 1.0;
         self.textView.frameWidth = contentFrame.size.width;
-        self.textView.frameHeight = 5 * self.textView.font.lineHeight + kShareViewPadding;
+        self.textView.frameHeight = 4 * self.textView.font.lineHeight;
         [self addSubview:self.textView];
     }
     self.textView.frameOriginY = self.textLabel.bottomEdge + kShareViewPadding;
