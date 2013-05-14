@@ -41,7 +41,7 @@ NSString *const kAvatarImagePlaceholderFilename = @"avatarImagePlaceholder.png";
 
 - (BOOL)isSignedIn
 {
-    return [self.username length] > 0;
+    return self.identifier > 0;
 }
 
 - (void)clear {
@@ -57,6 +57,7 @@ NSString *const kAvatarImagePlaceholderFilename = @"avatarImagePlaceholder.png";
 - (void)updateWithDictionary:(NSDictionary *)dictionary
 {
     // Perform reverse of paramterDictionary...unpack json into properties
+    
 }
 
 - (id)initWithDictionary:(NSDictionary *)dictionary
