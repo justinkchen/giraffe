@@ -58,7 +58,7 @@ NSString *const kUserLoginControllerSignupTitle = @"Sign Up";
     [self.view addSubview:self.loginView];
     
     // Customize nav bar
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]  initWithTitle:@"Log In" style:UIBarButtonItemStylePlain target:self action:@selector(handleRightBarButtonTapped:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(handleRightBarButtonTapped:)];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(handleLeftBarButtonTapped:)];
 }
 
