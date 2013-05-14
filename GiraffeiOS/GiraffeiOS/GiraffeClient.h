@@ -35,9 +35,11 @@ typedef void (^GiraffeClientFailureBlock) (AFHTTPRequestOperation *operation, NS
                            success:(GiraffeClientSuccessBlock)success
                            failure:(GiraffeClientFailureBlock)failure;
 - (void)beginUserSignupPostWithUser:(User *)user
+                           password:(NSString *)password
                             success:(GiraffeClientSuccessBlock)success
                             failure:(GiraffeClientFailureBlock)failure;
 - (void)beginUserUpdatePutWithUser:(User *)user
+                          password:(NSString *)password
                        avatarImage:(UIImage *)avatar
                            success:(GiraffeClientSuccessBlock)success
                            failure:(GiraffeClientFailureBlock)failure;

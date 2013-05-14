@@ -56,6 +56,18 @@ NSString *const kAvatarImagePlaceholderFilename = @"avatarImagePlaceholder.png";
     return nil;
 }
 
+- (NSDictionary *)parameterDictionaryWithPassword:(NSString *)password avatarImage:(UIImage *)avatarImage
+{
+    NSMutableDictionary *params = [[self parameterDictionary] mutableCopy];
+    if ([password length] > 0) {
+        [params setObject:password forKey:kParamNameUserPassword];
+    }
+    if (avatarImage) {
+        [params setObject:UIImagePNGRepresentation(avatarImage) forKey:kParamNameUserAvatar];
+    }
+    return params;
+}
+
 - (void)updateWithDictionary:(NSDictionary *)dictionary
 {
     // Perform reverse of paramterDictionary...unpack json into properties

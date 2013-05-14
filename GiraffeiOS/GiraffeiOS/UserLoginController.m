@@ -113,9 +113,11 @@ NSString *const kUserLoginControllerTitle = @"Log In";
             
             if (self.loginView.avatarImage) {
                 [[GiraffeClient sharedClient] beginUserUpdatePutWithUser:[User currentUser]
+                                                                password:nil
                                                              avatarImage:self.loginView.avatarImage
                                                                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                                                      [self updateCurrentUserWithDictionary:responseObject];
+                                                                     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
                                                                  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                                                      // Image wouldn't upload
                                                                  }];
@@ -123,17 +125,20 @@ NSString *const kUserLoginControllerTitle = @"Log In";
         };
         
         [[GiraffeClient sharedClient] beginUserSignupPostWithUser:user
+                                                         password:self.loginView.password
                                                           success:signupSuccess
                                                           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                                              // Couldn't sign in
+                                                              // Couldn't sign up
                                                           }];
+        
     } else if (self.loginView.loginType == UserLoginTypeLogin) {
         [[GiraffeClient sharedClient] beginUserLoginPostWithUser:user
                                                         password:self.loginView.password
                                                          success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                                              [self updateCurrentUserWithDictionary:responseObject];
+                                                             [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
                                                          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                                             // login failed
+                                                             // Couldn't log in
                                                          }];
     }
 }

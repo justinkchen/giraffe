@@ -35,6 +35,7 @@ extern NSString *const kAvatarImagePlaceholderFilename;
 - (void)clear;
 
 - (NSDictionary *)parameterDictionary;
+- (NSDictionary *)parameterDictionaryWithPassword:(NSString *)password avatarImage:(UIImage *)avatarImage;
 - (void)updateWithDictionary:(NSDictionary *)dictionary;
 - (id)initWithDictionary:(NSDictionary *)dictionary;
 
