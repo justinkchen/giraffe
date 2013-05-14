@@ -14,6 +14,7 @@ extern NSString *const kParamNameUser;
 extern NSString *const kParamNameUserId;
 extern NSString *const kParamNameUserUsername;
 extern NSString *const kParamNameUserEmail;
+extern NSString *const kParamNameUserUsernameEmail;
 extern NSString *const kParamNameUserAvatarUrl;
 extern NSString *const kParamNameUserDateJoined;
 extern NSString *const kParamNameUserPassword;

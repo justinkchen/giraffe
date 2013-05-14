@@ -88,13 +88,12 @@ NSString *const kCookiesDataKey = @"cookiesData";
     [self postPath:kGraffitiNew parameters:[graffiti parameterDictionary] success:success failure:failure];
 }
 
-- (void)beginUserLoginPostWithUser:(User *)user
-                          password:(NSString *)password
-                           success:(GiraffeClientSuccessBlock)success
-                           failure:(GiraffeClientFailureBlock)failure
+- (void)beginUserLoginPostWithUsernameOrEmail:(NSString *)usernameOrEmail
+                                     password:(NSString *)password
+                                      success:(GiraffeClientSuccessBlock)success
+                                      failure:(GiraffeClientFailureBlock)failure
 {
-    NSMutableDictionary *parameters = [[user parameterDictionary] mutableCopy];
-    [parameters setObject:password forKey:kParamNameUserPassword];
+    NSDictionary *parameters = @{kParamNameUserUsernameEmail : usernameOrEmail, kParamNameUserPassword : password};
     [self postPath:kUserLogin parameters:parameters success:success failure:failure];
 }
 

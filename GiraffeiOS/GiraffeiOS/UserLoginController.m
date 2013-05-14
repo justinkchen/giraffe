@@ -137,14 +137,13 @@ NSString *const kUserLoginControllerSignupTitle = @"Sign Up";
                                                           }];
         
     } else if (self.loginView.loginType == UserLoginTypeLogin) {
-        [[GiraffeClient sharedClient] beginUserLoginPostWithUser:user
-                                                        password:self.loginView.password
-                                                         success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                                                             [self updateCurrentUserWithDictionary:responseObject];
-                                                             [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-                                                         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                                             // Couldn't log in
-                                                         }];
+        [[GiraffeClient sharedClient] beginUserLoginPostWithUsernameOrEmail:self.loginView.usernameOrEmail
+                                                                  password:self.loginView.password success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                                      [self updateCurrentUserWithDictionary:responseObject];
+                                                                      [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+                                                                  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                                      // Couldn't log in
+                                                                  }];
     }
 }
 

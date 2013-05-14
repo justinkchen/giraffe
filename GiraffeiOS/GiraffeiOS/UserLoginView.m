@@ -48,6 +48,15 @@
 
 #pragma mark - Accessors
 
+- (NSString *)usernameOrEmail
+{
+    NSString *usernameOrEmail = nil;
+    if (self.loginType == UserLoginTypeLogin && [self.usernameField.text length] > 0) {
+        usernameOrEmail = self.usernameField.text;
+    }
+    return usernameOrEmail;
+}
+
 - (NSString *)password
 {
     NSString *password = nil;

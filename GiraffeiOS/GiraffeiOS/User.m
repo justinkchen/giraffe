@@ -14,6 +14,7 @@ NSString *const kParamNameUser = @"user";
 NSString *const kParamNameUserId = @"id";
 NSString *const kParamNameUserUsername = @"username";
 NSString *const kParamNameUserEmail = @"email";
+NSString *const kParamNameUserUsernameEmail = @"usernameEmail";
 NSString *const kParamNameUserAvatarUrl = @"avatar";
 NSString *const kParamNameUserDateJoined = @"dateJoined";
 NSString *const kParamNameUserPassword = @"password";
