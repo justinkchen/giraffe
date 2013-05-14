@@ -22,6 +22,7 @@
 @property (nonatomic, retain) UIImageView *avatarImageView;
 @property (nonatomic, retain) UIControl *avatarImageControl;
 @property (nonatomic, retain) UIControl *firstResponderControl;
+@property (nonatomic, retain) UIButton *switchTypeButton;
 
 // Model
 @property (nonatomic, assign) CGFloat baseFrameOriginY;
@@ -48,6 +49,15 @@
 
 #pragma mark - Accessors
 
+- (NSString *)usernameOrEmail
+{
+    NSString *usernameOrEmail = nil;
+    if (self.loginType == UserLoginTypeLogin && [self.usernameField.text length] > 0) {
+        usernameOrEmail = self.usernameField.text;
+    }
+    return usernameOrEmail;
+}
+
 - (NSString *)password
 {
     NSString *password = nil;
@@ -70,16 +80,13 @@
     return user;
 }
 
-- (NSDictionary *)userParameters
+- (void)setLoginType:(UserLoginType)loginType
 {
-    NSDictionary *parameters = nil;
-    
-    if ([self.usernameField.text length] > 0 &&
-        [self.passwordField.text length] > 0) {
-        parameters = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:self.usernameField.text, self.passwordField.text, nil]  forKeys:[NSArray arrayWithObjects:@"usernameEmail", @"password", nil]];
+    if (_loginType != loginType) {
+        _loginType = loginType;
+        [self.delegate userLoginView:self didChooseLoginType:loginType];
+        [self setNeedsLayout];
     }
-    
-    return parameters;
 }
 
 #pragma mark - Layout
@@ -91,31 +98,14 @@ NSString *const kUsernameLoginPlaceholderString = @"Username or Email";
 NSString *const kEmailPlaceholderString = @"Email";
 NSString *const kPasswordPlaceholderString = @"Password";
 NSString *const kPasswordConfirmPlaceholderString = @"Confirm Password";
+NSString *const kSwitchToLoginButtonTitle = @"Already have an account?";
+NSString *const kSwitchToSignupButtonTitle = @"Don't have an account?";
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
     
     CGFloat topInset = kUserLoginPadding;
-    
-    // Avatar image
-    if (!self.avatarImageView) {
-        self.avatarImageView = [UIImageView new];
-        self.avatarImageView.image = [UIImage imageNamed:kAvatarImagePlaceholderFilename];
-        self.avatarImageView.frameSize = CGSizeMake(kAvatarImageSize, kAvatarImageSize);
-        self.avatarImageView.layer.cornerRadius = 4.0;
-        [self addSubview:self.avatarImageView];
-    }
-    if (self.avatarImage) {
-        self.avatarImageView.image = self.avatarImage;
-        self.avatarImageView.layer.borderWidth = 0.0;
-    } else {
-        self.avatarImageView.layer.borderWidth = 1.0;
-        self.avatarImageView.layer.borderColor = [UIColor grayColor].CGColor;
-    }
-    self.avatarImageView.frameOriginX = centerOffset(self.avatarImageView.frameWidth, self.frameWidth);
-    self.avatarImageView.frameOriginY = topInset;
-    topInset = self.avatarImageView.bottomEdge + kUserLoginPadding;
     
     // First responder control
     if (!self.firstResponderControl) {
@@ -126,15 +116,63 @@ NSString *const kPasswordConfirmPlaceholderString = @"Confirm Password";
     }
     self.firstResponderControl.frame = self.bounds;
     
-    // Avatar control
-    if (!self.avatarImageControl) {
-        self.avatarImageControl = [UIControl new];
-        self.avatarImageControl.backgroundColor = [UIColor clearColor];
-        [self.avatarImageControl addTarget:self action:@selector(handleAvatarImageTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:self.avatarImageControl];
+    if (self.loginType == UserLoginTypeSignup) {
+        // Avatar image
+        if (!self.avatarImageView) {
+            self.avatarImageView = [UIImageView new];
+            self.avatarImageView.image = [UIImage imageNamed:kAvatarImagePlaceholderFilename];
+            self.avatarImageView.frameSize = CGSizeMake(kAvatarImageSize, kAvatarImageSize);
+            self.avatarImageView.layer.cornerRadius = 4.0;
+            [self addSubview:self.avatarImageView];
+        }
+        if (self.avatarImage) {
+            self.avatarImageView.image = self.avatarImage;
+            self.avatarImageView.layer.borderWidth = 0.0;
+        } else {
+            self.avatarImageView.layer.borderWidth = 1.0;
+            self.avatarImageView.layer.borderColor = [UIColor grayColor].CGColor;
+        }
+        self.avatarImageView.hidden = NO;
+        self.avatarImageView.frameOriginX = centerOffset(self.avatarImageView.frameWidth, self.frameWidth);
+        self.avatarImageView.frameOriginY = topInset;
+        topInset = self.avatarImageView.bottomEdge + kUserLoginPadding;
+        
+        // Avatar control
+        if (!self.avatarImageControl) {
+            self.avatarImageControl = [UIControl new];
+            self.avatarImageControl.backgroundColor = [UIColor clearColor];
+            [self.avatarImageControl addTarget:self action:@selector(handleAvatarImageTapped:) forControlEvents:UIControlEventTouchUpInside];
+            [self addSubview:self.avatarImageControl];
+        }
+        self.avatarImageControl.frame = self.avatarImageView.frame;
+        self.avatarImageControl.enabled = YES;
+    } else {
+        self.avatarImageView.hidden = YES;
+        self.avatarImageControl.enabled = NO;
     }
-    self.avatarImageControl.frame = self.avatarImageView.frame;
 
+    // Switch type button
+    if (!self.switchTypeButton) {
+        self.switchTypeButton = [UIButton new];
+        self.switchTypeButton.backgroundColor = self.backgroundColor;
+        self.switchTypeButton.titleLabel.font = [UIFont helveticaNeueCondensedOfSize:16.0 weight:UIFontWeightRegular];
+        [self.switchTypeButton addTarget:self action:@selector(switchTypeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:self.switchTypeButton];
+    }
+    switch (self.loginType) {
+        case UserLoginTypeLogin:
+            [self.switchTypeButton setTitle:kSwitchToSignupButtonTitle forState:UIControlStateNormal];
+            break;
+        case UserLoginTypeSignup:
+        default:
+            [self.switchTypeButton setTitle:kSwitchToLoginButtonTitle forState:UIControlStateNormal];
+            break;
+    }
+    [self.switchTypeButton sizeToFit];
+    [self.switchTypeButton centerHorizontally];
+    self.switchTypeButton.frameOriginY = topInset;
+    topInset = self.switchTypeButton.bottomEdge + kUserLoginPadding;
+    
     // Username
     if (!self.usernameField) {
         self.usernameField = [UITextField new];
@@ -147,7 +185,15 @@ NSString *const kPasswordConfirmPlaceholderString = @"Confirm Password";
         self.usernameField.autocorrectionType = UITextAutocorrectionTypeNo;
         [self addSubview:self.usernameField];
     }
-    self.usernameField.placeholder = self.loginType == UserLoginTypeSignup ? kUsernameSignupPlaceholderString : kUsernameLoginPlaceholderString;
+    switch (self.loginType) {
+        case UserLoginTypeLogin:
+            self.usernameField.placeholder = kUsernameLoginPlaceholderString;
+            break;
+        case UserLoginTypeSignup:
+        default:
+            self.usernameField.placeholder = kUsernameSignupPlaceholderString;
+            break;
+    }
     self.usernameField.frameHeight = 1.5 * self.usernameField.font.lineHeight;
     self.usernameField.frameWidth = self.frameWidth - 2 * kUserLoginPadding;
     self.usernameField.frameOriginX = kUserLoginPadding;
@@ -167,10 +213,13 @@ NSString *const kPasswordConfirmPlaceholderString = @"Confirm Password";
             self.emailField.layer.cornerRadius = 4.0;
             [self addSubview:self.emailField];
         }
+        self.emailField.hidden = NO;
         self.emailField.frameSize = self.usernameField.frameSize;
         self.emailField.frameOriginX = self.usernameField.frameOriginX;
         self.emailField.frameOriginY = topInset;
         topInset = self.emailField.bottomEdge + kUserLoginPadding;
+    } else {
+        self.emailField.hidden = YES;
     }
     
     // Password
@@ -210,6 +259,9 @@ NSString *const kPasswordConfirmPlaceholderString = @"Confirm Password";
         self.passwordConfirmField.frameOriginX = self.passwordField.frameOriginX;
         self.passwordConfirmField.frameOriginY = topInset;
         topInset = self.passwordConfirmField.bottomEdge + kUserLoginPadding;
+        self.passwordConfirmField.hidden = NO;
+    } else {
+        self.passwordConfirmField.hidden = YES;
     }
 }
 
@@ -244,6 +296,19 @@ NSString *const kImageActionSheetCancel = @"Cancel";
 {
     if ([self.firstResponderControl isEqual:sender]) {
         [self endEditing:YES];
+    }
+}
+
+- (void)switchTypeButtonTapped:(UIButton *)button
+{
+    switch (self.loginType) {
+        case UserLoginTypeLogin:
+            self.loginType = UserLoginTypeSignup;
+            break;
+        case UserLoginTypeSignup:
+        default:
+            self.loginType = UserLoginTypeLogin;
+            break;
     }
 }
 

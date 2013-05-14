@@ -21,6 +21,7 @@ typedef enum {
 @property (nonatomic, assign) id<UserLoginViewDelegate> delegate;
 @property (nonatomic, assign) UserLoginType loginType;
 @property (nonatomic, readonly) User *userFromInput;
+@property (nonatomic, readonly) NSString *usernameOrEmail;
 @property (nonatomic, readonly) NSString *password;
 @property (nonatomic, retain) UIImage *avatarImage;
 
@@ -30,5 +31,6 @@ typedef enum {
 
 - (void)userLoginView:(UserLoginView *)loginView showImagePicker:(UIImagePickerController *)imagePicker;
 - (void)userLoginView:(UserLoginView *)loginView shouldCenterAroundView:(UIView *)viewToCenter;
+- (void)userLoginView:(UserLoginView *)loginView didChooseLoginType:(UserLoginType)loginType;
 
 @end

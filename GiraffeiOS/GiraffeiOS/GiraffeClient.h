@@ -30,19 +30,24 @@ typedef void (^GiraffeClientFailureBlock) (AFHTTPRequestOperation *operation, NS
 - (void)beginGraffitiNewPostWithGraffiti:(Graffiti *)graffiti
                                  success:(GiraffeClientSuccessBlock)success
                                  failure:(GiraffeClientFailureBlock)failure;
-- (void)beginUserLoginPostWithUser:(User *)user
-                          password:(NSString *)password
-                           success:(GiraffeClientSuccessBlock)success
-                           failure:(GiraffeClientFailureBlock)failure;
+- (void)beginUserLoginPostWithUsernameOrEmail:(NSString *)usernameOrEmail
+                                    password:(NSString *)password
+                                     success:(GiraffeClientSuccessBlock)success
+                                     failure:(GiraffeClientFailureBlock)failure;
 - (void)beginUserSignupPostWithUser:(User *)user
                            password:(NSString *)password
                             success:(GiraffeClientSuccessBlock)success
                             failure:(GiraffeClientFailureBlock)failure;
 - (void)beginUserUpdatePutWithUser:(User *)user
-                          password:(NSString *)password
-                       avatarImage:(UIImage *)avatar
                            success:(GiraffeClientSuccessBlock)success
                            failure:(GiraffeClientFailureBlock)failure;
+- (void)beginPasswordUpdatePutWithPassword:(NSString *)password
+                               oldPassword:(NSString *)oldPassword
+                                   success:(GiraffeClientSuccessBlock)success
+                                   failure:(GiraffeClientFailureBlock)failure;
+- (void)beginAvatarUpdatePutWithImage:(UIImage *)avatarImage
+                              success:(GiraffeClientSuccessBlock)success
+                              failure:(GiraffeClientFailureBlock)failure;
 - (void)beginUserLogoutPostWithUser:(User *)user
                             success:(GiraffeClientSuccessBlock)success
                             failure:(GiraffeClientFailureBlock)failure;

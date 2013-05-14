@@ -22,7 +22,8 @@
 
 @implementation UserLoginController
 
-NSString *const kUserLoginControllerTitle = @"Log In";
+NSString *const kUserLoginControllerLoginTitle = @"Log In";
+NSString *const kUserLoginControllerSignupTitle = @"Sign Up";
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -31,7 +32,7 @@ NSString *const kUserLoginControllerTitle = @"Log In";
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
         
-        self.title = kUserLoginControllerTitle;
+        self.title = kUserLoginControllerSignupTitle; // Default is signup
         
         self.keyboardFrame = CGRectNull;
     }
@@ -57,7 +58,7 @@ NSString *const kUserLoginControllerTitle = @"Log In";
     [self.view addSubview:self.loginView];
     
     // Customize nav bar
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]  initWithTitle:@"Log In" style:UIBarButtonItemStylePlain target:self action:@selector(handleRightBarButtonTapped:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(handleRightBarButtonTapped:)];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(handleLeftBarButtonTapped:)];
 }
 
@@ -81,17 +82,23 @@ NSString *const kUserLoginControllerTitle = @"Log In";
     }
 }
 
-- (void)userLoginView:(UserLoginView *)loginView didPickAvatarImage:(UIImage *)avatarImage
-{
-    // begin uploading avatarImage and store imageURL returned by server
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
 - (void)userLoginView:(UserLoginView *)loginView shouldCenterAroundView:(UIView *)viewToCenter
 {
     self.viewToCenter = viewToCenter;
     [self centerOnViewForKeyboard];
+}
+
+- (void)userLoginView:(UserLoginView *)loginView didChooseLoginType:(UserLoginType)loginType
+{
+    switch (loginType) {
+        case UserLoginTypeLogin:
+            self.title = kUserLoginControllerLoginTitle;
+            break;
+        case UserLoginTypeSignup:
+        default:
+            self.title = kUserLoginControllerSignupTitle;
+            break;
+    }
 }
 
 #pragma mark - Navigation Buttons
@@ -112,15 +119,13 @@ NSString *const kUserLoginControllerTitle = @"Log In";
             [self updateCurrentUserWithDictionary:responseObject];
             
             if (self.loginView.avatarImage) {
-                [[GiraffeClient sharedClient] beginUserUpdatePutWithUser:[User currentUser]
-                                                                password:nil
-                                                             avatarImage:self.loginView.avatarImage
-                                                                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                                                                     [self updateCurrentUserWithDictionary:responseObject];
-                                                                     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-                                                                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                                                     // Image wouldn't upload
-                                                                 }];
+                [[GiraffeClient sharedClient] beginAvatarUpdatePutWithImage:self.loginView.avatarImage
+                                                                    success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                                        [self updateCurrentUserWithDictionary:responseObject];
+                                                                        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+                                                                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                                        // Image wouldn't upload.
+                                                                    }];
             }
         };
         
@@ -132,14 +137,13 @@ NSString *const kUserLoginControllerTitle = @"Log In";
                                                           }];
         
     } else if (self.loginView.loginType == UserLoginTypeLogin) {
-        [[GiraffeClient sharedClient] beginUserLoginPostWithUser:user
-                                                        password:self.loginView.password
-                                                         success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                                                             [self updateCurrentUserWithDictionary:responseObject];
-                                                             [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-                                                         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                                             // Couldn't log in
-                                                         }];
+        [[GiraffeClient sharedClient] beginUserLoginPostWithUsernameOrEmail:self.loginView.usernameOrEmail
+                                                                  password:self.loginView.password success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                                      [self updateCurrentUserWithDictionary:responseObject];
+                                                                      [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+                                                                  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                                      // Couldn't log in
+                                                                  }];
     }
 }
 
