@@ -10,6 +10,7 @@
 #import "UserLoginView.h"
 #import "GiraffeClient.h"
 #import "UIKit-Utility.h"
+#import "Foundation-Utility.h"
 
 @interface UserLoginController () <UserLoginViewDelegate>
 
@@ -95,42 +96,46 @@ NSString *const kUserLoginControllerTitle = @"Log In";
 
 #pragma mark - Navigation Buttons
 
+- (void)updateCurrentUserWithDictionary:(id)dictionary
+{
+    NSDictionary *userDict = [[dictionary ifIsKindOfClass:[NSDictionary class]] objectForKey:kParamNameUser];
+    [[User currentUser] updateWithDictionary:userDict];
+}
+
 - (void)handleRightBarButtonTapped:(id)sender
 {
-    // print cookies
-    NSLog(@"%@",[[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:@"http://ec2-54-243-69-6.compute-1.amazonaws.com/"]]);
+    User *user = self.loginView.userFromInput;
+    user.dateCreated = [NSDate date];
     
-    NSDictionary *loginParameters = [self.loginView userParameters];
-    if (loginParameters == nil) {
-        return;
+    if (self.loginView.loginType == UserLoginTypeSignup) {
+        GiraffeClientSuccessBlock signupSuccess = ^(AFHTTPRequestOperation *operation, id responseObject) {
+            [self updateCurrentUserWithDictionary:responseObject];
+            
+            if (self.loginView.avatarImage) {
+                [[GiraffeClient sharedClient] beginUserUpdatePutWithUser:[User currentUser]
+                                                             avatarImage:self.loginView.avatarImage
+                                                                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                                     [self updateCurrentUserWithDictionary:responseObject];
+                                                                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                                     // Image wouldn't upload
+                                                                 }];
+            }
+        };
+        
+        [[GiraffeClient sharedClient] beginUserSignupPostWithUser:user
+                                                          success:signupSuccess
+                                                          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                              // Couldn't sign in
+                                                          }];
+    } else if (self.loginView.loginType == UserLoginTypeLogin) {
+        [[GiraffeClient sharedClient] beginUserLoginPostWithUser:user
+                                                        password:self.loginView.password
+                                                         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                             [self updateCurrentUserWithDictionary:responseObject];
+                                                         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                             // login failed
+                                                         }];
     }
-    NSLog(@"log in pressed");
-    [[GiraffeClient sharedClient] beginUserLoginPostWithUserParameters:loginParameters
-                                                     success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                                                         // User response data to update currentUser singleton
-                                                         
-                                                         if ([responseObject valueForKey:@"error"] == nil) {
-                                                             // set user parameters
-                                                             NSLog(@"%@", responseObject);
-                                                             NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"responseObject is supposed to be a NSData"); // it should be a NSData class
-
-                                                             NSLog(@"%@", [responseObject valueForKey:@"message"]);
-                                                             [[User currentUser] updateWithDictionary: [responseObject valueForKey:@"user"]];
-                                                             
-                                                             [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-                                                         } else {
-                                                             // TODO: print error message
-                                                             NSLog(@"%@", [responseObject valueForKey:@"error"]);
-                                                         }
-                                                     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                                         // Show an alert view notifying of failure.
-                                                         NSLog(@"failure to login");
-                                                         NSDictionary *JSON =
-                                                         [NSJSONSerialization JSONObjectWithData: [error.localizedRecoverySuggestion dataUsingEncoding:NSUTF8StringEncoding]
-                                                                                         options: NSJSONReadingMutableContainers
-                                                                                           error:nil];
-                                                         NSLog(@"%@", JSON[@"message"]);
-                                                     }];
 }
 
 - (void)handleLeftBarButtonTapped:(id)sender

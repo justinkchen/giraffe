@@ -16,6 +16,8 @@ NSString *const kParamNameUserUsername = @"username";
 NSString *const kParamNameUserEmail = @"email";
 NSString *const kParamNameUserImageUrl = @"imageUrl";
 NSString *const kParamNameUserDateCreated = @"dateCreated";
+NSString *const kParamNameUserPassword = @"password";
+NSString *const kParamNameUserAvatar = @"avatar";
 
 NSString *const kAvatarImagePlaceholderFilename = @"avatarImagePlaceholder.png";
 

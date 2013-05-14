@@ -13,19 +13,22 @@
 
 @interface UserLoginView : UIView
 
-@property (nonatomic, assign) id<UserLoginViewDelegate> delegate;
-//@property (nonatomic, readonly) User *userFromInput;
-//@property (nonatomic, readonly) NSString *password;
+typedef enum {
+    UserLoginTypeSignup = 0,
+    UserLoginTypeLogin
+} UserLoginType;
 
-- (NSDictionary *)userParameters;
-- (void)displayError:(NSString *)errorMessage;
+@property (nonatomic, assign) id<UserLoginViewDelegate> delegate;
+@property (nonatomic, assign) UserLoginType loginType;
+@property (nonatomic, readonly) User *userFromInput;
+@property (nonatomic, readonly) NSString *password;
+@property (nonatomic, retain) UIImage *avatarImage;
 
 @end
 
 @protocol UserLoginViewDelegate <NSObject>
 
 - (void)userLoginView:(UserLoginView *)loginView showImagePicker:(UIImagePickerController *)imagePicker;
-- (void)userLoginView:(UserLoginView *)loginView didPickAvatarImage:(UIImage *)avatarImage;
 - (void)userLoginView:(UserLoginView *)loginView shouldCenterAroundView:(UIView *)viewToCenter;
 
 @end
