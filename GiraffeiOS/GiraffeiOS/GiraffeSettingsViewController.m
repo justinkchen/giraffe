@@ -48,15 +48,26 @@
 }
 
 - (IBAction)updateAccount:(UIButton *)sender {
-    
+    if (![[self.usernameField text] isEqualToString:[User currentUser].username] ||
+        ![[self.emailField text] isEqualToString:[User currentUser].email]) {
+        // send request
+    } else {
+        // notify error, nothing changed
+    }
 }
 
 - (IBAction)changePassword:(UIButton *)sender {
+    if (![[self.passwordField text] isEqualToString:[self.confirmPasswordField text]]) {
+        // notify error not equal
+    }
     
+    // send request
 }
 
 - (IBAction)logout:(UIButton *)sender {
     [[GiraffeClient sharedClient] beginUserLogoutPostWithUser:[User currentUser] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // todo check responseobject
         [[User currentUser] logout];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         // print error

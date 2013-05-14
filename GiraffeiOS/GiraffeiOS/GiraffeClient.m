@@ -117,7 +117,7 @@ NSString *const kCookiesDataKey = @"cookiesData";
                             success:(GiraffeClientSuccessBlock)success
                             failure:(GiraffeClientFailureBlock)failure
 {
-    [self postPath:kUserLogout parameters:[user parameterDictionary] success:success failure:failure];
+    [self postPath:kUserLogout parameters:nil success:success failure:failure];
 }
 
 @end

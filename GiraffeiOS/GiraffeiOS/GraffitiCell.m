@@ -135,10 +135,10 @@ const CGFloat kGraffitiCellPadding = 8.0;
         self.textLabel.font = [self graffitiTextFont];
         [self.contentView addSubview:self.textLabel];
     }
-    self.textLabel.text = self.graffiti.text;
+    self.textLabel.text = self.graffiti.message;
     self.textLabel.frameOriginX = kGraffitiCellPadding;
     self.textLabel.frameOriginY = MAX(self.detailLabel.bottomEdge, self.authorAvatarImage.bottomEdge) + kGraffitiCellPadding;
-    self.textLabel.frameSize = [self.graffiti.text sizeWithFont:[self graffitiTextFont] constrainedToSize:CGSizeMake(self.frameWidth, CGFLOAT_MAX)];
+    self.textLabel.frameSize = [self.graffiti.message sizeWithFont:[self graffitiTextFont] constrainedToSize:CGSizeMake(self.frameWidth, CGFLOAT_MAX)];
 }
 
 - (CGSize)sizeThatFits:(CGSize)size
@@ -160,7 +160,7 @@ const CGFloat kGraffitiCellPadding = 8.0;
     }
     
     // Add height for text
-    height += [self.graffiti.text sizeWithFont:[self graffitiTextFont] constrainedToSize:CGSizeMake(size.width, CGFLOAT_MAX)].height;
+    height += [self.graffiti.message sizeWithFont:[self graffitiTextFont] constrainedToSize:CGSizeMake(size.width, CGFLOAT_MAX)].height;
     height += 2 * kGraffitiCellPadding;
     
     return size;

@@ -11,11 +11,23 @@
 
 @interface GiraffeProfileViewController ()
 
+@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *avatarView;
+@property (weak, nonatomic) IBOutlet UILabel *graffitiCountLabel;
+@property (weak, nonatomic) IBOutlet UILabel *likesCountLabel;
+@property (weak, nonatomic) IBOutlet UILabel *badgesCountLabel;
+@property (weak, nonatomic) IBOutlet UITableView *userGraffitiTable;
+
 @end
 
 @implementation GiraffeProfileViewController
 
-@synthesize avatar = _avatar;
+@synthesize usernameLabel = _usernameLabel;
+@synthesize avatarView = _avatarView;
+@synthesize graffitiCountLabel = _graffitiCountLabel;
+@synthesize likesCountLabel = _likesCountLabel;
+@synthesize badgesCountLabel = _badgesCountLabel;
+@synthesize userGraffitiTable = _userGraffitiTable;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -32,7 +44,7 @@
 	// Do any additional setup after loading the view.
     
     //[self.avatar setImageWithURL:[NSURL URLWithString:@"http://www.thegiraffeapp.com/images/user/d6a49c99211136c42557c3ae966ae155c929c71b97a269531af541bdb84a6edc.jpg"] placeholderImage:[UIImage imageNamed:@"first.png"]];
-    [self.avatar setImageWithURL:[NSURL URLWithString:@"http://www.thegiraffeapp.com/images/user/d6a49c99211136c42557c3ae966ae155c929c71b97a269531af541bdb84a6edc.jpg"]];
+    [self.avatarView setImageWithURL:[NSURL URLWithString:@"http://www.thegiraffeapp.com/images/user/d6a49c99211136c42557c3ae966ae155c929c71b97a269531af541bdb84a6edc.jpg"]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -40,5 +52,7 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
 
 @end

@@ -227,7 +227,7 @@ NSString *const kLoginAlertViewCancelTitle = @"Cancel";
 - (void)handlePostButtonTapped:(id)button
 {
     // Validate user
-    if (![User currentUser].isSignedIn) {
+    if ([User currentUser].identifier) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:kLoginAlertViewTitle
                                                         message:kLoginAlertViewMessage
                                                        delegate:self
@@ -239,7 +239,7 @@ NSString *const kLoginAlertViewCancelTitle = @"Cancel";
     
     Graffiti *graffiti = [Graffiti new];
     graffiti.author = [User currentUser];
-    graffiti.text = self.textView.text;
+    graffiti.message = self.textView.text;
     graffiti.longitude = [LocationManager sharedInstance].longitude;
     graffiti.latitute = [LocationManager sharedInstance].latitude;
     graffiti.radius = self.radiusSlider.value;
