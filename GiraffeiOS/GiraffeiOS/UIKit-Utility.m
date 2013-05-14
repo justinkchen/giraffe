@@ -115,6 +115,26 @@
     }];
 }
 
+- (void)centerHorizontally
+{
+    self.frameOriginX = centerOffset(self.frameWidth, self.superview.frameWidth);
+}
+
+- (void)centerHorizontallyWithView:(UIView *)otherView
+{
+    self.frameOriginX = otherView.frameOriginX + centerOffset(self.frameWidth, otherView.frameWidth);
+}
+
+- (void)centerVertically
+{
+    self.frameOriginY = centerOffset(self.frameHeight, self.superview.frameHeight);
+}
+
+- (void)centerVerticallyWithView:(UIView *)otherView
+{
+    self.frameOriginY = otherView.frameOriginY + centerOffset(self.frameHeight, otherView.frameHeight);
+}
+
 @end
 
 

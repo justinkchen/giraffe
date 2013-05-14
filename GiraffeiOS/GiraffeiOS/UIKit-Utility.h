@@ -23,6 +23,10 @@
 @property (nonatomic) CGFloat bottomEdge;
 
 - (void)animateLayoutWithDuration:(NSTimeInterval)duration;
+- (void)centerHorizontally;
+- (void)centerHorizontallyWithView:(UIView *)otherView;
+- (void)centerVertically;
+- (void)centerVerticallyWithView:(UIView *)otherView;
 
 @end
 
