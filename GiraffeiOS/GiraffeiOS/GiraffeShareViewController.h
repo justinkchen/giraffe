@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GiraffeClient.h"
 
 @interface GiraffeShareViewController : UIViewController
 

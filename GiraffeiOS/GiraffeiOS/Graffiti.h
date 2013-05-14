@@ -26,10 +26,13 @@ extern NSString *const kParamNameGraffitiLikeCount;
 extern NSString *const kParamNameGraffitiFlagged;
 extern NSString *const kParamNameGraffitiDateCreated;
 extern NSString *const kParamNameGraffitiUserId;
+extern NSString *const kParamNameGraffitiUserUsername;
+extern NSString *const kParamNameGraffitiUserAvatarUrl;
 
+@property (nonatomic, assign) int identifier;
 @property (nonatomic, retain) NSString *message;
 @property (nonatomic, retain) NSString *imageUrl;
-@property (nonatomic, assign) float latitute;
+@property (nonatomic, assign) float latitude;
 @property (nonatomic, assign) float longitude;
 @property (nonatomic, assign) float radius;
 @property (nonatomic, assign) float directionX;
@@ -38,7 +41,7 @@ extern NSString *const kParamNameGraffitiUserId;
 @property (nonatomic, assign) NSUInteger likeCount;
 @property (nonatomic, assign) BOOL flagged;
 @property (nonatomic, retain) NSDate *dateCreated;
-@property (nonatomic, retain) User *author;
+@property (nonatomic, retain) User *user;
 
 - (NSDictionary *)parameterDictionary;
 - (void)updateWithDictionary:(NSDictionary *)dictionary;

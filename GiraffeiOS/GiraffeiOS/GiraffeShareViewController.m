@@ -56,6 +56,13 @@
 - (void)postButtonTappedWithGraffiti:(Graffiti *)graffiti
 {
     // Post graffiti to server
+    [[GiraffeClient sharedClient] beginGraffitiNewPostWithGraffiti:graffiti success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        // display responseObject
+        // redirect to nearby page if successful?
+        NSLog(@"successful post to server!");
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        // display error message
+    }];
 }
 
 - (void)showUserLogin

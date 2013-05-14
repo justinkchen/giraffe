@@ -56,10 +56,10 @@ const CGFloat kDetailFontSize = 14.0;
     CGFloat latitude = 1;
     CGFloat longitude = 1;
     CGFloat earthRadius = 6371.0;
-    CGFloat dLatRad = (self.graffiti.latitute - latitude) * M_PI / 180.0;
+    CGFloat dLatRad = (self.graffiti.latitude - latitude) * M_PI / 180.0;
     CGFloat dLongRad = (self.graffiti.longitude - longitude) * M_PI / 180.0;
     CGFloat currentLatitudeRad = latitude * M_PI / 180.0;
-    CGFloat graffitiLatRad = self.graffiti.latitute * M_PI / 180.0;
+    CGFloat graffitiLatRad = self.graffiti.latitude * M_PI / 180.0;
     
     CGFloat a = sinf(dLatRad / 2.0) * sinf(dLatRad / 2.0) +
                 sinf(dLongRad / 2.0) * sinf(dLongRad / 2.0) *
@@ -73,11 +73,11 @@ const CGFloat kDetailFontSize = 14.0;
 - (NSString *)detailText
 {
     NSString *detailText = nil;
-    if (self.graffiti.dateCreated && self.graffiti.latitute && self.graffiti.longitude) {
+    if (self.graffiti.dateCreated && self.graffiti.latitude && self.graffiti.longitude) {
         detailText = [NSString stringWithFormat:@"Posted %@ away at %@", [self distanceString], [self.graffiti.dateCreated description]];
     } else if (self.graffiti.dateCreated) {
         detailText = [NSString stringWithFormat:@"Posted at %@", [self.graffiti.dateCreated description]];
-    } else if (self.graffiti.latitute && self.graffiti.longitude) {
+    } else if (self.graffiti.latitude && self.graffiti.longitude) {
         detailText = [NSString stringWithFormat:@"Posted %@ away", [self distanceString]];
     }
     return detailText;
@@ -114,7 +114,7 @@ const CGFloat kGraffitiCellPadding = 8.0;
         self.authorNameLabel.frameOriginY = kGraffitiCellPadding;
         [self.contentView addSubview:self.authorNameLabel];
     }
-    self.authorNameLabel.text = self.graffiti.author.username;
+    self.authorNameLabel.text = self.graffiti.user.username;
     [self.authorNameLabel sizeToFit];
     self.authorNameLabel.frameOriginX = self.authorAvatarImage.rightEdge + kGraffitiCellPadding;
     
@@ -149,7 +149,7 @@ const CGFloat kGraffitiCellPadding = 8.0;
         height += kAuthorAvatarSideLength;
     } else {
         // Author name label
-        height += [self.graffiti.author.username sizeWithFont:[self authorNameFont]].height;
+        height += [self.graffiti.user.username sizeWithFont:[self authorNameFont]].height;
         
         height += kGraffitiCellPadding;
         

@@ -238,10 +238,10 @@ NSString *const kLoginAlertViewCancelTitle = @"Cancel";
     }
     
     Graffiti *graffiti = [Graffiti new];
-    graffiti.author = [User currentUser];
+    graffiti.user = [User currentUser];
     graffiti.message = self.textView.text;
+    graffiti.latitude = [LocationManager sharedInstance].latitude;
     graffiti.longitude = [LocationManager sharedInstance].longitude;
-    graffiti.latitute = [LocationManager sharedInstance].latitude;
     graffiti.radius = self.radiusSlider.value;
     graffiti.dateCreated = [NSDate date];
     [self.delegate postButtonTappedWithGraffiti:graffiti];

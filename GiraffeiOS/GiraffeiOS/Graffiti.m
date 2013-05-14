@@ -7,6 +7,7 @@
 //
 
 #import "Graffiti.h"
+#import "User.h"
 
 @implementation Graffiti
 
@@ -24,11 +25,14 @@ NSString *const kParamNameGraffitiLikeCount = @"likeCount";
 NSString *const kParamNameGraffitiFlagged = @"flagged";
 NSString *const kParamNameGraffitiDateCreated = @"dateCreated";
 NSString *const kParamNameGraffitiUserId = @"userId";
+NSString *const kParamNameGraffitiUserUsername = @"username";
+NSString *const kParamNameGraffitiUserAvatarUrl = @"avatar";
+
 
 - (NSDictionary *)parameterDictionary
 {
     // Create dictionary with expected parameter names
-    return nil;
+    return [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:self.message, @(self.latitude), @(self.longitude), @(self.radius), self.user.identifier, nil] forKeys:[NSArray arrayWithObjects:kParamNameGraffitiMessage, kParamNameGraffitiLatitude, kParamNameGraffitiLongitude, kParamNameGraffitiRadius, kParamNameGraffitiUserId, nil]];
 }
 
 - (void)updateWithDictionary:(NSDictionary *)dictionary

@@ -56,7 +56,7 @@ NSString *const kAvatarImagePlaceholderFilename = @"avatarImagePlaceholder.png";
 - (NSDictionary *)parameterDictionary
 {
     // Construct dictionary with expected paramter names
-    return nil;
+    return [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@(self.identifier), self.username, self.email, self.avatarUrl, self.dateJoined, nil] forKeys:[NSArray arrayWithObjects:kParamNameUserId, kParamNameUserUsername, kParamNameUserEmail, kParamNameUserAvatarUrl, kParamNameUserDateJoined, nil]];
 }
 
 - (NSDictionary *)parameterDictionaryWithPassword:(NSString *)password avatarImage:(UIImage *)avatarImage
