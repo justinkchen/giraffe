@@ -93,7 +93,9 @@ NSString *const kCookiesDataKey = @"cookiesData";
                            success:(GiraffeClientSuccessBlock)success
                            failure:(GiraffeClientFailureBlock)failure
 {
-    [self postPath:kUserLogin parameters:[user parameterDictionaryWithPassword:password avatarImage:nil] success:success failure:failure];
+    NSMutableDictionary *parameters = [[user parameterDictionary] mutableCopy];
+    [parameters setObject:password forKey:kParamNameUserPassword];
+    [self postPath:kUserLogin parameters:parameters success:success failure:failure];
 }
 
 - (void)beginUserSignupPostWithUser:(User *)user
@@ -101,16 +103,33 @@ NSString *const kCookiesDataKey = @"cookiesData";
                             success:(GiraffeClientSuccessBlock)success
                             failure:(GiraffeClientFailureBlock)failure
 {
-    [self postPath:kUserSignup parameters:[user parameterDictionaryWithPassword:password avatarImage:nil] success:success failure:failure];
+    NSMutableDictionary *parameters = [[user parameterDictionary] mutableCopy];
+    [parameters setObject:password forKey:kParamNameUserPassword];
+    [self postPath:kUserSignup parameters:parameters success:success failure:failure];
 }
 
 - (void)beginUserUpdatePutWithUser:(User *)user
-                          password:(NSString *)password
-                       avatarImage:(UIImage *)avatar
                            success:(GiraffeClientSuccessBlock)success
                            failure:(GiraffeClientFailureBlock)failure
 {
-    [self putPath:kUserUpdate parameters:[user parameterDictionaryWithPassword:password avatarImage:avatar] success:success failure:failure];
+    [self putPath:kUserUpdate parameters:[user parameterDictionary] success:success failure:failure];
+}
+
+- (void)beginPasswordUpdatePutWithPassword:(NSString *)password
+                               oldPassword:(NSString *)oldPassword
+                                   success:(GiraffeClientSuccessBlock)success
+                                   failure:(GiraffeClientFailureBlock)failure
+{
+    NSDictionary *parameters = @{kParamNameUserPassword : password, kParamNameUserOldPassword : oldPassword};
+    [self putPath:kUserUpdate parameters:parameters success:success failure:failure];
+}
+
+- (void)beginAvatarUpdatePutWithImage:(UIImage *)avatarImage
+                              success:(GiraffeClientSuccessBlock)success
+                              failure:(GiraffeClientFailureBlock)failure
+{
+    NSDictionary *parameters = @{kParamNameUserAvatar : UIImagePNGRepresentation(avatarImage)};
+    [self putPath:kUserUpdate parameters:parameters success:success failure:failure];
 }
 
 - (void)beginUserLogoutPostWithUser:(User *)user

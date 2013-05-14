@@ -17,6 +17,8 @@ NSString *const kParamNameUserEmail = @"email";
 NSString *const kParamNameUserAvatarUrl = @"avatar";
 NSString *const kParamNameUserDateJoined = @"dateJoined";
 NSString *const kParamNameUserPassword = @"password";
+NSString *const kParamNameUserOldPassword = @"oldPassword";
+NSString *const kParamNameUserAvatar = @"avatar";
 
 NSString *const kAvatarImagePlaceholderFilename = @"avatarImagePlaceholder.png";
 
@@ -57,18 +59,6 @@ NSString *const kAvatarImagePlaceholderFilename = @"avatarImagePlaceholder.png";
 {
     // Construct dictionary with expected paramter names
     return nil;
-}
-
-- (NSDictionary *)parameterDictionaryWithPassword:(NSString *)password avatarImage:(UIImage *)avatarImage
-{
-    NSMutableDictionary *params = [[self parameterDictionary] mutableCopy];
-    if ([password length] > 0) {
-        [params setObject:password forKey:kParamNameUserPassword];
-    }
-    if (avatarImage) {
-        [params setObject:UIImagePNGRepresentation(avatarImage) forKey:kParamNameUserAvatarUrl];
-    }
-    return params;
 }
 
 - (void)updateWithDictionary:(NSDictionary *)dictionary

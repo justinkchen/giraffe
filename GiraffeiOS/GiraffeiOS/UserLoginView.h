@@ -30,5 +30,6 @@ typedef enum {
 
 - (void)userLoginView:(UserLoginView *)loginView showImagePicker:(UIImagePickerController *)imagePicker;
 - (void)userLoginView:(UserLoginView *)loginView shouldCenterAroundView:(UIView *)viewToCenter;
+- (void)userLoginView:(UserLoginView *)loginView didChooseLoginType:(UserLoginType)loginType;
 
 @end

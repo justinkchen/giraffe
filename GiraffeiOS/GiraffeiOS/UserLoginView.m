@@ -70,16 +70,13 @@
     return user;
 }
 
-- (NSDictionary *)userParameters
+- (void)setLoginType:(UserLoginType)loginType
 {
-    NSDictionary *parameters = nil;
-    
-    if ([self.usernameField.text length] > 0 &&
-        [self.passwordField.text length] > 0) {
-        parameters = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:self.usernameField.text, self.passwordField.text, nil]  forKeys:[NSArray arrayWithObjects:@"usernameEmail", @"password", nil]];
+    if (_loginType != loginType) {
+        _loginType = loginType;
+        [self.delegate userLoginView:self didChooseLoginType:loginType];
+        [self setNeedsLayout];
     }
-    
-    return parameters;
 }
 
 #pragma mark - Layout
@@ -98,25 +95,6 @@ NSString *const kPasswordConfirmPlaceholderString = @"Confirm Password";
     
     CGFloat topInset = kUserLoginPadding;
     
-    // Avatar image
-    if (!self.avatarImageView) {
-        self.avatarImageView = [UIImageView new];
-        self.avatarImageView.image = [UIImage imageNamed:kAvatarImagePlaceholderFilename];
-        self.avatarImageView.frameSize = CGSizeMake(kAvatarImageSize, kAvatarImageSize);
-        self.avatarImageView.layer.cornerRadius = 4.0;
-        [self addSubview:self.avatarImageView];
-    }
-    if (self.avatarImage) {
-        self.avatarImageView.image = self.avatarImage;
-        self.avatarImageView.layer.borderWidth = 0.0;
-    } else {
-        self.avatarImageView.layer.borderWidth = 1.0;
-        self.avatarImageView.layer.borderColor = [UIColor grayColor].CGColor;
-    }
-    self.avatarImageView.frameOriginX = centerOffset(self.avatarImageView.frameWidth, self.frameWidth);
-    self.avatarImageView.frameOriginY = topInset;
-    topInset = self.avatarImageView.bottomEdge + kUserLoginPadding;
-    
     // First responder control
     if (!self.firstResponderControl) {
         self.firstResponderControl = [UIControl new];
@@ -126,14 +104,35 @@ NSString *const kPasswordConfirmPlaceholderString = @"Confirm Password";
     }
     self.firstResponderControl.frame = self.bounds;
     
-    // Avatar control
-    if (!self.avatarImageControl) {
-        self.avatarImageControl = [UIControl new];
-        self.avatarImageControl.backgroundColor = [UIColor clearColor];
-        [self.avatarImageControl addTarget:self action:@selector(handleAvatarImageTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:self.avatarImageControl];
+    if (self.loginType == UserLoginTypeSignup) {
+        // Avatar image
+        if (!self.avatarImageView) {
+            self.avatarImageView = [UIImageView new];
+            self.avatarImageView.image = [UIImage imageNamed:kAvatarImagePlaceholderFilename];
+            self.avatarImageView.frameSize = CGSizeMake(kAvatarImageSize, kAvatarImageSize);
+            self.avatarImageView.layer.cornerRadius = 4.0;
+            [self addSubview:self.avatarImageView];
+        }
+        if (self.avatarImage) {
+            self.avatarImageView.image = self.avatarImage;
+            self.avatarImageView.layer.borderWidth = 0.0;
+        } else {
+            self.avatarImageView.layer.borderWidth = 1.0;
+            self.avatarImageView.layer.borderColor = [UIColor grayColor].CGColor;
+        }
+        self.avatarImageView.frameOriginX = centerOffset(self.avatarImageView.frameWidth, self.frameWidth);
+        self.avatarImageView.frameOriginY = topInset;
+        topInset = self.avatarImageView.bottomEdge + kUserLoginPadding;
+        
+        // Avatar control
+        if (!self.avatarImageControl) {
+            self.avatarImageControl = [UIControl new];
+            self.avatarImageControl.backgroundColor = [UIColor clearColor];
+            [self.avatarImageControl addTarget:self action:@selector(handleAvatarImageTapped:) forControlEvents:UIControlEventTouchUpInside];
+            [self addSubview:self.avatarImageControl];
+        }
+        self.avatarImageControl.frame = self.avatarImageView.frame;
     }
-    self.avatarImageControl.frame = self.avatarImageView.frame;
 
     // Username
     if (!self.usernameField) {
@@ -147,7 +146,15 @@ NSString *const kPasswordConfirmPlaceholderString = @"Confirm Password";
         self.usernameField.autocorrectionType = UITextAutocorrectionTypeNo;
         [self addSubview:self.usernameField];
     }
-    self.usernameField.placeholder = self.loginType == UserLoginTypeSignup ? kUsernameSignupPlaceholderString : kUsernameLoginPlaceholderString;
+    switch (self.loginType) {
+        case UserLoginTypeLogin:
+            self.usernameField.placeholder = kUsernameLoginPlaceholderString;
+            break;
+        case UserLoginTypeSignup:
+        default:
+            self.usernameField.placeholder = kUsernameSignupPlaceholderString;
+            break;
+    }
     self.usernameField.frameHeight = 1.5 * self.usernameField.font.lineHeight;
     self.usernameField.frameWidth = self.frameWidth - 2 * kUserLoginPadding;
     self.usernameField.frameOriginX = kUserLoginPadding;
