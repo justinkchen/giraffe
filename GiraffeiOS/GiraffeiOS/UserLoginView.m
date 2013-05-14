@@ -65,7 +65,7 @@
         user = [User new];
         user.username = self.usernameField.text;
         user.email = self.emailField.text;
-        user.dateCreated = [NSDate date];
+        user.dateJoined = [NSDate date];
     }
     return user;
 }

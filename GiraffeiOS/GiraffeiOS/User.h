@@ -14,25 +14,25 @@ extern NSString *const kParamNameUser;
 extern NSString *const kParamNameUserId;
 extern NSString *const kParamNameUserUsername;
 extern NSString *const kParamNameUserEmail;
-extern NSString *const kParamNameUserImageUrl;
-extern NSString *const kParamNameUserDateCreated;
+extern NSString *const kParamNameUserAvatarUrl;
+extern NSString *const kParamNameUserDateJoined;
 extern NSString *const kParamNameUserPassword;
-extern NSString *const kParamNameUserAvatar;
+//extern NSString *const kParamNameUserAvatar;
 
 extern NSString *const kAvatarImagePlaceholderFilename;
 
 @property (nonatomic, assign) int identifier;
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *email;
-@property (nonatomic, strong) NSString *imageUrl;
-@property (nonatomic, strong) NSDate *dateCreated;
+@property (nonatomic, strong) NSString *avatarUrl;
+@property (nonatomic, strong) NSDate *dateJoined;
 @property (nonatomic, readonly) BOOL isSignedIn;
 
 + (User *)currentUser;
 + (void)saveUser;
 + (void)loadUser;
 
-- (void)clear;
+- (void)logout;
 
 - (NSDictionary *)parameterDictionary;
 - (NSDictionary *)parameterDictionaryWithPassword:(NSString *)password avatarImage:(UIImage *)avatarImage;

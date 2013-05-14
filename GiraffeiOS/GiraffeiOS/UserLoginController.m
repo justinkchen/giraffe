@@ -105,7 +105,7 @@ NSString *const kUserLoginControllerTitle = @"Log In";
 - (void)handleRightBarButtonTapped:(id)sender
 {
     User *user = self.loginView.userFromInput;
-    user.dateCreated = [NSDate date];
+    user.dateJoined = [NSDate date];
     
     if (self.loginView.loginType == UserLoginTypeSignup) {
         GiraffeClientSuccessBlock signupSuccess = ^(AFHTTPRequestOperation *operation, id responseObject) {

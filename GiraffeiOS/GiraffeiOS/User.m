@@ -14,10 +14,9 @@ NSString *const kParamNameUser = @"user";
 NSString *const kParamNameUserId = @"id";
 NSString *const kParamNameUserUsername = @"username";
 NSString *const kParamNameUserEmail = @"email";
-NSString *const kParamNameUserImageUrl = @"imageUrl";
-NSString *const kParamNameUserDateCreated = @"dateCreated";
+NSString *const kParamNameUserAvatarUrl = @"avatar";
+NSString *const kParamNameUserDateJoined = @"dateJoined";
 NSString *const kParamNameUserPassword = @"password";
-NSString *const kParamNameUserAvatar = @"avatar";
 
 NSString *const kAvatarImagePlaceholderFilename = @"avatarImagePlaceholder.png";
 
@@ -46,8 +45,12 @@ NSString *const kAvatarImagePlaceholderFilename = @"avatarImagePlaceholder.png";
     return self.identifier > 0;
 }
 
-- (void)clear {
-    
+- (void)logout {
+    self.identifier = 0;
+    self.username = @"";
+    self.email = @"";
+    self.avatarUrl = @"";
+    self.dateJoined = nil;
 }
 
 - (NSDictionary *)parameterDictionary
@@ -63,7 +66,7 @@ NSString *const kAvatarImagePlaceholderFilename = @"avatarImagePlaceholder.png";
         [params setObject:password forKey:kParamNameUserPassword];
     }
     if (avatarImage) {
-        [params setObject:UIImagePNGRepresentation(avatarImage) forKey:kParamNameUserAvatar];
+        [params setObject:UIImagePNGRepresentation(avatarImage) forKey:kParamNameUserAvatarUrl];
     }
     return params;
 }
@@ -71,7 +74,29 @@ NSString *const kAvatarImagePlaceholderFilename = @"avatarImagePlaceholder.png";
 - (void)updateWithDictionary:(NSDictionary *)dictionary
 {
     // Perform reverse of paramterDictionary...unpack json into properties
+    if ([dictionary objectForKey:kParamNameUserId]) {
+        self.identifier = [[dictionary objectForKey:kParamNameUserId] intValue];
+    }
     
+    if ([dictionary objectForKey:kParamNameUserUsername]) {
+        self.username = [dictionary objectForKey:kParamNameUserUsername];
+    }
+    
+    if ([dictionary objectForKey:kParamNameUserEmail]) {
+        self.email = [dictionary objectForKey:kParamNameUserEmail];
+    }
+    
+    if ([dictionary objectForKey:kParamNameUserAvatarUrl]) {
+        self.avatarUrl = [dictionary objectForKey:kParamNameUserAvatarUrl];
+        
+        if ([self.avatarUrl isKindOfClass:[NSNull class]]) {
+            self.avatarUrl = @"";
+        }
+    }
+    
+    if ([dictionary objectForKey:kParamNameUserDateJoined]) {
+        self.dateJoined = [dictionary objectForKey:kParamNameUserDateJoined];
+    }
 }
 
 - (id)initWithDictionary:(NSDictionary *)dictionary
