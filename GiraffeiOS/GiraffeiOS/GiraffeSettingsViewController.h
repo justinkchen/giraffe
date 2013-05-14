@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "User.h"
+#import "GiraffeClient.h"
 
 @interface GiraffeSettingsViewController : UIViewController
 
