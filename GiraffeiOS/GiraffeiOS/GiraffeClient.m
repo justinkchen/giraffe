@@ -46,6 +46,32 @@ NSString *const kParamNameLongitude = @"longitude";
     return sharedClient;
 }
 
+NSString *const kCookiesDataKey = @"cookiesData";
+
++ (void)saveCookies
+{
+    NSLog(@"saving cookies");
+    NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:kBaseURL]];
+    if ([cookies count] > 0) {
+        // save cookies to NSUserDefaults
+        [[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver  archivedDataWithRootObject:cookies] forKey:kCookiesDataKey];
+    }
+}
+
++ (void)loadCookies
+{
+    NSLog(@"loading cookies");
+    NSData *cookiesdata = [[NSUserDefaults standardUserDefaults] objectForKey:kCookiesDataKey];
+    if ([cookiesdata length]) {
+        NSArray *cookies = [NSKeyedUnarchiver unarchiveObjectWithData:cookiesdata];
+        
+        NSHTTPCookie *cookie;
+        for (cookie in cookies) {
+            [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:cookie];
+        }
+    }
+}
+
 - (void)beginGraffitiNearbyGetWithLatitude:(CGFloat)latitude
                                  longitude:(CGFloat)longitude
                                    success:(GiraffeClientSuccessBlock)success

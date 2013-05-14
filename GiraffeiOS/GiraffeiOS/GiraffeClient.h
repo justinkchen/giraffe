@@ -17,6 +17,9 @@
 
 + (GiraffeClient *)sharedClient;
 
++ (void)saveCookies;
++ (void)loadCookies;
+
 typedef void (^GiraffeClientSuccessBlock)(AFHTTPRequestOperation *operation, id responseObject);
 typedef void (^GiraffeClientFailureBlock) (AFHTTPRequestOperation *operation, NSError *error);
 

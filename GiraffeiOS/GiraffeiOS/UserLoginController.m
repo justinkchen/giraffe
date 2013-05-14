@@ -97,6 +97,9 @@ NSString *const kUserLoginControllerTitle = @"Log In";
 
 - (void)handleRightBarButtonTapped:(id)sender
 {
+    // print cookies
+    NSLog(@"%@",[[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:@"http://ec2-54-243-69-6.compute-1.amazonaws.com/"]]);
+    
     NSDictionary *loginParameters = [self.loginView userParameters];
     if (loginParameters == nil) {
         return;
