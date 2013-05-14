@@ -22,6 +22,7 @@
 @property (nonatomic, retain) UIImageView *avatarImageView;
 @property (nonatomic, retain) UIControl *avatarImageControl;
 @property (nonatomic, retain) UIControl *firstResponderControl;
+@property (nonatomic, retain) UIButton *switchTypeButton;
 
 // Model
 @property (nonatomic, assign) CGFloat baseFrameOriginY;
@@ -97,6 +98,8 @@ NSString *const kUsernameLoginPlaceholderString = @"Username or Email";
 NSString *const kEmailPlaceholderString = @"Email";
 NSString *const kPasswordPlaceholderString = @"Password";
 NSString *const kPasswordConfirmPlaceholderString = @"Confirm Password";
+NSString *const kSwitchToLoginButtonTitle = @"Already have an account?";
+NSString *const kSwitchToSignupButtonTitle = @"Don't have an account?";
 
 - (void)layoutSubviews
 {
@@ -129,6 +132,7 @@ NSString *const kPasswordConfirmPlaceholderString = @"Confirm Password";
             self.avatarImageView.layer.borderWidth = 1.0;
             self.avatarImageView.layer.borderColor = [UIColor grayColor].CGColor;
         }
+        self.avatarImageView.hidden = NO;
         self.avatarImageView.frameOriginX = centerOffset(self.avatarImageView.frameWidth, self.frameWidth);
         self.avatarImageView.frameOriginY = topInset;
         topInset = self.avatarImageView.bottomEdge + kUserLoginPadding;
@@ -141,8 +145,34 @@ NSString *const kPasswordConfirmPlaceholderString = @"Confirm Password";
             [self addSubview:self.avatarImageControl];
         }
         self.avatarImageControl.frame = self.avatarImageView.frame;
+        self.avatarImageControl.enabled = YES;
+    } else {
+        self.avatarImageView.hidden = YES;
+        self.avatarImageControl.enabled = NO;
     }
 
+    // Switch type button
+    if (!self.switchTypeButton) {
+        self.switchTypeButton = [UIButton new];
+        self.switchTypeButton.backgroundColor = self.backgroundColor;
+        self.switchTypeButton.titleLabel.font = [UIFont helveticaNeueCondensedOfSize:16.0 weight:UIFontWeightRegular];
+        [self.switchTypeButton addTarget:self action:@selector(switchTypeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:self.switchTypeButton];
+    }
+    switch (self.loginType) {
+        case UserLoginTypeLogin:
+            [self.switchTypeButton setTitle:kSwitchToSignupButtonTitle forState:UIControlStateNormal];
+            break;
+        case UserLoginTypeSignup:
+        default:
+            [self.switchTypeButton setTitle:kSwitchToLoginButtonTitle forState:UIControlStateNormal];
+            break;
+    }
+    [self.switchTypeButton sizeToFit];
+    [self.switchTypeButton centerHorizontally];
+    self.switchTypeButton.frameOriginY = topInset;
+    topInset = self.switchTypeButton.bottomEdge + kUserLoginPadding;
+    
     // Username
     if (!self.usernameField) {
         self.usernameField = [UITextField new];
@@ -183,10 +213,13 @@ NSString *const kPasswordConfirmPlaceholderString = @"Confirm Password";
             self.emailField.layer.cornerRadius = 4.0;
             [self addSubview:self.emailField];
         }
+        self.emailField.hidden = NO;
         self.emailField.frameSize = self.usernameField.frameSize;
         self.emailField.frameOriginX = self.usernameField.frameOriginX;
         self.emailField.frameOriginY = topInset;
         topInset = self.emailField.bottomEdge + kUserLoginPadding;
+    } else {
+        self.emailField.hidden = YES;
     }
     
     // Password
@@ -226,6 +259,9 @@ NSString *const kPasswordConfirmPlaceholderString = @"Confirm Password";
         self.passwordConfirmField.frameOriginX = self.passwordField.frameOriginX;
         self.passwordConfirmField.frameOriginY = topInset;
         topInset = self.passwordConfirmField.bottomEdge + kUserLoginPadding;
+        self.passwordConfirmField.hidden = NO;
+    } else {
+        self.passwordConfirmField.hidden = YES;
     }
 }
 
@@ -260,6 +296,19 @@ NSString *const kImageActionSheetCancel = @"Cancel";
 {
     if ([self.firstResponderControl isEqual:sender]) {
         [self endEditing:YES];
+    }
+}
+
+- (void)switchTypeButtonTapped:(UIButton *)button
+{
+    switch (self.loginType) {
+        case UserLoginTypeLogin:
+            self.loginType = UserLoginTypeSignup;
+            break;
+        case UserLoginTypeSignup:
+        default:
+            self.loginType = UserLoginTypeLogin;
+            break;
     }
 }
 
