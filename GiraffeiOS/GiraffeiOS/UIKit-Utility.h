@@ -43,3 +43,9 @@ typedef enum {
 + (UIFont *)helveticaNeueCondensedOfSize:(CGFloat)size weight:(UIFontWeight)weight;
 
 @end
+
+@interface UIColor (Utility)
+
++ (UIColor *)linkTextColor;
+
+@end

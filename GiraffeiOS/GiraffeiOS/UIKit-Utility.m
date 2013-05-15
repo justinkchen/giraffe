@@ -117,22 +117,22 @@
 
 - (void)centerHorizontally
 {
-    self.frameOriginX = centerOffset(self.frameWidth, self.superview.frameWidth);
+    self.frameOriginX = floorf(centerOffset(self.frameWidth, self.superview.frameWidth));
 }
 
 - (void)centerHorizontallyWithView:(UIView *)otherView
 {
-    self.frameOriginX = otherView.frameOriginX + centerOffset(self.frameWidth, otherView.frameWidth);
+    self.frameOriginX = floorf(otherView.frameOriginX + centerOffset(self.frameWidth, otherView.frameWidth));
 }
 
 - (void)centerVertically
 {
-    self.frameOriginY = centerOffset(self.frameHeight, self.superview.frameHeight);
+    self.frameOriginY = floorf(centerOffset(self.frameHeight, self.superview.frameHeight));
 }
 
 - (void)centerVerticallyWithView:(UIView *)otherView
 {
-    self.frameOriginY = otherView.frameOriginY + centerOffset(self.frameHeight, otherView.frameHeight);
+    self.frameOriginY = floorf(otherView.frameOriginY + centerOffset(self.frameHeight, otherView.frameHeight));
 }
 
 @end
@@ -168,6 +168,15 @@ NSString *const helveticaNeueCondensedBold = @"HelveticaNeueLTW1G-BdCn";
             break;
     }
     return [UIFont fontWithName:fontName size:size];
+}
+
+@end
+
+@implementation UIColor (Utility)
+
++ (UIColor *)linkTextColor
+{
+    return [UIColor colorWithRed:59.0/255.0 green:185.0/255.0 blue:1.0 alpha:1.0];
 }
 
 @end

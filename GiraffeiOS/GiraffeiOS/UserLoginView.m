@@ -80,12 +80,14 @@
     return user;
 }
 
+const NSTimeInterval kLoginTypeSwitchAnimationDuration = 0.2;
+
 - (void)setLoginType:(UserLoginType)loginType
 {
     if (_loginType != loginType) {
         _loginType = loginType;
         [self.delegate userLoginView:self didChooseLoginType:loginType];
-        [self setNeedsLayout];
+        [self animateLayoutWithDuration:kLoginTypeSwitchAnimationDuration];
     }
 }
 
@@ -106,6 +108,7 @@ NSString *const kSwitchToSignupButtonTitle = @"Don't have an account?";
     [super layoutSubviews];
     
     CGFloat topInset = kUserLoginPadding;
+    BOOL shouldShowSignupViews = self.loginType == UserLoginTypeSignup;
     
     // First responder control
     if (!self.firstResponderControl) {
@@ -116,7 +119,7 @@ NSString *const kSwitchToSignupButtonTitle = @"Don't have an account?";
     }
     self.firstResponderControl.frame = self.bounds;
     
-    if (self.loginType == UserLoginTypeSignup) {
+    if (shouldShowSignupViews) {
         // Avatar image
         if (!self.avatarImageView) {
             self.avatarImageView = [UIImageView new];
@@ -132,7 +135,7 @@ NSString *const kSwitchToSignupButtonTitle = @"Don't have an account?";
             self.avatarImageView.layer.borderWidth = 1.0;
             self.avatarImageView.layer.borderColor = [UIColor grayColor].CGColor;
         }
-        self.avatarImageView.hidden = NO;
+        self.avatarImageView.alpha = 1.0;
         self.avatarImageView.frameOriginX = centerOffset(self.avatarImageView.frameWidth, self.frameWidth);
         self.avatarImageView.frameOriginY = topInset;
         topInset = self.avatarImageView.bottomEdge + kUserLoginPadding;
@@ -146,32 +149,9 @@ NSString *const kSwitchToSignupButtonTitle = @"Don't have an account?";
         }
         self.avatarImageControl.frame = self.avatarImageView.frame;
         self.avatarImageControl.enabled = YES;
-    } else {
-        self.avatarImageView.hidden = YES;
-        self.avatarImageControl.enabled = NO;
     }
-
-    // Switch type button
-    if (!self.switchTypeButton) {
-        self.switchTypeButton = [UIButton new];
-        self.switchTypeButton.backgroundColor = self.backgroundColor;
-        self.switchTypeButton.titleLabel.font = [UIFont helveticaNeueCondensedOfSize:16.0 weight:UIFontWeightRegular];
-        [self.switchTypeButton addTarget:self action:@selector(switchTypeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:self.switchTypeButton];
-    }
-    switch (self.loginType) {
-        case UserLoginTypeLogin:
-            [self.switchTypeButton setTitle:kSwitchToSignupButtonTitle forState:UIControlStateNormal];
-            break;
-        case UserLoginTypeSignup:
-        default:
-            [self.switchTypeButton setTitle:kSwitchToLoginButtonTitle forState:UIControlStateNormal];
-            break;
-    }
-    [self.switchTypeButton sizeToFit];
-    [self.switchTypeButton centerHorizontally];
-    self.switchTypeButton.frameOriginY = topInset;
-    topInset = self.switchTypeButton.bottomEdge + kUserLoginPadding;
+    self.avatarImageView.alpha = shouldShowSignupViews ? 1.0 : 0.0;
+    self.avatarImageControl.enabled = shouldShowSignupViews;
     
     // Username
     if (!self.usernameField) {
@@ -213,14 +193,12 @@ NSString *const kSwitchToSignupButtonTitle = @"Don't have an account?";
             self.emailField.layer.cornerRadius = 4.0;
             [self addSubview:self.emailField];
         }
-        self.emailField.hidden = NO;
         self.emailField.frameSize = self.usernameField.frameSize;
         self.emailField.frameOriginX = self.usernameField.frameOriginX;
         self.emailField.frameOriginY = topInset;
         topInset = self.emailField.bottomEdge + kUserLoginPadding;
-    } else {
-        self.emailField.hidden = YES;
     }
+    self.emailField.alpha = shouldShowSignupViews ? 1.0 : 0.0;
     
     // Password
     if (!self.passwordField) {
@@ -259,10 +237,31 @@ NSString *const kSwitchToSignupButtonTitle = @"Don't have an account?";
         self.passwordConfirmField.frameOriginX = self.passwordField.frameOriginX;
         self.passwordConfirmField.frameOriginY = topInset;
         topInset = self.passwordConfirmField.bottomEdge + kUserLoginPadding;
-        self.passwordConfirmField.hidden = NO;
-    } else {
-        self.passwordConfirmField.hidden = YES;
     }
+    self.passwordConfirmField.alpha = shouldShowSignupViews ? 1.0 : 0.0;
+    
+    // Switch type button
+    if (!self.switchTypeButton) {
+        self.switchTypeButton = [UIButton new];
+        self.switchTypeButton.backgroundColor = self.backgroundColor;
+        self.switchTypeButton.titleLabel.font = [UIFont helveticaNeueCondensedOfSize:16.0 weight:UIFontWeightLight];
+        [self.switchTypeButton setTitleColor:[UIColor linkTextColor] forState:UIControlStateNormal];
+        [self.switchTypeButton addTarget:self action:@selector(switchTypeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:self.switchTypeButton];
+    }
+    switch (self.loginType) {
+        case UserLoginTypeLogin:
+            [self.switchTypeButton setTitle:kSwitchToSignupButtonTitle forState:UIControlStateNormal];
+            break;
+        case UserLoginTypeSignup:
+        default:
+            [self.switchTypeButton setTitle:kSwitchToLoginButtonTitle forState:UIControlStateNormal];
+            break;
+    }
+    [self.switchTypeButton sizeToFit];
+    [self.switchTypeButton centerHorizontally];
+    self.switchTypeButton.frameOriginY = topInset;
+    topInset = self.switchTypeButton.bottomEdge + kUserLoginPadding;
 }
 
 #pragma mark - Buttons
