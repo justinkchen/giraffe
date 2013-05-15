@@ -171,3 +171,12 @@ NSString *const helveticaNeueCondensedBold = @"HelveticaNeueLTW1G-BdCn";
 }
 
 @end
+
+@implementation UIColor (Utility)
+
++ (UIColor *)linkTextColor
+{
+    return [UIColor colorWithRed:59.0/255.0 green:185.0/255.0 blue:1.0 alpha:1.0];
+}
+
+@end
