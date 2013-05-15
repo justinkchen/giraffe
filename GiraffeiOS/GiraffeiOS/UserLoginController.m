@@ -44,6 +44,19 @@ NSString *const kUserLoginControllerSignupTitle = @"Sign Up";
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)updateTitleForLoginType:(UserLoginType)loginType
+{
+    switch (loginType) {
+        case UserLoginTypeLogin:
+            self.title = kUserLoginControllerLoginTitle;
+            break;
+        case UserLoginTypeSignup:
+        default:
+            self.title = kUserLoginControllerSignupTitle;
+            break;
+    }
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -56,6 +69,8 @@ NSString *const kUserLoginControllerSignupTitle = @"Sign Up";
     self.loginView.backgroundColor = [UIColor whiteColor];
     self.loginView.frame = self.view.bounds;
     [self.view addSubview:self.loginView];
+    
+    [self updateTitleForLoginType:self.loginView.loginType];
     
     // Customize nav bar
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(handleRightBarButtonTapped:)];
@@ -90,15 +105,7 @@ NSString *const kUserLoginControllerSignupTitle = @"Sign Up";
 
 - (void)userLoginView:(UserLoginView *)loginView didChooseLoginType:(UserLoginType)loginType
 {
-    switch (loginType) {
-        case UserLoginTypeLogin:
-            self.title = kUserLoginControllerLoginTitle;
-            break;
-        case UserLoginTypeSignup:
-        default:
-            self.title = kUserLoginControllerSignupTitle;
-            break;
-    }
+    [self updateTitleForLoginType:loginType];
 }
 
 #pragma mark - Navigation Buttons
