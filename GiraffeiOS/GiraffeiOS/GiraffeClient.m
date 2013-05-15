@@ -104,7 +104,9 @@ NSString *const kCookiesDataKey = @"cookiesData";
                             success:(GiraffeClientSuccessBlock)success
                             failure:(GiraffeClientFailureBlock)failure
 {
+    NSLog(@"k");
     NSMutableDictionary *parameters = [[user parameterDictionary] mutableCopy];
+    NSLog(@"j");
     [parameters setObject:password forKey:kParamNameUserPassword];
     [self postPath:kUserSignup parameters:parameters success:success failure:failure];
 }

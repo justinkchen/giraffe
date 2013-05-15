@@ -61,9 +61,15 @@
 - (NSString *)password
 {
     NSString *password = nil;
-    if ([self.passwordField.text length] > 0 && [self.passwordConfirmField.text length] > 0 &&
-        [self.passwordField.text isEqualToString:self.passwordConfirmField.text]) {
-        password = self.passwordField.text;
+    if (self.loginType == UserLoginTypeLogin) {
+        if ([self.passwordField.text length] > 0) {
+            password = self.passwordField.text;
+        }
+    } else {
+        if ([self.passwordField.text length] > 0 && [self.passwordConfirmField.text length] > 0 &&
+            [self.passwordField.text isEqualToString:self.passwordConfirmField.text]) {
+            password = self.passwordField.text;
+        }
     }
     return password;
 }
@@ -75,7 +81,7 @@
         user = [User new];
         user.username = self.usernameField.text;
         user.email = self.emailField.text;
-        user.dateJoined = [NSDate date];
+//        user.dateJoined = [NSDate date];
     }
     return user;
 }

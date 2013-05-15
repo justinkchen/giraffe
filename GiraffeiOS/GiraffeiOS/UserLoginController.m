@@ -112,15 +112,19 @@ NSString *const kUserLoginControllerSignupTitle = @"Sign Up";
 - (void)handleRightBarButtonTapped:(id)sender
 {
     User *user = self.loginView.userFromInput;
-    user.dateJoined = [NSDate date];
+//    user.avatarUrl = @"";
+//    user.dateJoined = [NSDate date];
     
     if (self.loginView.loginType == UserLoginTypeSignup) {
         GiraffeClientSuccessBlock signupSuccess = ^(AFHTTPRequestOperation *operation, id responseObject) {
-            [self updateCurrentUserWithDictionary:responseObject];
+            //TODO Check for error
             
+            [self updateCurrentUserWithDictionary:responseObject];
             if (self.loginView.avatarImage) {
                 [[GiraffeClient sharedClient] beginAvatarUpdatePutWithImage:self.loginView.avatarImage
                                                                     success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                                        // TODO check for error
+                                                                        
                                                                         [self updateCurrentUserWithDictionary:responseObject];
                                                                         [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
                                                                     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -139,6 +143,12 @@ NSString *const kUserLoginControllerSignupTitle = @"Sign Up";
     } else if (self.loginView.loginType == UserLoginTypeLogin) {
         [[GiraffeClient sharedClient] beginUserLoginPostWithUsernameOrEmail:self.loginView.usernameOrEmail
                                                                   password:self.loginView.password success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                                      if ([responseObject valueForKey:@"error"]) {
+                                                                          // print error
+                                                                          NSLog(@"%@", [responseObject valueForKey:@"error"]);
+                                                                          return;
+                                                                      }
+                                                                      
                                                                       [self updateCurrentUserWithDictionary:responseObject];
                                                                       [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
                                                                   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

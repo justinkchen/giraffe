@@ -28,7 +28,7 @@ extern NSString *const kAvatarImagePlaceholderFilename;
 @property (nonatomic, strong) NSString *email;
 @property (nonatomic, strong) NSString *avatarUrl;
 @property (nonatomic, strong) NSDate *dateJoined;
-@property (nonatomic, readonly) BOOL isSignedIn;
+//@property (nonatomic, readonly) BOOL isSignedIn;
 
 + (User *)currentUser;
 + (void)saveUser;
