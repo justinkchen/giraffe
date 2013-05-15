@@ -37,7 +37,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.loginType = UserLoginTypeSignup;
+        self.loginType = UserLoginTypeLogin;
     }
     return self;
 }
@@ -127,6 +127,7 @@ NSString *const kSwitchToSignupButtonTitle = @"Don't have an account?";
     
     if (shouldShowSignupViews) {
         // Avatar image
+        [UIView setAnimationsEnabled:NO];
         if (!self.avatarImageView) {
             self.avatarImageView = [UIImageView new];
             self.avatarImageView.image = [UIImage imageNamed:kAvatarImagePlaceholderFilename];
@@ -141,10 +142,11 @@ NSString *const kSwitchToSignupButtonTitle = @"Don't have an account?";
             self.avatarImageView.layer.borderWidth = 1.0;
             self.avatarImageView.layer.borderColor = [UIColor grayColor].CGColor;
         }
-        self.avatarImageView.alpha = 1.0;
         self.avatarImageView.frameOriginX = centerOffset(self.avatarImageView.frameWidth, self.frameWidth);
         self.avatarImageView.frameOriginY = topInset;
         topInset = self.avatarImageView.bottomEdge + kUserLoginPadding;
+        [UIView setAnimationsEnabled:YES];
+        self.avatarImageView.alpha = 1.0;
         
         // Avatar control
         if (!self.avatarImageControl) {
