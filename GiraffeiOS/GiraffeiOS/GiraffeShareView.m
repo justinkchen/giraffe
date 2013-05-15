@@ -227,7 +227,7 @@ NSString *const kLoginAlertViewCancelTitle = @"Cancel";
 - (void)handlePostButtonTapped:(id)button
 {
     // Validate user
-    if ([User currentUser].identifier) {
+    if (![User currentUser].identifier) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:kLoginAlertViewTitle
                                                         message:kLoginAlertViewMessage
                                                        delegate:self

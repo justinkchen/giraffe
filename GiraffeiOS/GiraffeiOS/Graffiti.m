@@ -32,7 +32,11 @@ NSString *const kParamNameGraffitiUserAvatarUrl = @"avatar";
 - (NSDictionary *)parameterDictionary
 {
     // Create dictionary with expected parameter names
-    return [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:self.message, @(self.latitude), @(self.longitude), @(self.radius), self.user.identifier, nil] forKeys:[NSArray arrayWithObjects:kParamNameGraffitiMessage, kParamNameGraffitiLatitude, kParamNameGraffitiLongitude, kParamNameGraffitiRadius, kParamNameGraffitiUserId, nil]];
+    return @{kParamNameGraffitiMessage: self.message,
+             kParamNameGraffitiLatitude: @(self.latitude),
+             kParamNameGraffitiLongitude: @(self.longitude),
+             kParamNameGraffitiRadius: @(self.radius),
+             kParamNameGraffitiUserId: @(self.user.identifier)};
 }
 
 - (void)updateWithDictionary:(NSDictionary *)dictionary
