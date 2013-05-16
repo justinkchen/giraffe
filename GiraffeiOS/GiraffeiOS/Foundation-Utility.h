@@ -13,3 +13,5 @@
 - (id)ifIsKindOfClass:(Class)aClass;
 
 @end
+
+#define NSDefaults [NSUserDefaults standardUserDefaults]
