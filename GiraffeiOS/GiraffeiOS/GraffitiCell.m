@@ -15,10 +15,10 @@
 
 @interface GraffitiCell ()
 
-@property (nonatomic, retain) UIImageView *authorAvatarImage;
-@property (nonatomic, retain) UILabel *authorNameLabel;
+@property (nonatomic, retain) UIImageView *userAvatarImage;
+@property (nonatomic, retain) UILabel *usernameLabel;
 @property (nonatomic, retain) UILabel *detailLabel;
-@property (nonatomic, retain) UILabel *textLabel;
+@property (nonatomic, retain) UILabel *messageLabel;
 @property (nonatomic, retain) UIImageView *graffitiImage; // will add later
 
 @end
@@ -95,28 +95,28 @@ const CGFloat kGraffitiCellPadding = 8.0;
 {
     // Author avatar
     if ([self shouldShowAuthorAvatar]) {
-        if (!self.authorAvatarImage) {
-            self.authorAvatarImage = [UIImageView new];
-            self.authorAvatarImage.backgroundColor = [UIColor orangeColor];
-            self.authorAvatarImage.frameSize = CGSizeMake(kAuthorAvatarSideLength, kAuthorAvatarSideLength);
-            self.authorAvatarImage.frameOrigin = CGPointMake(kGraffitiCellPadding, kGraffitiCellPadding);
-            [self.contentView addSubview:self.authorAvatarImage];
+        if (!self.userAvatarImage) {
+            self.userAvatarImage = [UIImageView new];
+            self.userAvatarImage.backgroundColor = [UIColor orangeColor];
+            self.userAvatarImage.frameSize = CGSizeMake(kAuthorAvatarSideLength, kAuthorAvatarSideLength);
+            self.userAvatarImage.frameOrigin = CGPointMake(kGraffitiCellPadding, kGraffitiCellPadding);
+            [self.contentView addSubview:self.userAvatarImage];
         }
     } else {
-        [self.authorAvatarImage removeFromSuperview];
-        self.authorAvatarImage = nil;
+        [self.userAvatarImage removeFromSuperview];
+        self.userAvatarImage = nil;
     }
     
     // Author name label
-    if (!self.authorNameLabel) {
-        self.authorNameLabel = [UILabel new];
-        self.authorNameLabel.font = [self authorNameFont];
-        self.authorNameLabel.frameOriginY = kGraffitiCellPadding;
-        [self.contentView addSubview:self.authorNameLabel];
+    if (!self.usernameLabel) {
+        self.usernameLabel = [UILabel new];
+        self.usernameLabel.font = [self authorNameFont];
+        self.usernameLabel.frameOriginY = kGraffitiCellPadding;
+        [self.contentView addSubview:self.usernameLabel];
     }
-    self.authorNameLabel.text = self.graffiti.user.username;
-    [self.authorNameLabel sizeToFit];
-    self.authorNameLabel.frameOriginX = self.authorAvatarImage.rightEdge + kGraffitiCellPadding;
+    self.usernameLabel.text = self.graffiti.user.username;
+    [self.usernameLabel sizeToFit];
+    self.usernameLabel.frameOriginX = self.userAvatarImage.rightEdge + kGraffitiCellPadding;
     
     // Detail label
     if (!self.detailLabel) {
@@ -126,19 +126,19 @@ const CGFloat kGraffitiCellPadding = 8.0;
     }
     self.detailLabel.text = [self detailText];
     [self.detailLabel sizeToFit];
-    self.detailLabel.frameOriginY = self.authorNameLabel.bottomEdge + kGraffitiCellPadding;
-    self.detailLabel.frameOriginX = self.authorNameLabel.frameOriginX;
+    self.detailLabel.frameOriginY = self.usernameLabel.bottomEdge + kGraffitiCellPadding;
+    self.detailLabel.frameOriginX = self.usernameLabel.frameOriginX;
     
     // Text label
-    if (!self.textLabel) {
-        self.textLabel = [UILabel new];
-        self.textLabel.font = [self graffitiTextFont];
-        [self.contentView addSubview:self.textLabel];
+    if (!self.messageLabel) {
+        self.messageLabel = [UILabel new];
+        self.messageLabel.font = [self graffitiTextFont];
+        [self.contentView addSubview:self.messageLabel];
     }
-    self.textLabel.text = self.graffiti.message;
-    self.textLabel.frameOriginX = kGraffitiCellPadding;
-    self.textLabel.frameOriginY = MAX(self.detailLabel.bottomEdge, self.authorAvatarImage.bottomEdge) + kGraffitiCellPadding;
-    self.textLabel.frameSize = [self.graffiti.message sizeWithFont:[self graffitiTextFont] constrainedToSize:CGSizeMake(self.frameWidth, CGFLOAT_MAX)];
+    self.messageLabel.text = self.graffiti.message;
+    self.messageLabel.frameOriginX = kGraffitiCellPadding;
+    self.messageLabel.frameOriginY = MAX(self.detailLabel.bottomEdge, self.userAvatarImage.bottomEdge) + kGraffitiCellPadding;
+    self.messageLabel.frameSize = [self.graffiti.message sizeWithFont:[self graffitiTextFont] constrainedToSize:CGSizeMake(self.frameWidth, CGFLOAT_MAX)];
 }
 
 - (CGSize)sizeThatFits:(CGSize)size

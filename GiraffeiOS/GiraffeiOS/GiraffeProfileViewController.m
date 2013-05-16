@@ -18,6 +18,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *badgesCountLabel;
 @property (weak, nonatomic) IBOutlet UITableView *userGraffitiTable;
 
+@property (nonatomic, strong) NSArray *graffiti;
+
 @end
 
 @implementation GiraffeProfileViewController
@@ -28,6 +30,7 @@
 @synthesize likesCountLabel = _likesCountLabel;
 @synthesize badgesCountLabel = _badgesCountLabel;
 @synthesize userGraffitiTable = _userGraffitiTable;
+@synthesize graffiti = _graffiti;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -53,6 +56,26 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark UITableViewDelegateMethods
 
+//-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+//    
+//}
+
+#pragma mark UITableViewDataSourceMethods
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [self.graffiti count];
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"UserGraffitiCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    cell.textLabel.text = @"yay";
+    return cell;
+}
 
 @end

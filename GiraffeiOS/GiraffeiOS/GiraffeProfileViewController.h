@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GiraffeProfileViewController : UIViewController
+@interface GiraffeProfileViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @end

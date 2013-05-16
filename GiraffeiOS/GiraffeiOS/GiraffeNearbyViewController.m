@@ -45,9 +45,13 @@
 {
     [super viewWillAppear:animated];
     
+    NSLog(@"location %f %f", [LocationManager sharedInstance].latitude, [LocationManager sharedInstance].longitude);
+    
     // Kick off load request
     [[GiraffeClient sharedClient] beginGraffitiNearbyGetWithLatitude:[LocationManager sharedInstance].latitude
                                                            longitude:[LocationManager sharedInstance].longitude success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                               NSLog(@"got response %@", responseObject);
+                                                               
                                                                [self graffitiRequestFinishedWithDictionary:[responseObject ifIsKindOfClass:[NSDictionary class]]];
                                                            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                                                NSLog(@"Graffiti request failed with error: %@", [error localizedDescription]);
@@ -73,7 +77,7 @@
         NSMutableArray *newGraffiti = [NSMutableArray new];
         for (NSDictionary *graffitiDict in graffitiDicts) {
             Graffiti *graffiti = [[Graffiti alloc] initWithDictionary:graffitiDict];
-            [self.graffiti addObject:graffiti];
+            [newGraffiti addObject:graffiti];
         }
         self.graffiti = newGraffiti;
     }

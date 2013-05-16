@@ -42,6 +42,41 @@ NSString *const kParamNameGraffitiUserAvatarUrl = @"avatar";
 - (void)updateWithDictionary:(NSDictionary *)dictionary
 {
     // Perform reverse of paramterDictionary...unpack json into properties
+    if ([dictionary objectForKey:kParamNameGraffitiId]) {
+        self.identifier = [[dictionary objectForKey:kParamNameGraffitiId] intValue];
+    }
+    
+    if ([dictionary objectForKey:kParamNameGraffitiMessage]) {
+        self.message = [dictionary objectForKey:kParamNameGraffitiMessage];
+    }
+    
+    if ([dictionary objectForKey:kParamNameGraffitiImageUrl]) {
+        self.imageUrl = [dictionary objectForKey:kParamNameGraffitiImageUrl];
+        
+        if ([self.imageUrl isKindOfClass:[NSNull class]]) {
+            self.imageUrl = nil;
+        }
+    }
+    
+    if ([dictionary objectForKey:kParamNameGraffitiLatitude]) {
+        self.latitude = [[dictionary objectForKey:kParamNameGraffitiLatitude] floatValue];
+    }
+    
+    if ([dictionary objectForKey:kParamNameGraffitiLongitude]) {
+        self.longitude = [[dictionary objectForKey:kParamNameGraffitiLongitude] floatValue];
+    }
+    
+    if ([dictionary objectForKey:kParamNameGraffitiRadius]) {
+        self.radius = [[dictionary objectForKey:kParamNameGraffitiRadius] floatValue];
+    }
+    
+    // x, y, z positions
+    
+    if ([dictionary objectForKey:kParamNameGraffitiUserId]) {
+        self.user = [[User alloc] initWithDictionary:@{kParamNameGraffitiUserId: [dictionary objectForKey:kParamNameGraffitiUserId],
+                      kParamNameGraffitiUserUsername: [dictionary objectForKey:kParamNameGraffitiUserUsername],
+                     kParamNameGraffitiUserAvatarUrl: [dictionary objectForKey:kParamNameGraffitiUserAvatarUrl]}];
+    }
 }
 
 - (id)initWithDictionary:(NSDictionary *)dictionary

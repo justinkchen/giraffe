@@ -85,7 +85,7 @@ NSString *const kAvatarImagePlaceholderFilename = @"avatarImagePlaceholder.png";
         self.avatarUrl = [dictionary objectForKey:kParamNameUserAvatarUrl];
         
         if ([self.avatarUrl isKindOfClass:[NSNull class]]) {
-            self.avatarUrl = @"";
+            self.avatarUrl = nil;
         }
     }
     
