@@ -68,6 +68,27 @@ NSString *const kAvatarImagePlaceholderFilename = @"avatarImagePlaceholder.png";
     self.dateJoined = nil;
 }
 
+#pragma mark - User Encoding
+
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeInteger:self.identifier forKey:kParamNameUserId];
+    [aCoder encodeObject:self.username forKey:kParamNameUserUsername];
+    [aCoder encodeObject:self.email forKey:kParamNameUserEmail];
+    [aCoder encodeObject:self.avatarUrl forKey:kParamNameUserAvatarUrl];
+    [aCoder encodeObject:self.dateJoined forKey:kParamNameUserDateJoined];
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self.identifier = [aDecoder decodeIntegerForKey:kParamNameUserId];
+    self.username = [aDecoder decodeObjectForKey:kParamNameUserUsername];
+    self.email = [aDecoder decodeObjectForKey:kParamNameUserEmail];
+    self.avatarUrl = [aDecoder decodeObjectForKey:kParamNameUserAvatarUrl];
+    self.dateJoined = [aDecoder decodeObjectForKey:kParamNameUserDateJoined];
+}
+
 - (NSDictionary *)parameterDictionary
 {
     // Construct dictionary with expected paramter names

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface User : NSObject
+@interface User : NSObject <NSCoding>
 
 extern NSString *const kParamNameUser;
 extern NSString *const kParamNameUserId;
