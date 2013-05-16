@@ -10,6 +10,8 @@
 
 @class Graffiti;
 
+extern NSString *const kGraffitiCellIdentifier;
+
 @interface GraffitiCell : UITableViewCell
 
 @property (nonatomic, retain) Graffiti *graffiti;

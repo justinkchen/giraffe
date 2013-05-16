@@ -15,6 +15,8 @@
 #import "UIKit-Utility.h"
 #import "UIImageView+AFNetworking.h"
 
+NSString *const kGraffitiCellIdentifier = @"graffitiCell";
+
 @interface GraffitiCell ()
 
 @property (nonatomic, retain) UIImageView *userAvatarImage;

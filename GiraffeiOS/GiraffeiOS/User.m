@@ -35,12 +35,46 @@ NSString *const kAvatarImagePlaceholderFilename = @"avatarImagePlaceholder.png";
     return currentUser;
 }
 
+NSString *const kUserDataKey = @"userData";
+
 + (void)saveUser {
-    // save to nsuserdefaults?
+    NSData *encodedUser = [NSKeyedArchiver archivedDataWithRootObject:[User currentUser]];
+    [[NSUserDefaults standardUserDefaults] setObject:encodedUser forKey:kUserDataKey];
 }
 
 + (void)loadUser {
-    // load from nsuserdefaults
+    NSData *encodedUser = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDataKey];
+    User *user = [NSKeyedUnarchiver unarchiveObjectWithData: encodedUser];
+    User *currentUser = [User currentUser];
+    
+    currentUser.identifier = user.identifier;
+    currentUser.username = user.username;
+    currentUser.email = user.email;
+    currentUser.avatarUrl = user.avatarUrl;
+    currentUser.dateJoined = user.dateJoined;
+}
+
+- (void)encodeWithCoder:(NSCoder *)encoder {
+    //Encode properties, other class variables, etc
+    [encoder encodeObject:@(self.identifier) forKey:kParamNameUserId];
+    [encoder encodeObject:self.username forKey:kParamNameUserUsername];
+    [encoder encodeObject:self.email forKey:kParamNameUserEmail];
+    [encoder encodeObject:self.avatarUrl forKey:kParamNameUserAvatarUrl];
+    [encoder encodeObject:self.dateJoined forKey:kParamNameUserDateJoined];
+    
+}
+
+- (id)initWithCoder:(NSCoder *)decoder {
+    if((self = [super init])) {
+        //decode properties, other class vars
+        self.identifier = [[decoder decodeObjectForKey:kParamNameUserId] intValue];
+        self.username = [decoder decodeObjectForKey:kParamNameUserUsername];
+        self.email = [decoder decodeObjectForKey:kParamNameUserEmail];
+        self.avatarUrl = [decoder decodeObjectForKey:kParamNameUserAvatarUrl];
+        self.dateJoined = [decoder decodeObjectForKey:kParamNameUserDateJoined];
+
+    }
+    return self;
 }
 
 - (BOOL)isSignedIn

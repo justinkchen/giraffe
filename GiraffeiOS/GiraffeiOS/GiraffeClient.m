@@ -23,12 +23,14 @@ NSString *const kGraffitiFlag = @"graffiti/flag";
 NSString *const kUserLogin = @"users/login";
 NSString *const kUserSignup = @"users/signup";
 NSString *const kUserUpdate = @"users/update";
-NSString *const kUserPosts = @"users/graffiti";
+NSString *const kUserGraffiti = @"users/graffiti";
 NSString *const kUserStats = @"users/stats";
 NSString *const kUserLogout = @"users/logout";
 
 NSString *const kParamNameLatitude = @"latitude";
 NSString *const kParamNameLongitude = @"longitude";
+
+NSString *const kParamNameId = @"id";
 
 @implementation GiraffeClient
 
@@ -104,9 +106,7 @@ NSString *const kCookiesDataKey = @"cookiesData";
                             success:(GiraffeClientSuccessBlock)success
                             failure:(GiraffeClientFailureBlock)failure
 {
-    NSLog(@"k");
     NSMutableDictionary *parameters = [[user parameterDictionary] mutableCopy];
-    NSLog(@"j");
     [parameters setObject:password forKey:kParamNameUserPassword];
     [self postPath:kUserSignup parameters:parameters success:success failure:failure];
 }
@@ -118,22 +118,31 @@ NSString *const kCookiesDataKey = @"cookiesData";
     [self putPath:kUserUpdate parameters:[user parameterDictionary] success:success failure:failure];
 }
 
-- (void)beginPasswordUpdatePutWithPassword:(NSString *)password
-                               oldPassword:(NSString *)oldPassword
-                                   success:(GiraffeClientSuccessBlock)success
-                                   failure:(GiraffeClientFailureBlock)failure
+- (void)beginUserPasswordUpdatePutWithPassword:(NSString *)password
+                                   oldPassword:(NSString *)oldPassword
+                                       success:(GiraffeClientSuccessBlock)success
+                                       failure:(GiraffeClientFailureBlock)failure
 {
     NSDictionary *parameters = @{kParamNameUserPassword : password, kParamNameUserOldPassword : oldPassword};
     [self putPath:kUserUpdate parameters:parameters success:success failure:failure];
 }
 
-- (void)beginAvatarUpdatePutWithImage:(UIImage *)avatarImage
-                              success:(GiraffeClientSuccessBlock)success
-                              failure:(GiraffeClientFailureBlock)failure
+- (void)beginUserAvatarUpdatePutWithImage:(UIImage *)avatarImage
+                                  success:(GiraffeClientSuccessBlock)success
+                                  failure:(GiraffeClientFailureBlock)failure
 {
     NSDictionary *parameters = @{kParamNameUserAvatar : UIImagePNGRepresentation(avatarImage)};
     [self putPath:kUserUpdate parameters:parameters success:success failure:failure];
 }
+
+- (void)beginUserGraffitiGetWithId:(int)identifier
+                           success:(GiraffeClientSuccessBlock)success
+                           failure:(GiraffeClientFailureBlock)failure
+{
+    NSDictionary *parameters = @{kParamNameId : @(identifier)};
+    [self getPath:kUserGraffiti parameters:parameters success:success failure:failure];
+}
+
 
 - (void)beginUserLogoutPostWithUser:(User *)user
                             success:(GiraffeClientSuccessBlock)success

@@ -97,8 +97,6 @@
     return [self.graffiti count];
 }
 
-NSString *const kGraffitiCellIdentifier = @"graffitiCell";
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     GraffitiCell *cell = [[tableView dequeueReusableCellWithIdentifier:kGraffitiCellIdentifier] ifIsKindOfClass:[GraffitiCell class]];

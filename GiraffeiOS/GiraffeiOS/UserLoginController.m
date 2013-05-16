@@ -128,7 +128,7 @@ NSString *const kUserLoginControllerSignupTitle = @"Sign Up";
             
             [self updateCurrentUserWithDictionary:responseObject];
             if (self.loginView.avatarImage) {
-                [[GiraffeClient sharedClient] beginAvatarUpdatePutWithImage:self.loginView.avatarImage
+                [[GiraffeClient sharedClient] beginUserAvatarUpdatePutWithImage:self.loginView.avatarImage
                                                                     success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                                                         // TODO check for error
                                                                         

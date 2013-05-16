@@ -25,6 +25,7 @@ extern NSString *const kBaseURL;
 typedef void (^GiraffeClientSuccessBlock)(AFHTTPRequestOperation *operation, id responseObject);
 typedef void (^GiraffeClientFailureBlock) (AFHTTPRequestOperation *operation, NSError *error);
 
+// Graffiti
 - (void)beginGraffitiNearbyGetWithLatitude:(CGFloat)latitude
                                  longitude:(CGFloat)longitude
                                    success:(GiraffeClientSuccessBlock)success
@@ -32,6 +33,8 @@ typedef void (^GiraffeClientFailureBlock) (AFHTTPRequestOperation *operation, NS
 - (void)beginGraffitiNewPostWithGraffiti:(Graffiti *)graffiti
                                  success:(GiraffeClientSuccessBlock)success
                                  failure:(GiraffeClientFailureBlock)failure;
+
+// User
 - (void)beginUserLoginPostWithUsernameOrEmail:(NSString *)usernameOrEmail
                                     password:(NSString *)password
                                      success:(GiraffeClientSuccessBlock)success
@@ -43,13 +46,17 @@ typedef void (^GiraffeClientFailureBlock) (AFHTTPRequestOperation *operation, NS
 - (void)beginUserUpdatePutWithUser:(User *)user
                            success:(GiraffeClientSuccessBlock)success
                            failure:(GiraffeClientFailureBlock)failure;
-- (void)beginPasswordUpdatePutWithPassword:(NSString *)password
-                               oldPassword:(NSString *)oldPassword
-                                   success:(GiraffeClientSuccessBlock)success
-                                   failure:(GiraffeClientFailureBlock)failure;
-- (void)beginAvatarUpdatePutWithImage:(UIImage *)avatarImage
-                              success:(GiraffeClientSuccessBlock)success
-                              failure:(GiraffeClientFailureBlock)failure;
+- (void)beginUserPasswordUpdatePutWithPassword:(NSString *)password
+                                   oldPassword:(NSString *)oldPassword
+                                       success:(GiraffeClientSuccessBlock)success
+                                       failure:(GiraffeClientFailureBlock)failure;
+- (void)beginUserAvatarUpdatePutWithImage:(UIImage *)avatarImage
+                                  success:(GiraffeClientSuccessBlock)success
+                                  failure:(GiraffeClientFailureBlock)failure;
+- (void)beginUserGraffitiGetWithId:(int)identifier
+                           success:(GiraffeClientSuccessBlock)success
+                           failure:(GiraffeClientFailureBlock)failure;
+
 - (void)beginUserLogoutPostWithUser:(User *)user
                             success:(GiraffeClientSuccessBlock)success
                             failure:(GiraffeClientFailureBlock)failure;

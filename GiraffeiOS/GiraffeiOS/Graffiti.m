@@ -77,6 +77,10 @@ NSString *const kParamNameGraffitiUserAvatarUrl = @"avatar";
                       kParamNameGraffitiUserUsername: [dictionary objectForKey:kParamNameGraffitiUserUsername],
                      kParamNameGraffitiUserAvatarUrl: [dictionary objectForKey:kParamNameGraffitiUserAvatarUrl]}];
     }
+    
+    if ([dictionary objectForKey:kParamNameGraffitiDateCreated]) {
+        self.dateCreated = [dictionary objectForKey:kParamNameGraffitiDateCreated];
+    }
 }
 
 - (id)initWithDictionary:(NSDictionary *)dictionary
