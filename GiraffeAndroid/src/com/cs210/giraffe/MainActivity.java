@@ -47,13 +47,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity implements
-		ActionBar.TabListener {
+ActionBar.TabListener {
 	public static final String PREFS_NAME = "GiraffePrefs";
 	static final int NUM_TABS = 3;
 	private static GiraffeLocationListener locationListener = null;
 	private static CookieManager cookieManager = null;
 	private static String baseServerURI = "http://thegiraffeapp.com";
 	private static User currentUser = null;
+	private static Menu mainActivityMenu = null;
 
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -191,12 +192,12 @@ public class MainActivity extends FragmentActivity implements
 		// tab. We can also use ActionBar.Tab#select() to do this if we have
 		// a reference to the Tab.
 		mViewPager
-				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-					@Override
-					public void onPageSelected(int position) {
-						actionBar.setSelectedNavigationItem(position);
-					}
-				});
+		.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+			@Override
+			public void onPageSelected(int position) {
+				actionBar.setSelectedNavigationItem(position);
+			}
+		});
 
 		// For each of the sections in the app, add a tab to the action bar.
 		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
@@ -237,19 +238,19 @@ public class MainActivity extends FragmentActivity implements
 
 		if (bestProvider == null || !locationListener.isLocationFound()) {
 			new AlertDialog.Builder(this)
-					.setIcon(R.drawable.ic_device_access_location_off)
-					.setTitle("No location provider accessible")
-					.setMessage(
-							"Please turn on GPS location services and try again")
+			.setIcon(R.drawable.ic_device_access_location_off)
+			.setTitle("No location provider accessible")
+			.setMessage(
+					"Please turn on GPS location services and try again")
 					.setCancelable(false)
 					.setPositiveButton("Close App",
 							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									finish();
-								}
-							}).show();
+						@Override
+						public void onClick(DialogInterface dialog,
+								int which) {
+							finish();
+						}
+					}).show();
 		}
 
 		locationManager.requestLocationUpdates(bestProvider, 0, 0,
@@ -267,14 +268,14 @@ public class MainActivity extends FragmentActivity implements
 			Log.w("MainActivity", "retrieving saved cookie: " + cookieStr);
 			HttpCookie cookie = new HttpCookie(cookieStr.substring(0,
 					cookieStr.indexOf('=')), cookieStr.substring(
-					cookieStr.indexOf('=') + 1, cookieStr.length()));
+							cookieStr.indexOf('=') + 1, cookieStr.length()));
 			cookie.setDomain(MainActivity.getBaseServerURI());
 			cookie.setPath("/");
 			cookie.setVersion(0);
 			try {
 				MainActivity.getCookieManager().getCookieStore().removeAll();
 				MainActivity.getCookieManager().getCookieStore()
-						.add(new URI(MainActivity.getBaseServerURI()), cookie);
+				.add(new URI(MainActivity.getBaseServerURI()), cookie);
 			} catch (URISyntaxException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -296,12 +297,14 @@ public class MainActivity extends FragmentActivity implements
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
+		MainActivity.setMainActivityMenu(menu);
 		menu.getItem(0).setIcon(R.drawable.ic_action_user);
 		return true;
 	}
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
+
 		// Handle disabling or enabling menu based on user login
 		if (!isLoggedIn()) {
 			menu.getItem(0).setVisible(false);
@@ -332,8 +335,8 @@ public class MainActivity extends FragmentActivity implements
 			return true;
 		case R.id.action_login:
 			// Start settings activity
-			LoginFragment loginFragment = new LoginFragment();
-			loginFragment.show(getFragmentManager(), "loginFragment");
+			LoginSupportFragment loginFragment = new LoginSupportFragment();
+			loginFragment.show(getSupportFragmentManager(), "loginFragment");
 			return true;
 		case R.id.action_settings:
 			// Start settings activity
@@ -625,6 +628,14 @@ public class MainActivity extends FragmentActivity implements
 		editor.commit();
 	}
 
+	public static Menu getMainActivityMenu() {
+		return mainActivityMenu;
+	}
+
+	public static void setMainActivityMenu(Menu mainActivityMenu) {
+		MainActivity.mainActivityMenu = mainActivityMenu;
+	}
+
 	private class LogoutTask extends AsyncTask<String, Void, InputStream> {
 		private String error_message = null;
 		private boolean success = false;
@@ -678,6 +689,10 @@ public class MainActivity extends FragmentActivity implements
 			if (success) {
 				MainActivity.getCookieManager().getCookieStore().removeAll();
 				MainActivity.setCurrentUser(null);
+				Menu menu = MainActivity.getMainActivityMenu();
+				menu.getItem(0).setVisible(false);
+				menu.getItem(1).setVisible(true);
+				menu.getItem(3).setVisible(false);
 			} else {
 			}
 		}
