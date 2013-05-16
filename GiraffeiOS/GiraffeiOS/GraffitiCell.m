@@ -6,12 +6,14 @@
 //  Copyright (c) 2013 Unsamsung Heroes. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
+#import <math.h>
 #import "GraffitiCell.h"
 #import "Graffiti.h"
 #import "User.h"
+#import "GiraffeClient.h"
 #import "UIKit-Utility.h"
-#import <Foundation/Foundation.h>
-#import <math.h>
+#import "UIImageView+AFNetworking.h"
 
 @interface GraffitiCell ()
 
@@ -33,16 +35,16 @@
     return self;
 }
 
-const CGFloat kAuthorAvatarSideLength = 45.0;
-- (BOOL)shouldShowAuthorAvatar
+const CGFloat kUserAvatarSideLength = 45.0;
+- (BOOL)shouldShowUserAvatar
 {
-    return [self.graffiti.imageUrl length] > 0;
+    return [self.graffiti.user.avatarUrl length] > 0;
 }
 
-const CGFloat kAuthorNameFontSize = 18.0;
-- (UIFont *)authorNameFont
+const CGFloat kUsernameFontSize = 18.0;
+- (UIFont *)usernameFont
 {
-    return [UIFont helveticaNeueCondensedOfSize:kAuthorNameFontSize weight:UIFontWeightBold];
+    return [UIFont helveticaNeueCondensedOfSize:kUsernameFontSize weight:UIFontWeightBold];
 }
 
 const CGFloat kDetailFontSize = 14.0;
@@ -93,13 +95,15 @@ const CGFloat kGraffitiCellPadding = 8.0;
 
 - (void)layoutSubviews
 {
-    // Author avatar
-    if ([self shouldShowAuthorAvatar]) {
+    // User avatar
+    if ([self shouldShowUserAvatar]) {
         if (!self.userAvatarImage) {
+            NSLog(@"show image yo");
             self.userAvatarImage = [UIImageView new];
             self.userAvatarImage.backgroundColor = [UIColor orangeColor];
-            self.userAvatarImage.frameSize = CGSizeMake(kAuthorAvatarSideLength, kAuthorAvatarSideLength);
+            self.userAvatarImage.frameSize = CGSizeMake(kUserAvatarSideLength, kUserAvatarSideLength);
             self.userAvatarImage.frameOrigin = CGPointMake(kGraffitiCellPadding, kGraffitiCellPadding);
+            [self.userAvatarImage setImageWithURL:[NSURL URLWithString:self.graffiti.user.avatarUrl relativeToURL:[NSURL URLWithString:kBaseURL]] placeholderImage:[UIImage imageNamed:kAvatarImagePlaceholderFilename]];
             [self.contentView addSubview:self.userAvatarImage];
         }
     } else {
@@ -107,10 +111,10 @@ const CGFloat kGraffitiCellPadding = 8.0;
         self.userAvatarImage = nil;
     }
     
-    // Author name label
+    // User username label
     if (!self.usernameLabel) {
         self.usernameLabel = [UILabel new];
-        self.usernameLabel.font = [self authorNameFont];
+        self.usernameLabel.font = [self usernameFont];
         self.usernameLabel.frameOriginY = kGraffitiCellPadding;
         [self.contentView addSubview:self.usernameLabel];
     }
@@ -144,12 +148,13 @@ const CGFloat kGraffitiCellPadding = 8.0;
 - (CGSize)sizeThatFits:(CGSize)size
 {
     CGFloat height = kGraffitiCellPadding;
-    if ([self shouldShowAuthorAvatar]) {
-        // Author avatar is taller than labels
-        height += kAuthorAvatarSideLength;
+    
+    if ([self shouldShowUserAvatar]) {
+        // User avatar is taller than labels
+        height += kUserAvatarSideLength;
     } else {
-        // Author name label
-        height += [self.graffiti.user.username sizeWithFont:[self authorNameFont]].height;
+        // User name label
+        height += [self.graffiti.user.username sizeWithFont:[self usernameFont]].height;
         
         height += kGraffitiCellPadding;
         
@@ -162,6 +167,8 @@ const CGFloat kGraffitiCellPadding = 8.0;
     // Add height for text
     height += [self.graffiti.message sizeWithFont:[self graffitiTextFont] constrainedToSize:CGSizeMake(size.width, CGFLOAT_MAX)].height;
     height += 2 * kGraffitiCellPadding;
+    
+    size.height = height;
     
     return size;
 }

@@ -13,6 +13,8 @@
 @class Graffiti;
 @class User;
 
+extern NSString *const kBaseURL;
+
 @interface GiraffeClient : AFHTTPClient
 
 + (GiraffeClient *)sharedClient;
