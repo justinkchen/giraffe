@@ -59,11 +59,11 @@ NSString *const kAvatarImagePlaceholderFilename = @"avatarImagePlaceholder.png";
 - (NSDictionary *)parameterDictionary
 {
     // Construct dictionary with expected paramter names
-    return @{kParamNameUserId: @(self.identifier),
-             kParamNameUserUsername: self.username,
-             kParamNameUserEmail: self.email,
-             kParamNameUserAvatarUrl: self.avatarUrl,
-             kParamNameUserDateJoined: self.dateJoined};
+    return @{ kParamNameUserId         : @(self.identifier),
+              kParamNameUserUsername   : (self.username ?: [NSNull null]),
+              kParamNameUserEmail      : (self.email ?: [NSNull null]),
+              kParamNameUserAvatarUrl  : (self.avatarUrl ?: [NSNull null]),
+              kParamNameUserDateJoined : (self.dateJoined ?: [NSNull null])};
 }
 
 - (void)updateWithDictionary:(NSDictionary *)dictionary
