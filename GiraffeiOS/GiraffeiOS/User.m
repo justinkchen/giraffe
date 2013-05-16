@@ -7,6 +7,7 @@
 //
 
 #import "User.h"
+#import "Foundation-Utility.h"
 
 @implementation User
 
@@ -22,6 +23,8 @@ NSString *const kParamNameUserOldPassword = @"oldPassword";
 NSString *const kParamNameUserAvatar = @"avatar";
 
 NSString *const kAvatarImagePlaceholderFilename = @"avatarImagePlaceholder.png";
+
+NSString *const kCurrentUserDefaultsKey = @"currentUser";
 
 - (id)initWithDictionary:(NSDictionary *)dictionary
 {
@@ -40,23 +43,19 @@ NSString *const kAvatarImagePlaceholderFilename = @"avatarImagePlaceholder.png";
     static User *currentUser = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        currentUser = [User new];
+        currentUser = [[NSUserDefaults standardUserDefaults] objectForKey:kCurrentUserDefaultsKey];
+        if (!currentUser) {
+            currentUser = [User new];
+        }
     });
     
     return currentUser;
 }
 
-+ (void)saveUser {
-    // save to nsuserdefaults?
-}
-
-+ (void)loadUser {
-    // load from nsuserdefaults
-}
-
-- (BOOL)isSignedIn
+- (void)saveAsCurrentUser
 {
-    return self.identifier > 0;
+    [NSDefaults setObject:self forKey:kCurrentUserDefaultsKey];
+    [NSDefaults synchronize];
 }
 
 - (void)logout
