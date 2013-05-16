@@ -23,6 +23,17 @@ NSString *const kParamNameUserAvatar = @"avatar";
 
 NSString *const kAvatarImagePlaceholderFilename = @"avatarImagePlaceholder.png";
 
+- (id)initWithDictionary:(NSDictionary *)dictionary
+{
+    self = [super init];
+    if (self) {
+        [self updateWithDictionary:dictionary];
+    }
+    return self;
+}
+
+#pragma mark - Current user
+
 + (User *)currentUser
 {
     // Create Singleton
@@ -48,11 +59,12 @@ NSString *const kAvatarImagePlaceholderFilename = @"avatarImagePlaceholder.png";
     return self.identifier > 0;
 }
 
-- (void)logout {
+- (void)logout
+{
     self.identifier = 0;
-    self.username = @"";
-    self.email = @"";
-    self.avatarUrl = @"";
+    self.username = nil;
+    self.email = nil;
+    self.avatarUrl = nil;
     self.dateJoined = nil;
 }
 
@@ -92,15 +104,6 @@ NSString *const kAvatarImagePlaceholderFilename = @"avatarImagePlaceholder.png";
     if ([dictionary objectForKey:kParamNameUserDateJoined]) {
         self.dateJoined = [dictionary objectForKey:kParamNameUserDateJoined];
     }
-}
-
-- (id)initWithDictionary:(NSDictionary *)dictionary
-{
-    self = [super init];
-    if (self) {
-        [self updateWithDictionary:dictionary];
-    }
-    return self;
 }
 
 @end
