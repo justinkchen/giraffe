@@ -327,7 +327,8 @@ ActionBar.TabListener {
 			// Show current user profile
 			intent = new Intent(this, ProfileActivity.class);
 			Log.i("Johan", "Current userid inside MainActivity" + MainActivity.getCurrentUser().getId());
-			Log.i("Johan", "Current userid inside MainActivity" + MainActivity.getCurrentUser().getUsername());
+			Log.i("Johan", "Current username inside MainActivity" + MainActivity.getCurrentUser().getUsername());
+			Log.i("Johan", "Current avatar inside MainActivity" + MainActivity.getCurrentUser().getAvatar());
 			intent.putExtra("userid", MainActivity.getCurrentUser().getId());
 			intent.putExtra("username", MainActivity.getCurrentUser().getUsername());
 			intent.putExtra("imagePath", MainActivity.getCurrentUser().getAvatar());
@@ -597,6 +598,7 @@ ActionBar.TabListener {
 		if (!MainActivity.isLoggedIn()) {
 			editor.clear();
 		} else {
+			editor.clear();
 			try {
 				if (MainActivity.getCookieManager().getCookieStore()
 						.get(new URI(MainActivity.getBaseServerURI())).size() > 0) {
