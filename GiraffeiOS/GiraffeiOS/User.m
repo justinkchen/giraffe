@@ -72,29 +72,6 @@ NSString *const kUserDataKey = @"userData";
     currentUser.dateJoined = user.dateJoined;
 }
 
-- (void)encodeWithCoder:(NSCoder *)encoder {
-    //Encode properties, other class variables, etc
-    [encoder encodeObject:@(self.identifier) forKey:kParamNameUserId];
-    [encoder encodeObject:self.username forKey:kParamNameUserUsername];
-    [encoder encodeObject:self.email forKey:kParamNameUserEmail];
-    [encoder encodeObject:self.avatarUrl forKey:kParamNameUserAvatarUrl];
-    [encoder encodeObject:self.dateJoined forKey:kParamNameUserDateJoined];
-    
-}
-
-- (id)initWithCoder:(NSCoder *)decoder {
-    if((self = [super init])) {
-        //decode properties, other class vars
-        self.identifier = [[decoder decodeObjectForKey:kParamNameUserId] intValue];
-        self.username = [decoder decodeObjectForKey:kParamNameUserUsername];
-        self.email = [decoder decodeObjectForKey:kParamNameUserEmail];
-        self.avatarUrl = [decoder decodeObjectForKey:kParamNameUserAvatarUrl];
-        self.dateJoined = [decoder decodeObjectForKey:kParamNameUserDateJoined];
-
-    }
-    return self;
-}
-
 //- (void)saveCurrentUser
 //{
 //    [NSDefaults setObject:self forKey:kCurrentUserDefaultsKey];
@@ -112,24 +89,37 @@ NSString *const kUserDataKey = @"userData";
 
 #pragma mark - User Encoding
 
-
-- (void)encodeWithCoder:(NSCoder *)aCoder
-{
-    [aCoder encodeInteger:self.identifier forKey:kParamNameUserId];
-    [aCoder encodeObject:self.username forKey:kParamNameUserUsername];
-    [aCoder encodeObject:self.email forKey:kParamNameUserEmail];
-    [aCoder encodeObject:self.avatarUrl forKey:kParamNameUserAvatarUrl];
-    [aCoder encodeObject:self.dateJoined forKey:kParamNameUserDateJoined];
+- (void)encodeWithCoder:(NSCoder *)encoder {
+    //Encode properties, other class variables, etc
+    [encoder encodeInteger:self.identifier forKey:kParamNameUserId];
+    [encoder encodeObject:self.username forKey:kParamNameUserUsername];
+    [encoder encodeObject:self.email forKey:kParamNameUserEmail];
+    [encoder encodeObject:self.avatarUrl forKey:kParamNameUserAvatarUrl];
+    [encoder encodeObject:self.dateJoined forKey:kParamNameUserDateJoined];
+    
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    self.identifier = [aDecoder decodeIntegerForKey:kParamNameUserId];
-    self.username = [aDecoder decodeObjectForKey:kParamNameUserUsername];
-    self.email = [aDecoder decodeObjectForKey:kParamNameUserEmail];
-    self.avatarUrl = [aDecoder decodeObjectForKey:kParamNameUserAvatarUrl];
-    self.dateJoined = [aDecoder decodeObjectForKey:kParamNameUserDateJoined];
+- (id)initWithCoder:(NSCoder *)decoder {
+    if((self = [super init])) {
+        //decode properties, other class vars
+        self.identifier = [decoder decodeIntegerForKey:kParamNameUserId];
+        self.username = [decoder decodeObjectForKey:kParamNameUserUsername];
+        self.email = [decoder decodeObjectForKey:kParamNameUserEmail];
+        self.avatarUrl = [decoder decodeObjectForKey:kParamNameUserAvatarUrl];
+        self.dateJoined = [decoder decodeObjectForKey:kParamNameUserDateJoined];
+        
+    }
+    return self;
 }
+
+//- (id)initWithCoder:(NSCoder *)aDecoder
+//{
+//    self.identifier = [aDecoder decodeIntegerForKey:kParamNameUserId];
+//    self.username = [aDecoder decodeObjectForKey:kParamNameUserUsername];
+//    self.email = [aDecoder decodeObjectForKey:kParamNameUserEmail];
+//    self.avatarUrl = [aDecoder decodeObjectForKey:kParamNameUserAvatarUrl];
+//    self.dateJoined = [aDecoder decodeObjectForKey:kParamNameUserDateJoined];
+//}
 
 - (NSDictionary *)parameterDictionary
 {
