@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface User : NSObject
+@interface User : NSObject <NSCoding>
 
 extern NSString *const kParamNameUser;
 extern NSString *const kParamNameUserId;
@@ -28,12 +28,11 @@ extern NSString *const kAvatarImagePlaceholderFilename;
 @property (nonatomic, strong) NSString *email;
 @property (nonatomic, strong) NSString *avatarUrl;
 @property (nonatomic, strong) NSDate *dateJoined;
-//@property (nonatomic, readonly) BOOL isSignedIn;
 
 + (User *)currentUser;
+//- (void)saveCurrentUser;
 + (void)saveUser;
 + (void)loadUser;
-
 - (void)logout;
 
 - (NSDictionary *)parameterDictionary;

@@ -7,6 +7,7 @@
 //
 
 #import "User.h"
+#import "Foundation-Utility.h"
 
 @implementation User
 
@@ -23,13 +24,29 @@ NSString *const kParamNameUserAvatar = @"avatar";
 
 NSString *const kAvatarImagePlaceholderFilename = @"avatarImagePlaceholder.png";
 
+NSString *const kCurrentUserDefaultsKey = @"currentUser";
+
+- (id)initWithDictionary:(NSDictionary *)dictionary
+{
+    self = [super init];
+    if (self) {
+        [self updateWithDictionary:dictionary];
+    }
+    return self;
+}
+
+#pragma mark - Current user
+
 + (User *)currentUser
 {
     // Create Singleton
     static User *currentUser = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        currentUser = [User new];
+//        currentUser = [[NSUserDefaults standardUserDefaults] objectForKey:kCurrentUserDefaultsKey];
+//        if (!currentUser) {
+            currentUser = [User new];
+//        }
     });
     
     return currentUser;
@@ -78,27 +95,50 @@ NSString *const kUserDataKey = @"userData";
     return self;
 }
 
-- (BOOL)isSignedIn
+//- (void)saveCurrentUser
+//{
+//    [NSDefaults setObject:self forKey:kCurrentUserDefaultsKey];
+//    [NSDefaults synchronize];
+//}
+
+- (void)logout
 {
-    return self.identifier > 0;
+    self.identifier = 0;
+    self.username = nil;
+    self.email = nil;
+    self.avatarUrl = nil;
+    self.dateJoined = nil;
 }
 
-- (void)logout {
-    self.identifier = 0;
-    self.username = @"";
-    self.email = @"";
-    self.avatarUrl = @"";
-    self.dateJoined = nil;
+#pragma mark - User Encoding
+
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeInteger:self.identifier forKey:kParamNameUserId];
+    [aCoder encodeObject:self.username forKey:kParamNameUserUsername];
+    [aCoder encodeObject:self.email forKey:kParamNameUserEmail];
+    [aCoder encodeObject:self.avatarUrl forKey:kParamNameUserAvatarUrl];
+    [aCoder encodeObject:self.dateJoined forKey:kParamNameUserDateJoined];
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self.identifier = [aDecoder decodeIntegerForKey:kParamNameUserId];
+    self.username = [aDecoder decodeObjectForKey:kParamNameUserUsername];
+    self.email = [aDecoder decodeObjectForKey:kParamNameUserEmail];
+    self.avatarUrl = [aDecoder decodeObjectForKey:kParamNameUserAvatarUrl];
+    self.dateJoined = [aDecoder decodeObjectForKey:kParamNameUserDateJoined];
 }
 
 - (NSDictionary *)parameterDictionary
 {
     // Construct dictionary with expected paramter names
-    return @{kParamNameUserId: @(self.identifier),
-             kParamNameUserUsername: self.username,
-             kParamNameUserEmail: self.email,
-             kParamNameUserAvatarUrl: self.avatarUrl,
-             kParamNameUserDateJoined: self.dateJoined};
+    return @{ kParamNameUserId         : @(self.identifier),
+              kParamNameUserUsername   : (self.username ?: [NSNull null]),
+              kParamNameUserEmail      : (self.email ?: [NSNull null]),
+              kParamNameUserAvatarUrl  : (self.avatarUrl ?: [NSNull null]),
+              kParamNameUserDateJoined : (self.dateJoined ?: [NSNull null])};
 }
 
 - (void)updateWithDictionary:(NSDictionary *)dictionary
@@ -129,15 +169,6 @@ NSString *const kUserDataKey = @"userData";
     }
     
     [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:@"userUpdated" object:nil]];
-}
-
-- (id)initWithDictionary:(NSDictionary *)dictionary
-{
-    self = [super init];
-    if (self) {
-        [self updateWithDictionary:dictionary];
-    }
-    return self;
 }
 
 @end

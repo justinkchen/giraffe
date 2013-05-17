@@ -34,6 +34,7 @@
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     [User saveUser];
     [GiraffeClient saveCookies];
+//    [[User currentUser] saveCurrentUser];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -49,6 +50,9 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [User saveUser];
+    [GiraffeClient saveCookies];
+//    [[User currentUser] saveCurrentUser];
 }
 
 @end
