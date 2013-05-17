@@ -112,6 +112,7 @@ NSString *const kUserLoginControllerSignupTitle = @"Sign Up";
 
 - (void)updateCurrentUserWithDictionary:(id)dictionary
 {
+    NSLog(@"recevied user");
     NSDictionary *userDict = [[dictionary ifIsKindOfClass:[NSDictionary class]] objectForKey:kParamNameUser];
     [[User currentUser] updateWithDictionary:userDict];
 }
@@ -150,9 +151,9 @@ NSString *const kUserLoginControllerSignupTitle = @"Sign Up";
     } else if (self.loginView.loginType == UserLoginTypeLogin) {
         [[GiraffeClient sharedClient] beginUserLoginPostWithUsernameOrEmail:self.loginView.usernameOrEmail
                                                                   password:self.loginView.password success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                                                                      if ([responseObject valueForKey:@"error"]) {
+                                                                      if ([responseObject objectForKey:@"error"]) {
                                                                           // print error
-                                                                          NSLog(@"%@", [responseObject valueForKey:@"error"]);
+                                                                          NSLog(@"%@", [responseObject objectForKey:@"error"]);
                                                                           return;
                                                                       }
                                                                       

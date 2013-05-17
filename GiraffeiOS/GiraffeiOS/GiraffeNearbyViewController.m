@@ -53,7 +53,7 @@
                                                                NSLog(@"got response %@", responseObject);
                                                                
                                                                [self graffitiRequestFinishedWithDictionary:[responseObject ifIsKindOfClass:[NSDictionary class]]];
-                                                           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                                                                                          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                                                NSLog(@"Graffiti request failed with error: %@", [error localizedDescription]);
                                                            }];
 }

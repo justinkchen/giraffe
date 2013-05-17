@@ -26,7 +26,7 @@ NSString *const kParamNameGraffitiFlagged = @"flagged";
 NSString *const kParamNameGraffitiDateCreated = @"dateCreated";
 NSString *const kParamNameGraffitiUserId = @"userId";
 NSString *const kParamNameGraffitiUserUsername = @"username";
-NSString *const kParamNameGraffitiUserAvatarUrl = @"avatar";
+NSString *const kParamNameGraffitiUserAvatarUrl = @"avatarUrl";
 
 
 - (NSDictionary *)parameterDictionary

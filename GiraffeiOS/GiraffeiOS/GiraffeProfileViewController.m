@@ -15,7 +15,7 @@
 #import "Foundation-Utility.h"
 #import "UIKit-Utility.h"
 
-@interface GiraffeProfileViewController ()
+@interface GiraffeProfileViewController () <UINavigationControllerDelegate,UIActionSheetDelegate, UIImagePickerControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *avatarView;
@@ -53,7 +53,17 @@
 	// Do any additional setup after loading the view.
     
     //[self.avatar setImageWithURL:[NSURL URLWithString:@"http://www.thegiraffeapp.com/images/user/d6a49c99211136c42557c3ae966ae155c929c71b97a269531af541bdb84a6edc.jpg"] placeholderImage:[UIImage imageNamed:@"first.png"]];
-    [self.avatarView setImageWithURL:[NSURL URLWithString:@"http://www.thegiraffeapp.com/images/user/d6a49c99211136c42557c3ae966ae155c929c71b97a269531af541bdb84a6edc.jpg"]];
+    [self setUserContent];
+
+//    [self.avatarView addTarget:self action:@selector(handleAvatarImageTapped:) forControlEvents:UIControlEventTouchUpInside];
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc]
+                                         initWithTarget:self
+                                         action:@selector(handleAvatarImageTouched:)];
+    [singleTap setNumberOfTapsRequired:1];
+    self.avatarView.userInteractionEnabled = YES;
+    [self.avatarView addGestureRecognizer:singleTap];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUserContent:) name:@"userUpdated" object:nil];
     
     [[GiraffeClient sharedClient] beginUserGraffitiGetWithId:[User currentUser].identifier success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"yay %@", responseObject);
@@ -91,6 +101,104 @@
             [newGraffiti addObject:graffiti];
         }
         self.graffiti = newGraffiti;
+    }
+}
+
+- (void)updateUserContent:(NSNotification *)notification
+{
+    NSLog(@"updated!");
+    [self setUserContent];
+}
+
+- (void)setUserContent
+{
+    User *user = [User currentUser];
+    
+    self.usernameLabel.text = user.username;
+    
+    if (user.avatarUrl) {
+        NSLog(@"setting image!");
+        NSLog(@"%@%@", kBaseURL, user.avatarUrl);
+        [self.avatarView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@", kBaseURL, user.avatarUrl]]];
+    }
+}
+
+- (void)updateCurrentUserWithDictionary:(id)dictionary
+{
+    NSLog(@"received user data");
+    NSDictionary *userDict = [[dictionary ifIsKindOfClass:[NSDictionary class]] objectForKey:kParamNameUser];
+    [[User currentUser] updateWithDictionary:userDict];
+}
+
+#pragma mark - Buttons
+
+- (void)handleAvatarImageTouched:(UIGestureRecognizer*)recognizer
+{
+    if ([self.avatarView isEqual:recognizer.view]) {
+        UIActionSheet *actionSheet = nil;
+        if ([UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear]) {
+            actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                      delegate:self
+                                             cancelButtonTitle:@"Cancel"
+                                        destructiveButtonTitle:nil
+                                             otherButtonTitles:@"Take Photo", @"Choose Existing", nil];
+        } else {
+            actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                      delegate:self
+                                             cancelButtonTitle:@"Cancel"
+                                        destructiveButtonTitle:nil
+                                             otherButtonTitles:@"Choose Existing", nil];
+        }
+        [actionSheet showInView:self.view];
+    }
+}
+
+#pragma mark - Action sheet
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
+    if (![buttonTitle isEqualToString:@"Cancel"]) {
+        UIImagePickerController *imagePickerController = [UIImagePickerController new];
+        imagePickerController.delegate = self;
+        if ([buttonTitle isEqualToString:@"Take Photo"]) {
+            imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+        } else if ([buttonTitle isEqualToString:@"Choose Existing"]) {
+            imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        }
+        [self showImagePicker:imagePickerController];
+    }
+}
+
+- (void)showImagePicker:(UIImagePickerController *)imagePicker
+{
+    [self presentViewController:imagePicker animated:YES completion:nil];
+}
+
+#pragma mark - UIImagePickerControllerDelegate
+
+NSString *const kUIImagePickerImageKey = @"UIImagePickerControllerOriginalImage";
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    // figure out which image to use here and submit it to the db
+    if ([info objectForKey:kUIImagePickerImageKey]) {
+        [[GiraffeClient sharedClient] beginUserAvatarUpdatePutWithImage:[info objectForKey:kUIImagePickerImageKey] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            // if no error
+            NSLog(@"response %@", responseObject);
+            if ([responseObject objectForKey:@"error"]) {
+                // todo print error
+                return;
+            }
+            NSLog(@"after it");
+            [self updateCurrentUserWithDictionary:responseObject];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            // todo print error
+        }];
+//        [self.avatarView setImage:[info objectForKey:kUIImagePickerImageKey]];
+        [picker dismissViewControllerAnimated:YES completion:^{
+            // do nothing
+        }];
     }
 }
 

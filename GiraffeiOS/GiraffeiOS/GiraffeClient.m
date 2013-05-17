@@ -10,9 +10,9 @@
 #import "Graffiti.h"
 #import "User.h"
 
-NSString *const kBaseURL = @"http://ec2-54-243-69-6.compute-1.amazonaws.com/";
+//NSString *const kBaseURL = @"http://ec2-54-243-69-6.compute-1.amazonaws.com/";
 
-//NSString *const kBaseURL = @"http://localhost:3000";
+NSString *const kBaseURL = @"http://localhost:3000/";
 
 // API methods
 NSString *const kGraffitiNearby = @"graffiti/nearby";
@@ -131,8 +131,17 @@ NSString *const kCookiesDataKey = @"cookiesData";
                                   success:(GiraffeClientSuccessBlock)success
                                   failure:(GiraffeClientFailureBlock)failure
 {
-    NSDictionary *parameters = @{kParamNameUserAvatar : UIImagePNGRepresentation(avatarImage)};
-    [self putPath:kUserUpdate parameters:parameters success:success failure:failure];
+    NSData *imageData = UIImagePNGRepresentation(avatarImage);
+    NSURLRequest *request = [self multipartFormRequestWithMethod:@"PUT" path:kUserUpdate parameters:nil constructingBodyWithBlock: ^(id <AFMultipartFormData> formData) {
+        [formData appendPartWithFileData:imageData name:@"avatar" fileName:@"avatar.png" mimeType:@"image/png"];
+    }];
+    
+    AFJSONRequestOperation *operation = [[AFJSONRequestOperation alloc] initWithRequest:request];
+    [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+        NSLog(@"Sent %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
+    }];
+    [operation setCompletionBlockWithSuccess:success failure:failure];
+    [operation start];
 }
 
 - (void)beginUserGraffitiGetWithId:(int)identifier

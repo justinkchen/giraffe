@@ -39,6 +39,10 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
+    [self setUserContent];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUserContent:) name:@"userUpdated" object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -47,10 +51,26 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - Utility
+
+- (void)updateUserContent:(NSNotification *)notification
+{
+    [self setUserContent];
+}
+
+- (void)setUserContent
+{
+    User *user = [User currentUser];
+    
+    self.usernameField.text = user.username;
+    self.emailField.text = user.email;
+}
+
+#pragma mark - Button Actions
+
 - (IBAction)updateAccount:(UIButton *)sender {
     if (![[self.usernameField text] isEqualToString:[User currentUser].username] ||
         ![[self.emailField text] isEqualToString:[User currentUser].email]) {
-        // send request
     } else {
         // notify error, nothing changed
     }
@@ -59,15 +79,28 @@
 - (IBAction)changePassword:(UIButton *)sender {
     if (![[self.passwordField text] isEqualToString:[self.confirmPasswordField text]]) {
         // notify error not equal
+        
     }
     
     // send request
+    [[GiraffeClient sharedClient] beginUserPasswordUpdatePutWithPassword:[self.passwordField text] oldPassword:[self.oldPasswordField text] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        // check for error
+        if ([responseObject objectForKey:@"error"]) {
+            // print error
+            return;
+        }
+        
+        // print success message
+        NSLog(@"password updated");
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        // print error
+    }];
 }
 
 - (IBAction)logout:(UIButton *)sender {
     [[GiraffeClient sharedClient] beginUserLogoutPostWithUser:[User currentUser] success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        // todo check responseobject
+        NSLog(@"logout");
         [[User currentUser] logout];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         // print error

@@ -15,7 +15,7 @@ NSString *const kParamNameUserId = @"id";
 NSString *const kParamNameUserUsername = @"username";
 NSString *const kParamNameUserEmail = @"email";
 NSString *const kParamNameUserUsernameEmail = @"usernameEmail";
-NSString *const kParamNameUserAvatarUrl = @"avatar";
+NSString *const kParamNameUserAvatarUrl = @"avatarUrl";
 NSString *const kParamNameUserDateJoined = @"dateJoined";
 NSString *const kParamNameUserPassword = @"password";
 NSString *const kParamNameUserOldPassword = @"oldPassword";
@@ -43,6 +43,7 @@ NSString *const kUserDataKey = @"userData";
 }
 
 + (void)loadUser {
+    NSLog(@"loading user");
     NSData *encodedUser = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDataKey];
     User *user = [NSKeyedUnarchiver unarchiveObjectWithData: encodedUser];
     User *currentUser = [User currentUser];
@@ -126,6 +127,8 @@ NSString *const kUserDataKey = @"userData";
     if ([dictionary objectForKey:kParamNameUserDateJoined]) {
         self.dateJoined = [dictionary objectForKey:kParamNameUserDateJoined];
     }
+    
+    [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:@"userUpdated" object:nil]];
 }
 
 - (id)initWithDictionary:(NSDictionary *)dictionary
