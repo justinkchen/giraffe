@@ -60,6 +60,10 @@
         // display responseObject
         // redirect to nearby page if successful?
         NSLog(@"successful post to server!");
+        [[self.view.subviews objectAtIndex:0] resetView];
+        
+        // Navigate to the 1st tab
+        self.tabBarController.selectedViewController = [self.tabBarController.viewControllers objectAtIndex:0];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         // display error message
     }];

@@ -16,6 +16,7 @@
 @property (nonatomic, assign) id<GiraffeShareViewDelegate> delegate;
 
 - (void)updateMapView;
+- (void)resetView;
 
 @end
 

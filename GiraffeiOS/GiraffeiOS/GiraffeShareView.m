@@ -181,6 +181,12 @@ const CGFloat kShareViewPadding = 8.0;
     [self bringSubviewToFront:self.radiusSlider];
 }
 
+- (void)resetView
+{
+    self.textView.text = @"";
+    self.radiusSlider.value = 50;
+}
+
 #pragma mark - Map view
 
 NSString *const kAddGraffitiMapUrlFormat = @"http://ec2-54-243-69-6.compute-1.amazonaws.com/addgraffiti_map.html?latitude=%f&longitude=%f";
