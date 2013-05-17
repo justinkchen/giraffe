@@ -199,6 +199,7 @@ NSString *const kSwitchToSignupButtonTitle = @"Don't have an account?";
             self.emailField.placeholder = kEmailPlaceholderString;
             self.emailField.font = [UIFont helveticaNeueCondensedOfSize:18.0 weight:UIFontWeightRegular];
             self.emailField.layer.cornerRadius = 4.0;
+            self.emailField.autocorrectionType = UITextAutocorrectionTypeNo;
             [self addSubview:self.emailField];
         }
         self.emailField.frameSize = self.usernameField.frameSize;
@@ -239,6 +240,7 @@ NSString *const kSwitchToSignupButtonTitle = @"Don't have an account?";
             self.passwordConfirmField.font = [UIFont helveticaNeueCondensedOfSize:18.0 weight:UIFontWeightRegular];
             self.passwordConfirmField.layer.cornerRadius = 4.0;
             self.passwordConfirmField.secureTextEntry = YES;
+            self.passwordConfirmField.autocorrectionType = UITextAutocorrectionTypeNo;
             [self addSubview:self.passwordConfirmField];
         }
         self.passwordConfirmField.frameSize = self.passwordField.frameSize;

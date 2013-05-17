@@ -126,6 +126,10 @@ NSString *const kUserLoginControllerSignupTitle = @"Sign Up";
     if (self.loginView.loginType == UserLoginTypeSignup) {
         GiraffeClientSuccessBlock signupSuccess = ^(AFHTTPRequestOperation *operation, id responseObject) {
             //TODO Check for error
+            if ([responseObject objectForKey:@"error"]) {
+                NSLog(@"%@", [responseObject objectForKey:@"error"]);
+                return;
+            }
             
             [self updateCurrentUserWithDictionary:responseObject];
             if (self.loginView.avatarImage) {
@@ -138,6 +142,8 @@ NSString *const kUserLoginControllerSignupTitle = @"Sign Up";
                                                                     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                                                         // Image wouldn't upload.
                                                                     }];
+            } else {
+                [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
             }
         };
         
