@@ -15,6 +15,7 @@
 #import "LocationManager.h"
 #import "UIKit-Utility.h"
 #import "UIImageView+AFNetworking.h"
+#import "NSDate+TimeAgo.h"
 
 NSString *const kGraffitiCellIdentifier = @"graffitiCell";
 
@@ -87,6 +88,7 @@ const CGFloat kDetailFontSize = 14.0;
         detailText = [NSString stringWithFormat:@"Posted %@ away at %@", [self distanceString], [self.graffiti.dateCreated description]];
     } else if (self.graffiti.dateCreated) {
         detailText = [NSString stringWithFormat:@"Posted at %@", [self.graffiti.dateCreated description]];
+            // TODO convert to timeago
     } else if (self.graffiti.latitude && self.graffiti.longitude) {
         detailText = [NSString stringWithFormat:@"Posted %@ away", [self distanceString]];
     }
