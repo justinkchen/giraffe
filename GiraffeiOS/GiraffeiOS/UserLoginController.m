@@ -182,6 +182,7 @@ NSTimeInterval kKeyboardAnimationDuration;
 
 - (void)centerOnViewForKeyboard
 {
+    NSLog(@"centering1...");
     if (!CGRectIsNull(self.keyboardFrame)) {
         [UIView animateWithDuration:kKeyboardAnimationDuration
                          animations:^{

@@ -85,6 +85,8 @@ NSString *const kUserDataKey = @"userData";
     self.email = nil;
     self.avatarUrl = nil;
     self.dateJoined = nil;
+    
+    [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:@"userUpdated" object:nil]];
 }
 
 #pragma mark - User Encoding

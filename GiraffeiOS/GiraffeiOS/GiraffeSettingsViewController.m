@@ -7,6 +7,7 @@
 //
 
 #import "GiraffeSettingsViewController.h"
+#import "UIKit-Utility.h"
 
 @interface GiraffeSettingsViewController ()
 
@@ -15,6 +16,9 @@
 @property (weak, nonatomic) IBOutlet UITextField *oldPasswordField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordField;
 @property (weak, nonatomic) IBOutlet UITextField *confirmPasswordField;
+
+@property (nonatomic, assign) CGRect keyboardFrame;
+@property (nonatomic, retain) UIView *viewToCenter;
 
 @end
 
@@ -43,6 +47,12 @@
     [self setUserContent];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUserContent:) name:@"userUpdated" object:nil];
+    
+    NSLog(@"setup keyboard observers");
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+    
+    self.keyboardFrame = CGRectNull;
 }
 
 - (void)didReceiveMemoryWarning
@@ -107,5 +117,62 @@
     }];
 }
 
+- (IBAction)backgroundTouched:(UIControl *)sender {
+    [self.view endEditing:YES];
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    // center view
+    self.viewToCenter = textField;
+    [self centerOnViewForKeyboard];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
+
+#pragma mark - Keyboard
+
+NSTimeInterval kKeyboardAnimationDuration;
+
+- (void)centerOnViewForKeyboard
+{
+    if (!CGRectIsNull(self.keyboardFrame)) {
+        [UIView animateWithDuration:kKeyboardAnimationDuration
+                         animations:^{
+                             if (self.viewToCenter) {
+                                 CGFloat visibleHeight = self.view.frameHeight - self.keyboardFrame.size.height;
+                                 self.view.frameOriginY = centerOffset(self.viewToCenter.frameHeight, visibleHeight) - self.viewToCenter.frameOriginY;
+                             } else {
+                                 self.view.frameOriginY = 0.0;
+                             }
+                         }];
+    }
+}
+
+- (void)handleKeyboardDidShow:(NSNotification *)notification
+{
+    NSLog(@"showing keyboard");
+    self.keyboardFrame = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    self.keyboardFrame = [self.view convertRect:self.keyboardFrame fromView:nil];
+    self.keyboardFrame = CGRectIntersection(self.view.bounds, self.keyboardFrame);
+    
+    kKeyboardAnimationDuration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    
+    [self centerOnViewForKeyboard];
+}
+
+- (void)handleKeyboardDidHide:(NSNotification *)notification
+{
+    NSLog(@"hiding keyboard");
+    self.viewToCenter = nil;
+    [self centerOnViewForKeyboard];
+    self.keyboardFrame = CGRectNull;
+}
 
 @end

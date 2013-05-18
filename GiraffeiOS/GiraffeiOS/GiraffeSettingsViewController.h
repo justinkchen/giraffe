@@ -10,6 +10,6 @@
 #import "User.h"
 #import "GiraffeClient.h"
 
-@interface GiraffeSettingsViewController : UIViewController
+@interface GiraffeSettingsViewController : UIViewController <UITextFieldDelegate>
 
 @end
