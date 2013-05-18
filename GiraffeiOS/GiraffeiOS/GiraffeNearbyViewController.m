@@ -8,6 +8,7 @@
 
 #import "GiraffeNearbyViewController.h"
 #import "Graffiti.h"
+#import "User.h"
 #import "GraffitiCell.h"
 #import "GiraffeClient.h"
 #import "LocationManager.h"
@@ -90,6 +91,33 @@
     return [[self tableView:tableView cellForRowAtIndexPath:indexPath] sizeThatFits:tableView.frameSize].height;
 }
 
+- (void)likeGraffiti:(id)sender
+{
+    // Check to make sure user logged in
+    if (![User currentUser].identifier) return;
+    
+    UIButton *likeButton = (UIButton *)sender;
+    GraffitiCell *cell = (GraffitiCell *)[likeButton superview];
+    
+    cell.graffiti.isLiked = !cell.graffiti.isLiked;
+    if (cell.graffiti.isLiked) cell.graffiti.likes++;
+    else cell.graffiti.likes--;
+    
+    // update cell
+    [self.tableView beginUpdates];
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[self.tableView indexPathForCell:cell]] withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView endUpdates];
+    
+    NSLog(@"%@", cell.graffiti.message);
+    [[GiraffeClient sharedClient] beginGraffitiLikePostWithGraffiti:cell.graffiti success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        // todo check for error / blah
+        // if error revert cell and isLiked
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        // todo print error
+        // if error revert cell and isLiked
+    }];
+}
+
 #pragma mark - UITableViewDatasource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -102,6 +130,7 @@
     GraffitiCell *cell = [[tableView dequeueReusableCellWithIdentifier:kGraffitiCellIdentifier] ifIsKindOfClass:[GraffitiCell class]];
     if (!cell) {
         cell = [[GraffitiCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kGraffitiCellIdentifier];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     }
     cell.graffiti = [self.graffiti objectAtIndex:indexPath.row];
     return cell;

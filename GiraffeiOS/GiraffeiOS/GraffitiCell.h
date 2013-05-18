@@ -16,4 +16,5 @@ extern NSString *const kGraffitiCellIdentifier;
 
 @property (nonatomic, retain) Graffiti *graffiti;
 
+
 @end

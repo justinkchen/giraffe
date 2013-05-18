@@ -7,6 +7,7 @@
 //
 
 #import "GiraffeSettingsViewController.h"
+#import "User.h"
 #import "UIKit-Utility.h"
 
 @interface GiraffeSettingsViewController ()
@@ -61,6 +62,17 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - Accessors
+
+- (User *)userFromInput
+{
+    User *user = [User currentUser];
+    user.username = self.usernameField.text;
+    user.email = self.emailField.text;
+    
+    return user;
+}
+
 #pragma mark - Utility
 
 - (void)updateUserContent:(NSNotification *)notification
@@ -79,11 +91,26 @@
 #pragma mark - Button Actions
 
 - (IBAction)updateAccount:(UIButton *)sender {
-    if (![[self.usernameField text] isEqualToString:[User currentUser].username] ||
-        ![[self.emailField text] isEqualToString:[User currentUser].email]) {
-    } else {
-        // notify error, nothing changed
+    if ([[self.usernameField text] isEqualToString:[User currentUser].username] &&
+        [[self.emailField text] isEqualToString:[User currentUser].email]) {
+        NSLog(@"nothing changed");
+        return;
     }
+    
+    [[GiraffeClient sharedClient] beginUserUpdatePutWithUser:[self userFromInput] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if ([responseObject objectForKey:@"error"]) {
+            // print error
+            return;
+        }
+        
+        // print success message
+        NSLog(@"user updated");
+        [[User currentUser] updateWithDictionary:[responseObject objectForKey:@"user"]];
+        [self.view endEditing:YES];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        //print error
+        NSLog(@"failed");
+    }];
 }
 
 - (IBAction)changePassword:(UIButton *)sender {
@@ -102,6 +129,12 @@
         
         // print success message
         NSLog(@"password updated");
+        [self.view endEditing:YES];
+        
+        // clear fields
+        self.oldPasswordField.text = @"";
+        self.passwordField.text = @"";
+        self.confirmPasswordField.text = @"";
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         // print error
     }];
@@ -112,6 +145,7 @@
         
         NSLog(@"logout");
         [[User currentUser] logout];
+        [self.view endEditing:YES];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         // print error
     }];

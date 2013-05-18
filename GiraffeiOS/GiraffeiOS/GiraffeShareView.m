@@ -243,6 +243,11 @@ NSString *const kLoginAlertViewCancelTitle = @"Cancel";
         return;
     }
     
+    if (![self.textView.text length]) {
+        NSLog(@"message cannot be blank");
+        return;
+    }
+    
     Graffiti *graffiti = [Graffiti new];
     graffiti.user = [User currentUser];
     graffiti.message = self.textView.text;

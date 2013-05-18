@@ -21,22 +21,25 @@ NSString *const kParamNameGraffitiRadius = @"radius";
 NSString *const kParamNameGraffitiDirectionX = @"directionX";
 NSString *const kParamNameGraffitiDirectionY = @"directionY";
 NSString *const kParamNameGraffitiDirectionZ = @"directionZ";
-NSString *const kParamNameGraffitiLikeCount = @"likeCount";
+//NSString *const kParamNameGraffitiLikeCount = @"likeCount";
 NSString *const kParamNameGraffitiFlagged = @"flagged";
 NSString *const kParamNameGraffitiDateCreated = @"dateCreated";
 NSString *const kParamNameGraffitiUserId = @"userId";
 NSString *const kParamNameGraffitiUserUsername = @"username";
 NSString *const kParamNameGraffitiUserAvatarUrl = @"avatarUrl";
-
+NSString *const kParamNameGraffitiLikes = @"likes";
+NSString *const kParamNameGraffitiIsLiked = @"isLiked";
 
 - (NSDictionary *)parameterDictionary
 {
     // Create dictionary with expected parameter names
-    return @{kParamNameGraffitiMessage: self.message,
+    return @{kParamNameGraffitiId: @(self.identifier),
+             kParamNameGraffitiMessage: self.message,
              kParamNameGraffitiLatitude: @(self.latitude),
              kParamNameGraffitiLongitude: @(self.longitude),
              kParamNameGraffitiRadius: @(self.radius),
-             kParamNameGraffitiUserId: @(self.user.identifier)};
+             kParamNameGraffitiUserId: @(self.user.identifier),
+             kParamNameGraffitiIsLiked: @(self.isLiked)};
 }
 
 - (void)updateWithDictionary:(NSDictionary *)dictionary
@@ -80,6 +83,14 @@ NSString *const kParamNameGraffitiUserAvatarUrl = @"avatarUrl";
     
     if ([dictionary objectForKey:kParamNameGraffitiDateCreated]) {
         self.dateCreated = [dictionary objectForKey:kParamNameGraffitiDateCreated];
+    }
+    
+    if ([dictionary objectForKey:kParamNameGraffitiLikes]) {
+        self.likes = [[dictionary objectForKey:kParamNameGraffitiLikes] intValue];
+    }
+    
+    if ([dictionary objectForKey:kParamNameGraffitiIsLiked]) {
+        self.isLiked = [[dictionary objectForKey:kParamNameGraffitiIsLiked] boolValue];
     }
 }
 

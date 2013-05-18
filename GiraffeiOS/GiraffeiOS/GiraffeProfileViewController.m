@@ -64,6 +64,11 @@
     [self.avatarView addGestureRecognizer:singleTap];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUserContent:) name:@"userUpdated" object:nil];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
     
     [[GiraffeClient sharedClient] beginUserGraffitiGetWithId:[User currentUser].identifier success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"yay %@", responseObject);
@@ -101,6 +106,8 @@
             [newGraffiti addObject:graffiti];
         }
         self.graffiti = newGraffiti;
+    } else {
+        self.graffiti = [NSArray array];
     }
 }
 
@@ -117,9 +124,9 @@
     self.usernameLabel.text = user.username;
     
     if (user.avatarUrl) {
-        NSLog(@"setting image!");
-        NSLog(@"%@%@", kBaseURL, user.avatarUrl);
         [self.avatarView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@", kBaseURL, user.avatarUrl]]];
+    } else {
+        [self.avatarView setImage:nil];
     }
 }
 
@@ -209,6 +216,27 @@ NSString *const kUIImagePickerImageKey = @"UIImagePickerControllerOriginalImage"
     return [[self tableView:tableView cellForRowAtIndexPath:indexPath] sizeThatFits:tableView.frameSize].height;
 }
 
+- (void)likeGraffiti:(id)sender
+{
+    // Check to make sure user logged in
+    if (![User currentUser].identifier) return;
+    
+    UIButton *likeButton = (UIButton *)sender;
+    
+    Graffiti *graffiti = ((GraffitiCell *)[likeButton superview]).graffiti;
+    graffiti.isLiked = !graffiti.isLiked;
+    // update cell
+    
+    NSLog(@"%@", graffiti.message);
+    [[GiraffeClient sharedClient] beginGraffitiLikePostWithGraffiti:graffiti success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        // todo check for error / blah
+        // if error revert cell and isLiked
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        // todo print error
+        // if error revert cell and isLiked
+    }];
+}
+
 #pragma mark - UITableViewDatasource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -221,6 +249,7 @@ NSString *const kUIImagePickerImageKey = @"UIImagePickerControllerOriginalImage"
     GraffitiCell *cell = [[tableView dequeueReusableCellWithIdentifier:kGraffitiCellIdentifier] ifIsKindOfClass:[GraffitiCell class]];
     if (!cell) {
         cell = [[GraffitiCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kGraffitiCellIdentifier];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     }
     cell.graffiti = [self.graffiti objectAtIndex:indexPath.row];
     return cell;

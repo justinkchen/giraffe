@@ -92,6 +92,13 @@ NSString *const kCookiesDataKey = @"cookiesData";
     [self postPath:kGraffitiNew parameters:[graffiti parameterDictionary] success:success failure:failure];
 }
 
+- (void)beginGraffitiLikePostWithGraffiti:(Graffiti *)graffiti
+                                  success:(GiraffeClientSuccessBlock) success
+                                  failure:(GiraffeClientFailureBlock) failure
+{
+    [self postPath:kGraffitiLike parameters:[graffiti parameterDictionary] success:success failure:failure];
+}
+
 - (void)beginUserLoginPostWithUsernameOrEmail:(NSString *)usernameOrEmail
                                      password:(NSString *)password
                                       success:(GiraffeClientSuccessBlock)success
