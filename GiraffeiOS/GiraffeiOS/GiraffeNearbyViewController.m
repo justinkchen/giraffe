@@ -108,7 +108,6 @@
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[self.tableView indexPathForCell:cell]] withRowAnimation:UITableViewRowAnimationNone];
     [self.tableView endUpdates];
     
-    NSLog(@"%@", cell.graffiti.message);
     [[GiraffeClient sharedClient] beginGraffitiLikePostWithGraffiti:cell.graffiti success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // todo check for error / blah
         // if error revert cell and isLiked

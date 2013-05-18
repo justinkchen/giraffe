@@ -52,10 +52,8 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    //[self.avatar setImageWithURL:[NSURL URLWithString:@"http://www.thegiraffeapp.com/images/user/d6a49c99211136c42557c3ae966ae155c929c71b97a269531af541bdb84a6edc.jpg"] placeholderImage:[UIImage imageNamed:@"first.png"]];
     [self setUserContent];
 
-//    [self.avatarView addTarget:self action:@selector(handleAvatarImageTapped:) forControlEvents:UIControlEventTouchUpInside];
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc]
                                          initWithTarget:self
                                          action:@selector(handleAvatarImageTouched:)];
@@ -222,13 +220,18 @@ NSString *const kUIImagePickerImageKey = @"UIImagePickerControllerOriginalImage"
     if (![User currentUser].identifier) return;
     
     UIButton *likeButton = (UIButton *)sender;
+    GraffitiCell *cell = (GraffitiCell *)[likeButton superview];
     
-    Graffiti *graffiti = ((GraffitiCell *)[likeButton superview]).graffiti;
-    graffiti.isLiked = !graffiti.isLiked;
+    cell.graffiti.isLiked = !cell.graffiti.isLiked;
+    if (cell.graffiti.isLiked) cell.graffiti.likes++;
+    else cell.graffiti.likes--;
+    
     // update cell
+    [self.userGraffitiTableView beginUpdates];
+    [self.userGraffitiTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[self.userGraffitiTableView indexPathForCell:cell]] withRowAnimation:UITableViewRowAnimationNone];
+    [self.userGraffitiTableView endUpdates];
     
-    NSLog(@"%@", graffiti.message);
-    [[GiraffeClient sharedClient] beginGraffitiLikePostWithGraffiti:graffiti success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[GiraffeClient sharedClient] beginGraffitiLikePostWithGraffiti:cell.graffiti success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // todo check for error / blah
         // if error revert cell and isLiked
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
