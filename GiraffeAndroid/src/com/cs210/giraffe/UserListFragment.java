@@ -40,8 +40,13 @@ public class UserListFragment extends ListFragment implements LoaderManager.Load
 	@Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         // Insert desired behavior here.
-        Log.i("UserListFragment", "Item clicked: " + id);
+        Log.i("NearbyListFragment", "Item clicked: " + id);
+        if (v.findViewById(R.id.button_layout).getVisibility() == 0)
+        	v.findViewById(R.id.button_layout).setVisibility(8);
+        else
+        	v.findViewById(R.id.button_layout).setVisibility(0);
     }
+	
 	
 	@Override
 	public Loader<List<Graffiti>> onCreateLoader(int arg0, Bundle arg1) {
