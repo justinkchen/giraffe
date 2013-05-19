@@ -22,6 +22,11 @@ NSString *const kParamNameUserPassword = @"password";
 NSString *const kParamNameUserOldPassword = @"oldPassword";
 NSString *const kParamNameUserAvatar = @"avatar";
 
+// stats
+NSString *const kParamNameUserGraffitiCount = @"graffitiCount";
+NSString *const kParamNameUserLikeCount = @"likeCount";
+NSString *const kParamNameUserBadgeCount = @"badgeCount";
+
 NSString *const kAvatarImagePlaceholderFilename = @"avatarImagePlaceholder.png";
 
 NSString *const kCurrentUserDefaultsKey = @"currentUser";
@@ -161,6 +166,20 @@ NSString *const kUserDataKey = @"userData";
     }
     
     [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:@"userUpdated" object:nil]];
+}
+
+- (void)updateStatsWithDictionary:(NSDictionary *)dictionary {
+    if ([dictionary objectForKey:kParamNameUserGraffitiCount]) {
+        self.graffitiCount = [[dictionary objectForKey:kParamNameUserGraffitiCount] intValue];
+    }
+    
+    if ([dictionary objectForKey:kParamNameUserLikeCount]) {
+        self.likeCount = [[dictionary objectForKey:kParamNameUserLikeCount] intValue];
+    }
+    
+    if ([dictionary objectForKey:kParamNameUserBadgeCount]) {
+        self.badgeCount = [[dictionary objectForKey:kParamNameUserBadgeCount] intValue];
+    }
 }
 
 @end

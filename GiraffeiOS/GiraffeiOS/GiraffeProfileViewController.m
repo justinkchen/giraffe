@@ -62,6 +62,7 @@
     [self.avatarView addGestureRecognizer:singleTap];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUserContent:) name:@"userUpdated" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUserStats:) name:@"userStatsUpdated" object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -71,6 +72,20 @@
     [[GiraffeClient sharedClient] beginUserGraffitiGetWithId:[User currentUser].identifier success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"yay %@", responseObject);
         [self graffitiRequestFinishedWithDictionary:[responseObject ifIsKindOfClass:[NSDictionary class]]];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        // print error
+    }];
+    
+    [[GiraffeClient sharedClient] beginUserStatsGetWithId:[User currentUser].identifier success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"yay stats %@", responseObject);
+        
+        if ([responseObject objectForKey:@"error"]) {
+            NSLog(@"%@", [responseObject objectForKey:@"error"]);
+            return;
+        }
+        
+        [[User currentUser] updateStatsWithDictionary:[responseObject objectForKey:@"stats"]];
+        [self setUserStats];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         // print error
     }];
@@ -126,6 +141,15 @@
     } else {
         [self.avatarView setImage:nil];
     }
+}
+
+- (void)setUserStats
+{
+    User *user = [User currentUser];
+    
+    self.graffitiCountLabel.text = [NSString stringWithFormat:@"%i", user.graffitiCount];
+    self.likesCountLabel.text = [NSString stringWithFormat:@"%i", user.likeCount];
+    self.badgesCountLabel.text = [NSString stringWithFormat:@"%i", user.badgeCount];
 }
 
 - (void)updateCurrentUserWithDictionary:(id)dictionary

@@ -21,6 +21,10 @@ extern NSString *const kParamNameUserPassword;
 extern NSString *const kParamNameUserOldPassword;
 extern NSString *const kParamNameUserAvatar;
 
+extern NSString *const kParamNameUserGraffitiCount;
+extern NSString *const kParamNameUserLikeCount;
+extern NSString *const kParamNameUserBadgeCount;
+
 extern NSString *const kAvatarImagePlaceholderFilename;
 
 @property (nonatomic, assign) int identifier;
@@ -28,6 +32,10 @@ extern NSString *const kAvatarImagePlaceholderFilename;
 @property (nonatomic, strong) NSString *email;
 @property (nonatomic, strong) NSString *avatarUrl;
 @property (nonatomic, strong) NSDate *dateJoined;
+
+@property (nonatomic, assign) int graffitiCount;
+@property (nonatomic, assign) int likeCount;
+@property (nonatomic, assign) int badgeCount;
 
 + (User *)currentUser;
 //- (void)saveCurrentUser;
@@ -37,6 +45,7 @@ extern NSString *const kAvatarImagePlaceholderFilename;
 
 - (NSDictionary *)parameterDictionary;
 - (void)updateWithDictionary:(NSDictionary *)dictionary;
+- (void)updateStatsWithDictionary:(NSDictionary *)dictionary;
 - (id)initWithDictionary:(NSDictionary *)dictionary;
 
 @end

@@ -61,6 +61,11 @@ typedef void (^GiraffeClientFailureBlock) (AFHTTPRequestOperation *operation, NS
                            success:(GiraffeClientSuccessBlock)success
                            failure:(GiraffeClientFailureBlock)failure;
 
+
+- (void)beginUserStatsGetWithId:(int)identifier
+                        success:(GiraffeClientSuccessBlock)success
+                        failure:(GiraffeClientFailureBlock)failure;
+
 - (void)beginUserLogoutPostWithUser:(User *)user
                             success:(GiraffeClientSuccessBlock)success
                             failure:(GiraffeClientFailureBlock)failure;

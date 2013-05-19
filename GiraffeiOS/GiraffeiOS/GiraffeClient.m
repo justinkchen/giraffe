@@ -159,6 +159,15 @@ NSString *const kCookiesDataKey = @"cookiesData";
     [self getPath:kUserGraffiti parameters:parameters success:success failure:failure];
 }
 
+- (void)beginUserStatsGetWithId:(int)identifier
+                        success:(GiraffeClientSuccessBlock)success
+                        failure:(GiraffeClientFailureBlock)failure
+{
+    NSDictionary *parameters = @{kParamNameId : @(identifier)};
+    [self getPath:kUserStats parameters:parameters success:success failure:failure];
+}
+
+
 
 - (void)beginUserLogoutPostWithUser:(User *)user
                             success:(GiraffeClientSuccessBlock)success
