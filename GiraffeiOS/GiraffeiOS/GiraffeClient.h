@@ -25,6 +25,10 @@ extern NSString *const kBaseURL;
 typedef void (^GiraffeClientSuccessBlock)(AFHTTPRequestOperation *operation, id responseObject);
 typedef void (^GiraffeClientFailureBlock) (AFHTTPRequestOperation *operation, NSError *error);
 
+// Session
+- (void)beginSessionConnectGetWithSuccess:(GiraffeClientSuccessBlock)success
+                                  failure:(GiraffeClientFailureBlock)failure;
+
 // Graffiti
 - (void)beginGraffitiNearbyGetWithLatitude:(CGFloat)latitude
                                  longitude:(CGFloat)longitude

@@ -15,6 +15,8 @@
 NSString *const kBaseURL = @"http://localhost:3000/";
 
 // API methods
+NSString *const kSessionConnect = @"session/connect";
+
 NSString *const kGraffitiNearby = @"graffiti/nearby";
 NSString *const kGraffitiNew = @"graffiti/new";
 NSString *const kGraffitiLike = @"graffiti/like";
@@ -74,6 +76,12 @@ NSString *const kCookiesDataKey = @"cookiesData";
             [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:cookie];
         }
     }
+}
+
+- (void)beginSessionConnectGetWithSuccess:(GiraffeClientSuccessBlock)success
+                                  failure:(GiraffeClientFailureBlock)failure
+{
+    [self getPath:kSessionConnect parameters:nil success:success failure:failure];
 }
 
 - (void)beginGraffitiNearbyGetWithLatitude:(CGFloat)latitude

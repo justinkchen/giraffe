@@ -10,14 +10,39 @@
 #import "GiraffeClient.h"
 #import "User.h"
 
+NSString *const splashImage = @"splash.png";
+
 @implementation GiraffeAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
     
+    UIImageView *splash = [[UIImageView alloc] initWithFrame:self.window.frame];
+    splash.image = [UIImage imageNamed:splashImage];
+    [self.window addSubview:splash];
+    
     [User loadUser];
     [GiraffeClient loadCookies];
+    
+    [[GiraffeClient sharedClient] beginSessionConnectGetWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        if ([responseObject objectForKey:@"user"]== [NSNull null]) {
+            [[User currentUser] logout];
+        } else {
+            User *user = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
+            
+            if (!user.identifier) {
+                [[User currentUser] logout];
+            } else if (![user isEqual:[User currentUser]]) {
+                [[User currentUser] updateWithDictionary:[responseObject objectForKey:@"user"]];
+            }
+        }
+        
+        [splash removeFromSuperview];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        // print failure - unable to connect to server
+    }];
     
     return YES;
 }

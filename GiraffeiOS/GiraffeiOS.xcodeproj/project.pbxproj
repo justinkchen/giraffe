@@ -24,6 +24,7 @@
 		BB52B4AA172896340077591D /* GiraffeMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB52B4A9172896340077591D /* GiraffeMapViewController.m */; };
 		BB52B4AC172896340077591D /* second.png in Resources */ = {isa = PBXBuildFile; fileRef = BB52B4AB172896340077591D /* second.png */; };
 		BB52B4AE172896340077591D /* second@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB52B4AD172896340077591D /* second@2x.png */; };
+		BB56DE1B174999BC000306AB /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = BB56DE1A174999BC000306AB /* splash.png */; };
 		BB89348717386DEE0056F035 /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = BB89347517386DEE0056F035 /* AFHTTPClient.m */; };
 		BB89348817386DEE0056F035 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = BB89347717386DEE0056F035 /* AFHTTPRequestOperation.m */; };
 		BB89348917386DEE0056F035 /* AFImageRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = BB89347917386DEE0056F035 /* AFImageRequestOperation.m */; };
@@ -86,6 +87,7 @@
 		BB52B4A9172896340077591D /* GiraffeMapViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GiraffeMapViewController.m; sourceTree = "<group>"; };
 		BB52B4AB172896340077591D /* second.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = second.png; sourceTree = "<group>"; };
 		BB52B4AD172896340077591D /* second@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "second@2x.png"; sourceTree = "<group>"; };
+		BB56DE1A174999BC000306AB /* splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = splash.png; sourceTree = "<group>"; };
 		BB89347417386DEE0056F035 /* AFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPClient.h; sourceTree = "<group>"; };
 		BB89347517386DEE0056F035 /* AFHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPClient.m; sourceTree = "<group>"; };
 		BB89347617386DEE0056F035 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
@@ -297,6 +299,7 @@
 		F02151C71740DCCB007DCF37 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				BB56DE1A174999BC000306AB /* splash.png */,
 				F02151C91740DCDF007DCF37 /* avatarImagePlaceholder.png */,
 			);
 			name = Images;
@@ -501,6 +504,7 @@
 				BBCFA30617462A490059E581 /* NSDateTimeAgo.strings in Resources */,
 				BBCFA30817462A490059E581 /* NSDate+TimeAgo.podspec in Resources */,
 				BBCFA30917462A490059E581 /* README.md in Resources */,
+				BB56DE1B174999BC000306AB /* splash.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

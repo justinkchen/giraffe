@@ -168,7 +168,8 @@ NSString *const kUserDataKey = @"userData";
     [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:@"userUpdated" object:nil]];
 }
 
-- (void)updateStatsWithDictionary:(NSDictionary *)dictionary {
+- (void)updateStatsWithDictionary:(NSDictionary *)dictionary
+{
     if ([dictionary objectForKey:kParamNameUserGraffitiCount]) {
         self.graffitiCount = [[dictionary objectForKey:kParamNameUserGraffitiCount] intValue];
     }
@@ -180,6 +181,11 @@ NSString *const kUserDataKey = @"userData";
     if ([dictionary objectForKey:kParamNameUserBadgeCount]) {
         self.badgeCount = [[dictionary objectForKey:kParamNameUserBadgeCount] intValue];
     }
+}
+
+- (BOOL)isEqual:(id)object
+{
+    return [[self parameterDictionary] isEqualToDictionary:[object parameterDictionary]];
 }
 
 @end
