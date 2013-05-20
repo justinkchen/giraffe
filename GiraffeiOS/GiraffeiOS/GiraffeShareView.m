@@ -56,6 +56,25 @@ const CGFloat kContentInset = 8.0;
     return UIEdgeInsetsInsetRect(self.bounds, UIEdgeInsetsMake(kContentInset, kContentInset, kContentInset, kContentInset));
 }
 
+- (Graffiti *)graffitiFromInput
+{
+    if (![self.textView.text length]) {
+        NSLog(@"message cannot be blank");
+        return nil;
+    }
+    
+    Graffiti *graffiti = [Graffiti new];;
+    
+    graffiti.user = [User currentUser];
+    graffiti.message = self.textView.text;
+    graffiti.latitude = [LocationManager sharedInstance].latitude;
+    graffiti.longitude = [LocationManager sharedInstance].longitude;
+    graffiti.radius = self.radiusSlider.value;
+    graffiti.dateCreated = [NSDate date];
+    
+    return graffiti;
+}
+
 #pragma mark - Layout
 
 - (BOOL)keyboardVisible
@@ -70,7 +89,6 @@ NSString *const kRadiusLabelTextFormat = @"Graffiti radius: %.0f m";
     return [NSString stringWithFormat:kRadiusLabelTextFormat, self.radiusSlider.value];
 }
 
-NSString *const kPostButtonText = @"Post";
 NSString *const kTextLabelText = @"Graffiti text:";
 const CGFloat kTextViewCornerRadius = 4.0;
 const CGFloat kShareViewPadding = 8.0;
@@ -80,39 +98,6 @@ const CGFloat kShareViewPadding = 8.0;
     [super layoutSubviews];
     
     CGRect contentFrame = self.contentFrame;
-    
-    // Post button
-    if (!self.postButton) {
-        self.postButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.postButton.layer.cornerRadius = 4.0;
-        self.postButton.layer.borderColor = [UIColor grayColor].CGColor;
-        self.postButton.layer.borderWidth = 1.0;
-        [self.postButton setTitle:kPostButtonText forState:UIControlStateNormal];
-        [self.postButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        self.postButton.titleEdgeInsets = UIEdgeInsetsMake(2.0, 4.0, 2.0, 4.0);
-        [self.postButton addTarget:self action:@selector(handlePostButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:self.postButton];
-    }
-    [self.postButton sizeToFit];
-    self.postButton.rightEdge = CGRectGetMaxX(contentFrame);
-    self.postButton.frameOriginY = contentFrame.origin.y;
-    
-    // Image button
-    if (!self.imageButton) {
-        self.imageButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.imageButton.frame = self.postButton.frame;
-        self.imageButton.layer.cornerRadius = 4.0;
-        self.imageButton.layer.borderColor = [UIColor grayColor].CGColor;
-        self.imageButton.layer.borderWidth = 1.0;
-//        [self.imageButton setBackgroundImage:nil forState:UIControlStateNormal];
-        [self.imageButton setTitle:@"cam" forState:UIControlStateNormal];
-        
-        [self.imageButton addTarget:self action:@selector(handleImageButtonTouched:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:self.imageButton];
-    }
-    [self.imageButton sizeToFit];
-    self.imageButton.rightEdge = self.postButton.frameOriginX - kShareViewPadding;
-    self.imageButton.frameOriginY = self.postButton.frameOriginY;
     
     // Text Label
     if (!self.textLabel) {
@@ -124,7 +109,7 @@ const CGFloat kShareViewPadding = 8.0;
     }
     [self.textLabel sizeToFit];
     self.textLabel.frameOriginX = contentFrame.origin.x;
-    self.textLabel.frameOriginY = self.postButton.bottomEdge + kShareViewPadding;
+    self.textLabel.frameOriginY = contentFrame.origin.y;
     
     // Text View
     if (!self.textView) {
@@ -161,8 +146,8 @@ const CGFloat kShareViewPadding = 8.0;
         [self.radiusSlider addTarget:self action:@selector(radiusSliderValueDidChange:) forControlEvents:UIControlEventValueChanged];
         self.radiusSlider.frameWidth = self.webView.frameWidth;
         self.radiusSlider.minimumValue = 5.0;
-        self.radiusSlider.maximumValue = 50.0;
-        self.radiusSlider.value = self.radiusSlider.maximumValue;
+        self.radiusSlider.maximumValue = 500.0;
+        self.radiusSlider.value = 50.0;
         [self sizeToFit];
         [self addSubview:self.radiusSlider];
     }
@@ -232,54 +217,7 @@ NSString *const kMapViewRadiusJavascriptFormat = @"updateRadius(%f);";
     }
 }
 
-#pragma mark - AlertView
-
-NSString *const kLoginAlertViewTitle = @"User not logged in";
-NSString *const kLoginAlertViewMessage = @"Please login to post graffiti";
-NSString *const kLoginAlertViewLoginTitle = @"Login";
-NSString *const kLoginAlertViewCancelTitle = @"Cancel";
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex != [alertView cancelButtonIndex]) {
-        [self.delegate showUserLogin];
-    }
-}
-
 #pragma mark - Buttons
-
-- (void)handlePostButtonTapped:(id)button
-{
-    // Validate user
-    if (![User currentUser].identifier) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:kLoginAlertViewTitle
-                                                        message:kLoginAlertViewMessage
-                                                       delegate:self
-                                              cancelButtonTitle:kLoginAlertViewCancelTitle
-                                              otherButtonTitles:kLoginAlertViewLoginTitle, nil];
-        [alert show];
-        return;
-    }
-    
-    if (![self.textView.text length]) {
-        NSLog(@"message cannot be blank");
-        return;
-    }
-    
-    Graffiti *graffiti = [Graffiti new];
-    graffiti.user = [User currentUser];
-    graffiti.message = self.textView.text;
-    graffiti.latitude = [LocationManager sharedInstance].latitude;
-    graffiti.longitude = [LocationManager sharedInstance].longitude;
-    graffiti.radius = self.radiusSlider.value;
-    graffiti.dateCreated = [NSDate date];
-    [self.delegate postButtonTappedWithGraffiti:graffiti];
-}
-
-- (void)handleImageButtonTouched:(id)control
-{
-    [self.delegate imageButtonTapped];
-}
 
 - (void)handleFirstResponderControlTapped:(id)control
 {

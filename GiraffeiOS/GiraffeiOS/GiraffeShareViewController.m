@@ -11,7 +11,7 @@
 #import "UserLoginController.h"
 #import "UIKit-Utility.h"
 
-@interface GiraffeShareViewController () <GiraffeShareViewDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate>
+@interface GiraffeShareViewController () <GiraffeShareViewDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, retain) GiraffeShareView *shareView;
 
@@ -55,10 +55,25 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - GiraffeShareViewDelegate
-
-- (void)postButtonTappedWithGraffiti:(Graffiti *)graffiti
+- (IBAction)postButtonTapped:(UIBarButtonItem *)sender
 {
+    // Validate user
+    if (![User currentUser].identifier) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:kLoginAlertViewTitle
+                                                        message:kLoginAlertViewMessage
+                                                       delegate:self
+                                              cancelButtonTitle:kLoginAlertViewCancelTitle
+                                              otherButtonTitles:kLoginAlertViewLoginTitle, nil];
+        [alert show];
+        return;
+    }
+    
+    Graffiti *graffiti = self.shareView.graffitiFromInput;
+    
+    if (graffiti == nil) {
+        return;
+    }
+    
     // Post graffiti to server
     NSLog(@"graffiti image %@", self.graffitiImage);
     [[GiraffeClient sharedClient] beginGraffitiNewPostWithGraffiti:graffiti image:self.graffitiImage success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -76,7 +91,7 @@
     }];
 }
 
-- (void)imageButtonTapped
+- (IBAction)imageButtonTapped:(UIBarButtonItem *)sender
 {
     UIActionSheet *actionSheet = nil;
     if ([UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear]) {
@@ -94,6 +109,8 @@
     }
     [actionSheet showInView:self.parentViewController.view];
 }
+
+#pragma mark - GiraffeShareViewDelegate
 
 - (void)showUserLogin
 {
@@ -137,6 +154,20 @@
         [picker dismissViewControllerAnimated:YES completion:^{
             // do nothing
         }];
+    }
+}
+
+#pragma mark - AlertView
+
+NSString *const kLoginAlertViewTitle = @"User not logged in";
+NSString *const kLoginAlertViewMessage = @"Please login to post graffiti";
+NSString *const kLoginAlertViewLoginTitle = @"Login";
+NSString *const kLoginAlertViewCancelTitle = @"Cancel";
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex != [alertView cancelButtonIndex]) {
+        [self showUserLogin];
     }
 }
 

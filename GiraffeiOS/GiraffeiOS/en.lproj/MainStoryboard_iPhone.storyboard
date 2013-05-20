@@ -13,7 +13,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Nearby" image="first" id="7"/>
+                    <tabBarItem key="tabBarItem" title="Nearby" image="map-marker.png" id="7"/>
                     <navigationItem key="navigationItem" title="Nearby" id="Ddc-By-JH3"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="10" sceneMemberID="firstResponder"/>
@@ -24,7 +24,7 @@
         <scene sceneID="LwE-Gg-D0z">
             <objects>
                 <navigationController definesPresentationContext="YES" id="Zr2-mX-S8e" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Share" id="WTB-oO-uTw"/>
+                    <tabBarItem key="tabBarItem" title="Share" image="spraycan.png" id="WTB-oO-uTw"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="4wp-5W-2Tt">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -45,8 +45,19 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" tag="-1" title="Share" image="first.png" id="DUd-Wt-mw4"/>
-                    <navigationItem key="navigationItem" title="Share" id="wwO-df-7Ct"/>
+                    <tabBarItem key="tabBarItem" tag="-1" title="Share" image="spraycan.png" id="DUd-Wt-mw4"/>
+                    <navigationItem key="navigationItem" title="Share" id="wwO-df-7Ct">
+                        <barButtonItem key="leftBarButtonItem" image="camera.png" id="Sw1-cG-fJe">
+                            <connections>
+                                <action selector="imageButtonTapped:" destination="TNw-s6-AAT" id="ffd-KR-d0T"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Post" id="3Yg-Ki-K5v">
+                            <connections>
+                                <action selector="postButtonTapped:" destination="TNw-s6-AAT" id="QDc-0c-O1z"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Bw-Mv-xI2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -56,7 +67,7 @@
         <scene sceneID="BId-ol-Osy">
             <objects>
                 <navigationController definesPresentationContext="YES" id="9YO-vg-ffB" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Nearby" id="HYl-Q8-k2S"/>
+                    <tabBarItem key="tabBarItem" title="Nearby" image="map-marker.png" id="HYl-Q8-k2S"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Vl2-6K-rSa">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -72,7 +83,7 @@
         <scene sceneID="iM8-nn-bKN">
             <objects>
                 <navigationController definesPresentationContext="YES" id="Dm7-gk-dkQ" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Map" id="h5g-fZ-Jua"/>
+                    <tabBarItem key="tabBarItem" title="Map" image="map.png" id="h5g-fZ-Jua"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="efY-83-MRz">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -88,7 +99,7 @@
         <scene sceneID="TFb-Wx-FjY">
             <objects>
                 <navigationController definesPresentationContext="YES" id="b21-Kz-hrb" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Settings" id="QwU-e2-y1W"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="gear.png" id="QwU-e2-y1W"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="1kh-np-QIY">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -104,7 +115,7 @@
         <scene sceneID="3Bi-5z-iTv">
             <objects>
                 <navigationController definesPresentationContext="YES" id="DzP-Nn-p5Q" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Profile" id="GTX-65-34K"/>
+                    <tabBarItem key="tabBarItem" title="Profile" image="id-card.png" id="GTX-65-34K"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Fin-QR-z2c">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -232,7 +243,7 @@
                             <action selector="backgroundTouched:" destination="nVd-tz-NDa" eventType="touchUpInside" id="GPU-D2-12C"/>
                         </connections>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Settings" id="bZo-26-RYy"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="gear.png" id="bZo-26-RYy"/>
                     <navigationItem key="navigationItem" title="Settings" id="gsv-Ct-HwS">
                         <barButtonItem key="rightBarButtonItem" title="Logout" id="LvI-Lx-aE2">
                             <connections>
@@ -360,7 +371,7 @@
                             <constraint firstItem="0XN-WQ-Ovg" firstAttribute="leading" secondItem="xvV-wg-rfc" secondAttribute="trailing" constant="8" symbolic="YES" type="default" id="xaX-AY-2OB"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Profile" id="fLG-gU-SjN"/>
+                    <tabBarItem key="tabBarItem" title="Profile" image="id-card.png" id="fLG-gU-SjN"/>
                     <navigationItem key="navigationItem" title="Profile" id="iow-jT-wTf"/>
                     <connections>
                         <outlet property="avatarView" destination="xvV-wg-rfc" id="qJ1-GX-2gf"/>
@@ -384,7 +395,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Map" image="second" id="6"/>
+                    <tabBarItem key="tabBarItem" title="Map" image="map.png" id="6"/>
                     <navigationItem key="navigationItem" title="Map" id="NVk-5D-eLR"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="12" sceneMemberID="firstResponder"/>
@@ -416,9 +427,12 @@
         </scene>
     </scenes>
     <resources>
-        <image name="first" width="16" height="16"/>
-        <image name="first.png" width="30" height="30"/>
-        <image name="second" width="16" height="16"/>
+        <image name="camera.png" width="24" height="18"/>
+        <image name="gear.png" width="26" height="26"/>
+        <image name="id-card.png" width="24" height="17"/>
+        <image name="map-marker.png" width="16" height="26"/>
+        <image name="map.png" width="26" height="21"/>
+        <image name="spraycan.png" width="16" height="24"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
