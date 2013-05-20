@@ -178,7 +178,7 @@
                                         destructiveButtonTitle:nil
                                              otherButtonTitles:@"Choose Existing", nil];
         }
-        [actionSheet showInView:self.view];
+        [actionSheet showInView:self.parentViewController.view];
     }
 }
 
@@ -195,24 +195,18 @@
         } else if ([buttonTitle isEqualToString:@"Choose Existing"]) {
             imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         }
-        [self showImagePicker:imagePickerController];
+        [self presentViewController:imagePickerController animated:YES completion:nil];
     }
-}
-
-- (void)showImagePicker:(UIImagePickerController *)imagePicker
-{
-    [self presentViewController:imagePicker animated:YES completion:nil];
 }
 
 #pragma mark - UIImagePickerControllerDelegate
 
-NSString *const kUIImagePickerImageKey = @"UIImagePickerControllerOriginalImage";
-
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    // figure out which image to use here and submit it to the db
-    if ([info objectForKey:kUIImagePickerImageKey]) {
-        [[GiraffeClient sharedClient] beginUserAvatarUpdatePutWithImage:[info objectForKey:kUIImagePickerImageKey] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
+    
+    if ([mediaType isEqualToString:@"public.image"]) {
+        [[GiraffeClient sharedClient] beginUserAvatarUpdatePutWithImage:[info objectForKey:UIImagePickerControllerOriginalImage] success:^(AFHTTPRequestOperation *operation, id responseObject) {
             // if no error
             NSLog(@"response %@", responseObject);
             if ([responseObject objectForKey:@"error"]) {

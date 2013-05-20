@@ -34,7 +34,9 @@ typedef void (^GiraffeClientFailureBlock) (AFHTTPRequestOperation *operation, NS
                                  longitude:(CGFloat)longitude
                                    success:(GiraffeClientSuccessBlock)success
                                    failure:(GiraffeClientFailureBlock)failure;
+
 - (void)beginGraffitiNewPostWithGraffiti:(Graffiti *)graffiti
+                                   image:(UIImage *)image
                                  success:(GiraffeClientSuccessBlock)success
                                  failure:(GiraffeClientFailureBlock)failure;
 

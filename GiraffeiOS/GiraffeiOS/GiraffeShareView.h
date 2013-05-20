@@ -23,6 +23,7 @@
 @protocol GiraffeShareViewDelegate <NSObject>
 
 - (void)postButtonTappedWithGraffiti:(Graffiti *)graffiti;
+- (void)imageButtonTapped;
 - (void)showUserLogin;
 
 @end

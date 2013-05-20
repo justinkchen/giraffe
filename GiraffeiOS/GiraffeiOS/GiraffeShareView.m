@@ -22,6 +22,7 @@
 @property (nonatomic, retain) UILabel *radiusLabel;
 @property (nonatomic, retain) UISlider *radiusSlider;
 @property (nonatomic, retain) UIButton *postButton;
+@property (nonatomic, retain) UIButton *imageButton;
 @property (nonatomic, retain) UIControl *firstResponderControl;
 
 // Util
@@ -82,7 +83,7 @@ const CGFloat kShareViewPadding = 8.0;
     
     // Post button
     if (!self.postButton) {
-        self.postButton = [UIButton new];
+        self.postButton = [UIButton buttonWithType:UIButtonTypeCustom];
         self.postButton.layer.cornerRadius = 4.0;
         self.postButton.layer.borderColor = [UIColor grayColor].CGColor;
         self.postButton.layer.borderWidth = 1.0;
@@ -95,6 +96,23 @@ const CGFloat kShareViewPadding = 8.0;
     [self.postButton sizeToFit];
     self.postButton.rightEdge = CGRectGetMaxX(contentFrame);
     self.postButton.frameOriginY = contentFrame.origin.y;
+    
+    // Image button
+    if (!self.imageButton) {
+        self.imageButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.imageButton.frame = self.postButton.frame;
+        self.imageButton.layer.cornerRadius = 4.0;
+        self.imageButton.layer.borderColor = [UIColor grayColor].CGColor;
+        self.imageButton.layer.borderWidth = 1.0;
+//        [self.imageButton setBackgroundImage:nil forState:UIControlStateNormal];
+        [self.imageButton setTitle:@"cam" forState:UIControlStateNormal];
+        
+        [self.imageButton addTarget:self action:@selector(handleImageButtonTouched:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:self.imageButton];
+    }
+    [self.imageButton sizeToFit];
+    self.imageButton.rightEdge = self.postButton.frameOriginX - kShareViewPadding;
+    self.imageButton.frameOriginY = self.postButton.frameOriginY;
     
     // Text Label
     if (!self.textLabel) {
@@ -256,6 +274,11 @@ NSString *const kLoginAlertViewCancelTitle = @"Cancel";
     graffiti.radius = self.radiusSlider.value;
     graffiti.dateCreated = [NSDate date];
     [self.delegate postButtonTappedWithGraffiti:graffiti];
+}
+
+- (void)handleImageButtonTouched:(id)control
+{
+    [self.delegate imageButtonTapped];
 }
 
 - (void)handleFirstResponderControlTapped:(id)control
