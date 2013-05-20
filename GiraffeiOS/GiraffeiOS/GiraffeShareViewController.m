@@ -75,6 +75,9 @@
         NSLog(@"successful post to server!");
         
         self.graffitiImage = nil;
+        
+        // TODO hide keyboard and resign first responder
+        
         [[self.view.subviews objectAtIndex:0] resetView];
         
         // Navigate to the 1st tab

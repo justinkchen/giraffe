@@ -8,6 +8,7 @@
 
 #import "Graffiti.h"
 #import "User.h"
+#import "NSDate+TimeAgo.h"
 
 @implementation Graffiti
 
@@ -82,7 +83,12 @@ NSString *const kParamNameGraffitiIsLiked = @"isLiked";
     }
     
     if ([dictionary objectForKey:kParamNameGraffitiDateCreated]) {
-        self.dateCreated = [dictionary objectForKey:kParamNameGraffitiDateCreated];
+                
+        self.dateCreated = [[NSDateFormatter sharedDateFormatter] dateFromString:[dictionary objectForKey:kParamNameGraffitiDateCreated]];
+        
+        NSLog(@"date %@", self.dateCreated);
+        
+        /* as if by magic, the date is returned into the 'date' */
     }
     
     if ([dictionary objectForKey:kParamNameGraffitiLikes]) {

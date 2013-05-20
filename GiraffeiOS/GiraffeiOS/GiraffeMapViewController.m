@@ -43,6 +43,15 @@ NSString *const kHeatmapUrlFormat = @"http://ec2-54-243-69-6.compute-1.amazonaws
 {
     [super viewWillAppear:animated];
     
+    [self reloadMapView];
+}
+
+- (IBAction)refreshButtonTapped:(UIBarButtonItem *)sender {
+    [self reloadMapView];
+}
+
+- (void)reloadMapView
+{
     float newLatitude = [LocationManager sharedInstance].latitude;
     float newLongitude = [LocationManager sharedInstance].longitude;
     

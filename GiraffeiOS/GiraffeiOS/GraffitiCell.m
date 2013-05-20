@@ -101,9 +101,10 @@ const CGFloat kLikesFontSize = 14.0;
 {
     NSString *detailText = nil;
     if (self.graffiti.dateCreated && self.graffiti.latitude && self.graffiti.longitude) {
-        detailText = [NSString stringWithFormat:@"Posted %@ away at %@", [self distanceString], [self.graffiti.dateCreated description]];
+        
+        detailText = [NSString stringWithFormat:@"Posted %@ away at %@", [self distanceString], [self.graffiti.dateCreated timeAgo]];
     } else if (self.graffiti.dateCreated) {
-        detailText = [NSString stringWithFormat:@"Posted at %@", [self.graffiti.dateCreated description]];
+        detailText = [NSString stringWithFormat:@"Posted at %@", [self.graffiti.dateCreated timeAgo]];
             // TODO convert to timeago
     } else if (self.graffiti.latitude && self.graffiti.longitude) {
         detailText = [NSString stringWithFormat:@"Posted %@ away", [self distanceString]];
