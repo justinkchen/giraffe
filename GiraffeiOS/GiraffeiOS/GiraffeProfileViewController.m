@@ -70,15 +70,12 @@
     [super viewWillAppear:animated];
     
     [[GiraffeClient sharedClient] beginUserGraffitiGetWithId:[User currentUser].identifier success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"yay %@", responseObject);
         [self graffitiRequestFinishedWithDictionary:[responseObject ifIsKindOfClass:[NSDictionary class]]];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         // print error
     }];
     
     [[GiraffeClient sharedClient] beginUserStatsGetWithId:[User currentUser].identifier success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"yay stats %@", responseObject);
-        
         if ([responseObject objectForKey:@"error"]) {
             NSLog(@"%@", [responseObject objectForKey:@"error"]);
             return;

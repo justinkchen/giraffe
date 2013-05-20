@@ -8,7 +8,6 @@
 
 #import "GiraffeAppDelegate.h"
 #import "GiraffeClient.h"
-#import "LocationManager.h"
 #import "User.h"
 
 NSString *const splashImage = @"splash.png";
