@@ -175,7 +175,7 @@
                                         destructiveButtonTitle:nil
                                              otherButtonTitles:@"Choose Existing", nil];
         }
-        [actionSheet showInView:self.parentViewController.view];
+        [actionSheet showInView:self.parentViewController.tabBarController.view];
     }
 }
 
