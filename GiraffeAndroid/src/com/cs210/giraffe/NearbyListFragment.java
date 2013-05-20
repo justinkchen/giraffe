@@ -37,11 +37,16 @@ public class NearbyListFragment extends ListFragment implements LoaderManager.Lo
 	@Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         // Insert desired behavior here.
+		Log.i("Johan", "Item clicked: " + id);
         Log.i("NearbyListFragment", "Item clicked: " + id);
         if (v.findViewById(R.id.button_layout).getVisibility() == 0)
         	v.findViewById(R.id.button_layout).setVisibility(8);
-        else
+        else {
         	v.findViewById(R.id.button_layout).setVisibility(0);
+        	//Apparently you need to set unfocusable in code and not xml because Android
+        	v.findViewById(R.id.like_button).setFocusable(false);
+        	v.findViewById(R.id.flag_button).setFocusable(false);
+        }
     }
 	
 	@Override

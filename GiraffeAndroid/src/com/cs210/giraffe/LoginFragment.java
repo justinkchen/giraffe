@@ -173,8 +173,8 @@ public class LoginFragment extends DialogFragment {
 						currentUser.setEmail(userObject.getString("email"));
 						currentUser.setId(userObject.getInt("id"));
 						currentUser.setUsername(userObject.getString("username"));
-						if(!userObject.getString("avatar").equals("null")){
-							currentUser.setAvatar(userObject.getString("avatar"));
+						if(!userObject.getString("avatarUrl").equals("null")){
+							currentUser.setAvatar(userObject.getString("avatarUrl"));
 						}
 						MainActivity.setCurrentUser(currentUser);
 						success = true;

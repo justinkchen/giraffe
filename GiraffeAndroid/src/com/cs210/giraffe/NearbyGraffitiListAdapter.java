@@ -40,13 +40,14 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 		ListAdapter {
 
 	private final LayoutInflater _inflater;
-	private TextView username;
-	private TextView message;
-	private ImageView graffitiImage;
+	// private TextView username;
+	// private TextView message;
+	// private ImageView graffitiImage;
 	private Graffiti item;
 	private LinearLayout buttonLayout;
-	private Button likeButton;
-	private Button flagButton;
+	// private Button likeButton;
+	// private Button flagButton;
+	private ViewHolder holder;
 
 	public NearbyGraffitiListAdapter(Context context) {
 		super(context, android.R.layout.simple_list_item_2);
@@ -64,42 +65,52 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View view;
+		holder = null;
 
 		if (convertView == null) {
+			holder = new ViewHolder();
 			view = _inflater.inflate(R.layout.nearby_graffiti_item, parent,
 					false);
+			holder.setUsernameView((TextView) view.findViewById(R.id.username));
+			holder.setMessageView((TextView) view.findViewById(R.id.message));
+			holder.setGraffitiImageView((ImageView) view
+					.findViewById(R.id.graffiti_image));
+			holder.setLikeButton((Button) view.findViewById(R.id.like_button));
+			holder.setFlagButton((Button) view.findViewById(R.id.flag_button));
+
 		} else {
 			view = convertView;
+			holder = (ViewHolder) convertView.getTag();
 		}
-		
+		view.setTag(holder);
 		item = getItem(position);
-		
-		username = (TextView) view.findViewById(R.id.username);
-		message = (TextView) view.findViewById(R.id.message);
-		graffitiImage = (ImageView) view.findViewById(R.id.graffiti_image);
 
-		username.setTypeface(null, Typeface.BOLD);
-		username.setText(item.getUsername());
-		username.setOnClickListener(new ProfileOnClickListener());
-		message.setText(item.getText());
+		// username = (TextView) view.findViewById(R.id.username);
+		// message = (TextView) view.findViewById(R.id.message);
+		// graffitiImage = (ImageView) view.findViewById(R.id.graffiti_image);
+
+		holder.getUsernameView().setTypeface(null, Typeface.BOLD);
+		holder.getUsernameView().setText(item.getUsername());
+		holder.getUsernameView().setOnClickListener(
+				new ProfileOnClickListener());
+		holder.getMessageView().setText(item.getText());
 		// message.setOnClickListener(new MessageOnClickListener());
 		buttonLayout = (LinearLayout) view.findViewById(R.id.button_layout);
-		
-		likeButton = (Button) view.findViewById(R.id.like_button);
-		likeButton.setOnClickListener(new LikeOnClickListener());
-		flagButton = (Button) view.findViewById(R.id.flag_button);
-		flagButton.setOnClickListener(new FlagOnClickListener());
-		System.out.println("item image url: " + item.getImageURL());
+
+		if (item.getIsLiked() == 1)
+			holder.getLikeButton().setText("Liked");
+		// likeButton.setOnClickListener(new LikeOnClickListener(position));
+		holder.getLikeButton().setOnClickListener(
+				new LikeOnClickListener(holder));
+		// flagButton = (Button) view.findViewById(R.id.flag_button);
+		holder.getFlagButton().setOnClickListener(new FlagOnClickListener());
+		// System.out.println("item image url: " + item.getImageURL());
 		if (!item.getImageURL().equals("null")) {
-			new DownloadImageTask(graffitiImage).execute(item.getImageURL());
+			new DownloadImageTask(holder.getGraffitiImageView()).execute(item
+					.getImageURL());
 			// graffitiImage.setOnClickListener(new MessageOnClickListener());
 		}
 
-		// if(!item.getAvatar().equals("null")){
-		// new DownloadImageTask((ImageView)
-		// view.findViewById(R.id.profile_image))
-		// .execute(MainActivity.getBaseServerURI() + item.getAvatar());
-		// }
 		return view;
 	}
 
@@ -133,12 +144,29 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 
 	private class LikeOnClickListener implements OnClickListener {
 
-		@Override
-		public void onClick(View v) {
-			Log.i("Johan", "Clicked Like Button");
+		private ViewHolder _holder;
 
+		public LikeOnClickListener(ViewHolder holder) {
+			_holder = holder;
 		}
 
+		@Override
+		public void onClick(View v) {
+			// §View view = v.findViewWithTag(_position);
+			// if (_holder.getLikeButton().getText().equals("Like"))
+			// _holder.getLikeButton().setText("Liked");
+			// else
+			// _holder.getLikeButton().setText("Like");
+
+			Log.i("Johan", "Clicked Like Button");
+			if (MainActivity.isLoggedIn()) {
+				LikeTask loginTask = new LikeTask();
+				loginTask.execute(MainActivity.getBaseServerURI()
+						+ "/graffiti/like", _holder);
+				item.setIsLiked(1 - item.getIsLiked());
+			}
+
+		}
 	}
 
 	private class FlagOnClickListener implements OnClickListener {
@@ -151,25 +179,32 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 
 	}
 
-	private class LikeTask extends
-			AsyncTask<String, Void, Boolean> {
+	private class LikeTask extends AsyncTask<Object, Void, Boolean> {
 
 		String error_message;
 		boolean success = false;
+		private ViewHolder _viewHolder;
 
 		@Override
-		protected Boolean doInBackground(String... urls) {
+		protected Boolean doInBackground(Object... params) {
+			_viewHolder = (ViewHolder) params[1];
 			URL url;
 			HttpURLConnection conn = null;
 			StringBuilder sb = new StringBuilder();
 			try {
-				url = new URL(urls[0]);
+				url = new URL((String) params[0]);
 				conn = (HttpURLConnection) url.openConnection();
 				conn.setDoOutput(true);
 				conn.setRequestMethod("POST");
 				OutputStreamWriter wr = new OutputStreamWriter(
 						conn.getOutputStream());
 				// this is were we're adding post data to the request
+				sb.append("id="
+						+ URLEncoder.encode(String.valueOf(item.getId()),
+								"UTF-8"));
+				sb.append("&isLiked="
+						+ URLEncoder.encode(
+								String.valueOf(1 - item.getIsLiked()), "UTF-8"));
 				wr.write(sb.toString());
 				wr.flush();
 
@@ -213,11 +248,15 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 				e.printStackTrace();
 			}
 			return success;
-
 		}
 
 		protected void onPostExecute(Boolean success) {
 			if (success) {
+				Log.i("Johan", "Like successful");
+				if (_viewHolder.getLikeButton().getText().equals("Like"))
+					_viewHolder.getLikeButton().setText("Liked");
+				else
+					_viewHolder.getLikeButton().setText("Like");
 			}
 
 		}

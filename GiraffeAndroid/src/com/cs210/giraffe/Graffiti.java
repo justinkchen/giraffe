@@ -2,6 +2,7 @@ package com.cs210.giraffe;
 
 public class Graffiti {
 
+	private int _id;
 	private double _longitude;
 	private double _latitude;
 	private double _directionX;
@@ -15,11 +16,21 @@ public class Graffiti {
 	private int _radius;
 	private String _username;
 	private int _userid;
+	private int _likes;
+	private int _isLiked;
 	
 	public Graffiti() {
 		// TODO Auto-generated constructor stub
 	}
 
+	public int getId() {
+		return _id;
+	}
+
+	public void setId(int id) {
+		this._id = id;
+	}
+	
 	public double getLongitude() {
 		return _longitude;
 	}
@@ -122,6 +133,22 @@ public class Graffiti {
 
 	public void setUserid(int userid) {
 		this._userid = userid;
+	}
+	
+	public int getLikes() {
+		return _likes;
+	}
+
+	public void setLikes(int likes) {
+		this._likes = likes;
+	}
+	
+	public int getIsLiked() {
+		return _isLiked;
+	}
+
+	public void setIsLiked(int isLiked) {
+		this._isLiked = isLiked;
 	}
 
 }

@@ -49,14 +49,18 @@ public class NearbyGraffitiListLoader extends AsyncTaskLoader<List<Graffiti>> {
 			Graffiti newGraffiti = new Graffiti();
 			try {
 				System.out.println("JSONObject: " + ((JSONObject)graffitiJSONArray.get(i)).toString());
+				int graffitiId = ((JSONObject)graffitiJSONArray.get(i)).getInt("id");
 				String graffitiMessage = ((JSONObject)graffitiJSONArray.get(i)).getString("message");
 				int graffitiRadius = ((JSONObject)graffitiJSONArray.get(i)).getInt("radius");
 				double graffitiLatitude = ((JSONObject)graffitiJSONArray.get(i)).getDouble("latitude");
 				double graffitiLongitude = ((JSONObject)graffitiJSONArray.get(i)).getDouble("longitude");
 				String graffitiImageUrl = ((JSONObject)graffitiJSONArray.get(i)).getString("imageUrl");
-				String graffitiAvatar = ((JSONObject)graffitiJSONArray.get(i)).getString("avatar");
+				String graffitiAvatar = ((JSONObject)graffitiJSONArray.get(i)).getString("avatarUrl");
 				String graffitiUsername = ((JSONObject)graffitiJSONArray.get(i)).getString("username");
 				int graffitiUserid = ((JSONObject)graffitiJSONArray.get(i)).getInt("userId");
+				int graffitiLikes = ((JSONObject)graffitiJSONArray.get(i)).getInt("likes");
+				int graffitiisLiked = ((JSONObject)graffitiJSONArray.get(i)).getInt("isLiked");
+				newGraffiti.setId(graffitiId);
 				newGraffiti.setText(graffitiMessage);
 				newGraffiti.setImageURL(graffitiImageUrl);
 				newGraffiti.setRadius(graffitiRadius);
@@ -64,6 +68,10 @@ public class NearbyGraffitiListLoader extends AsyncTaskLoader<List<Graffiti>> {
 				newGraffiti.setLongitude(graffitiLongitude);
 				newGraffiti.setUsername(graffitiUsername);
 				newGraffiti.setUserid(graffitiUserid);
+				newGraffiti.setLikes(graffitiLikes);
+				Log.i("Johan", "Is liked? " + graffitiisLiked);
+				Log.i("Johan", "Likes? " + graffitiLikes);
+				newGraffiti.setIsLiked(graffitiisLiked);
 				newGraffiti.setAvatar(graffitiAvatar);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
