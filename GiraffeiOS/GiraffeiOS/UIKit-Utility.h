@@ -49,3 +49,9 @@ typedef enum {
 + (UIColor *)linkTextColor;
 
 @end
+
+@interface UIImage (Utility)
+
++ (UIImage *)imageWithColor:(UIColor *)color;
+
+@end

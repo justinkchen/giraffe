@@ -16,6 +16,7 @@
 #import "UIKit-Utility.h"
 #import "UIImageView+AFNetworking.h"
 #import "NSDate+TimeAgo.h"
+#import <QuartzCore/QuartzCore.h>
 
 NSString *const kGraffitiCellIdentifier = @"graffitiCell";
 
@@ -120,6 +121,21 @@ const CGFloat kGraffitiTextSize = 16.0;
     return likesText;
 }
 
+- (UIColor *)likeButtonTextColor
+{
+    return [UIColor colorWithRed:0.22 green:0.33 blue:0.53 alpha:1.0];
+}
+
+- (UIColor *)likeButtonLikedBackgroundColor
+{
+    return [UIColor colorWithRed:0 green:0 blue:1.0 alpha:1.0];
+}
+
+- (UIColor *)likeButtonHighlightedBackgroundColor
+{
+    return [UIColor colorWithRed:0.22 green:0.33 blue:0.53 alpha:1.0];
+}
+
 const CGFloat kGraffitiCellPadding = 8.0;
 
 - (void)layoutSubviews
@@ -183,9 +199,27 @@ const CGFloat kGraffitiCellPadding = 8.0;
     self.likesLabel.frameOriginY = self.messageLabel.bottomEdge + kGraffitiCellPadding;
     
     if (!self.likeButton) {
-        self.likeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//        self.likeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        self.likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.likeButton addTarget:nil action:@selector(likeGraffiti:) forControlEvents:UIControlEventTouchUpInside];
         self.likeButton.titleLabel.font = [self likesFont];
+        if (!self.graffiti.isLiked) {
+            [self.likeButton setTitleColor:[self likeButtonTextColor] forState:UIControlStateNormal];
+            [self.likeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+            [self.likeButton setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor]] forState:UIControlStateNormal];
+            [self.likeButton setBackgroundImage:[UIImage imageWithColor:[self likeButtonHighlightedBackgroundColor]] forState:UIControlStateHighlighted];
+        } else {
+            [self.likeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [self.likeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+            [self.likeButton setBackgroundImage:[UIImage imageWithColor:[self likeButtonLikedBackgroundColor]] forState:UIControlStateNormal];
+            [self.likeButton setBackgroundImage:[UIImage imageWithColor:[self likeButtonHighlightedBackgroundColor]] forState:UIControlStateHighlighted];
+        }
+        
+        self.likeButton.layer.borderColor = [UIColor blackColor].CGColor;
+        self.likeButton.layer.borderWidth = 0.5f;
+        self.likeButton.layer.cornerRadius = 8.0f;
+        self.likeButton.layer.masksToBounds = YES;
+        
         [self addSubview:self.likeButton];
     }
 
