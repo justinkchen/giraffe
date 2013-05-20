@@ -38,6 +38,7 @@ NSString *const kGraffitiCellIdentifier = @"graffitiCell";
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        [self setSelectionStyle:UITableViewCellSelectionStyleNone];
     }
     return self;
 }

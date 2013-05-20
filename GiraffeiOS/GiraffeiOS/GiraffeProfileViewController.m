@@ -267,7 +267,6 @@
     GraffitiCell *cell = [[tableView dequeueReusableCellWithIdentifier:kGraffitiCellIdentifier] ifIsKindOfClass:[GraffitiCell class]];
     if (!cell) {
         cell = [[GraffitiCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kGraffitiCellIdentifier];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     }
     cell.graffiti = [self.graffiti objectAtIndex:indexPath.row];
     return cell;
