@@ -8,6 +8,7 @@
 
 #import "GiraffeSettingsViewController.h"
 #import "User.h"
+#import "UserLoginController.h"
 #import "UIKit-Utility.h"
 
 @interface GiraffeSettingsViewController ()
@@ -65,6 +66,10 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    if (![[User currentUser] isLoggedIn]) {
+        [self showUserLogin];
+    }
 }
 
 #pragma mark - Accessors
@@ -151,6 +156,8 @@
         NSLog(@"logout");
         [[User currentUser] logout];
         [self.view endEditing:YES];
+        
+        self.tabBarController.selectedViewController = [self.tabBarController.viewControllers objectAtIndex:0];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         // print error
     }];
@@ -158,6 +165,17 @@
 
 - (IBAction)backgroundTouched:(UIControl *)sender {
     [self.view endEditing:YES];
+}
+
+#pragma mark - GiraffeLgoinViewController
+
+- (void)showUserLogin
+{
+    // Show user login screen
+    UserLoginController *loginController = [UserLoginController new];
+    loginController.delegate = self;
+    
+    [loginController displayUserLoginViewController];
 }
 
 #pragma mark - UITextFieldDelegate

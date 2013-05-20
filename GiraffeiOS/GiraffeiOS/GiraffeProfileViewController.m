@@ -12,6 +12,7 @@
 #import "Graffiti.h"
 #import "GraffitiCell.h"
 #import "User.h"
+#import "UserLoginController.h"
 #import "Foundation-Utility.h"
 #import "UIKit-Utility.h"
 
@@ -68,6 +69,10 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    if (![[User currentUser] isLoggedIn]) {
+        [self showUserLogin];
+    }
     
     [[GiraffeClient sharedClient] beginUserGraffitiGetWithId:[User currentUser].identifier success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self graffitiRequestFinishedWithDictionary:[responseObject ifIsKindOfClass:[NSDictionary class]]];
@@ -177,6 +182,17 @@
         }
         [actionSheet showInView:self.parentViewController.tabBarController.view];
     }
+}
+
+#pragma mark - GiraffeLgoinViewController
+
+- (void)showUserLogin
+{
+    // Show user login screen
+    UserLoginController *loginController = [UserLoginController new];
+    loginController.delegate = self;
+    
+    [loginController displayUserLoginViewController];
 }
 
 #pragma mark - Action sheet

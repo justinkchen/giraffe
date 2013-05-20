@@ -20,7 +20,11 @@ NSString *const splashImage = @"splash.png";
     
     UIImageView *splash = [[UIImageView alloc] initWithFrame:self.window.frame];
     splash.image = [UIImage imageNamed:splashImage];
-    [self.window addSubview:splash];
+    [self.window.rootViewController.view addSubview:splash];
+    [self.window.rootViewController.view bringSubviewToFront:splash];
+    
+    
+    [self.window makeKeyAndVisible];
     
     [User loadUser];
     [GiraffeClient loadCookies];
@@ -39,9 +43,25 @@ NSString *const splashImage = @"splash.png";
             }
         }
         
-        [splash removeFromSuperview];
+        [UIView animateWithDuration:1.0f
+                              delay:0.0f
+                            options:UIViewAnimationOptionCurveEaseInOut
+                         animations:^{
+                             splash.alpha = .0f;
+                             CGFloat x = -60.0f;
+                             CGFloat y = -120.0f;
+                             splash.frame = CGRectMake(x,
+                                                                y,
+                                                                splash.frame.size.width-2*x,
+                                                                splash.frame.size.height-2*y);
+                         } completion:^(BOOL finished){
+                             if (finished) {
+                                 [splash removeFromSuperview];
+                             }
+                         }];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         // print failure - unable to connect to server
+        // print tap again to retry?
     }];
     
     return YES;

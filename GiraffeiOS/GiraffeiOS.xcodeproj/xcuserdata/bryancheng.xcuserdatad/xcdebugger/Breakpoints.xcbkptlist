@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "GiraffeiOS/UserLoginController.m"
-         timestampString = "390524124.589251"
+         timestampString = "390741121.470079"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "185"
-         endingLineNumber = "185"
+         startingLineNumber = "196"
+         endingLineNumber = "196"
          landmarkName = "-centerOnViewForKeyboard"
          landmarkType = "5">
       </FileBreakpoint>

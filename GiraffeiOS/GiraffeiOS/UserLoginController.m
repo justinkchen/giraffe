@@ -88,6 +88,14 @@ NSString *const kUserLoginControllerSignupTitle = @"Sign Up";
     // Dispose of any resources that can be recreated.
 }
 
+- (void)displayUserLoginViewController
+{
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self];
+    navController.modalPresentationStyle = UIModalPresentationFullScreen;
+    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self.delegate presentViewController:navController animated:YES completion:nil];
+}
+
 #pragma mark - UserLoginViewDelegate
 
 - (void)userLoginView:(UserLoginView *)loginView showImagePicker:(UIImagePickerController *)imagePicker
@@ -173,6 +181,9 @@ NSString *const kUserLoginControllerSignupTitle = @"Sign Up";
 
 - (void)handleLeftBarButtonTapped:(id)sender
 {
+    // Redirect to home page
+    self.delegate.tabBarController.selectedViewController = [self.delegate.tabBarController.viewControllers objectAtIndex:0];
+    
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 

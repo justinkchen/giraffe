@@ -11,7 +11,7 @@
 #import "UserLoginController.h"
 #import "UIKit-Utility.h"
 
-@interface GiraffeShareViewController () <GiraffeShareViewDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UIAlertViewDelegate>
+@interface GiraffeShareViewController () <GiraffeShareViewDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate>
 
 @property (nonatomic, retain) GiraffeShareView *shareView;
 
@@ -44,7 +44,11 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];    
+    [super viewDidAppear:animated];
+    
+    if (![[User currentUser] isLoggedIn]) {
+        [self showUserLogin];
+    }
     
     [self.shareView updateMapView];
 }
@@ -57,17 +61,6 @@
 
 - (IBAction)postButtonTapped:(UIBarButtonItem *)sender
 {
-    // Validate user
-    if (![User currentUser].identifier) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:kLoginAlertViewTitle
-                                                        message:kLoginAlertViewMessage
-                                                       delegate:self
-                                              cancelButtonTitle:kLoginAlertViewCancelTitle
-                                              otherButtonTitles:kLoginAlertViewLoginTitle, nil];
-        [alert show];
-        return;
-    }
-    
     Graffiti *graffiti = self.shareView.graffitiFromInput;
     
     if (graffiti == nil) {
@@ -110,16 +103,15 @@
     [actionSheet showInView:self.parentViewController.tabBarController.view];
 }
 
-#pragma mark - GiraffeShareViewDelegate
+#pragma mark - GiraffeLgoinViewController
 
 - (void)showUserLogin
 {
     // Show user login screen
     UserLoginController *loginController = [UserLoginController new];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:loginController];
-    navController.modalPresentationStyle = UIModalPresentationFullScreen;
-    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentViewController:navController animated:YES completion:nil];
+    loginController.delegate = self;
+    
+    [loginController displayUserLoginViewController];
 }
 
 #pragma mark - Action sheet
@@ -154,20 +146,6 @@
         [picker dismissViewControllerAnimated:YES completion:^{
             // do nothing
         }];
-    }
-}
-
-#pragma mark - AlertView
-
-NSString *const kLoginAlertViewTitle = @"User not logged in";
-NSString *const kLoginAlertViewMessage = @"Please login to post graffiti";
-NSString *const kLoginAlertViewLoginTitle = @"Login";
-NSString *const kLoginAlertViewCancelTitle = @"Cancel";
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex != [alertView cancelButtonIndex]) {
-        [self showUserLogin];
     }
 }
 
