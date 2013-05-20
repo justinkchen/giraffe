@@ -9,37 +9,119 @@
             <objects>
                 <viewController title="First" id="2" customClass="GiraffeNearbyViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="16">
-                        <rect key="frame" x="0.0" y="20" width="320" height="411"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Nearby" image="first" id="7"/>
+                    <navigationItem key="navigationItem" title="Nearby" id="Ddc-By-JH3"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="10" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="205" y="-175"/>
+            <point key="canvasLocation" x="429" y="-999"/>
+        </scene>
+        <!--Navigation Controller - Share-->
+        <scene sceneID="LwE-Gg-D0z">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="Zr2-mX-S8e" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Share" id="WTB-oO-uTw"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="4wp-5W-2Tt">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="TNw-s6-AAT" kind="relationship" relationship="rootViewController" id="Gsr-3K-xp2"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZO8-XK-4dp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="112" y="343"/>
         </scene>
         <!--Giraffe Share View Controller - Share-->
         <scene sceneID="uEz-wx-wh6">
             <objects>
                 <viewController id="TNw-s6-AAT" customClass="GiraffeShareViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7eC-if-SvN">
-                        <rect key="frame" x="0.0" y="20" width="320" height="411"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" tag="-1" title="Share" image="first.png" id="DUd-Wt-mw4"/>
+                    <navigationItem key="navigationItem" title="Share" id="wwO-df-7Ct"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Bw-Mv-xI2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="213" y="501"/>
+            <point key="canvasLocation" x="641" y="421"/>
+        </scene>
+        <!--Navigation Controller - Nearby-->
+        <scene sceneID="BId-ol-Osy">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="9YO-vg-ffB" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Nearby" id="HYl-Q8-k2S"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Vl2-6K-rSa">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="2" kind="relationship" relationship="rootViewController" id="9Um-EJ-OTy"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xDK-NX-Fgq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-217" y="-805"/>
+        </scene>
+        <!--Navigation Controller - Map-->
+        <scene sceneID="iM8-nn-bKN">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="Dm7-gk-dkQ" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Map" id="h5g-fZ-Jua"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="efY-83-MRz">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="3" kind="relationship" relationship="rootViewController" id="wTw-mg-3L5"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mmh-QR-X8M" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="104" y="-256"/>
+        </scene>
+        <!--Navigation Controller - Settings-->
+        <scene sceneID="TFb-Wx-FjY">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="b21-Kz-hrb" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Settings" id="QwU-e2-y1W"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="1kh-np-QIY">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="nVd-tz-NDa" kind="relationship" relationship="rootViewController" id="Y9X-GJ-eKx"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ttr-g7-Pmf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-432" y="1159"/>
+        </scene>
+        <!--Navigation Controller - Profile-->
+        <scene sceneID="3Bi-5z-iTv">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="DzP-Nn-p5Q" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Profile" id="GTX-65-34K"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Fin-QR-z2c">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="A2W-ov-2Pu" kind="relationship" relationship="rootViewController" id="0aN-H8-8Qn"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5Hh-R9-D8D" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="88" y="951"/>
         </scene>
         <!--Giraffe Settings View Controller - Settings-->
         <scene sceneID="AiW-ER-ymE">
             <objects>
                 <viewController id="nVd-tz-NDa" customClass="GiraffeSettingsViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="CPs-mL-CUo" customClass="UIControl">
-                        <rect key="frame" x="0.0" y="20" width="320" height="411"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Account Details" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sgP-nb-eRi">
@@ -119,22 +201,6 @@
                                     <action selector="changePassword:" destination="nVd-tz-NDa" eventType="touchUpInside" id="04g-gv-QUA"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OvP-a6-nmd">
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="33" id="hmP-YA-XhZ"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Logout">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="logout:" destination="nVd-tz-NDa" eventType="touchUpInside" id="Lnf-vX-Vau"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -143,7 +209,6 @@
                             <constraint firstAttribute="trailing" secondItem="QNs-t3-wCY" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="4b0-J2-QXx"/>
                             <constraint firstAttribute="trailing" secondItem="qCp-IJ-Cgv" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="52I-76-acf"/>
                             <constraint firstItem="sgP-nb-eRi" firstAttribute="leading" secondItem="CPs-mL-CUo" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="8VP-vk-bvl"/>
-                            <constraint firstItem="OvP-a6-nmd" firstAttribute="leading" secondItem="ALk-Mu-oVg" secondAttribute="leading" type="default" id="9Z8-yu-912"/>
                             <constraint firstItem="D0R-4P-Lqz" firstAttribute="top" secondItem="qCp-IJ-Cgv" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="9tR-t2-Shw"/>
                             <constraint firstItem="ALk-Mu-oVg" firstAttribute="top" secondItem="7C5-Jz-RM4" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="IWp-aQ-LJV"/>
                             <constraint firstItem="106-8J-70W" firstAttribute="top" secondItem="D0R-4P-Lqz" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="JJL-dh-wIB"/>
@@ -153,8 +218,6 @@
                             <constraint firstItem="RNn-mU-cuc" firstAttribute="leading" secondItem="CPs-mL-CUo" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="SKk-jh-2Lv"/>
                             <constraint firstItem="D0R-4P-Lqz" firstAttribute="centerX" secondItem="qCp-IJ-Cgv" secondAttribute="centerX" type="default" id="SQA-gx-agc"/>
                             <constraint firstAttribute="trailing" secondItem="RNn-mU-cuc" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="Wra-xz-DrG"/>
-                            <constraint firstAttribute="bottom" secondItem="OvP-a6-nmd" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="Y2O-b6-lJY"/>
-                            <constraint firstItem="OvP-a6-nmd" firstAttribute="trailing" secondItem="ALk-Mu-oVg" secondAttribute="trailing" type="default" id="afk-Tp-869"/>
                             <constraint firstItem="7C5-Jz-RM4" firstAttribute="leading" secondItem="CPs-mL-CUo" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="bk8-jj-H6t"/>
                             <constraint firstItem="ZJ1-Qa-lEb" firstAttribute="top" secondItem="QNs-t3-wCY" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="c9x-XM-gUW"/>
                             <constraint firstItem="qCp-IJ-Cgv" firstAttribute="top" secondItem="RNn-mU-cuc" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="cqL-mp-fbq"/>
@@ -170,6 +233,13 @@
                         </connections>
                     </view>
                     <tabBarItem key="tabBarItem" title="Settings" id="bZo-26-RYy"/>
+                    <navigationItem key="navigationItem" title="Settings" id="gsv-Ct-HwS">
+                        <barButtonItem key="rightBarButtonItem" title="Logout" id="LvI-Lx-aE2">
+                            <connections>
+                                <action selector="logout:" destination="nVd-tz-NDa" id="l90-CQ-5og"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="confirmPasswordField" destination="7C5-Jz-RM4" id="z5Q-eu-pXV"/>
                         <outlet property="emailField" destination="qCp-IJ-Cgv" id="WVm-KI-uud"/>
@@ -180,14 +250,14 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B3R-P0-MMK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="70" y="1218"/>
+            <point key="canvasLocation" x="30" y="1682"/>
         </scene>
         <!--Giraffe Profile View Controller - Profile-->
         <scene sceneID="jte-8O-UWe">
             <objects>
                 <viewController id="A2W-ov-2Pu" customClass="GiraffeProfileViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Fve-9D-ziA">
-                        <rect key="frame" x="0.0" y="20" width="320" height="411"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xvV-wg-rfc">
@@ -291,6 +361,7 @@
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Profile" id="fLG-gU-SjN"/>
+                    <navigationItem key="navigationItem" title="Profile" id="iow-jT-wTf"/>
                     <connections>
                         <outlet property="avatarView" destination="xvV-wg-rfc" id="qJ1-GX-2gf"/>
                         <outlet property="badgesCountLabel" destination="qTY-nW-NDk" id="pZo-XZ-cUF"/>
@@ -302,27 +373,29 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LUM-tB-ihk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="614" y="966"/>
+            <point key="canvasLocation" x="614" y="1398"/>
         </scene>
         <!--Giraffe Map View Controller - Second-->
         <scene sceneID="13">
             <objects>
                 <viewController title="Second" id="3" customClass="GiraffeMapViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="17">
-                        <rect key="frame" x="0.0" y="20" width="320" height="411"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Map" image="second" id="6"/>
+                    <navigationItem key="navigationItem" title="Map" id="NVk-5D-eLR"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="12" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="625" y="74"/>
+            <point key="canvasLocation" x="641" y="-326"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="15">
             <objects>
                 <tabBarController id="4" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="Lhq-XV-mKS"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="5">
                         <rect key="frame" x="0.0" y="431" width="320" height="49"/>
@@ -330,16 +403,16 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="2" kind="relationship" relationship="viewControllers" id="26"/>
-                        <segue destination="3" kind="relationship" relationship="viewControllers" id="27"/>
-                        <segue destination="TNw-s6-AAT" kind="relationship" relationship="viewControllers" id="Iyc-pK-pMo"/>
-                        <segue destination="A2W-ov-2Pu" kind="relationship" relationship="viewControllers" id="9eu-t5-DMN"/>
-                        <segue destination="nVd-tz-NDa" kind="relationship" relationship="viewControllers" id="HfA-9B-GgL"/>
+                        <segue destination="9YO-vg-ffB" kind="relationship" relationship="viewControllers" id="WhG-Lp-O3K"/>
+                        <segue destination="Dm7-gk-dkQ" kind="relationship" relationship="viewControllers" id="cbN-k3-FjS"/>
+                        <segue destination="Zr2-mX-S8e" kind="relationship" relationship="viewControllers" id="PPo-En-7WG"/>
+                        <segue destination="DzP-Nn-p5Q" kind="relationship" relationship="viewControllers" id="QoV-pF-n3Q"/>
+                        <segue destination="b21-Kz-hrb" kind="relationship" relationship="viewControllers" id="7IB-nt-kLd"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="14" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-381" y="200"/>
+            <point key="canvasLocation" x="-777" y="204"/>
         </scene>
     </scenes>
     <resources>
@@ -347,48 +420,6 @@
         <image name="first.png" width="30" height="30"/>
         <image name="second" width="16" height="16"/>
     </resources>
-    <classes>
-        <class className="GiraffeMapViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GiraffeMapViewController.h"/>
-        </class>
-        <class className="GiraffeNearbyViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GiraffeNearbyViewController.h"/>
-        </class>
-        <class className="GiraffeProfileViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GiraffeProfileViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="avatarView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="badgesCountLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="graffitiCountLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="likesCountLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="userGraffitiTableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="usernameLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="GiraffeSettingsViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GiraffeSettingsViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="backgroundTouched:" candidateClass="UIControl"/>
-                <relationship kind="action" name="changePassword:" candidateClass="UIButton"/>
-                <relationship kind="action" name="logout:" candidateClass="UIButton"/>
-                <relationship kind="action" name="updateAccount:" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="confirmPasswordField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="emailField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="oldPasswordField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="passwordField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="usernameField" candidateClass="UITextField"/>
-            </relationships>
-        </class>
-        <class className="GiraffeShareViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GiraffeShareViewController.h"/>
-        </class>
-        <class className="GraffitiCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GraffitiCell.h"/>
-        </class>
-        <class className="NSLayoutConstraint" superclassName="NSObject">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

@@ -62,6 +62,11 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+}
+
 #pragma mark - Accessors
 
 - (User *)userFromInput
@@ -140,7 +145,7 @@
     }];
 }
 
-- (IBAction)logout:(UIButton *)sender {
+- (IBAction)logout:(UIBarButtonItem *)sender {
     [[GiraffeClient sharedClient] beginUserLogoutPostWithUser:[User currentUser] success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSLog(@"logout");
