@@ -43,7 +43,7 @@ ProjectGiraffeTab1::Initialize(void)
 }
 
 #define kDebugUseDummyItems 0
-#define kDebugUseHttpConnection 0
+#define kDebugUseHttpConnection 1
 
 void
 ProjectGiraffeTab1::updateItems()
@@ -65,7 +65,7 @@ ProjectGiraffeTab1::updateItems()
 
 	double latitude = ProjectGiraffeMainForm::currentLatitude;
 	double longitude = ProjectGiraffeMainForm::currentLongitude;
-	HttpConnection *connection = HttpConnection::nearbyGraffitiGetConnection(this,latitude,longitude);
+	HttpConnection *connection = HttpConnection::graffitiNearbyGetConnection(this,latitude,longitude);
 	connection->begin();
 
 #else
@@ -344,34 +344,54 @@ void ProjectGiraffeTab1::connectionDidFinish(HttpConnection *connection, Tizen::
 	AppLog("HttpConnection finished");
 	if (response) {
 		ArrayList *graffitiList = static_cast<ArrayList *>(response->GetValue(kHTTPParamNameGraffiti));
+		AppLog("Got graffiti list");
 		if (graffitiList) {
 			ArrayList *newItems = new ArrayList(SingleObjectDeleter);
 			newItems->Construct();
-
+			AppLog("Going through dictionary");
 			for (int i = 0; i < graffitiList->GetCount(); i++) {
 				HashMap *graffitiDictionary = static_cast<HashMap *>(graffitiList->GetAt(i));
 				if (graffitiDictionary) {
+					AppLog("Creating new graffiti from dictionary");
 					Graffiti *newGraffiti = new Graffiti();
+					AppLog("Updating from dictionary");
 					newGraffiti->updateFromDictionary(graffitiDictionary);
+					AppLog("Graffiti updated from dictionary");
 					newItems->Add(newGraffiti);
 				}
 			}
+			if(graffitiList->GetCount() == 0){
+				displayNoGraffiti();
+			}
+			AppLog("Setting items");
 			setItems(newItems);
 		}
 	} else {
 		connectionDidFail(connection);
 	}
+	AppLog("Finishing processing response data");
 }
 
 void ProjectGiraffeTab1::connectionDidFail(HttpConnection *connection)
 {
 	AppLog("HttpConnection failed");
+	displayNoGraffiti();
 
 	MessageBox msgBox;
 	msgBox.Construct(L"HTTP STATUS", L"HTTP Request Aborted, Check internet connection", MSGBOX_STYLE_NONE, 3000);
 	int modalresult = 0;
 	msgBox.ShowAndWait(modalresult);
 	delete connection;
+}
+
+void ProjectGiraffeTab1::displayNoGraffiti(){
+	Label* noGraffitiLabel = new Label();
+	noGraffitiLabel->Construct(Rectangle(0, 80, GetBounds().width, 40), "posts");
+	noGraffitiLabel->SetTextConfig(32, LABEL_TEXT_STYLE_BOLD);
+	noGraffitiLabel->SetTextHorizontalAlignment(ALIGNMENT_CENTER);
+	noGraffitiLabel->SetName("noGraffitiLabel");
+	noGraffitiLabel->SetText(L"No nearby graffiti");
+	AddControl(*noGraffitiLabel);
 }
 
 void

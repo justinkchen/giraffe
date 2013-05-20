@@ -22,27 +22,32 @@ const String kHTTPHostURL = L"https://ec2-54-243-69-6.compute-1.amazonaws.com/";
 const String kServerCert =
 		L"/C=US/ST=California/L=Palo Alto/O=Unsamsung Heroes/CN=giraffe-server/emailAddress=bbch@stanford.edu";
 
-const String kHTTPMethodNameNearbyGraffiti = L"nearby";
-const String kHTTPMethodNameNewGraffiti = L"addgraffiti";
-const String kHTTPMethodNameUserLogin = L"user/login";
-const String kHTTPMethodNameUserSignup = L"user/signup";
-const String kHTTPMethodNameUserUpdate = L"user/update";
-const String kHTTPMethodNameUserLogout = L"user/logout";
+const String kHTTPMethodNameGraffitiNearby = L"graffiti/nearby";
+const String kHTTPMethodNameGraffitiNew = L"graffiti/new";
+const String kHTTPMethodNameGraffitiLike = L"graffiti/like";
+const String kHTTPMethodNameGraffitiFlag = L"graffiti/flag";
+const String kHTTPMethodNameUserLogin = L"users/login";
+const String kHTTPMethodNameUserSignup = L"users/signup";
+const String kHTTPMethodNameUserUpdate = L"users/update";
+const String kHTTPMethodNameUserPosts = L"users/graffiti";
+const String kHTTPMethodNameUserStats = L"users/stats";
+const String kHTTPMethodNameUserLogout = L"users/logout";
 
 const String kHTTPParamNameGraffiti = L"graffiti";
-const String kHTTPParamNameText = L"text";
-const String kHTTPParamNameImageURL = L"imageURL";
+const String kHTTPParamNameGraffitoId = L"id";
+const String kHTTPParamNameText = L"message";
+const String kHTTPParamNameImageURL = L"imageUrl";
 const String kHTTPParamNameLongitude = L"longitude";
 const String kHTTPParamNameLatitude = L"latitude";
 const String kHTTPParamNameDirectionX = L"directionX";
 const String kHTTPParamNameDirectionY = L"directionY";
 const String kHTTPParamNameDirectionZ = L"directionZ";
+const String kHTTPParamNameDateCreated = L"dateCreated";
 const String kHTTPParamNameLikeCount = L"likeCount";
 const String kHTTPParamNameFlagged = L"flagged";
-const String kHTTPParamNameDateCreated = L"dateCreated";
 const String kHTTPParamNameUser = L"user";
 const String kHTTPParamNameUserID = L"id";
-const String kHTTPParamNameFullname = L"fullname";
+const String kHTTPParamNameRadius = L"radius";
 const String kHTTPParamNameUsername = L"username";
 const String kHTTPParamNameEmail = L"email";
 const String kHTTPParamNameAvatarUrl = L"avatar";
@@ -77,6 +82,7 @@ HttpConnection::HttpConnection(HttpConnectionListener *listener,
 	uri.Append(methodName);
 	request->SetUri(uri);
 	if (parameters) {
+		AppLogTag("user", "added");
 		request->SetEntity(*parameters);
 	}
 
@@ -96,33 +102,49 @@ HttpConnection::~HttpConnection()
 
 // Factory methods
 HttpConnection *
-HttpConnection::nearbyGraffitiGetConnection(
+HttpConnection::graffitiNearbyGetConnection(
 		HttpConnectionListener *listener, double latitude, double longitude)
 {
-	HttpMultipartEntity *parameters = new HttpMultipartEntity();
-	parameters->Construct();
-	parameters->AddStringPart(L"latitude", Double(latitude).ToString());
-	parameters->AddStringPart(L"longitude", Double(longitude).ToString());
+	String fullParameterPath;
+	String urlPath;
+	urlPath.Append(kHTTPMethodNameGraffitiNearby);
+	fullParameterPath.Format(100, L"%ls?latitude=%f&longitude=%f", urlPath.GetPointer(), latitude, longitude);
 
 	HttpConnection *connection = new HttpConnection(listener,
-			kHTTPMethodNameNearbyGraffiti, NET_HTTP_METHOD_GET, parameters);
-	delete parameters;
+			fullParameterPath, NET_HTTP_METHOD_GET, null);
 
 	return connection;
 }
 
 HttpConnection *
-HttpConnection::newGraffitiPostConnection(
-		HttpConnectionListener *listener, Graffiti *graffiti)
+HttpConnection::userPostsGetConnection(
+		HttpConnectionListener *listener, int uid)
 {
-	HttpConnection *connection = NULL;
+	String fullParameterPath;
+	String urlPath;
+	urlPath.Append(kHTTPMethodNameUserPosts);
+	fullParameterPath.Format(100, L"%ls?id=%d", urlPath.GetPointer(), uid);
 
-	HttpMultipartEntity *parameters = parametersForGraffiti(graffiti);
-	if (parameters) {
-		connection = new HttpConnection(listener, kHTTPMethodNameNewGraffiti,
-				NET_HTTP_METHOD_POST, parameters);
-		delete parameters;
-	}
+	HttpConnection *connection = new HttpConnection(listener,
+			fullParameterPath, NET_HTTP_METHOD_GET, null);
+
+	return connection;
+}
+
+
+HttpConnection *
+HttpConnection::graffitiNewPostConnection(
+		HttpConnectionListener *listener, HttpMultipartEntity *graffitiParameters)
+{
+//	HttpConnection *connection = NULL;
+
+//	HttpMultipartEntity *parameters = parametersForGraffiti(graffiti);
+
+//	if (parameters) {
+	HttpConnection *connection = new HttpConnection(listener, kHTTPMethodNameGraffitiNew,
+				NET_HTTP_METHOD_POST, graffitiParameters);
+//		delete parameters;
+//	}
 
 	return connection;
 }

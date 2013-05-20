@@ -178,6 +178,11 @@ ProjectGiraffeMainForm::OnActionPerformed(const Tizen::Ui::Control& source, int 
 		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_3"));
 		pHeader->SetTitleText(L"Post Graffiti");
 		__sParser->CreateSensor();
+
+		if (User::currentUser()->id() == 0) {
+			UserPopup::popup()->showPopup();
+		}
+
 		AppLog("Tab3");
 		break;
 	case ID_FOOTER_ITEM4:
@@ -205,6 +210,11 @@ ProjectGiraffeMainForm::OnActionPerformed(const Tizen::Ui::Control& source, int 
 		pFooter->SetItemEnabled(4,false);
 		pSceneManager->GoForward(SceneTransitionId(L"ID_SCNT_5"));
 		pHeader->SetTitleText(L"Settings");
+
+		if (User::currentUser()->id() == 0) {
+			UserPopup::popup()->showPopup();
+		}
+
 		AppLog("Tab5");
 		break;
 	default:

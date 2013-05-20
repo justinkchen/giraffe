@@ -65,6 +65,7 @@ void GraffitiCellContentView::layoutSubviews()
         _nameLabel->setTextColor(kTextColor);
         AddControl(*_nameLabel);
     }
+    AppLog("setting username");
     _nameLabel->setText(_graffiti->user()->username());
     _nameLabel->sizeToFitInWidth(bounds.width - 2 * kCellInset);
     _nameLabel->SetPosition(kCellInset, kCellInset);
@@ -77,6 +78,7 @@ void GraffitiCellContentView::layoutSubviews()
         _distanceLabel->setTextColor(Color::GetColor(COLOR_ID_GREY));
         AddControl(*_distanceLabel);
     }
+    AppLog("setting distance");
     _distanceLabel->setText(distanceString());
     _distanceLabel->sizeToFitInWidth(bounds.width - 2 * kCellInset - rightEdge(_nameLabel));
     centerVertically(_distanceLabel, _nameLabel);
@@ -90,6 +92,7 @@ void GraffitiCellContentView::layoutSubviews()
         _textLabel->setTextColor(kTextColor);
         AddControl(*_textLabel);
     }
+    AppLog("setting text");
     _textLabel->setText(_graffiti->text());
     _textLabel->sizeToFitInWidth(bounds.width - 2 * kCellInset);
     _textLabel->SetPosition(kCellInset, bottomEdge(_nameLabel) + kCellSeparatorPadding);

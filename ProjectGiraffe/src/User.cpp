@@ -48,16 +48,11 @@ result
 User::updateFromDictionary(HashMap *dictionary)
 {
 	result success = E_FAILURE;
+
 	if (dictionary && !dictionary->ContainsKey(kHTTPParamNameError)) {
 		Double *idValue = static_cast<Double *>(dictionary->GetValue(kHTTPParamNameUserID));
 		if (idValue) {
 			_id = idValue->ToInt();
-			success = E_SUCCESS;
-		}
-
-		String *fullnameValue = static_cast<String *>(dictionary->GetValue(kHTTPParamNameFullname));
-		if (fullnameValue) {
-			_fullname = *fullnameValue;
 			success = E_SUCCESS;
 		}
 
@@ -132,7 +127,6 @@ User::parameterDictionary()
 	HashMap *parameters = new HashMap(SingleObjectDeleter);
 	parameters->Construct();
 	parameters->Add(new String(kHTTPParamNameUserID), new Double(_id));
-	parameters->Add(new String(kHTTPParamNameFullname), new String(_fullname));
 	parameters->Add(new String(kHTTPParamNameUsername), new String(_username));
 	parameters->Add(new String(kHTTPParamNameEmail), new String(_email));
 	if (_dateCreated) {

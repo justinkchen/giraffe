@@ -4,19 +4,19 @@
 #include <FApp.h>
 #include <FBase.h>
 #include <FUi.h>
-#include <Fnet.h>
-#include <FWeb.h>
+#include "User.h"
+#include "HttpConnection.h"
 #include "User.h"
 #include "UserPopup.h"
 #include "StatusPopup.h"
-#include "JsonParser.h"
 
 class ProjectGiraffeTab4 :
 	public Tizen::Ui::Controls::Panel,
 	public Tizen::Ui::Scenes::ISceneEventListener,
 	public Tizen::Ui::IActionEventListener,
-	public Tizen::Ui::IKeypadEventListener,
 	public Tizen::App::IAppControlResponseListener,
+	public Tizen::Ui::Controls::ITableViewItemProvider,
+	public Tizen::Ui::Controls::ITableViewItemEventListener,
 	public User::UserListener,
 	public HttpConnection::HttpConnectionListener
 {
@@ -37,16 +37,21 @@ public:
 	// IActionEventListener
 	virtual void OnActionPerformed(const Tizen::Ui::Control& source, int actionId);
 
-	// IKeypadEventListener
-	virtual void OnKeypadActionPerformed(Tizen::Ui::Control &source, Tizen::Ui::KeypadAction keypadAction);
-	virtual void OnKeypadBoundsChanged(Tizen::Ui::Control &source);
-	virtual void OnKeypadClosed(Tizen::Ui::Control &source);
-	virtual void OnKeypadOpened(Tizen::Ui::Control &source);
-	virtual void OnKeypadWillOpen(Tizen::Ui::Control &source);
-
 	//IAppControlResponseListener
 	virtual void OnAppControlCompleteResponseReceived(const Tizen::App::AppId &appId, const Tizen::Base::String &operationId, Tizen::App::AppCtrlResult appControlResult, const Tizen::Base::Collection::IMap *extraData);
 	virtual void OnAppControlStartResponseReceived(const Tizen::App::AppId &appId, const Tizen::Base::String &operationId, result r);
+
+    // ITableViewItemEventListener
+    virtual void OnTableViewItemStateChanged(Tizen::Ui::Controls::TableView& tableView, int itemIndex, Tizen::Ui::Controls::TableViewItem* pItem, Tizen::Ui::Controls::TableViewItemStatus status);
+    virtual void OnTableViewContextItemActivationStateChanged(Tizen::Ui::Controls::TableView& tableView, int itemIndex, Tizen::Ui::Controls::TableViewContextItem* pContextItem, bool activated);
+    virtual void OnTableViewItemReordered(Tizen::Ui::Controls::TableView& tableView, int itemIndexFrom, int itemIndexTo);
+
+    // ITableViewItemProvider
+    virtual int GetItemCount(void);
+    virtual Tizen::Ui::Controls::TableViewItem* CreateItem(int itemIndex, int itemWidth);
+    virtual bool DeleteItem(int itemIndex, Tizen::Ui::Controls::TableViewItem* pItem);
+    virtual void UpdateItem(int itemIndex, Tizen::Ui::Controls::TableViewItem* pItem);
+    virtual int GetDefaultItemHeight(void);
 
 	// UserListener
 	virtual void onUserUpdate(User *user);
@@ -57,11 +62,8 @@ public:
 
 private:
 	static const int ID_BUTTON_LOGIN = 401;
-	static const int ID_BUTTON_LOGOUT = 402;
-	static const int ID_BUTTON_UPDATE1 = 403;
-	static const int ID_BUTTON_UPDATE2 = 404;
-	static const int ID_BUTTON_AVATAR = 405;
 
+	static const int ID_BUTTON_AVATAR = 405;
 	static const int ID_CONTEXT_CHOOSE = 406;
 	static const int ID_CONTEXT_TAKE = 407;
 
@@ -70,17 +72,20 @@ private:
 	void showLoginButton(void);
 	void showProfile(void);
 
-	void updateUser(void);
-	void updatePassword(void);
-
-	void logout(void);
-
 	void showAvatarMenu(void);
 	void choosePhoto(void);
 	void takePhoto(void);
 
 	void showStatus(const Tizen::Base::String &statusTitle, const Tizen::Base::String &statusMessage, bool isError);
-	void resetButtons(void);
+
+    Tizen::Base::Collection::ArrayList *_items;
+	Tizen::Base::Collection::ArrayList *_contentViews;
+    Tizen::Base::Collection::ArrayList *_contextViews;
+    Tizen::Ui::Controls::TableView* _tableView;
+    void updateItems();
+    void updateViews();
+    void displayNoGraffiti();
+    void setItems(Tizen::Base::Collection::ArrayList *items);
 };
 
 #endif // _PROJECTGIRAFFE_TAB4_H_

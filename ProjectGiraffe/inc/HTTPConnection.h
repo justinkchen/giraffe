@@ -10,11 +10,16 @@
 class Graffiti;
 class User;
 
-extern const Tizen::Base::String kHTTPMethodNameNearbyGraffiti;
-extern const Tizen::Base::String kHTTPMethodNameNewGraffiti;
+extern const Tizen::Base::String kHTTPMethodNameGraffitiNearby;
+extern const Tizen::Base::String kHTTPMethodNameGraffitiNew;
+extern const Tizen::Base::String kHTTPMethodNameGraffitiLike;
+extern const Tizen::Base::String kHTTPMethodNameGraffitiFlag;
+
 extern const Tizen::Base::String kHTTPMethodNameUserLogin;
 extern const Tizen::Base::String kHTTPMethodNameUserSignup;
 extern const Tizen::Base::String kHTTPMethodNameUserUpdate;
+extern const Tizen::Base::String kHTTPMethodNameUserPosts;
+extern const Tizen::Base::String kHTTPMethodNameUserStats;
 extern const Tizen::Base::String kHTTPMethodNameUserLogout;
 
 extern const Tizen::Base::String kHTTPParamNameGraffiti;
@@ -26,6 +31,7 @@ extern const Tizen::Base::String kHTTPParamNameDirectionX;
 extern const Tizen::Base::String kHTTPParamNameDirectionY;
 extern const Tizen::Base::String kHTTPParamNameDirectionZ;
 extern const Tizen::Base::String kHTTPParamNameLikeCount;
+extern const Tizen::Base::String kHTTPParamNameRadius;
 extern const Tizen::Base::String kHTTPParamNameFlagged;
 extern const Tizen::Base::String kHTTPParamNameDateCreated;
 extern const Tizen::Base::String kHTTPParamNameUser;
@@ -58,12 +64,13 @@ public:
 	  };
 
 	  // Factory methods
-	  static HttpConnection *nearbyGraffitiGetConnection(HttpConnectionListener *listener, double latitude, double longitude);
-	  static HttpConnection *newGraffitiPostConnection(HttpConnectionListener *listener, Graffiti *graffiti);
+	  static HttpConnection *graffitiNearbyGetConnection(HttpConnectionListener *listener, double latitude, double longitude);
+	  static HttpConnection *graffitiNewPostConnection(HttpConnectionListener *listener, Tizen::Net::Http::HttpMultipartEntity *graffitiParameters);
 	  static HttpConnection *userLoginPostConnection(HttpConnectionListener *listener, Tizen::Net::Http::HttpMultipartEntity *userParameters);
 	  static HttpConnection *userSignupPostConnection(HttpConnectionListener *listener, Tizen::Net::Http::HttpMultipartEntity *userParameters);
 	  static HttpConnection *userUpdatePutConnection(HttpConnectionListener *listener, Tizen::Net::Http::HttpMultipartEntity *userParameters);
 	  static HttpConnection *userLogoutPostConnection(HttpConnectionListener *listener);
+	  static HttpConnection *userPostsGetConnection(HttpConnectionListener *listener, int uid);
 
 	  // Instance Methods
 	  void begin();

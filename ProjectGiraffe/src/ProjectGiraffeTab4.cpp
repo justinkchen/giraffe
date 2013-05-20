@@ -1,16 +1,17 @@
 #include "ProjectGiraffeTab4.h"
-
+#include "ProjectGiraffeMainForm.h"
 #include "ControlUtilities.h"
+#include "GraffitiCellContentView.h"
+#include "GraffitiCellSocialContextView.h"
 
 using namespace Tizen::App;
+using namespace Tizen::Base;
+using namespace Tizen::Base::Collection;
 using namespace Tizen::Graphics;
+using namespace Tizen::Net::Http;
 using namespace Tizen::Ui;
 using namespace Tizen::Ui::Controls;
 using namespace Tizen::Ui::Scenes;
-using namespace Tizen::Base;
-using namespace Tizen::Base::Collection;
-using namespace Tizen::Net::Http;
-using namespace Tizen::Web::Json;
 using namespace ControlUtil;
 
 ProjectGiraffeTab4::ProjectGiraffeTab4(void)
@@ -58,7 +59,12 @@ result
 ProjectGiraffeTab4::OnTerminating(void)
 {
 	result r = E_SUCCESS;
-
+	if (_items)
+	{
+		_items->RemoveAll(true);
+		delete _items;
+		_items = null;
+	}
 	// TODO: Add your termination code here
 
 	return r;
@@ -70,7 +76,7 @@ ProjectGiraffeTab4::showLoginButton(void)
 	RemoveAllControls();
 
 	Label* loginLabel = new Label();
-	loginLabel->Construct(Rectangle(0, 0, 600, 80), "To view your profile, please log in first.");
+	loginLabel->Construct(Rectangle(0, 0, 600, 80), "To view this tab, please log in first.");
 	centerHorizontally(loginLabel, this);
 	loginLabel->SetName("loginLabel");
 	AddControl(*loginLabel);
@@ -93,10 +99,44 @@ ProjectGiraffeTab4::showProfile(void)
 
 	//add scroll panel
 	ScrollPanel *scrollPanel = new ScrollPanel();
-	scrollPanel->Construct(GetBounds());
+	scrollPanel->Construct(Rectangle(0, 160, GetBounds().width, GetBounds().height - 160));
 
 	User *cUser = User::currentUser();
 
+	// Avatar button? image?
+	Button* avatarButton = new Button();
+	avatarButton->Construct(Rectangle(10, 10, 250, 250), "");
+	avatarButton->SetName("avatarButton");
+	avatarButton->SetActionId(ID_BUTTON_AVATAR);
+	avatarButton->AddActionEventListener(*this);
+	AddControl(*avatarButton);
+
+	if (_avatarContextMenu == null) {
+		_avatarContextMenu = new ContextMenu();
+		_avatarContextMenu->Construct(Point(135, 420), CONTEXT_MENU_STYLE_LIST, CONTEXT_MENU_ANCHOR_DIRECTION_DOWNWARD);
+		_avatarContextMenu->AddItem("Choose from library", ID_CONTEXT_CHOOSE);
+		_avatarContextMenu->AddItem("Take photo", ID_CONTEXT_TAKE);
+		_avatarContextMenu->AddActionEventListener(*this);
+		_avatarContextMenu->SetShowState(false);
+		_avatarContextMenu->Invalidate(true);
+
+	}
+
+	Label* usernameLabel = new Label();
+	usernameLabel->Construct(Rectangle(270, 10, GetBounds().width - 20, 60), cUser->username());
+	usernameLabel->SetTextConfig(48, LABEL_TEXT_STYLE_BOLD);
+	usernameLabel->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
+	usernameLabel->SetName("usernameLabel");
+	AddControl(*usernameLabel);
+
+	Label* postsLabel = new Label();
+	postsLabel->Construct(Rectangle(270, 80, GetBounds().width/3, 40), "posts");
+	postsLabel->SetTextConfig(32, LABEL_TEXT_STYLE_BOLD);
+	postsLabel->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
+	postsLabel->SetName("postsLabel");
+	AddControl(*postsLabel);
+
+	/*
 	// logout button
 	Button* logoutButton = new Button();
 	logoutButton->Construct(Rectangle(GetBounds().width/2 + 30, 10, 300, 80), "Logout");
@@ -124,199 +164,100 @@ ProjectGiraffeTab4::showProfile(void)
 		_avatarContextMenu->Invalidate(true);
 
 	}
+	*/
 
-	// Full name
 
-	Label* usernameLabel = new Label();
-	usernameLabel->Construct(Rectangle(10, 260, 300, 40), "Username:");
-	usernameLabel->SetTextConfig(32, LABEL_TEXT_STYLE_BOLD);
-	usernameLabel->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
-	usernameLabel->SetName("usernameLabel");
-	scrollPanel->AddControl(*usernameLabel);
+	// Create tableView
+	_tableView = new TableView();
+	_tableView->Construct(Rectangle(0,270,GetBounds().width, GetBounds().height-270), \
+			true, TABLE_VIEW_SCROLL_BAR_STYLE_FADE_OUT);
+	_tableView->SetItemProvider(this);
+	_tableView->AddTableViewItemEventListener(*this);
+	AddControl(*_tableView);
 
-	EditField* usernameField = new EditField();
-	usernameField->Construct(Rectangle(10, 310, this->GetBounds().width - 20, 80), EDIT_FIELD_STYLE_NORMAL, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_NONE, true);
-	usernameField->SetText(cUser->username());
-	usernameField->SetName("usernameField");
-	usernameField->SetKeypadAction(KEYPAD_ACTION_DONE);
-	usernameField->AddKeypadEventListener(*this);
-	usernameField->SetLowerCaseModeEnabled(true);
-	scrollPanel->AddControl(*usernameField);
 
-	Label* emailLabel = new Label();
-	emailLabel->Construct(Rectangle(10, 400, 300, 40), "Email:");
-	emailLabel->SetTextConfig(32, LABEL_TEXT_STYLE_BOLD);
-	emailLabel->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
-	emailLabel->SetName("emailLabel");
-	scrollPanel->AddControl(*emailLabel);
+	_items = new (std::nothrow) ArrayList();
 
-	EditField* emailField = new EditField();
-	emailField->Construct(Rectangle(10, 450, this->GetBounds().width - 20, 80), EDIT_FIELD_STYLE_EMAIL, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_NONE, true);
-	emailField->SetText(cUser->email());
-	emailField->SetName("emailField");
-	emailField->SetKeypadAction(KEYPAD_ACTION_DONE);
-	emailField->AddKeypadEventListener(*this);
-	emailField->SetLowerCaseModeEnabled(true);
-	scrollPanel->AddControl(*emailField);
-
-	Button* updateButton1 = new Button();
-	updateButton1->Construct(Rectangle(0, 540, 300, 80), "Update");
-	centerHorizontally(updateButton1, this);
-	updateButton1->SetName("updateButton1");
-	updateButton1->SetActionId(ID_BUTTON_UPDATE1);
-	updateButton1->AddActionEventListener(*this);
-	scrollPanel->AddControl(*updateButton1);
-
-	Label* oldPasswordLabel = new Label();
-	oldPasswordLabel->Construct(Rectangle(10, 630, 300, 40), "Current password:");
-	oldPasswordLabel->SetTextConfig(32, LABEL_TEXT_STYLE_BOLD);
-	oldPasswordLabel->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
-	oldPasswordLabel->SetName("oldPassworldLabel");
-	scrollPanel->AddControl(*oldPasswordLabel);
-
-	EditField* oldPasswordField = new EditField();
-	oldPasswordField->Construct(Rectangle(10, 680, this->GetBounds().width - 20, 80), EDIT_FIELD_STYLE_PASSWORD, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_NONE, true);
-	oldPasswordField->SetName("oldPasswordField");
-	oldPasswordField->SetKeypadAction(KEYPAD_ACTION_DONE);
-	oldPasswordField->AddKeypadEventListener(*this);
-	oldPasswordField->SetLowerCaseModeEnabled(true);
-	scrollPanel->AddControl(*oldPasswordField);
-
-	Label* passwordLabel = new Label();
-	passwordLabel->Construct(Rectangle(10, 770, 300, 40), "New password:");
-	passwordLabel->SetTextConfig(32, LABEL_TEXT_STYLE_BOLD);
-	passwordLabel->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
-	passwordLabel->SetName("passwordLabel");
-	scrollPanel->AddControl(*passwordLabel);
-
-	EditField* passwordField = new EditField();
-	passwordField->Construct(Rectangle(10, 820, this->GetBounds().width - 20, 80), EDIT_FIELD_STYLE_PASSWORD, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_NONE, true);
-	passwordField->SetName("passwordField");
-	passwordField->SetKeypadAction(KEYPAD_ACTION_DONE);
-	passwordField->AddKeypadEventListener(*this);
-	passwordField->SetLowerCaseModeEnabled(true);
-	scrollPanel->AddControl(*passwordField);
-
-	Label* confirmPasswordLabel = new Label();
-	confirmPasswordLabel->Construct(Rectangle(10, 910, 300, 40), "Confirm password:");
-	confirmPasswordLabel->SetTextConfig(32, LABEL_TEXT_STYLE_BOLD);
-	confirmPasswordLabel->SetTextHorizontalAlignment(ALIGNMENT_LEFT);
-	confirmPasswordLabel->SetName("confirmPasswordLabel");
-	scrollPanel->AddControl(*confirmPasswordLabel);
-
-	EditField* confirmPasswordField = new EditField();
-	confirmPasswordField->Construct(Rectangle(10, 960, this->GetBounds().width - 20, 80), EDIT_FIELD_STYLE_PASSWORD, INPUT_STYLE_OVERLAY, EDIT_FIELD_TITLE_STYLE_NONE, true);
-	confirmPasswordField->SetName("confirmPasswordField");
-	confirmPasswordField->SetKeypadAction(KEYPAD_ACTION_DONE);
-	confirmPasswordField->AddKeypadEventListener(*this);
-	confirmPasswordField->SetLowerCaseModeEnabled(true);
-	scrollPanel->AddControl(*confirmPasswordField);
-
-	Button* updateButton2 = new Button();
-	updateButton2->Construct(Rectangle(0, 1050, 300, 80), "Change Password");
-	centerHorizontally(updateButton2, this);
-	updateButton2->SetName("updateButton2");
-	updateButton2->SetActionId(ID_BUTTON_UPDATE2);
-	updateButton2->AddActionEventListener(*this);
-	scrollPanel->AddControl(*updateButton2);
-
-	Label* spacer = new Label();
-	spacer->Construct(Rectangle(0, 1140, this->GetBounds().width, 10), "");
-	spacer->SetName("spacer");
-	scrollPanel->AddControl(*spacer);
-	scrollPanel->SetName("scrollPanel");
-
-	AddControl(*scrollPanel);
-
+	updateItems();
 	Draw();
 }
 
 void
-ProjectGiraffeTab4::updateUser(void)
+ProjectGiraffeTab4::updateItems()
 {
-	// Validators
-	String username = ((EditField *)GetControl("usernameField", true))->GetText();
-	String email = ((EditField *)GetControl("emailField", true))->GetText();
-
-	// Check not blank
-	String blank("");
-	if (username.Equals(blank)) {
-		showStatus("User Update Status", "Please enter a username.", true);
-		return;
-	} else if (email.Equals(blank)) {
-		showStatus("User Update Status", "Please enter an email.", true);
-		return;
-	} else if (username.Equals(User::currentUser()->username()) && email.Equals(User::currentUser()->email())) {
-		showStatus("User Update Status", "Username and email unchanged.", true);
-		return;
-	}
-
-	// Disable update button
-	Button* updateButton1 = (Button *)GetControl("updateButton1", true);
-	updateButton1->SetEnabled(false);
-	updateButton1->SetText("Updating...");
-
-	HttpMultipartEntity* userParameters = new HttpMultipartEntity();
-	userParameters->Construct();
-	userParameters->AddStringPart(L"username", username);
-	userParameters->AddStringPart(L"email", email);
-
-	HttpConnection *connection = HttpConnection::userUpdatePutConnection(this, userParameters);
+	AppLog("updating items");
+	HttpConnection *connection = HttpConnection::userPostsGetConnection(this,User::currentUser()->id());
 	connection->begin();
-
-	delete userParameters;
 }
 
-void
-ProjectGiraffeTab4::updatePassword(void)
+void ProjectGiraffeTab4::updateViews()
 {
-	// Validators
-	String oldPassword = ((EditField *)GetControl("oldPasswordField", true))->GetText();
-	String password = ((EditField *)GetControl("passwordField", true))->GetText();
-	String confirmPassword = ((EditField *)GetControl("confirmPasswordField", true))->GetText();
+	AppLog("updating views");
+	// Remove all views if they exist
+	if (_contentViews) _contentViews->RemoveAll(true);
+	delete _contentViews;
+	if (_contextViews) _contextViews->RemoveAll(true);
+	delete _contextViews;
 
-	// Check not blank
-	String blank("");
-	if (oldPassword.Equals(blank)) {
-		showStatus("User Update Status", "Please enter current password.", true);
-		return;
-	} else if (password.Equals(blank)) {
-		showStatus("User Update Status", "Please enter new password.", true);
-		return;
-	} else if (confirmPassword.Equals(blank)) {
-		showStatus("User Update Status", "Please enter new password confirmation.", true);
-		return;
-	} else if (!password.Equals(confirmPassword)) {
-		showStatus("User Update Status", "New passwords do not match.", true);
-		return;
+	if (_items && _items->GetCount()) {
+		_contentViews = new ArrayList(SingleObjectDeleter);
+		_contentViews->Construct();
+		_contextViews = new ArrayList(SingleObjectDeleter);
+		_contextViews->Construct();
+
+		IEnumerator *iter = _items->GetEnumeratorN();
+		int width = GetSize().width;
+		while (iter->MoveNext() == E_SUCCESS) {
+			Graffiti *graffiti = static_cast<Graffiti *>(iter->GetCurrent());
+			if (graffiti) {
+				// Create content view
+				GraffitiCellContentView *contentView = new GraffitiCellContentView();
+				contentView->Construct(Rectangle(0, 0, width, GetDefaultItemHeight()));
+				contentView->setGraffiti(graffiti);
+				contentView->sizeToFit();
+				_contentViews->Add((Panel *)contentView);
+
+				// Create social context view
+				GraffitiCellSocialContextView *socialContextView = new GraffitiCellSocialContextView();
+				socialContextView->Construct(contentView->GetBounds());
+				socialContextView->setGraffiti(graffiti);
+				_contextViews->Add((Panel *)socialContextView);
+			}
+		}
+	} else {
+		_contentViews = NULL;
+		_contextViews = NULL;
 	}
-
-	// Disable update button
-	Button* updateButton2 = (Button *)GetControl("updateButton2", true);
-	updateButton2->SetEnabled(false);
-	updateButton2->SetText("Changing...");
-
-	HttpMultipartEntity* userParameters = new HttpMultipartEntity();
-	userParameters->Construct();
-	userParameters->AddStringPart(L"oldPassword", oldPassword);
-	userParameters->AddStringPart(L"password", password);
-
-	HttpConnection *connection = HttpConnection::userUpdatePutConnection(this, userParameters);
-	connection->begin();
-
-	delete userParameters;
 }
 
-void
-ProjectGiraffeTab4::logout(void)
+void ProjectGiraffeTab4::setItems(ArrayList *items)
 {
-	// Disable logout button
-	Button* logoutButton = (Button *)GetControl("logoutButton", true);
-	logoutButton->SetEnabled(false);
-	logoutButton->SetText("Logging out...");
+	AppLog("setItems");
+	if (_items != items) {
+		// Deallocate old items
+		if (_items) _items->RemoveAll(true);
+		delete _items;
+		_items = items;
+		AppLog("previous items deleted");
 
-	HttpConnection *connection = HttpConnection::userLogoutPostConnection(this);
-	connection->begin();
+		// Update views
+		updateViews();
+
+		AppLog("updating tableview");
+		// Use new items/views in table
+		_tableView->UpdateTableView();
+		AppLog("tableview updated");
+	}
+}
+
+void ProjectGiraffeTab4::displayNoGraffiti(){
+	Label* noGraffitiLabel = new Label();
+	noGraffitiLabel->Construct(Rectangle(0, 270, GetBounds().width, 40), "posts");
+	noGraffitiLabel->SetTextConfig(32, LABEL_TEXT_STYLE_BOLD);
+	noGraffitiLabel->SetTextHorizontalAlignment(ALIGNMENT_CENTER);
+	noGraffitiLabel->SetName("noGraffitiLabel");
+	noGraffitiLabel->SetText(L"No graffiti posted yet");
+	AddControl(*noGraffitiLabel);
 }
 
 void
@@ -395,35 +336,10 @@ ProjectGiraffeTab4::showStatus(const String &statusTitle, const String &statusMe
 }
 
 void
-ProjectGiraffeTab4::resetButtons(void)
-{
-	// Enable update button 1 and 2
-	Button* updateButton1 = (Button *)GetControl("updateButton1", true);
-	if (updateButton1 != NULL) {
-		updateButton1->SetEnabled(true);
-		updateButton1->SetText("Update");
-	}
-
-	Button* updateButton2 = (Button *)GetControl("updateButton2", true);
-	if (updateButton2 != NULL) {
-		updateButton2->SetEnabled(true);
-		updateButton2->SetText("Change Password");
-	}
-
-	// Enable logout button
-	Button* logoutButton = (Button *)GetControl("logoutButton", true);
-	if (logoutButton != NULL) {
-		logoutButton->SetEnabled(true);
-		logoutButton->SetText("Logout");
-	}
-
-	Draw();
-}
-
-void
 ProjectGiraffeTab4::OnSceneActivatedN(const Tizen::Ui::Scenes::SceneId& previousSceneId,
 								const Tizen::Ui::Scenes::SceneId& currentSceneId, Tizen::Base::Collection::IList* pArgs)
 {
+	// TODO:
 	// Add your scene activate code here
 	AppLog("OnSceneActivatedN");
 
@@ -439,6 +355,7 @@ void
 ProjectGiraffeTab4::OnSceneDeactivated(const Tizen::Ui::Scenes::SceneId& currentSceneId,
 								const Tizen::Ui::Scenes::SceneId& nextSceneId)
 {
+	// TODO:
 	// Add your scene deactivate code here
 	AppLog("OnSceneDeactivated");
 }
@@ -447,77 +364,20 @@ void
 ProjectGiraffeTab4::OnActionPerformed(const Control& source, int actionId)
 {
 	switch (actionId)
-		{
-		case ID_BUTTON_LOGIN:
-			UserPopup::popup()->showPopup();
-			break;
-		case ID_BUTTON_LOGOUT:
-			logout();
-			break;
-		case ID_BUTTON_UPDATE1:
-			updateUser();
-			break;
-		case ID_BUTTON_UPDATE2:
-			updatePassword();
-			break;
-		case ID_BUTTON_AVATAR:
-			showAvatarMenu();
-			break;
-		case ID_CONTEXT_CHOOSE:
-			choosePhoto();
-			break;
-		case ID_CONTEXT_TAKE:
-			takePhoto();
-			break;
-		default:
-			break;
-		}
-}
-
-void
-ProjectGiraffeTab4::OnKeypadActionPerformed(Control &source, KeypadAction keypadAction)
-{
-	// Hide keypad when the action button is clicked
-	if (keypadAction == KEYPAD_ACTION_DONE)
 	{
-		((EditField *)&source)->HideKeypad();
+	case ID_BUTTON_LOGIN:
+		UserPopup::popup()->showPopup();
+		break;
+	case ID_BUTTON_AVATAR:
+		showAvatarMenu();
+		break;
+	case ID_CONTEXT_CHOOSE:
+		choosePhoto();
+		break;
+	case ID_CONTEXT_TAKE:
+		takePhoto();
+		break;
 	}
-}
-
-void
-ProjectGiraffeTab4::OnKeypadBoundsChanged(Control &source)
-{
-
-}
-
-void
-ProjectGiraffeTab4::OnKeypadClosed(Control &source)
-{
-
-}
-
-void
-ProjectGiraffeTab4::OnKeypadOpened(Control &source)
-{
-	/* may need to resize ui?
-	Rectangle clientRect = GetClientAreaBounds();
-	Rectangle editRect = __pEditField->GetBounds();
-	editRect.y = clientRect.height - editRect.height - 50;
-	__pEditField->SetBounds(editRect); // Move EditField to avoid overlapping
-	*/
-}
-
-void
-ProjectGiraffeTab4::OnKeypadWillOpen(Control &source)
-{
-	/*
-	Rectangle clientRect = GetClientAreaBounds();
-	Rectangle editRect = __pEditField->GetBounds();
-	editRect.y = clientRect.height - 500;
-	__pEditField->SetBounds(editRect); // Move back to original position
-
-	Invalidate(true);
-	*/
 }
 
 void
@@ -584,7 +444,7 @@ ProjectGiraffeTab4::OnAppControlCompleteResponseReceived(const AppId &appId, con
 void
 ProjectGiraffeTab4::OnAppControlStartResponseReceived(const AppId &appId, const String &operationId, result r)
 {
-	AppLogTag("camera1", "qwer");
+	AppLogTag("camera1", "start response");
 }
 
 void
@@ -602,10 +462,10 @@ ProjectGiraffeTab4::onUserUpdate(User *user)
 void
 ProjectGiraffeTab4::connectionDidFinish(HttpConnection *connection, HashMap *response)
 {
+	/*
 	if (response) {
 		String userKey("user");
 		String messageKey("message");
-		String logoutKey("logout");
 		String errorKey("error");
 		if (response->ContainsKey(userKey)) {
 			HashMap *userDict = (HashMap *)response->GetValue(userKey);
@@ -615,17 +475,8 @@ ProjectGiraffeTab4::connectionDidFinish(HttpConnection *connection, HashMap *res
 
 			String *message = (String *)response->GetValue(messageKey);
 			showStatus("User Update Status", *message, false);
-		} else if (response->ContainsKey(logoutKey)) {
-			User::currentUser()->logout();
-
-//			showLoginButton();
-
-			String *message = (String *)response->GetValue(logoutKey);
-			showStatus("Logout Status", *message, false);
 		} else if (response->ContainsKey(errorKey)) {
 			String *errorMessage = (String *)response->GetValue(errorKey);
-
-			resetButtons();
 
 			// Flash error message
 			showStatus("User Update Status", *errorMessage, true);
@@ -635,7 +486,40 @@ ProjectGiraffeTab4::connectionDidFinish(HttpConnection *connection, HashMap *res
 
 		delete connection;
 //		delete response;
+	}
+	*/
+	AppLog("HttpConnection finished");
+	if (response) {
+		// TODO: check for the return value
+		ArrayList *graffitiList = static_cast<ArrayList *>(response->GetValue(kHTTPParamNameGraffiti));
+		if (graffitiList) {
+			AppLog("Retrieved list");
+			ArrayList *newItems = new ArrayList(SingleObjectDeleter);
+			newItems->Construct();
+
+			for (int i = 0; i < graffitiList->GetCount(); i++) {
+				HashMap *graffitiDictionary = static_cast<HashMap *>(graffitiList->GetAt(i));
+				AppLog("updating dictionary");
+				if (graffitiDictionary) {
+					Graffiti *newGraffiti = new Graffiti();
+					newGraffiti->updateFromDictionary(graffitiDictionary);
+					newGraffiti->setUser(User::currentUser());
+					AppLog("Updated from dictionary");
+					newItems->Add(newGraffiti);
+				}
+			}
+			if(graffitiList->GetCount() == 0){
+				AppLog("No graffiti to display");
+				displayNoGraffiti();
+			}
+			AppLog("Setting new items");
+			setItems(newItems);
+		}else{
+			AppLog("Failed to retrieve graffiti list");
+			displayNoGraffiti();
+		}
 	} else {
+
 		connectionDidFail(connection);
 	}
 }
@@ -643,8 +527,82 @@ ProjectGiraffeTab4::connectionDidFinish(HttpConnection *connection, HashMap *res
 void
 ProjectGiraffeTab4::connectionDidFail(HttpConnection *connection)
 {
-	resetButtons();
+	AppLog("connection failed");
 	showStatus(L"HTTP Status", L"HTTP Request Aborted, check internet connection", true);
 
+	displayNoGraffiti();
 	delete connection;
+}
+
+// ITableViewItemEventListener
+void ProjectGiraffeTab4::OnTableViewItemStateChanged(Tizen::Ui::Controls::TableView& tableView,
+		int itemIndex, Tizen::Ui::Controls::TableViewItem* pItem, Tizen::Ui::Controls::TableViewItemStatus status)
+{
+
+}
+
+void ProjectGiraffeTab4::OnTableViewContextItemActivationStateChanged(Tizen::Ui::Controls::TableView& tableView, int itemIndex,
+		Tizen::Ui::Controls::TableViewContextItem* pContextItem, bool activated)
+{
+}
+
+void ProjectGiraffeTab4::OnTableViewItemReordered(Tizen::Ui::Controls::TableView& tableView, int itemIndexFrom, int itemIndexTo)
+{
+}
+
+// ITableViewItemProvider
+int ProjectGiraffeTab4::GetItemCount(void)
+{
+	AppLog("Counting Items");
+	return _items ? _items->GetCount() : 0;
+}
+
+TableViewItem* ProjectGiraffeTab4::CreateItem(int itemIndex, int itemWidth)
+{
+	AppLog("Creating Items");
+
+	// Fetch Graffiti object
+	Graffiti *graffiti = dynamic_cast<Graffiti *>(_items->GetAt(itemIndex));
+
+	// Create item
+	TableViewItem *item = new TableViewItem();
+	item->Construct(Dimension(itemWidth, GetDefaultItemHeight()),
+			TABLE_VIEW_ANNEX_STYLE_NORMAL);
+
+	// Create contextItem
+	TableViewContextItem *contextItem = new TableViewContextItem();
+	contextItem->Construct(item->GetSize());
+	item->SetContextItem(contextItem);
+
+	Control *contentView = static_cast<Control *>(_contentViews->GetAt(itemIndex));
+	if (contentView) {
+		item->AddControl(*contentView);
+		item->SetSize(contentView->GetSize());
+		contextItem->SetSize(contentView->GetSize());
+	}
+	Control *contextView = static_cast<Control *>(_contextViews->GetAt(itemIndex));
+	if (contextView) {
+		contextItem->AddControl(*contextView);
+	}
+
+
+	return item;
+}
+
+bool ProjectGiraffeTab4::DeleteItem(int itemIndex, Tizen::Ui::Controls::TableViewItem* pItem)
+{
+	AppLog("Deleting item %d", itemIndex);
+// TODO: Figure out what is causing this to crash...seems to work fine without this, but would be good to fix I think.
+//	delete pItem;
+	return true;
+}
+
+void ProjectGiraffeTab4::UpdateItem(int itemIndex, Tizen::Ui::Controls::TableViewItem* pItem)
+{
+	AppLog("Updating Items");
+}
+
+int ProjectGiraffeTab4::GetDefaultItemHeight(void)
+{
+	return 150;
 }
