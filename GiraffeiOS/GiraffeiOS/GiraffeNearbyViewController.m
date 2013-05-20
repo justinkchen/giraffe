@@ -17,7 +17,7 @@
 
 @interface GiraffeNearbyViewController () <UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, retain) UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) NSMutableArray *graffiti;
 
 @end
@@ -30,10 +30,6 @@
 {
     [super viewDidLoad];
     
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-    [self.view addSubview:self.tableView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -48,15 +44,7 @@
     
     NSLog(@"location %f %f", [LocationManager sharedInstance].latitude, [LocationManager sharedInstance].longitude);
     
-    // Kick off load request
-    [[GiraffeClient sharedClient] beginGraffitiNearbyGetWithLatitude:[LocationManager sharedInstance].latitude
-                                                           longitude:[LocationManager sharedInstance].longitude success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                                                               NSLog(@"got response %@", responseObject);
-                                                               
-                                                               [self graffitiRequestFinishedWithDictionary:[responseObject ifIsKindOfClass:[NSDictionary class]]];
-                                                                                                                          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                                               NSLog(@"Graffiti request failed with error: %@", [error localizedDescription]);
-                                                           }];
+    [self requestGraffitiFromServer];
 }
 
 #pragma mark - Accessors
@@ -71,6 +59,19 @@
 
 #pragma mark - Utility
 
+- (void)requestGraffitiFromServer
+{
+    // Kick off load request
+    [[GiraffeClient sharedClient] beginGraffitiNearbyGetWithLatitude:[LocationManager sharedInstance].latitude
+                                                           longitude:[LocationManager sharedInstance].longitude success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                               NSLog(@"got response %@", responseObject);
+                                                               
+                                                               [self graffitiRequestFinishedWithDictionary:[responseObject ifIsKindOfClass:[NSDictionary class]]];
+                                                           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                               NSLog(@"Graffiti request failed with error: %@", [error localizedDescription]);
+                                                           }];
+}
+
 - (void)graffitiRequestFinishedWithDictionary:(NSDictionary *)dictionary
 {
     NSArray *graffitiDicts = [dictionary objectForKey:kParamNameGraffiti];
@@ -82,6 +83,11 @@
         }
         self.graffiti = newGraffiti;
     }
+}
+
+- (IBAction)refreshButtonTapped:(UIBarButtonItem *)sender {
+    // display loading icon?
+    [self requestGraffitiFromServer];
 }
 
 #pragma mark - UITableViewDelegate

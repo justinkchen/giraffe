@@ -11,12 +11,45 @@
                     <view key="view" contentMode="scaleToFill" id="16">
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="sFo-dQ-hly">
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="graffitiCell" id="xgh-R2-CbH" customClass="GraffitiCell">
+                                        <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="2" id="gzd-gr-p0f"/>
+                                    <outlet property="delegate" destination="2" id="d90-Hd-HrR"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="sFo-dQ-hly" firstAttribute="top" secondItem="16" secondAttribute="top" type="default" id="F0b-2s-Zhh"/>
+                            <constraint firstItem="sFo-dQ-hly" firstAttribute="trailing" secondItem="16" secondAttribute="trailing" type="default" id="Sgp-rq-wjz"/>
+                            <constraint firstItem="sFo-dQ-hly" firstAttribute="bottom" secondItem="16" secondAttribute="bottom" type="default" id="pCE-Fb-dRp"/>
+                            <constraint firstItem="sFo-dQ-hly" firstAttribute="leading" secondItem="16" secondAttribute="leading" type="default" id="uDT-6s-PTf"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Nearby" image="map-marker.png" id="7"/>
                     <navigationItem key="navigationItem" title="Nearby" id="Ddc-By-JH3">
-                        <barButtonItem key="rightBarButtonItem" enabled="NO" systemItem="refresh" id="HxE-Wh-HaT"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="HxE-Wh-HaT">
+                            <connections>
+                                <action selector="refreshButtonTapped:" destination="2" id="DSF-JZ-kje"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="tableView" destination="sFo-dQ-hly" id="iN3-kN-Jie"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="10" sceneMemberID="firstResponder"/>
             </objects>
@@ -444,6 +477,11 @@
         </class>
         <class className="GiraffeNearbyViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GiraffeNearbyViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="refreshButtonTapped:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="nearbyGraffitiTableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+            </relationships>
         </class>
         <class className="GiraffeProfileViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GiraffeProfileViewController.h"/>
@@ -459,10 +497,6 @@
         <class className="GiraffeSettingsViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GiraffeSettingsViewController.h"/>
             <relationships>
-                <relationship kind="action" name="backgroundTouched:" candidateClass="UIControl"/>
-                <relationship kind="action" name="changePassword:" candidateClass="UIButton"/>
-                <relationship kind="action" name="logout:" candidateClass="UIBarButtonItem"/>
-                <relationship kind="action" name="updateAccount:" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="confirmPasswordField" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="emailField" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="oldPasswordField" candidateClass="UITextField"/>
@@ -472,10 +506,6 @@
         </class>
         <class className="GiraffeShareViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GiraffeShareViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="imageButtonTapped:" candidateClass="UIBarButtonItem"/>
-                <relationship kind="action" name="postButtonTapped:" candidateClass="UIBarButtonItem"/>
-            </relationships>
         </class>
         <class className="GraffitiCell" superclassName="UITableViewCell">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GraffitiCell.h"/>

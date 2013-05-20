@@ -98,7 +98,6 @@
 		BB52B4AB172896340077591D /* second.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = second.png; sourceTree = "<group>"; };
 		BB52B4AD172896340077591D /* second@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "second@2x.png"; sourceTree = "<group>"; };
 		BB56DE1A174999BC000306AB /* splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = splash.png; sourceTree = "<group>"; };
-		BB67F7D0174A365F00684E78 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		BB89347417386DEE0056F035 /* AFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPClient.h; sourceTree = "<group>"; };
 		BB89347517386DEE0056F035 /* AFHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPClient.m; sourceTree = "<group>"; };
 		BB89347617386DEE0056F035 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
@@ -202,7 +201,6 @@
 		BB52B477172896330077591D = {
 			isa = PBXGroup;
 			children = (
-				BB67F7D0174A365F00684E78 /* Default.png */,
 				BBCFA2F117462A490059E581 /* NSDate-TimeAgo */,
 				BB89347317386DEE0056F035 /* AFNetworking */,
 				BB52B489172896330077591D /* GiraffeiOS */,
