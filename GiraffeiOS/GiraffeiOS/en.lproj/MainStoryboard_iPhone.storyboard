@@ -14,7 +14,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Nearby" image="map-marker.png" id="7"/>
-                    <navigationItem key="navigationItem" title="Nearby" id="Ddc-By-JH3"/>
+                    <navigationItem key="navigationItem" title="Nearby" id="Ddc-By-JH3">
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" systemItem="refresh" id="HxE-Wh-HaT"/>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="10" sceneMemberID="firstResponder"/>
             </objects>
@@ -47,7 +49,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" tag="-1" title="Share" image="spraycan.png" id="DUd-Wt-mw4"/>
                     <navigationItem key="navigationItem" title="Share" id="wwO-df-7Ct">
-                        <barButtonItem key="leftBarButtonItem" image="camera.png" id="Sw1-cG-fJe">
+                        <barButtonItem key="leftBarButtonItem" image="camera.png" style="done" id="Sw1-cG-fJe">
                             <connections>
                                 <action selector="imageButtonTapped:" destination="TNw-s6-AAT" id="ffd-KR-d0T"/>
                             </connections>
@@ -396,7 +398,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Map" image="map.png" id="6"/>
-                    <navigationItem key="navigationItem" title="Map" id="NVk-5D-eLR"/>
+                    <navigationItem key="navigationItem" title="Map" id="NVk-5D-eLR">
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" systemItem="refresh" id="eAZ-O1-n0m"/>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="12" sceneMemberID="firstResponder"/>
             </objects>
