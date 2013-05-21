@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cs210.giraffe"
-    android:versionCode="2"
-    android:versionName="1.1" >
+    android:versionCode="4"
+    android:versionName="1.3" >
 
     <uses-sdk
         android:minSdkVersion="13"
@@ -27,11 +27,15 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher_giraffe"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:debuggable="true" >
+        android:theme="@style/AppTheme" >
+        <!-- Debug Key -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyC7vHHwQ0XsJP6SbF51ZbdYYG_3YVkmnbo"/>
+        <!-- Release Key -->
+        <!-- <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+        	android:value="AIzaSyAdgXDyaT7qNAWY2yag1Ta-xbhVVnstIg8"/> -->
         <activity
             android:name="com.cs210.giraffe.MainActivity"
             android:label="@string/app_name" 
