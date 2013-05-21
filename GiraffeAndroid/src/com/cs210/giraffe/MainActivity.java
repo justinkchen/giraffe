@@ -8,6 +8,7 @@ import java.net.CookieManager;
 import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -47,12 +48,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity implements
-ActionBar.TabListener {
+		ActionBar.TabListener {
 	public static final String PREFS_NAME = "GiraffePrefs";
 	static final int NUM_TABS = 3;
 	private static GiraffeLocationListener locationListener = null;
 	private static CookieManager cookieManager = null;
-	private static String baseServerURI = "http://thegiraffeapp.com";
+	private static String baseServerURI =  "http://thegiraffeapp.com"; //"http://ec2-54-224-185-156.compute-1.amazonaws.com";
 	private static User currentUser = null;
 	private static Menu mainActivityMenu = null;
 
@@ -192,12 +193,12 @@ ActionBar.TabListener {
 		// tab. We can also use ActionBar.Tab#select() to do this if we have
 		// a reference to the Tab.
 		mViewPager
-		.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-			@Override
-			public void onPageSelected(int position) {
-				actionBar.setSelectedNavigationItem(position);
-			}
-		});
+				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+					@Override
+					public void onPageSelected(int position) {
+						actionBar.setSelectedNavigationItem(position);
+					}
+				});
 
 		// For each of the sections in the app, add a tab to the action bar.
 		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
@@ -238,19 +239,19 @@ ActionBar.TabListener {
 
 		if (bestProvider == null || !locationListener.isLocationFound()) {
 			new AlertDialog.Builder(this)
-			.setIcon(R.drawable.ic_device_access_location_off)
-			.setTitle("No location provider accessible")
-			.setMessage(
-					"Please turn on GPS location services and try again")
+					.setIcon(R.drawable.ic_device_access_location_off)
+					.setTitle("No location provider accessible")
+					.setMessage(
+							"Please turn on GPS location services and try again")
 					.setCancelable(false)
 					.setPositiveButton("Close App",
 							new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog,
-								int which) {
-							finish();
-						}
-					}).show();
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									finish();
+								}
+							}).show();
 		}
 
 		locationManager.requestLocationUpdates(bestProvider, 0, 0,
@@ -268,14 +269,14 @@ ActionBar.TabListener {
 			Log.w("MainActivity", "retrieving saved cookie: " + cookieStr);
 			HttpCookie cookie = new HttpCookie(cookieStr.substring(0,
 					cookieStr.indexOf('=')), cookieStr.substring(
-							cookieStr.indexOf('=') + 1, cookieStr.length()));
+					cookieStr.indexOf('=') + 1, cookieStr.length()));
 			cookie.setDomain(MainActivity.getBaseServerURI());
 			cookie.setPath("/");
 			cookie.setVersion(0);
 			try {
 				MainActivity.getCookieManager().getCookieStore().removeAll();
 				MainActivity.getCookieManager().getCookieStore()
-				.add(new URI(MainActivity.getBaseServerURI()), cookie);
+						.add(new URI(MainActivity.getBaseServerURI()), cookie);
 			} catch (URISyntaxException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -291,6 +292,11 @@ ActionBar.TabListener {
 			MainActivity.setCurrentUser(currentUser);
 		}
 
+
+//		Log.i("Johan", "Checking server cookie");
+//		GetUserTask getUserTask = new GetUserTask();
+//		getUserTask.execute(getBaseServerURI() + "/session/connect");
+		
 	}
 
 	@Override
@@ -327,8 +333,10 @@ ActionBar.TabListener {
 			// Show current user profile
 			intent = new Intent(this, ProfileActivity.class);
 			intent.putExtra("userid", MainActivity.getCurrentUser().getId());
-			intent.putExtra("username", MainActivity.getCurrentUser().getUsername());
-			intent.putExtra("imagePath", MainActivity.getCurrentUser().getAvatar());
+			intent.putExtra("username", MainActivity.getCurrentUser()
+					.getUsername());
+			intent.putExtra("imagePath", MainActivity.getCurrentUser()
+					.getAvatar());
 			startActivity(intent);
 			return true;
 		case R.id.action_login:
@@ -625,6 +633,7 @@ ActionBar.TabListener {
 		}
 		// Commit the edits!
 		editor.commit();
+
 	}
 
 	public static Menu getMainActivityMenu() {
@@ -696,4 +705,80 @@ ActionBar.TabListener {
 			}
 		}
 	}
+
+	private class GetUserTask extends
+			AsyncTask<String, Void, JSONObject> {
+
+		String error_message;
+		boolean success = false;
+
+		@Override
+		protected JSONObject doInBackground(String... urls) {
+			URL url;
+			HttpURLConnection conn = null;
+			try {
+				url = new URL(urls[0]);
+				conn = (HttpURLConnection) url.openConnection();
+				conn.setDoInput(true);
+				conn.setRequestMethod("GET");
+			} catch (ProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			InputStream myInputStream = null;
+			try {
+				myInputStream = conn.getInputStream();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			JSONObject returnJSONObject = null;
+			try {
+				if (myInputStream != null) {
+					returnJSONObject = new JSONObject(
+							JSONHandler.convertStreamToString(myInputStream));
+					System.out.println("JSONObject: "
+							+ returnJSONObject.toString());
+					if (returnJSONObject.has("error")) {
+						error_message = (String) returnJSONObject.get("error");
+						success = false;
+						return returnJSONObject;
+					} else {
+
+						success = true;
+						return returnJSONObject;
+					}
+				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return returnJSONObject;
+
+		}
+
+		protected void onPostExecute(JSONObject returnJSONObject) {
+			if (success) {
+				Log.i("Johan", "Successful cookie get or whatever");
+//				try {
+////					JSONObject statsObject = (JSONObject) returnJSONObject
+////							.get("stats");
+//					
+//				} catch (JSONException e) {
+//					Log.i("Johan", "JSON Exception");
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+
+			}
+		}
+	}
+
 }

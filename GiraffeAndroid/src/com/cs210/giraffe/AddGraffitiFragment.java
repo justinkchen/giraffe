@@ -411,7 +411,7 @@ public class AddGraffitiFragment extends Fragment implements
 			AsyncTask<String, Integer, InputStream> {
 		private boolean success = false;
 		String error_message = null;
-		private String attachmentName = "bitmap";
+		private String attachmentName = "image";
 		private String attachmentFileName = "bitmap.bmp";
 		private String crlf = "\r\n";
 		private String twoHyphens = "--";
@@ -696,7 +696,7 @@ public class AddGraffitiFragment extends Fragment implements
 									}
 								}).show();
 			}
-		}
+		}	
 	}
 	private void setMapTransparent(ViewGroup group) {
 		int childCount = group.getChildCount();

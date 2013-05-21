@@ -139,6 +139,20 @@ public class ChangePasswordFragment extends DialogFragment{
     		if (success) {
     			Log.i("Johan", "Successful change");
     			getDialog().cancel();
+    			new AlertDialog.Builder(getActivity())
+				.setIcon(R.drawable.ic_navigation_cancel)
+				.setTitle("Success!")
+				.setMessage("Password change was successful!")
+				.setCancelable(false)
+				.setPositiveButton("Okay",
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								// Close dialog
+
+							}
+						}).show();
     		} else {
     			Log.i("Johan", "Unsuccessful change");
     			_errorMessage.setText('\t' + error_message);	
