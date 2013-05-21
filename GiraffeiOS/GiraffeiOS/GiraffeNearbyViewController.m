@@ -97,6 +97,14 @@
     return [[self tableView:tableView cellForRowAtIndexPath:indexPath] sizeThatFits:tableView.frameSize].height;
 }
 
+- (void)viewProfile:(id)sender
+{
+    UIButton *usernameButton = (UIButton *)sender;
+    GraffitiCell *cell = (GraffitiCell *)[usernameButton superview];
+    
+    NSLog(@"view profile %d", cell.graffiti.user.identifier);
+}
+
 - (void)likeGraffiti:(id)sender
 {
     // Check to make sure user logged in

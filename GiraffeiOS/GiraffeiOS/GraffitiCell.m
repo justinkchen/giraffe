@@ -24,6 +24,7 @@ NSString *const kGraffitiCellIdentifier = @"graffitiCell";
 
 @property (nonatomic, retain) UIImageView *userAvatarImage;
 @property (nonatomic, retain) UILabel *usernameLabel;
+@property (nonatomic, retain) UIButton *usernameButton;
 @property (nonatomic, retain) UILabel *detailLabel;
 @property (nonatomic, retain) UIImageView *graffitiImage;
 @property (nonatomic, retain) UILabel *messageLabel;
@@ -168,11 +169,23 @@ const CGFloat kGraffitiCellPadding = 8.0;
         self.usernameLabel = [UILabel new];
         self.usernameLabel.font = [self usernameFont];
         self.usernameLabel.frameOriginY = kGraffitiCellPadding;
-        [self.contentView addSubview:self.usernameLabel];
+//        [self.contentView addSubview:self.usernameLabel];
     }
     self.usernameLabel.text = self.graffiti.user.username;
     [self.usernameLabel sizeToFit];
     self.usernameLabel.frameOriginX = self.userAvatarImage.rightEdge + kGraffitiCellPadding;
+    
+    // User username button
+    if (!self.usernameButton) {
+        self.usernameButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.usernameButton addTarget:nil action:@selector(viewProfile:) forControlEvents:UIControlEventTouchUpInside];
+        self.usernameButton.titleLabel.font = [self usernameFont];
+        [self.usernameButton setTitleColor:self.usernameLabel.textColor forState:UIControlStateNormal];
+        [self addSubview:self.usernameButton];
+    }
+    [self.usernameButton setTitle:self.graffiti.user.username forState:UIControlStateNormal];
+    [self.usernameButton sizeToFit];
+    self.usernameButton.frame = self.usernameLabel.frame;
     
     // Detail label
     if (!self.detailLabel) {
@@ -224,7 +237,7 @@ const CGFloat kGraffitiCellPadding = 8.0;
     if (!self.likeButton) {
 //        self.likeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         self.likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.likeButton addTarget:nil action:@selector(likeGraffiti:) forControlEvents:UIControlEventTouchUpInside];
+        [self.likeButton addTarget:nil action:@selector(viewProfile:) forControlEvents:UIControlEventTouchUpInside];
         self.likeButton.titleLabel.font = [self likesFont];
         if (!self.graffiti.isLiked) {
             [self.likeButton setTitleColor:[self likeButtonTextColor] forState:UIControlStateNormal];
