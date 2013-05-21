@@ -14,6 +14,7 @@
 
 @interface GiraffeSettingsViewController ()
 
+@property (weak, nonatomic) IBOutlet UIView *transparentView;
 @property (weak, nonatomic) IBOutlet UIControl *settingsView;
 
 @property (weak, nonatomic) IBOutlet UITextField *usernameField;
@@ -105,58 +106,58 @@
 - (IBAction)updateAccount:(UIButton *)sender {
     if ([[self.usernameField text] isEqualToString:[User currentUser].username] &&
         [[self.emailField text] isEqualToString:[User currentUser].email]) {
-        [self.view makeToast:@"Account details unchanged." duration:1.5f position:@"top"];
+        [self.transparentView makeToast:@"Account details unchanged." duration:1.5f position:@"top"];
         return;
     }
     
-    [self.view makeToastActivity];
+    [self.transparentView makeToastActivity];
     [[GiraffeClient sharedClient] beginUserUpdatePutWithUser:[self userFromInput] success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [self.view hideToastActivity];
+        [self.transparentView hideToastActivity];
         if ([responseObject objectForKey:@"error"]) {
-            [self.view makeToast:[responseObject objectForKey:@"error"] duration:1.5f position:@"top"];
+            [self.transparentView makeToast:[responseObject objectForKey:@"error"] duration:1.5f position:@"top"];
             return;
         }
         
-        [self.view makeToast:[responseObject objectForKey:@"message"] duration:1.5f position:@"top"];
+        [self.transparentView makeToast:[responseObject objectForKey:@"message"] duration:1.5f position:@"top"];
         [[User currentUser] updateWithDictionary:[responseObject objectForKey:@"user"]];
         [self.view endEditing:YES];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [self.view hideToastActivity];
-        [self.view makeToast:[error localizedDescription] duration:1.5f position:@"top"];
+        [self.transparentView hideToastActivity];
+        [self.transparentView makeToast:[error localizedDescription] duration:1.5f position:@"top"];
     }];
 }
 
 - (IBAction)changePassword:(UIButton *)sender {
     if (![self.oldPasswordField.text length]) {
-        [self.view makeToast:@"Old password field cannot be blank." duration:1.5f position:@"top"];
+        [self.transparentView makeToast:@"Old password field cannot be blank." duration:1.5f position:@"top"];
         return;
     }
     
     if (![self.passwordField.text length]) {
-        [self.view makeToast:@"Password field cannot be blank." duration:1.5f position:@"top"];
+        [self.transparentView makeToast:@"Password field cannot be blank." duration:1.5f position:@"top"];
         return;
     }
     
     if (![self.confirmPasswordField.text length]) {
-        [self.view makeToast:@"Confirm password field cannot be blank." duration:1.5f position:@"top"];
+        [self.transparentView makeToast:@"Confirm password field cannot be blank." duration:1.5f position:@"top"];
         return;
     }
     
     if (![self.passwordField.text isEqualToString:self.confirmPasswordField.text]) {
-        [self.view makeToast:@"Passwords do not match." duration:1.5f position:@"top"];
+        [self.transparentView makeToast:@"Passwords do not match." duration:1.5f position:@"top"];
         return;
     }
     
-    [self.view makeToastActivity];
+    [self.transparentView makeToastActivity];
     [[GiraffeClient sharedClient] beginUserPasswordUpdatePutWithPassword:[self.passwordField text] oldPassword:[self.oldPasswordField text] success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [self.view hideToastActivity];
+        [self.transparentView hideToastActivity];
         
         if ([responseObject objectForKey:@"error"]) {
-            [self.view makeToast:[responseObject objectForKey:@"error"] duration:1.5f position:@"top"];
+            [self.transparentView makeToast:[responseObject objectForKey:@"error"] duration:1.5f position:@"top"];
             return;
         }
         
-        [self.view makeToast:[responseObject objectForKey:@"message"] duration:1.5f position:@"top"];
+        [self.transparentView makeToast:[responseObject objectForKey:@"message"] duration:1.5f position:@"top"];
         [self.view endEditing:YES];
         
         // clear fields
@@ -164,15 +165,15 @@
         self.passwordField.text = @"";
         self.confirmPasswordField.text = @"";
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [self.view hideToastActivity];
-        [self.view makeToast:[error localizedDescription] duration:1.5f position:@"top"];
+        [self.transparentView hideToastActivity];
+        [self.transparentView makeToast:[error localizedDescription] duration:1.5f position:@"top"];
     }];
 }
 
 - (IBAction)logout:(UIBarButtonItem *)sender {
-    [self.view makeToastActivity];
+    [self.transparentView makeToastActivity];
     [[GiraffeClient sharedClient] beginUserLogoutPostWithUser:[User currentUser] success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [self.view hideToastActivity];
+        [self.transparentView hideToastActivity];
         
         [[User currentUser] logout];
         [self.view endEditing:YES];
@@ -182,8 +183,8 @@
         [homeViewController.view makeToast:[responseObject objectForKey:@"message"] duration:1.5f position:@"top"];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [self.view hideToastActivity];
-        [self.view makeToast:[error localizedDescription] duration:1.5f position:@"top"];
+        [self.transparentView hideToastActivity];
+        [self.transparentView makeToast:[error localizedDescription] duration:1.5f position:@"top"];
     }];
 }
 
