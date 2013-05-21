@@ -93,39 +93,39 @@
 {
     if (self.loginType == UserLoginTypeLogin) {
         if (![self.usernameField.text length]) {
-            [self makeToast:@"Username or email field cannot be blank." duration:1.5f position:@"top"];
+            [self.delegate userLoginView:self displayMessage:@"Username or email field cannot be blank."];
             return NO;
         }
         
         if (![self.passwordField.text length]) {
-            [self makeToast:@"Password field cannot be blank." duration:1.5f position:@"top"];
+            [self.delegate userLoginView:self displayMessage:@"Password field cannot be blank."];
             return NO;
         }
         
         return YES;
     } else if (self.loginType == UserLoginTypeSignup) {
         if (![self.usernameField.text length]) {
-            [self makeToast:@"Username field cannot be blank." duration:1.5f position:@"top"];
+            [self.delegate userLoginView:self displayMessage:@"Username field cannot be blank."];
             return NO;
         }
         
         if (![self.emailField.text length]) {
-            [self makeToast:@"Email field cannot be blank." duration:1.5f position:@"top"];
+            [self.delegate userLoginView:self displayMessage:@"Email field cannot be blank."];
             return NO;
         }
         
         if (![self.passwordField.text length]) {
-            [self makeToast:@"Password field cannot be blank." duration:1.5f position:@"top"];
+            [self.delegate userLoginView:self displayMessage:@"Password field cannot be blank."];
             return NO;
         }
         
         if (![self.passwordConfirmField.text length]) {
-            [self makeToast:@"Password confirm field cannot be blank." duration:1.5f position:@"top"];
+            [self.delegate userLoginView:self displayMessage:@"Password confirm field cannot be blank."];
             return NO;
         }
         
         if (![self.passwordField.text isEqualToString:self.passwordConfirmField.text]) {
-            [self makeToast:@"Passwords do not match." duration:1.5f position:@"top"];
+            [self.delegate userLoginView:self displayMessage:@"Passwords do not match."];
             return NO;
         }
         
@@ -368,6 +368,11 @@ NSString *const kSwitchToSignupButtonTitle = @"Don't have an account?";
             self.loginType = UserLoginTypeLogin;
             break;
     }
+}
+
+- (void)backgroundTapped
+{
+    [self endEditing:YES];
 }
 
 //#pragma mark - Action sheet

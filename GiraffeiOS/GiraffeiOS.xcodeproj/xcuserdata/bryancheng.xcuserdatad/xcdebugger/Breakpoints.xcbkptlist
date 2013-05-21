@@ -7,26 +7,13 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "NSDate-TimeAgo-master/Toast+UIView.m"
-         timestampString = "390819021.273771"
+         filePath = "GiraffeiOS/UserLoginController.m"
+         timestampString = "390823475.326999"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "102"
-         endingLineNumber = "102"
-         landmarkName = "-showToast:duration:position:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "NSDate-TimeAgo-master/Toast+UIView.m"
-         timestampString = "390819068.128398"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "100"
-         endingLineNumber = "100"
-         landmarkName = "-showToast:duration:position:"
+         startingLineNumber = "206"
+         endingLineNumber = "206"
+         landmarkName = "-centerOnViewForKeyboard"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

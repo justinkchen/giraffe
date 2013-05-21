@@ -189,7 +189,6 @@
 }
 
 - (IBAction)backgroundTouched:(UIControl *)sender {
-    NSLog(@"frame origin value %f", self.settingsView.frameOriginY);
     [self.view endEditing:YES];
 }
 
