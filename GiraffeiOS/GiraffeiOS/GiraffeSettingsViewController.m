@@ -14,6 +14,8 @@
 
 @interface GiraffeSettingsViewController ()
 
+@property (weak, nonatomic) IBOutlet UIControl *settingsView;
+
 @property (weak, nonatomic) IBOutlet UITextField *usernameField;
 @property (weak, nonatomic) IBOutlet UITextField *emailField;
 @property (weak, nonatomic) IBOutlet UITextField *oldPasswordField;
@@ -125,8 +127,24 @@
 }
 
 - (IBAction)changePassword:(UIButton *)sender {
-    if (![[self.passwordField text] isEqualToString:[self.confirmPasswordField text]]) {
-        // notify error not equal
+    if (![self.oldPasswordField.text length]) {
+        [self.view makeToast:@"Old password field cannot be blank." duration:1.5f position:@"top"];
+        return;
+    }
+    
+    if (![self.passwordField.text length]) {
+        [self.view makeToast:@"Password field cannot be blank." duration:1.5f position:@"top"];
+        return;
+    }
+    
+    if (![self.confirmPasswordField.text length]) {
+        [self.view makeToast:@"Confirm password field cannot be blank." duration:1.5f position:@"top"];
+        return;
+    }
+    
+    if (![self.passwordField.text isEqualToString:self.confirmPasswordField.text]) {
+        [self.view makeToast:@"Passwords do not match." duration:1.5f position:@"top"];
+        return;
     }
     
     [self.view makeToastActivity];
@@ -205,14 +223,15 @@ NSTimeInterval kKeyboardAnimationDuration;
 
 - (void)centerOnViewForKeyboard
 {
+    NSLog(@"centering");
     if (!CGRectIsNull(self.keyboardFrame)) {
         [UIView animateWithDuration:kKeyboardAnimationDuration
                          animations:^{
                              if (self.viewToCenter) {
                                  CGFloat visibleHeight = self.view.frameHeight - self.keyboardFrame.size.height;
-                                 self.view.frameOriginY = centerOffset(self.viewToCenter.frameHeight, visibleHeight) - self.viewToCenter.frameOriginY;
+                                 self.settingsView.frameOriginY = centerOffset(self.viewToCenter.frameHeight, visibleHeight) - self.viewToCenter.frameOriginY;
                              } else {
-                                 self.view.frameOriginY = 0.0;
+                                 self.settingsView.frameOriginY = 0.0;
                              }
                          }];
     }
