@@ -9,6 +9,7 @@
 #import "GiraffeSettingsViewController.h"
 #import "User.h"
 #import "UserLoginController.h"
+#import "Toast+UIView.h"
 #import "UIKit-Utility.h"
 
 @interface GiraffeSettingsViewController ()
@@ -50,7 +51,6 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUserContent:) name:@"userUpdated" object:nil];
     
-    NSLog(@"setup keyboard observers");
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
     
@@ -103,42 +103,42 @@
 - (IBAction)updateAccount:(UIButton *)sender {
     if ([[self.usernameField text] isEqualToString:[User currentUser].username] &&
         [[self.emailField text] isEqualToString:[User currentUser].email]) {
-        NSLog(@"nothing changed");
+        [self.view makeToast:@"Account details unchanged." duration:1.5f position:@"top"];
         return;
     }
     
+    [self.view makeToastActivity];
     [[GiraffeClient sharedClient] beginUserUpdatePutWithUser:[self userFromInput] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self.view hideToastActivity];
         if ([responseObject objectForKey:@"error"]) {
-            // print error
+            [self.view makeToast:[responseObject objectForKey:@"error"] duration:1.5f position:@"top"];
             return;
         }
         
-        // print success message
-        NSLog(@"user updated");
+        [self.view makeToast:[responseObject objectForKey:@"message"] duration:1.5f position:@"top"];
         [[User currentUser] updateWithDictionary:[responseObject objectForKey:@"user"]];
         [self.view endEditing:YES];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        //print error
-        NSLog(@"failed");
+        [self.view hideToastActivity];
+        [self.view makeToast:[error localizedDescription] duration:1.5f position:@"top"];
     }];
 }
 
 - (IBAction)changePassword:(UIButton *)sender {
     if (![[self.passwordField text] isEqualToString:[self.confirmPasswordField text]]) {
         // notify error not equal
-        
     }
     
-    // send request
+    [self.view makeToastActivity];
     [[GiraffeClient sharedClient] beginUserPasswordUpdatePutWithPassword:[self.passwordField text] oldPassword:[self.oldPasswordField text] success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        // check for error
+        [self.view hideToastActivity];
+        
         if ([responseObject objectForKey:@"error"]) {
-            // print error
+            [self.view makeToast:[responseObject objectForKey:@"error"] duration:1.5f position:@"top"];
             return;
         }
         
-        // print success message
-        NSLog(@"password updated");
+        [self.view makeToast:[responseObject objectForKey:@"message"] duration:1.5f position:@"top"];
         [self.view endEditing:YES];
         
         // clear fields
@@ -146,20 +146,26 @@
         self.passwordField.text = @"";
         self.confirmPasswordField.text = @"";
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        // print error
+        [self.view hideToastActivity];
+        [self.view makeToast:[error localizedDescription] duration:1.5f position:@"top"];
     }];
 }
 
 - (IBAction)logout:(UIBarButtonItem *)sender {
+    [self.view makeToastActivity];
     [[GiraffeClient sharedClient] beginUserLogoutPostWithUser:[User currentUser] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self.view hideToastActivity];
         
-        NSLog(@"logout");
         [[User currentUser] logout];
         [self.view endEditing:YES];
         
         self.tabBarController.selectedViewController = [self.tabBarController.viewControllers objectAtIndex:0];
+        UIViewController *homeViewController = [[self.tabBarController.selectedViewController childViewControllers] objectAtIndex:0];
+        [homeViewController.view makeToast:[responseObject objectForKey:@"message"] duration:1.5f position:@"top"];
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        // print error
+        [self.view hideToastActivity];
+        [self.view makeToast:[error localizedDescription] duration:1.5f position:@"top"];
     }];
 }
 
@@ -214,7 +220,6 @@ NSTimeInterval kKeyboardAnimationDuration;
 
 - (void)handleKeyboardDidShow:(NSNotification *)notification
 {
-    NSLog(@"showing keyboard");
     self.keyboardFrame = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     self.keyboardFrame = [self.view convertRect:self.keyboardFrame fromView:nil];
     self.keyboardFrame = CGRectIntersection(self.view.bounds, self.keyboardFrame);
@@ -226,7 +231,6 @@ NSTimeInterval kKeyboardAnimationDuration;
 
 - (void)handleKeyboardDidHide:(NSNotification *)notification
 {
-    NSLog(@"hiding keyboard");
     self.viewToCenter = nil;
     [self centerOnViewForKeyboard];
     self.keyboardFrame = CGRectNull;

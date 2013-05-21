@@ -13,6 +13,7 @@
 #import "GraffitiCell.h"
 #import "User.h"
 #import "UserLoginController.h"
+#import "Toast+UIView.h"
 #import "Foundation-Utility.h"
 #import "UIKit-Utility.h"
 
@@ -75,21 +76,26 @@
     }
     
     [[GiraffeClient sharedClient] beginUserGraffitiGetWithId:[User currentUser].identifier success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if ([responseObject objectForKey:@"error"]) {
+            [self.view makeToast:[responseObject objectForKey:@"error"] duration:1.5f position:@"top"];
+            return;
+        }
+        
         [self graffitiRequestFinishedWithDictionary:[responseObject ifIsKindOfClass:[NSDictionary class]]];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        // print error
+        [self.view makeToast:[error localizedDescription] duration:1.5f position:@"top"];
     }];
     
     [[GiraffeClient sharedClient] beginUserStatsGetWithId:[User currentUser].identifier success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if ([responseObject objectForKey:@"error"]) {
-            NSLog(@"%@", [responseObject objectForKey:@"error"]);
+            [self.view makeToast:[responseObject objectForKey:@"error"] duration:1.5f position:@"top"];
             return;
         }
         
         [[User currentUser] updateStatsWithDictionary:[responseObject objectForKey:@"stats"]];
         [self setUserStats];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        // print error
+        [self.view makeToast:[error localizedDescription] duration:1.5f position:@"top"];
     }];
 }
 
@@ -128,7 +134,6 @@
 
 - (void)updateUserContent:(NSNotification *)notification
 {
-    NSLog(@"updated!");
     [self setUserContent];
 }
 
@@ -219,19 +224,21 @@
     NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
     
     if ([mediaType isEqualToString:@"public.image"]) {
+        [self.view makeToastActivity];
         [[GiraffeClient sharedClient] beginUserAvatarUpdatePutWithImage:[info objectForKey:UIImagePickerControllerOriginalImage] success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            // if no error
-            NSLog(@"response %@", responseObject);
+            [self.view hideToastActivity];
             if ([responseObject objectForKey:@"error"]) {
-                // todo print error
+                [self.view makeToast:[responseObject objectForKey:@"error"] duration:1.5f position:@"top"];
                 return;
             }
-            NSLog(@"after it");
+            
+            [self.view makeToast:[responseObject objectForKey:@"message"] duration:1.5f position:@"top"];
             [self updateCurrentUserWithDictionary:responseObject];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            // todo print error
+            [self.view hideToastActivity];
+            [self.view makeToast:[error localizedDescription] duration:1.5f position:@"top"];
         }];
-//        [self.avatarView setImage:[info objectForKey:kUIImagePickerImageKey]];
+        
         [picker dismissViewControllerAnimated:YES completion:^{
             // do nothing
         }];
@@ -256,7 +263,10 @@
 - (void)likeGraffiti:(id)sender
 {
     // Check to make sure user logged in
-    if (![User currentUser].identifier) return;
+    if (![User currentUser].identifier) {
+        [self.view makeToast:@"Please log in to like graffiti." duration:1.5f position:@"top"];
+        return;
+    };
     
     UIButton *likeButton = (UIButton *)sender;
     GraffitiCell *cell = (GraffitiCell *)[likeButton superview];

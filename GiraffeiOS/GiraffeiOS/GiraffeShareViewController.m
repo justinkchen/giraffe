@@ -9,6 +9,7 @@
 #import "GiraffeShareViewController.h"
 #import "GiraffeShareView.h"
 #import "UserLoginController.h"
+#import "Toast+UIView.h"
 #import "UIKit-Utility.h"
 
 @interface GiraffeShareViewController () <GiraffeShareViewDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate>
@@ -67,12 +68,11 @@
         return;
     }
     
+    [self.view makeToastActivity];
     // Post graffiti to server
-    NSLog(@"graffiti image %@", self.graffitiImage);
     [[GiraffeClient sharedClient] beginGraffitiNewPostWithGraffiti:graffiti image:self.graffitiImage success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        // display responseObject
-        // redirect to nearby page if successful?
-        NSLog(@"successful post to server!");
+        [self.view hideToastActivity];
+        [self.view makeToast:@"Graffiti Successfully posted." duration:1.5f position:@"top"];
         
         self.graffitiImage = nil;
         
@@ -83,7 +83,7 @@
         // Navigate to the 1st tab
         self.tabBarController.selectedViewController = [self.tabBarController.viewControllers objectAtIndex:0];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        // display error message
+        // todo display error message
     }];
 }
 

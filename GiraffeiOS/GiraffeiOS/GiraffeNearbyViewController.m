@@ -13,6 +13,7 @@
 #import "GiraffeClient.h"
 #import "LocationManager.h"
 #import "UIKit-Utility.h"
+#import "Toast+UIView.h"
 #import "Foundation-Utility.h"
 
 @interface GiraffeNearbyViewController () <UITableViewDataSource, UITableViewDelegate>
@@ -61,14 +62,17 @@
 
 - (void)requestGraffitiFromServer
 {
+    [self.view makeToastActivity];
     // Kick off load request
     [[GiraffeClient sharedClient] beginGraffitiNearbyGetWithLatitude:[LocationManager sharedInstance].latitude
                                                            longitude:[LocationManager sharedInstance].longitude success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                               [self.view hideToastActivity];
                                                                NSLog(@"got response %@", responseObject);
                                                                
                                                                [self graffitiRequestFinishedWithDictionary:[responseObject ifIsKindOfClass:[NSDictionary class]]];
                                                            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                                               NSLog(@"Graffiti request failed with error: %@", [error localizedDescription]);
+                                                               [self.view hideToastActivity];
+                                                               [self.view makeToast:[error localizedDescription] duration:1.5f position:@"top"];
                                                            }];
 }
 
@@ -86,7 +90,6 @@
 }
 
 - (IBAction)refreshButtonTapped:(UIBarButtonItem *)sender {
-    // display loading icon?
     [self requestGraffitiFromServer];
 }
 
@@ -108,7 +111,10 @@
 - (void)likeGraffiti:(id)sender
 {
     // Check to make sure user logged in
-    if (![User currentUser].identifier) return;
+    if (![User currentUser].identifier) {
+        [self.view makeToast:@"Please log in to like graffiti." duration:1.5f position:@"top"];
+        return;
+    };
     
     UIButton *likeButton = (UIButton *)sender;
     GraffitiCell *cell = (GraffitiCell *)[likeButton superview];
@@ -128,6 +134,7 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         // todo print error
         // if error revert cell and isLiked
+        [self.view makeToast:[error localizedDescription] duration:1.5f position:@"top"];
     }];
 }
 

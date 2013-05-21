@@ -9,6 +9,7 @@
 #import "UserLoginView.h"
 #import "User.h"
 #import "UIKit-Utility.h"
+#import "Toast+UIView.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface UserLoginView () <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate>
@@ -19,8 +20,8 @@
 @property (nonatomic, retain) UITextField *emailField;
 @property (nonatomic, retain) UITextField *passwordField;
 @property (nonatomic, retain) UITextField *passwordConfirmField;
-@property (nonatomic, retain) UIImageView *avatarImageView;
-@property (nonatomic, retain) UIControl *avatarImageControl;
+//@property (nonatomic, retain) UIImageView *avatarImageView;
+//@property (nonatomic, retain) UIControl *avatarImageControl;
 @property (nonatomic, retain) UIControl *firstResponderControl;
 @property (nonatomic, retain) UIButton *switchTypeButton;
 
@@ -86,6 +87,54 @@
     return user;
 }
 
+#pragma mark - Utility
+
+- (BOOL)validateInput
+{
+    if (self.loginType == UserLoginTypeLogin) {
+        if (![self.usernameField.text length]) {
+            [self makeToast:@"Username or email field cannot be blank." duration:1.5f position:@"top"];
+            return NO;
+        }
+        
+        if (![self.passwordField.text length]) {
+            [self makeToast:@"Password field cannot be blank." duration:1.5f position:@"top"];
+            return NO;
+        }
+        
+        return YES;
+    } else if (self.loginType == UserLoginTypeSignup) {
+        if (![self.usernameField.text length]) {
+            [self makeToast:@"Username field cannot be blank." duration:1.5f position:@"top"];
+            return NO;
+        }
+        
+        if (![self.emailField.text length]) {
+            [self makeToast:@"Email field cannot be blank." duration:1.5f position:@"top"];
+            return NO;
+        }
+        
+        if (![self.passwordField.text length]) {
+            [self makeToast:@"Password field cannot be blank." duration:1.5f position:@"top"];
+            return NO;
+        }
+        
+        if (![self.passwordConfirmField.text length]) {
+            [self makeToast:@"Password confirm field cannot be blank." duration:1.5f position:@"top"];
+            return NO;
+        }
+        
+        if (![self.passwordField.text isEqualToString:self.passwordConfirmField.text]) {
+            [self makeToast:@"Passwords do not match." duration:1.5f position:@"top"];
+            return NO;
+        }
+        
+        return YES;
+    }
+    
+    return NO;
+}
+
 const NSTimeInterval kLoginTypeSwitchAnimationDuration = 0.2;
 
 - (void)setLoginType:(UserLoginType)loginType
@@ -125,41 +174,41 @@ NSString *const kSwitchToSignupButtonTitle = @"Don't have an account?";
     }
     self.firstResponderControl.frame = self.bounds;
     
-    if (shouldShowSignupViews) {
-        // Avatar image
-        [UIView setAnimationsEnabled:NO];
-        if (!self.avatarImageView) {
-            self.avatarImageView = [UIImageView new];
-            self.avatarImageView.image = [UIImage imageNamed:kAvatarImagePlaceholderFilename];
-            self.avatarImageView.frameSize = CGSizeMake(kAvatarImageSize, kAvatarImageSize);
-            self.avatarImageView.layer.cornerRadius = 4.0;
-            [self addSubview:self.avatarImageView];
-        }
-        if (self.avatarImage) {
-            self.avatarImageView.image = self.avatarImage;
-            self.avatarImageView.layer.borderWidth = 0.0;
-        } else {
-            self.avatarImageView.layer.borderWidth = 1.0;
-            self.avatarImageView.layer.borderColor = [UIColor grayColor].CGColor;
-        }
-        self.avatarImageView.frameOriginX = centerOffset(self.avatarImageView.frameWidth, self.frameWidth);
-        self.avatarImageView.frameOriginY = topInset;
-        topInset = self.avatarImageView.bottomEdge + kUserLoginPadding;
-        [UIView setAnimationsEnabled:YES];
-        self.avatarImageView.alpha = 1.0;
-        
-        // Avatar control
-        if (!self.avatarImageControl) {
-            self.avatarImageControl = [UIControl new];
-            self.avatarImageControl.backgroundColor = [UIColor clearColor];
-            [self.avatarImageControl addTarget:self action:@selector(handleAvatarImageTapped:) forControlEvents:UIControlEventTouchUpInside];
-            [self addSubview:self.avatarImageControl];
-        }
-        self.avatarImageControl.frame = self.avatarImageView.frame;
-        self.avatarImageControl.enabled = YES;
-    }
-    self.avatarImageView.alpha = shouldShowSignupViews ? 1.0 : 0.0;
-    self.avatarImageControl.enabled = shouldShowSignupViews;
+//    if (shouldShowSignupViews) {
+//        // Avatar image
+//        [UIView setAnimationsEnabled:NO];
+//        if (!self.avatarImageView) {
+//            self.avatarImageView = [UIImageView new];
+//            self.avatarImageView.image = [UIImage imageNamed:kAvatarImagePlaceholderFilename];
+//            self.avatarImageView.frameSize = CGSizeMake(kAvatarImageSize, kAvatarImageSize);
+//            self.avatarImageView.layer.cornerRadius = 4.0;
+//            [self addSubview:self.avatarImageView];
+//        }
+//        if (self.avatarImage) {
+//            self.avatarImageView.image = self.avatarImage;
+//            self.avatarImageView.layer.borderWidth = 0.0;
+//        } else {
+//            self.avatarImageView.layer.borderWidth = 1.0;
+//            self.avatarImageView.layer.borderColor = [UIColor grayColor].CGColor;
+//        }
+//        self.avatarImageView.frameOriginX = centerOffset(self.avatarImageView.frameWidth, self.frameWidth);
+//        self.avatarImageView.frameOriginY = topInset;
+//        topInset = self.avatarImageView.bottomEdge + kUserLoginPadding;
+//        [UIView setAnimationsEnabled:YES];
+//        self.avatarImageView.alpha = 1.0;
+//        
+//        // Avatar control
+//        if (!self.avatarImageControl) {
+//            self.avatarImageControl = [UIControl new];
+//            self.avatarImageControl.backgroundColor = [UIColor clearColor];
+//            [self.avatarImageControl addTarget:self action:@selector(handleAvatarImageTapped:) forControlEvents:UIControlEventTouchUpInside];
+//            [self addSubview:self.avatarImageControl];
+//        }
+//        self.avatarImageControl.frame = self.avatarImageView.frame;
+//        self.avatarImageControl.enabled = YES;
+//    }
+//    self.avatarImageView.alpha = shouldShowSignupViews ? 1.0 : 0.0;
+//    self.avatarImageControl.enabled = shouldShowSignupViews;
     
     // Username
     if (!self.usernameField) {
@@ -276,30 +325,30 @@ NSString *const kSwitchToSignupButtonTitle = @"Don't have an account?";
 
 #pragma mark - Buttons
 
-NSString *const kImageActionSheetCamera = @"Take Photo";
-NSString *const kImageActionSheetLibrary = @"Choose Existing";
-NSString *const kImageActionSheetCancel = @"Cancel";
-
-- (void)handleAvatarImageTapped:(UIControl *)sender
-{
-    if ([self.avatarImageControl isEqual:sender]) {
-        UIActionSheet *actionSheet = nil;
-        if ([UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear]) {
-            actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                     delegate:self
-                                                            cancelButtonTitle:kImageActionSheetCancel
-                                                       destructiveButtonTitle:nil
-                                                            otherButtonTitles:kImageActionSheetCamera, kImageActionSheetLibrary, nil];
-        } else {
-            actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                      delegate:self
-                                             cancelButtonTitle:kImageActionSheetCancel
-                                        destructiveButtonTitle:nil
-                                             otherButtonTitles:kImageActionSheetLibrary, nil];
-        }
-        [actionSheet showInView:self];
-    }
-}
+//NSString *const kImageActionSheetCamera = @"Take Photo";
+//NSString *const kImageActionSheetLibrary = @"Choose Existing";
+//NSString *const kImageActionSheetCancel = @"Cancel";
+//
+//- (void)handleAvatarImageTapped:(UIControl *)sender
+//{
+//    if ([self.avatarImageControl isEqual:sender]) {
+//        UIActionSheet *actionSheet = nil;
+//        if ([UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear]) {
+//            actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+//                                                                     delegate:self
+//                                                            cancelButtonTitle:kImageActionSheetCancel
+//                                                       destructiveButtonTitle:nil
+//                                                            otherButtonTitles:kImageActionSheetCamera, kImageActionSheetLibrary, nil];
+//        } else {
+//            actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+//                                                      delegate:self
+//                                             cancelButtonTitle:kImageActionSheetCancel
+//                                        destructiveButtonTitle:nil
+//                                             otherButtonTitles:kImageActionSheetLibrary, nil];
+//        }
+//        [actionSheet showInView:self];
+//    }
+//}
 
 - (void)handleFirstResponderControlTapped:(UIControl *)sender
 {
@@ -321,30 +370,30 @@ NSString *const kImageActionSheetCancel = @"Cancel";
     }
 }
 
-#pragma mark - Action sheet
+//#pragma mark - Action sheet
+//
+//- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+//{
+//    NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
+//    if (![buttonTitle isEqualToString:kImageActionSheetCancel]) {
+//        UIImagePickerController *imagePickerController = [UIImagePickerController new];
+//        imagePickerController.delegate = self;
+//        if ([buttonTitle isEqualToString:kImageActionSheetCamera]) {
+//            imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+//        } else if ([buttonTitle isEqualToString:kImageActionSheetLibrary]) {
+//            imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+//        }
+//        [self.delegate userLoginView:self showImagePicker:imagePickerController];
+//    }
+//}
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
-    if (![buttonTitle isEqualToString:kImageActionSheetCancel]) {
-        UIImagePickerController *imagePickerController = [UIImagePickerController new];
-        imagePickerController.delegate = self;
-        if ([buttonTitle isEqualToString:kImageActionSheetCamera]) {
-            imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-        } else if ([buttonTitle isEqualToString:kImageActionSheetLibrary]) {
-            imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        }
-        [self.delegate userLoginView:self showImagePicker:imagePickerController];
-    }
-}
-
-#pragma mark - UIImagePickerControllerDelegate
-
-
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
-{
-    // figure out which image to use here and set it in self.avatarImage
-}
+//#pragma mark - UIImagePickerControllerDelegate
+//
+//
+//- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+//{
+//    // figure out which image to use here and set it in self.avatarImage
+//}
 
 #pragma mark - UITextFieldDelegate
 

@@ -237,7 +237,7 @@ const CGFloat kGraffitiCellPadding = 8.0;
     if (!self.likeButton) {
 //        self.likeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         self.likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.likeButton addTarget:nil action:@selector(viewProfile:) forControlEvents:UIControlEventTouchUpInside];
+        [self.likeButton addTarget:nil action:@selector(likeGraffiti:) forControlEvents:UIControlEventTouchUpInside];
         self.likeButton.titleLabel.font = [self likesFont];
         if (!self.graffiti.isLiked) {
             [self.likeButton setTitleColor:[self likeButtonTextColor] forState:UIControlStateNormal];

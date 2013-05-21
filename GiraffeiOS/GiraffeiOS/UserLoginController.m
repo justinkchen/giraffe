@@ -9,6 +9,7 @@
 #import "UserLoginController.h"
 #import "UserLoginView.h"
 #import "GiraffeClient.h"
+#import "Toast+UIView.h"
 #import "UIKit-Utility.h"
 #import "Foundation-Utility.h"
 
@@ -98,12 +99,12 @@ NSString *const kUserLoginControllerSignupTitle = @"Sign Up";
 
 #pragma mark - UserLoginViewDelegate
 
-- (void)userLoginView:(UserLoginView *)loginView showImagePicker:(UIImagePickerController *)imagePicker
-{
-    if ([self.loginView isEqual:loginView] && imagePicker) {
-        [self presentViewController:imagePicker animated:YES completion:nil];
-    }
-}
+//- (void)userLoginView:(UserLoginView *)loginView showImagePicker:(UIImagePickerController *)imagePicker
+//{
+//    if ([self.loginView isEqual:loginView] && imagePicker) {
+//        [self presentViewController:imagePicker animated:YES completion:nil];
+//    }
+//}
 
 - (void)userLoginView:(UserLoginView *)loginView shouldCenterAroundView:(UIView *)viewToCenter
 {
@@ -127,55 +128,46 @@ NSString *const kUserLoginControllerSignupTitle = @"Sign Up";
 
 - (void)handleRightBarButtonTapped:(id)sender
 {
-    User *user = self.loginView.userFromInput;
-//    user.avatarUrl = @"";
-//    user.dateJoined = [NSDate date];
+    if (![self.loginView validateInput]) return;
     
+    [self.view makeToastActivity];
     if (self.loginView.loginType == UserLoginTypeSignup) {
-        GiraffeClientSuccessBlock signupSuccess = ^(AFHTTPRequestOperation *operation, id responseObject) {
-            //TODO Check for error
-            if ([responseObject objectForKey:@"error"]) {
-                NSLog(@"%@", [responseObject objectForKey:@"error"]);
-                return;
-            }
-            
-            [self updateCurrentUserWithDictionary:responseObject];
-            if (self.loginView.avatarImage) {
-                [[GiraffeClient sharedClient] beginUserAvatarUpdatePutWithImage:self.loginView.avatarImage
-                                                                    success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                                                                        // TODO check for error
-                                                                        
-                                                                        [self updateCurrentUserWithDictionary:responseObject];
-                                                                        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-                                                                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                                                        // Image wouldn't upload.
-                                                                    }];
-            } else {
-                [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-            }
-        };
-        
-        [[GiraffeClient sharedClient] beginUserSignupPostWithUser:user
+        [[GiraffeClient sharedClient] beginUserSignupPostWithUser:self.loginView.userFromInput
                                                          password:self.loginView.password
-                                                          success:signupSuccess
+                                                          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                              [self.view hideToastActivity];
+                                                              if ([responseObject objectForKey:@"error"]) {
+                                                                  [self.view makeToast:[responseObject objectForKey:@"error"] duration:1.5f position:@"top"];
+                                                                  return;
+                                                              }
+                                                              
+                                                              [self.delegate.view makeToast:[responseObject objectForKey:@"message"] duration:1.5f position:@"top"];
+                                                              [self updateCurrentUserWithDictionary:responseObject];
+                                                              [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+                                                          }
                                                           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                                              // Couldn't sign up
+                                                              [self.view hideToastActivity];
+                                                              [self.view makeToast:[error localizedDescription] duration:1.5f position:@"top"];
                                                           }];
         
     } else if (self.loginView.loginType == UserLoginTypeLogin) {
         [[GiraffeClient sharedClient] beginUserLoginPostWithUsernameOrEmail:self.loginView.usernameOrEmail
-                                                                  password:self.loginView.password success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                                                                      if ([responseObject objectForKey:@"error"]) {
-                                                                          // print error
-                                                                          NSLog(@"%@", [responseObject objectForKey:@"error"]);
-                                                                          return;
-                                                                      }
-                                                                      
-                                                                      [self updateCurrentUserWithDictionary:responseObject];
-                                                                      [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-                                                                  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                                                      // Couldn't log in
-                                                                  }];
+                                                                   password:self.loginView.password
+                                                                    success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                                        [self.view hideToastActivity];
+                                                                        if ([responseObject objectForKey:@"error"]) {
+                                                                            [self.view makeToast:[responseObject objectForKey:@"error"] duration:1.5f position:@"top"];
+                                                                            return;
+                                                                        }
+                                                                        
+                                                                        [self.delegate.view makeToast:[responseObject objectForKey:@"message"] duration:1.5f position:@"top"];
+                                                                        [self updateCurrentUserWithDictionary:responseObject];
+                                                                        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+                                                                    }
+                                                                    failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                                        [self.view hideToastActivity];
+                                                                        [self.view makeToast:[error localizedDescription] duration:1.5f position:@"top"];
+                                                                    }];
     }
 }
 

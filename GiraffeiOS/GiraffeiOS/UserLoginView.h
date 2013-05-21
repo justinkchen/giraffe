@@ -23,13 +23,15 @@ typedef enum {
 @property (nonatomic, readonly) User *userFromInput;
 @property (nonatomic, readonly) NSString *usernameOrEmail;
 @property (nonatomic, readonly) NSString *password;
-@property (nonatomic, retain) UIImage *avatarImage;
+//@property (nonatomic, retain) UIImage *avatarImage;
+
+- (BOOL)validateInput;
 
 @end
 
 @protocol UserLoginViewDelegate <NSObject>
 
-- (void)userLoginView:(UserLoginView *)loginView showImagePicker:(UIImagePickerController *)imagePicker;
+//- (void)userLoginView:(UserLoginView *)loginView showImagePicker:(UIImagePickerController *)imagePicker;
 - (void)userLoginView:(UserLoginView *)loginView shouldCenterAroundView:(UIView *)viewToCenter;
 - (void)userLoginView:(UserLoginView *)loginView didChooseLoginType:(UserLoginType)loginType;
 
