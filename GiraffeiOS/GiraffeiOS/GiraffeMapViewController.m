@@ -13,6 +13,9 @@
 
 @property (nonatomic, retain) UIWebView *webView;
 
+@property (nonatomic, assign) float latitude;
+@property (nonatomic, assign) float longitude;
+
 @end
 
 @implementation GiraffeMapViewController
@@ -40,9 +43,27 @@ NSString *const kHeatmapUrlFormat = @"http://ec2-54-243-69-6.compute-1.amazonaws
 {
     [super viewWillAppear:animated];
     
-    NSString *urlString = [NSString stringWithFormat:kHeatmapUrlFormat, [LocationManager sharedInstance].latitude, [LocationManager sharedInstance].longitude];
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
-    [self.webView loadRequest:request];
+    [self reloadMapView];
+}
+
+- (IBAction)refreshButtonTapped:(UIBarButtonItem *)sender {
+    [self reloadMapView];
+}
+
+- (void)reloadMapView
+{
+    float newLatitude = [LocationManager sharedInstance].latitude;
+    float newLongitude = [LocationManager sharedInstance].longitude;
+    
+    if (newLatitude != self.latitude ||
+        newLongitude != self.longitude) {
+        NSString *urlString = [NSString stringWithFormat:kHeatmapUrlFormat, [LocationManager sharedInstance].latitude, [LocationManager sharedInstance].longitude];
+        NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
+        [self.webView loadRequest:request];
+        
+        self.latitude = newLatitude;
+        self.longitude = newLongitude;
+    }
 }
 
 @end

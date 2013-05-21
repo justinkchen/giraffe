@@ -19,7 +19,7 @@
     
     int minutes;
     NSString *localeFormat;
-
+    
     if(deltaSeconds < 5)
     {
         return NSDateTimeAgoLocalizedStrings(@"Just now");
@@ -144,5 +144,24 @@
 }
 
 #pragma clang diagnostic pop
+
+@end
+
+@implementation NSDateFormatter (Utility)
+
++ (NSDateFormatter *)sharedDateFormatter
+{
+    // Create Singleton
+    static NSDateFormatter *sharedDateFormatter = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedDateFormatter = [[NSDateFormatter alloc] init];
+        [sharedDateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
+        [sharedDateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
+//        NSLog(@"time zone%@", [NSTimeZone systemTimeZone]);
+    });
+    
+    return sharedDateFormatter;
+}
 
 @end

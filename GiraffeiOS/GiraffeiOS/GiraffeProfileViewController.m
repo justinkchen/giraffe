@@ -12,6 +12,8 @@
 #import "Graffiti.h"
 #import "GraffitiCell.h"
 #import "User.h"
+#import "UserLoginController.h"
+#import "Toast+UIView.h"
 #import "Foundation-Utility.h"
 #import "UIKit-Utility.h"
 
@@ -69,25 +71,31 @@
 {
     [super viewWillAppear:animated];
     
+    if (![[User currentUser] isLoggedIn]) {
+        [self showUserLogin];
+    }
+    
     [[GiraffeClient sharedClient] beginUserGraffitiGetWithId:[User currentUser].identifier success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"yay %@", responseObject);
+        if ([responseObject objectForKey:@"error"]) {
+            [self.view makeToast:[responseObject objectForKey:@"error"] duration:1.5f position:@"top"];
+            return;
+        }
+        
         [self graffitiRequestFinishedWithDictionary:[responseObject ifIsKindOfClass:[NSDictionary class]]];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        // print error
+        [self.view makeToast:[error localizedDescription] duration:1.5f position:@"top"];
     }];
     
     [[GiraffeClient sharedClient] beginUserStatsGetWithId:[User currentUser].identifier success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"yay stats %@", responseObject);
-        
         if ([responseObject objectForKey:@"error"]) {
-            NSLog(@"%@", [responseObject objectForKey:@"error"]);
+            [self.view makeToast:[responseObject objectForKey:@"error"] duration:1.5f position:@"top"];
             return;
         }
         
         [[User currentUser] updateStatsWithDictionary:[responseObject objectForKey:@"stats"]];
         [self setUserStats];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        // print error
+        [self.view makeToast:[error localizedDescription] duration:1.5f position:@"top"];
     }];
 }
 
@@ -126,7 +134,6 @@
 
 - (void)updateUserContent:(NSNotification *)notification
 {
-    NSLog(@"updated!");
     [self setUserContent];
 }
 
@@ -178,8 +185,19 @@
                                         destructiveButtonTitle:nil
                                              otherButtonTitles:@"Choose Existing", nil];
         }
-        [actionSheet showInView:self.view];
+        [actionSheet showInView:self.parentViewController.tabBarController.view];
     }
+}
+
+#pragma mark - GiraffeLgoinViewController
+
+- (void)showUserLogin
+{
+    // Show user login screen
+    UserLoginController *loginController = [UserLoginController new];
+    loginController.delegate = self;
+    
+    [loginController displayUserLoginViewController];
 }
 
 #pragma mark - Action sheet
@@ -195,36 +213,32 @@
         } else if ([buttonTitle isEqualToString:@"Choose Existing"]) {
             imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         }
-        [self showImagePicker:imagePickerController];
+        [self presentViewController:imagePickerController animated:YES completion:nil];
     }
-}
-
-- (void)showImagePicker:(UIImagePickerController *)imagePicker
-{
-    [self presentViewController:imagePicker animated:YES completion:nil];
 }
 
 #pragma mark - UIImagePickerControllerDelegate
 
-NSString *const kUIImagePickerImageKey = @"UIImagePickerControllerOriginalImage";
-
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    // figure out which image to use here and submit it to the db
-    if ([info objectForKey:kUIImagePickerImageKey]) {
-        [[GiraffeClient sharedClient] beginUserAvatarUpdatePutWithImage:[info objectForKey:kUIImagePickerImageKey] success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            // if no error
-            NSLog(@"response %@", responseObject);
+    NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
+    
+    if ([mediaType isEqualToString:@"public.image"]) {
+        [self.view makeToastActivity];
+        [[GiraffeClient sharedClient] beginUserAvatarUpdatePutWithImage:[info objectForKey:UIImagePickerControllerOriginalImage] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [self.view hideToastActivity];
             if ([responseObject objectForKey:@"error"]) {
-                // todo print error
+                [self.view makeToast:[responseObject objectForKey:@"error"] duration:1.5f position:@"top"];
                 return;
             }
-            NSLog(@"after it");
+            
+            [self.view makeToast:[responseObject objectForKey:@"message"] duration:1.5f position:@"top"];
             [self updateCurrentUserWithDictionary:responseObject];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            // todo print error
+            [self.view hideToastActivity];
+            [self.view makeToast:[error localizedDescription] duration:1.5f position:@"top"];
         }];
-//        [self.avatarView setImage:[info objectForKey:kUIImagePickerImageKey]];
+        
         [picker dismissViewControllerAnimated:YES completion:^{
             // do nothing
         }];
@@ -238,10 +252,21 @@ NSString *const kUIImagePickerImageKey = @"UIImagePickerControllerOriginalImage"
     return [[self tableView:tableView cellForRowAtIndexPath:indexPath] sizeThatFits:tableView.frameSize].height;
 }
 
+- (void)viewProfile:(id)sender
+{
+    UIButton *usernameButton = (UIButton *)sender;
+    GraffitiCell *cell = (GraffitiCell *)[usernameButton superview];
+    
+    NSLog(@"view profile %d", cell.graffiti.user.identifier);
+}
+
 - (void)likeGraffiti:(id)sender
 {
     // Check to make sure user logged in
-    if (![User currentUser].identifier) return;
+    if (![User currentUser].identifier) {
+        [self.view makeToast:@"Please log in to like graffiti." duration:1.5f position:@"top"];
+        return;
+    };
     
     UIButton *likeButton = (UIButton *)sender;
     GraffitiCell *cell = (GraffitiCell *)[likeButton superview];
@@ -276,7 +301,6 @@ NSString *const kUIImagePickerImageKey = @"UIImagePickerControllerOriginalImage"
     GraffitiCell *cell = [[tableView dequeueReusableCellWithIdentifier:kGraffitiCellIdentifier] ifIsKindOfClass:[GraffitiCell class]];
     if (!cell) {
         cell = [[GraffitiCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kGraffitiCellIdentifier];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     }
     cell.graffiti = [self.graffiti objectAtIndex:indexPath.row];
     return cell;

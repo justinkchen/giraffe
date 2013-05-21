@@ -8,6 +8,7 @@
 
 #import "Graffiti.h"
 #import "User.h"
+#import "NSDate+TimeAgo.h"
 
 @implementation Graffiti
 
@@ -76,13 +77,14 @@ NSString *const kParamNameGraffitiIsLiked = @"isLiked";
     // x, y, z positions
     
     if ([dictionary objectForKey:kParamNameGraffitiUserId]) {
-        self.user = [[User alloc] initWithDictionary:@{kParamNameGraffitiUserId: [dictionary objectForKey:kParamNameGraffitiUserId],
+        self.user = [[User alloc] initWithDictionary:@{kParamNameUserId: [dictionary objectForKey:kParamNameGraffitiUserId],
                       kParamNameGraffitiUserUsername: [dictionary objectForKey:kParamNameGraffitiUserUsername],
                      kParamNameGraffitiUserAvatarUrl: [dictionary objectForKey:kParamNameGraffitiUserAvatarUrl]}];
     }
     
     if ([dictionary objectForKey:kParamNameGraffitiDateCreated]) {
-        self.dateCreated = [dictionary objectForKey:kParamNameGraffitiDateCreated];
+        
+        self.dateCreated = [[NSDateFormatter sharedDateFormatter] dateFromString:[dictionary objectForKey:kParamNameGraffitiDateCreated]];
     }
     
     if ([dictionary objectForKey:kParamNameGraffitiLikes]) {

@@ -18,11 +18,12 @@
 - (void)updateMapView;
 - (void)resetView;
 
+@property (nonatomic, readonly) Graffiti *graffitiFromInput;
+
 @end
 
 @protocol GiraffeShareViewDelegate <NSObject>
 
-- (void)postButtonTappedWithGraffiti:(Graffiti *)graffiti;
 - (void)showUserLogin;
 
 @end

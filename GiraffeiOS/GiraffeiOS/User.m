@@ -57,6 +57,11 @@ NSString *const kCurrentUserDefaultsKey = @"currentUser";
     return currentUser;
 }
 
+- (BOOL)isLoggedIn
+{
+    return self.identifier != 0;
+}
+
 NSString *const kUserDataKey = @"userData";
 
 + (void)saveUser {

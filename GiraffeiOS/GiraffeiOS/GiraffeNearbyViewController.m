@@ -13,11 +13,12 @@
 #import "GiraffeClient.h"
 #import "LocationManager.h"
 #import "UIKit-Utility.h"
+#import "Toast+UIView.h"
 #import "Foundation-Utility.h"
 
 @interface GiraffeNearbyViewController () <UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, retain) UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) NSMutableArray *graffiti;
 
 @end
@@ -30,10 +31,6 @@
 {
     [super viewDidLoad];
     
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-    [self.view addSubview:self.tableView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -48,15 +45,7 @@
     
     NSLog(@"location %f %f", [LocationManager sharedInstance].latitude, [LocationManager sharedInstance].longitude);
     
-    // Kick off load request
-    [[GiraffeClient sharedClient] beginGraffitiNearbyGetWithLatitude:[LocationManager sharedInstance].latitude
-                                                           longitude:[LocationManager sharedInstance].longitude success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                                                               NSLog(@"got response %@", responseObject);
-                                                               
-                                                               [self graffitiRequestFinishedWithDictionary:[responseObject ifIsKindOfClass:[NSDictionary class]]];
-                                                                                                                          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                                               NSLog(@"Graffiti request failed with error: %@", [error localizedDescription]);
-                                                           }];
+    [self requestGraffitiFromServer];
 }
 
 #pragma mark - Accessors
@@ -71,6 +60,22 @@
 
 #pragma mark - Utility
 
+- (void)requestGraffitiFromServer
+{
+    [self.view makeToastActivity];
+    // Kick off load request
+    [[GiraffeClient sharedClient] beginGraffitiNearbyGetWithLatitude:[LocationManager sharedInstance].latitude
+                                                           longitude:[LocationManager sharedInstance].longitude success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                               [self.view hideToastActivity];
+                                                               NSLog(@"got response %@", responseObject);
+                                                               
+                                                               [self graffitiRequestFinishedWithDictionary:[responseObject ifIsKindOfClass:[NSDictionary class]]];
+                                                           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                               [self.view hideToastActivity];
+                                                               [self.view makeToast:[error localizedDescription] duration:1.5f position:@"top"];
+                                                           }];
+}
+
 - (void)graffitiRequestFinishedWithDictionary:(NSDictionary *)dictionary
 {
     NSArray *graffitiDicts = [dictionary objectForKey:kParamNameGraffiti];
@@ -84,6 +89,10 @@
     }
 }
 
+- (IBAction)refreshButtonTapped:(UIBarButtonItem *)sender {
+    [self requestGraffitiFromServer];
+}
+
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -91,10 +100,21 @@
     return [[self tableView:tableView cellForRowAtIndexPath:indexPath] sizeThatFits:tableView.frameSize].height;
 }
 
+- (void)viewProfile:(id)sender
+{
+    UIButton *usernameButton = (UIButton *)sender;
+    GraffitiCell *cell = (GraffitiCell *)[usernameButton superview];
+    
+    NSLog(@"view profile %d", cell.graffiti.user.identifier);
+}
+
 - (void)likeGraffiti:(id)sender
 {
     // Check to make sure user logged in
-    if (![User currentUser].identifier) return;
+    if (![User currentUser].identifier) {
+        [self.view makeToast:@"Please log in to like graffiti." duration:1.5f position:@"top"];
+        return;
+    };
     
     UIButton *likeButton = (UIButton *)sender;
     GraffitiCell *cell = (GraffitiCell *)[likeButton superview];
@@ -114,6 +134,7 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         // todo print error
         // if error revert cell and isLiked
+        [self.view makeToast:[error localizedDescription] duration:1.5f position:@"top"];
     }];
 }
 
@@ -129,7 +150,6 @@
     GraffitiCell *cell = [[tableView dequeueReusableCellWithIdentifier:kGraffitiCellIdentifier] ifIsKindOfClass:[GraffitiCell class]];
     if (!cell) {
         cell = [[GraffitiCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kGraffitiCellIdentifier];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     }
     cell.graffiti = [self.graffiti objectAtIndex:indexPath.row];
     return cell;

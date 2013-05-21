@@ -9,6 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "User.h"
 
+//@protocol UserLoginViewControllerDelegate;
+
 @interface UserLoginController : UIViewController
+
+@property (nonatomic, assign) UIViewController *delegate;
+
+- (void)displayUserLoginViewController;
+
 
 @end

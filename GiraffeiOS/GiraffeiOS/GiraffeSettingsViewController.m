@@ -8,9 +8,14 @@
 
 #import "GiraffeSettingsViewController.h"
 #import "User.h"
+#import "UserLoginController.h"
+#import "Toast+UIView.h"
 #import "UIKit-Utility.h"
 
 @interface GiraffeSettingsViewController ()
+
+@property (weak, nonatomic) IBOutlet UIView *transparentView;
+@property (weak, nonatomic) IBOutlet UIControl *settingsView;
 
 @property (weak, nonatomic) IBOutlet UITextField *usernameField;
 @property (weak, nonatomic) IBOutlet UITextField *emailField;
@@ -49,7 +54,6 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUserContent:) name:@"userUpdated" object:nil];
     
-    NSLog(@"setup keyboard observers");
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
     
@@ -60,6 +64,15 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if (![[User currentUser] isLoggedIn]) {
+        [self showUserLogin];
+    }
 }
 
 #pragma mark - Accessors
@@ -93,42 +106,58 @@
 - (IBAction)updateAccount:(UIButton *)sender {
     if ([[self.usernameField text] isEqualToString:[User currentUser].username] &&
         [[self.emailField text] isEqualToString:[User currentUser].email]) {
-        NSLog(@"nothing changed");
+        [self.transparentView makeToast:@"Account details unchanged." duration:1.5f position:@"top"];
         return;
     }
     
+    [self.transparentView makeToastActivity];
     [[GiraffeClient sharedClient] beginUserUpdatePutWithUser:[self userFromInput] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self.transparentView hideToastActivity];
         if ([responseObject objectForKey:@"error"]) {
-            // print error
+            [self.transparentView makeToast:[responseObject objectForKey:@"error"] duration:1.5f position:@"top"];
             return;
         }
         
-        // print success message
-        NSLog(@"user updated");
+        [self.transparentView makeToast:[responseObject objectForKey:@"message"] duration:1.5f position:@"top"];
         [[User currentUser] updateWithDictionary:[responseObject objectForKey:@"user"]];
         [self.view endEditing:YES];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        //print error
-        NSLog(@"failed");
+        [self.transparentView hideToastActivity];
+        [self.transparentView makeToast:[error localizedDescription] duration:1.5f position:@"top"];
     }];
 }
 
 - (IBAction)changePassword:(UIButton *)sender {
-    if (![[self.passwordField text] isEqualToString:[self.confirmPasswordField text]]) {
-        // notify error not equal
-        
+    if (![self.oldPasswordField.text length]) {
+        [self.transparentView makeToast:@"Old password field cannot be blank." duration:1.5f position:@"top"];
+        return;
     }
     
-    // send request
+    if (![self.passwordField.text length]) {
+        [self.transparentView makeToast:@"Password field cannot be blank." duration:1.5f position:@"top"];
+        return;
+    }
+    
+    if (![self.confirmPasswordField.text length]) {
+        [self.transparentView makeToast:@"Confirm password field cannot be blank." duration:1.5f position:@"top"];
+        return;
+    }
+    
+    if (![self.passwordField.text isEqualToString:self.confirmPasswordField.text]) {
+        [self.transparentView makeToast:@"Passwords do not match." duration:1.5f position:@"top"];
+        return;
+    }
+    
+    [self.transparentView makeToastActivity];
     [[GiraffeClient sharedClient] beginUserPasswordUpdatePutWithPassword:[self.passwordField text] oldPassword:[self.oldPasswordField text] success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        // check for error
+        [self.transparentView hideToastActivity];
+        
         if ([responseObject objectForKey:@"error"]) {
-            // print error
+            [self.transparentView makeToast:[responseObject objectForKey:@"error"] duration:1.5f position:@"top"];
             return;
         }
         
-        // print success message
-        NSLog(@"password updated");
+        [self.transparentView makeToast:[responseObject objectForKey:@"message"] duration:1.5f position:@"top"];
         [self.view endEditing:YES];
         
         // clear fields
@@ -136,23 +165,43 @@
         self.passwordField.text = @"";
         self.confirmPasswordField.text = @"";
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        // print error
+        [self.transparentView hideToastActivity];
+        [self.transparentView makeToast:[error localizedDescription] duration:1.5f position:@"top"];
     }];
 }
 
-- (IBAction)logout:(UIButton *)sender {
+- (IBAction)logout:(UIBarButtonItem *)sender {
+    [self.transparentView makeToastActivity];
     [[GiraffeClient sharedClient] beginUserLogoutPostWithUser:[User currentUser] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self.transparentView hideToastActivity];
         
-        NSLog(@"logout");
         [[User currentUser] logout];
         [self.view endEditing:YES];
+        
+        self.tabBarController.selectedViewController = [self.tabBarController.viewControllers objectAtIndex:0];
+        UIViewController *homeViewController = [[self.tabBarController.selectedViewController childViewControllers] objectAtIndex:0];
+        [homeViewController.view makeToast:[responseObject objectForKey:@"message"] duration:1.5f position:@"top"];
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        // print error
+        [self.transparentView hideToastActivity];
+        [self.transparentView makeToast:[error localizedDescription] duration:1.5f position:@"top"];
     }];
 }
 
 - (IBAction)backgroundTouched:(UIControl *)sender {
+    NSLog(@"frame origin value %f", self.settingsView.frameOriginY);
     [self.view endEditing:YES];
+}
+
+#pragma mark - GiraffeLgoinViewController
+
+- (void)showUserLogin
+{
+    // Show user login screen
+    UserLoginController *loginController = [UserLoginController new];
+    loginController.delegate = self;
+    
+    [loginController displayUserLoginViewController];
 }
 
 #pragma mark - UITextFieldDelegate
@@ -176,14 +225,15 @@ NSTimeInterval kKeyboardAnimationDuration;
 
 - (void)centerOnViewForKeyboard
 {
+    NSLog(@"centering");
     if (!CGRectIsNull(self.keyboardFrame)) {
         [UIView animateWithDuration:kKeyboardAnimationDuration
                          animations:^{
                              if (self.viewToCenter) {
                                  CGFloat visibleHeight = self.view.frameHeight - self.keyboardFrame.size.height;
-                                 self.view.frameOriginY = centerOffset(self.viewToCenter.frameHeight, visibleHeight) - self.viewToCenter.frameOriginY;
+                                 self.settingsView.frameOriginY = centerOffset(self.viewToCenter.frameHeight, visibleHeight) - self.viewToCenter.frameOriginY;
                              } else {
-                                 self.view.frameOriginY = 0.0;
+                                 self.settingsView.frameOriginY = 0.0;
                              }
                          }];
     }
@@ -191,7 +241,6 @@ NSTimeInterval kKeyboardAnimationDuration;
 
 - (void)handleKeyboardDidShow:(NSNotification *)notification
 {
-    NSLog(@"showing keyboard");
     self.keyboardFrame = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     self.keyboardFrame = [self.view convertRect:self.keyboardFrame fromView:nil];
     self.keyboardFrame = CGRectIntersection(self.view.bounds, self.keyboardFrame);
@@ -203,7 +252,6 @@ NSTimeInterval kKeyboardAnimationDuration;
 
 - (void)handleKeyboardDidHide:(NSNotification *)notification
 {
-    NSLog(@"hiding keyboard");
     self.viewToCenter = nil;
     [self centerOnViewForKeyboard];
     self.keyboardFrame = CGRectNull;

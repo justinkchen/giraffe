@@ -97,7 +97,31 @@ NSString *const kCookiesDataKey = @"cookiesData";
                                  success:(GiraffeClientSuccessBlock)success
                                  failure:(GiraffeClientFailureBlock)failure
 {
-    [self postPath:kGraffitiNew parameters:[graffiti parameterDictionary] success:success failure:failure];
+    
+}
+
+- (void)beginGraffitiNewPostWithGraffiti:(Graffiti *)graffiti
+                                   image:(UIImage *)image
+                                 success:(GiraffeClientSuccessBlock)success
+                                 failure:(GiraffeClientFailureBlock)failure
+{
+    if (!image) {
+        NSLog(@"no image");
+        [self postPath:kGraffitiNew parameters:[graffiti parameterDictionary] success:success failure:failure];
+    } else {
+        NSLog(@"image");
+        NSData *imageData = UIImagePNGRepresentation(image);
+        NSURLRequest *request = [self multipartFormRequestWithMethod:@"POST" path:kGraffitiNew parameters:[graffiti parameterDictionary] constructingBodyWithBlock: ^(id <AFMultipartFormData> formData) {
+            [formData appendPartWithFileData:imageData name:@"image" fileName:@"image.png" mimeType:@"image/png"];
+        }];
+        
+        AFJSONRequestOperation *operation = [[AFJSONRequestOperation alloc] initWithRequest:request];
+        [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+            NSLog(@"Sent %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
+        }];
+        [operation setCompletionBlockWithSuccess:success failure:failure];
+        [operation start];
+    }
 }
 
 - (void)beginGraffitiLikePostWithGraffiti:(Graffiti *)graffiti

@@ -37,6 +37,8 @@ extern NSString *const kAvatarImagePlaceholderFilename;
 @property (nonatomic, assign) int likeCount;
 @property (nonatomic, assign) int badgeCount;
 
+@property (nonatomic, readonly) BOOL isLoggedIn;
+
 + (User *)currentUser;
 //- (void)saveCurrentUser;
 + (void)saveUser;
