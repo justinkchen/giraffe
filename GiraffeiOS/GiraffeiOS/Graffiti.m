@@ -83,7 +83,7 @@ NSString *const kParamNameGraffitiIsLiked = @"isLiked";
     }
     
     if ([dictionary objectForKey:kParamNameGraffitiDateCreated]) {
-                
+        
         self.dateCreated = [[NSDateFormatter sharedDateFormatter] dateFromString:[dictionary objectForKey:kParamNameGraffitiDateCreated]];
     }
     

@@ -19,7 +19,7 @@
     
     int minutes;
     NSString *localeFormat;
-
+    
     if(deltaSeconds < 5)
     {
         return NSDateTimeAgoLocalizedStrings(@"Just now");
@@ -157,7 +157,8 @@
     dispatch_once(&onceToken, ^{
         sharedDateFormatter = [[NSDateFormatter alloc] init];
         [sharedDateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
-        
+        [sharedDateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
+//        NSLog(@"time zone%@", [NSTimeZone systemTimeZone]);
     });
     
     return sharedDateFormatter;
