@@ -10,9 +10,9 @@
 #import "Graffiti.h"
 #import "User.h"
 
-//NSString *const kBaseURL = @"http://ec2-54-243-69-6.compute-1.amazonaws.com";
+NSString *const kBaseURL = @"http://ec2-54-243-69-6.compute-1.amazonaws.com";
 
-NSString *const kBaseURL = @"http://localhost:3000";
+//NSString *const kBaseURL = @"http://localhost:3000";
 
 // API methods
 NSString *const kSessionConnect = @"/session/connect";
