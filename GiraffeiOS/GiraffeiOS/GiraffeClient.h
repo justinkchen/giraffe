@@ -23,7 +23,7 @@ extern NSString *const kBaseURL;
 + (void)loadCookies;
 
 typedef void (^GiraffeClientSuccessBlock)(AFHTTPRequestOperation *operation, id responseObject);
-typedef void (^GiraffeClientFailureBlock) (AFHTTPRequestOperation *operation, NSError *error);
+typedef void (^GiraffeClientFailureBlock)(AFHTTPRequestOperation *operation, NSError *error);
 
 // Session
 - (void)beginSessionConnectGetWithSuccess:(GiraffeClientSuccessBlock)success

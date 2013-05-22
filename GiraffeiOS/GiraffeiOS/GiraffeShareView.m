@@ -23,7 +23,6 @@
 @property (nonatomic, retain) UISlider *radiusSlider;
 @property (nonatomic, retain) UIButton *postButton;
 @property (nonatomic, retain) UIButton *imageButton;
-@property (nonatomic, retain) UIControl *firstResponderControl;
 
 // Util
 @property (nonatomic, readonly) CGRect contentFrame;
@@ -59,7 +58,7 @@ const CGFloat kContentInset = 8.0;
 - (Graffiti *)graffitiFromInput
 {
     if (![self.textView.text length]) {
-        NSLog(@"message cannot be blank");
+        [self.delegate shareView:self displayMessage:@"Message cannot be blank."];
         return nil;
     }
     
@@ -139,6 +138,15 @@ const CGFloat kShareViewPadding = 8.0;
     self.webView.frameOriginX = contentFrame.origin.x;
     self.webView.frameOriginY = self.textView.bottomEdge + kShareViewPadding;
     self.webView.alpha = [self keyboardVisible] ? 0.0 : 1.0;
+    
+    // Image temp view
+    if (!self.imageView) {
+        self.imageView = [UIImageView new];
+        self.imageView.frame = self.webView.frame;
+        [self addSubview:self.imageView];
+    }
+    self.imageView.frame = self.webView.frame;
+    self.imageView.alpha = [self keyboardVisible] ? 0.0 : 1.0;
     
     // Radius Slider
     if (!self.radiusSlider) {

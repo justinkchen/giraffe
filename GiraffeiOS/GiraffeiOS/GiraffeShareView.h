@@ -15,6 +15,10 @@
 
 @property (nonatomic, assign) id<GiraffeShareViewDelegate> delegate;
 
+@property (nonatomic, retain) UIImageView *imageView;
+
+@property (nonatomic, retain) UIControl *firstResponderControl;
+
 - (void)updateMapView;
 - (void)resetView;
 
@@ -25,5 +29,6 @@
 @protocol GiraffeShareViewDelegate <NSObject>
 
 - (void)showUserLogin;
+- (void)shareView:(GiraffeShareView *)loginView displayMessage:(NSString *)message;
 
 @end
