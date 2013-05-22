@@ -81,8 +81,10 @@ public class ProfileFragment extends Fragment {
 				.getUserid());
 		
 		//You can only change your own profile picture
-		if (_userid.equals(Integer.toString(MainActivity.getCurrentUser().getId()))) {
-			_userProfilePicture.setOnClickListener(new profileImageClickListener());
+		if(MainActivity.getCurrentUser() != null){
+			if (_userid.equals(Integer.toString(MainActivity.getCurrentUser().getId()))) {
+				_userProfilePicture.setOnClickListener(new profileImageClickListener());
+			}
 		}
 		
 		_username = ((ProfileActivity) getActivity()).getUsername();
