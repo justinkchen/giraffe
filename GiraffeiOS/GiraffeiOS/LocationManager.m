@@ -45,6 +45,8 @@
 {
     CLLocation *location = [locations lastObject];
     CLLocationCoordinate2D coords = location.coordinate;
+    
+    self.timestamp = location.timestamp;
     self.latitude = coords.latitude;
     self.longitude = coords.longitude;
 }

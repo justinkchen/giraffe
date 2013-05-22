@@ -11,6 +11,7 @@
 
 @interface LocationManager : NSObject
 
+@property (nonatomic, retain) NSDate *timestamp;
 @property (nonatomic, assign) float latitude;
 @property (nonatomic, assign) float longitude;
 

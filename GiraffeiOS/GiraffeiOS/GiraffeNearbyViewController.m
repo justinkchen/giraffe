@@ -79,14 +79,12 @@
 - (void)graffitiRequestFinishedWithDictionary:(NSDictionary *)dictionary
 {
     NSArray *graffitiDicts = [dictionary objectForKey:kParamNameGraffiti];
-    if ([graffitiDicts count] > 0) {
-        NSMutableArray *newGraffiti = [NSMutableArray new];
-        for (NSDictionary *graffitiDict in graffitiDicts) {
-            Graffiti *graffiti = [[Graffiti alloc] initWithDictionary:graffitiDict];
-            [newGraffiti addObject:graffiti];
-        }
-        self.graffiti = newGraffiti;
+    NSMutableArray *newGraffiti = [NSMutableArray new];
+    for (NSDictionary *graffitiDict in graffitiDicts) {
+        Graffiti *graffiti = [[Graffiti alloc] initWithDictionary:graffitiDict];
+        [newGraffiti addObject:graffiti];
     }
+    self.graffiti = newGraffiti;
 }
 
 - (IBAction)refreshButtonTapped:(UIBarButtonItem *)sender {
