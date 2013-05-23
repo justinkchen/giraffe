@@ -9,6 +9,7 @@
 #import "GiraffeClient.h"
 #import "Graffiti.h"
 #import "User.h"
+#import "UIKit-Utility.h"
 
 NSString *const kBaseURL = @"http://ec2-54-243-69-6.compute-1.amazonaws.com";
 
@@ -33,6 +34,9 @@ NSString *const kParamNameLatitude = @"latitude";
 NSString *const kParamNameLongitude = @"longitude";
 
 NSString *const kParamNameId = @"id";
+
+const CGFloat kImageSizeLongerEdge = 960.0;
+const CGFloat kImageSizeShorterEdge = 720.0;
 
 @implementation GiraffeClient
 
@@ -112,9 +116,22 @@ NSString *const kCookiesDataKey = @"cookiesData";
         NSLog(@"image");
         // Create a block operation to process image
         NSBlockOperation* imageOp = [NSBlockOperation blockOperationWithBlock: ^{
-            NSData *imageData = UIImagePNGRepresentation(image);
+            // Resize image
+            CGSize newSize;
+            if (image.size.height > image.size.width) {
+                newSize = CGSizeMake(kImageSizeShorterEdge, kImageSizeLongerEdge);
+            } else {
+                newSize = CGSizeMake(kImageSizeLongerEdge, kImageSizeShorterEdge);
+            }
+            
+            UIImage *newImage = image;
+            if (image.size.height > kImageSizeLongerEdge || image.size.width > kImageSizeLongerEdge) {
+                newImage = [image scaleToSize:newSize];
+            }
+            
+            NSData *imageData = UIImageJPEGRepresentation(newImage, 0.5f);
             NSURLRequest *request = [self multipartFormRequestWithMethod:@"POST" path:kGraffitiNew parameters:[graffiti parameterDictionary] constructingBodyWithBlock: ^(id <AFMultipartFormData> formData) {
-                [formData appendPartWithFileData:imageData name:@"image" fileName:@"image.png" mimeType:@"image/png"];
+                [formData appendPartWithFileData:imageData name:@"image" fileName:@"image.jpg" mimeType:@"image/jpeg"];
             }];
             
             AFJSONRequestOperation *operation = [[AFJSONRequestOperation alloc] initWithRequest:request];
@@ -178,9 +195,22 @@ NSString *const kCookiesDataKey = @"cookiesData";
 {
     // Create a block operation to process image
     NSBlockOperation* imageOp = [NSBlockOperation blockOperationWithBlock: ^{
-        NSData *imageData = UIImagePNGRepresentation(avatarImage);
+        // Resize image
+        CGSize newSize;
+        if (avatarImage.size.height > avatarImage.size.width) {
+            newSize = CGSizeMake(kImageSizeShorterEdge, kImageSizeLongerEdge);
+        } else {
+            newSize = CGSizeMake(kImageSizeLongerEdge, kImageSizeShorterEdge);
+        }
+        
+        UIImage *newImage = avatarImage;
+        if (avatarImage.size.height > kImageSizeLongerEdge || avatarImage.size.width > kImageSizeLongerEdge) {
+            newImage = [avatarImage scaleToSize:newSize];
+        }
+        
+        NSData *imageData = UIImageJPEGRepresentation(newImage, 0.5f);
         NSURLRequest *request = [self multipartFormRequestWithMethod:@"PUT" path:kUserUpdate parameters:nil constructingBodyWithBlock: ^(id <AFMultipartFormData> formData) {
-            [formData appendPartWithFileData:imageData name:@"avatar" fileName:@"avatar.png" mimeType:@"image/png"];
+            [formData appendPartWithFileData:imageData name:@"avatar" fileName:@"avatar.jpg" mimeType:@"image/jpeg"];
         }];
         
         AFJSONRequestOperation *operation = [[AFJSONRequestOperation alloc] initWithRequest:request];

@@ -53,5 +53,6 @@ typedef enum {
 @interface UIImage (Utility)
 
 + (UIImage *)imageWithColor:(UIColor *)color;
+- (UIImage*)scaleToSize:(CGSize)size;
 
 @end
