@@ -7,6 +7,7 @@
 //
 
 #import "GiraffeNearbyViewController.h"
+#import "GiraffeProfileViewController.h"
 #import "Graffiti.h"
 #import "User.h"
 #import "GraffitiCell.h"
@@ -104,6 +105,10 @@
     GraffitiCell *cell = (GraffitiCell *)[usernameButton superview];
     
     NSLog(@"view profile %d", cell.graffiti.user.identifier);
+    GiraffeProfileViewController *profileViewController = [[UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"profile"];
+    profileViewController.user = cell.graffiti.user;
+    
+    [self.navigationController pushViewController:profileViewController animated:YES];
 }
 
 - (void)likeGraffiti:(id)sender

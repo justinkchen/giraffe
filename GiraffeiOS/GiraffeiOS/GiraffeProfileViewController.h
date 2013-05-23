@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+#import "User.h"
+
 @interface GiraffeProfileViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+
+@property (nonatomic, strong) User *user;
 
 @end

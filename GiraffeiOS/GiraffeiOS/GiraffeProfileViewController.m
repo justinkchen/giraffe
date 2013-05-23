@@ -11,7 +11,6 @@
 #import "GiraffeClient.h"
 #import "Graffiti.h"
 #import "GraffitiCell.h"
-#import "User.h"
 #import "UserLoginController.h"
 #import "Toast+UIView.h"
 #import "Foundation-Utility.h"
@@ -26,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *badgesCountLabel;
 @property (weak, nonatomic) IBOutlet UITableView *userGraffitiTableView;
 
+@property (nonatomic, assign) BOOL isSelf;
 @property (nonatomic, strong) NSArray *graffiti;
 
 @end
@@ -54,28 +54,35 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    [self setUserContent];
-
-    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc]
-                                         initWithTarget:self
-                                         action:@selector(handleAvatarImageTouched:)];
-    [singleTap setNumberOfTapsRequired:1];
-    self.avatarView.userInteractionEnabled = YES;
-    [self.avatarView addGestureRecognizer:singleTap];
+    if (!self.user) {
+        self.user = [User currentUser];
+        self.isSelf = YES;
+        
+        UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc]
+                                             initWithTarget:self
+                                             action:@selector(handleAvatarImageTouched:)];
+        [singleTap setNumberOfTapsRequired:1];
+        self.avatarView.userInteractionEnabled = YES;
+        [self.avatarView addGestureRecognizer:singleTap];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUserContent:) name:@"userUpdated" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUserStats:) name:@"userStatsUpdated" object:nil];
+    } else {
+        self.isSelf = NO;
+    }
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUserContent:) name:@"userUpdated" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUserStats:) name:@"userStatsUpdated" object:nil];
+    [self setUserContent];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    if (![[User currentUser] isLoggedIn]) {
+    if (self.isSelf && ![[User currentUser] isLoggedIn]) {
         [self showUserLogin];
     }
     
-    [[GiraffeClient sharedClient] beginUserGraffitiGetWithId:[User currentUser].identifier success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[GiraffeClient sharedClient] beginUserGraffitiGetWithId:self.user.identifier success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if ([responseObject objectForKey:@"error"]) {
             [self.view makeToast:[responseObject objectForKey:@"error"] duration:1.5f position:@"top"];
             return;
@@ -86,7 +93,7 @@
         [self.view makeToast:[error localizedDescription] duration:1.5f position:@"top"];
     }];
     
-    [[GiraffeClient sharedClient] beginUserStatsGetWithId:[User currentUser].identifier success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[GiraffeClient sharedClient] beginUserStatsGetWithId:self.user.identifier success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if ([responseObject objectForKey:@"error"]) {
             [self.view makeToast:[responseObject objectForKey:@"error"] duration:1.5f position:@"top"];
             return;
@@ -139,12 +146,10 @@
 
 - (void)setUserContent
 {
-    User *user = [User currentUser];
+    self.usernameLabel.text = self.user.username;
     
-    self.usernameLabel.text = user.username;
-    
-    if (user.avatarUrl) {
-        [self.avatarView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@", kBaseURL, user.avatarUrl]]];
+    if (self.user.avatarUrl) {
+        [self.avatarView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@", kBaseURL, self.user.avatarUrl]]];
     } else {
         [self.avatarView setImage:nil];
     }
