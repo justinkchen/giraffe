@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BB18C0C0174F47610088856A /* RankingAlgorithm.m in Sources */ = {isa = PBXBuildFile; fileRef = BB18C0BF174F47610088856A /* RankingAlgorithm.m */; };
 		BB29083B174DF901003064AB /* InstagramClient.m in Sources */ = {isa = PBXBuildFile; fileRef = BB29083A174DF901003064AB /* InstagramClient.m */; };
 		BB29083E174EFE4F003064AB /* InstagramGraffiti.m in Sources */ = {isa = PBXBuildFile; fileRef = BB29083D174EFE4F003064AB /* InstagramGraffiti.m */; };
 		BB52B484172896330077591D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB52B483172896330077591D /* UIKit.framework */; };
@@ -77,6 +78,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BB18C0BE174F47610088856A /* RankingAlgorithm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RankingAlgorithm.h; sourceTree = "<group>"; };
+		BB18C0BF174F47610088856A /* RankingAlgorithm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RankingAlgorithm.m; sourceTree = "<group>"; };
 		BB290839174DF901003064AB /* InstagramClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstagramClient.h; sourceTree = "<group>"; };
 		BB29083A174DF901003064AB /* InstagramClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstagramClient.m; sourceTree = "<group>"; };
 		BB29083C174EFE4F003064AB /* InstagramGraffiti.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstagramGraffiti.h; sourceTree = "<group>"; };
@@ -439,6 +442,8 @@
 				F0C10CA2173B5BAA0093EBB1 /* Foundation-Utility.m */,
 				BB290839174DF901003064AB /* InstagramClient.h */,
 				BB29083A174DF901003064AB /* InstagramClient.m */,
+				BB18C0BE174F47610088856A /* RankingAlgorithm.h */,
+				BB18C0BF174F47610088856A /* RankingAlgorithm.m */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -609,6 +614,7 @@
 				BB67F7E4174B14B200684E78 /* Toast+UIView.m in Sources */,
 				BB29083B174DF901003064AB /* InstagramClient.m in Sources */,
 				BB29083E174EFE4F003064AB /* InstagramGraffiti.m in Sources */,
+				BB18C0C0174F47610088856A /* RankingAlgorithm.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -48,8 +48,13 @@ extern NSString *const kParamNameGraffitiIsLiked;
 @property (nonatomic, assign) BOOL isLiked;
 @property (nonatomic, retain) NSString *platform;
 
+@property (nonatomic, readonly) CGFloat score;
+
 - (NSDictionary *)parameterDictionary;
 - (void)updateWithDictionary:(NSDictionary *)dictionary;
 - (id)initWithDictionary:(NSDictionary *)dictionary;
+
+- (CGFloat)distanceFromLatitude:(CGFloat)latitude
+                      longitude:(CGFloat)longitude;
 
 @end

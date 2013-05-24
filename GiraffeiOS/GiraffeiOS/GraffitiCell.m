@@ -83,17 +83,7 @@ const CGFloat kLikesFontSize = 14.0;
 {
     CGFloat latitude = [LocationManager sharedInstance].latitude;
     CGFloat longitude = [LocationManager sharedInstance].longitude;
-    CGFloat earthRadius = 6371.0;
-    CGFloat dLatRad = (self.graffiti.latitude - latitude) * M_PI / 180.0;
-    CGFloat dLongRad = (self.graffiti.longitude - longitude) * M_PI / 180.0;
-    CGFloat currentLatitudeRad = latitude * M_PI / 180.0;
-    CGFloat graffitiLatRad = self.graffiti.latitude * M_PI / 180.0;
-    
-    CGFloat a = sinf(dLatRad / 2.0) * sinf(dLatRad / 2.0) +
-                sinf(dLongRad / 2.0) * sinf(dLongRad / 2.0) *
-                cosf(currentLatitudeRad) * cosf(graffitiLatRad);
-    CGFloat c = 2.0 * atan2(sqrt(a), sqrt(1.0 - a));
-    CGFloat distance = earthRadius * c;
+    CGFloat distance = [self.graffiti distanceFromLatitude:latitude longitude:longitude];
     
     if (distance >= 1) {
         return [NSString stringWithFormat:@"%.02f km", distance];

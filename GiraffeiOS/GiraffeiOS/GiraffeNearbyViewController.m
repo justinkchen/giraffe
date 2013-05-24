@@ -15,6 +15,7 @@
 #import "GiraffeClient.h"
 #import "InstagramClient.h"
 #import "LocationManager.h"
+#import "RankingAlgorithm.h"
 #import "UIKit-Utility.h"
 #import "Toast+UIView.h"
 #import "Foundation-Utility.h"
@@ -22,7 +23,7 @@
 @interface GiraffeNearbyViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (nonatomic, retain) NSMutableArray *graffiti;
+@property (nonatomic, retain) NSArray *graffiti;
 
 @end
 
@@ -116,7 +117,7 @@
         InstagramGraffiti *graffiti = [[InstagramGraffiti alloc] initWithDictionary:instagramDict];
         [newGraffiti addObject:graffiti];
     }
-    self.graffiti = newGraffiti;
+    self.graffiti = [RankingAlgorithm sortGraffiti:newGraffiti];
 }
 
 - (IBAction)refreshButtonTapped:(UIBarButtonItem *)sender {
