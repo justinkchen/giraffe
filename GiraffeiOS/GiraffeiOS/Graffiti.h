@@ -46,6 +46,7 @@ extern NSString *const kParamNameGraffitiIsLiked;
 @property (nonatomic, retain) User *user;
 @property (nonatomic, assign) int likes;
 @property (nonatomic, assign) BOOL isLiked;
+@property (nonatomic, retain) NSString *platform;
 
 - (NSDictionary *)parameterDictionary;
 - (void)updateWithDictionary:(NSDictionary *)dictionary;

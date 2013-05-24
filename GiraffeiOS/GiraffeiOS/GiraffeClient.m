@@ -7,6 +7,7 @@
 //
 
 #import "GiraffeClient.h"
+#import "AFJSONRequestOperation.h"
 #import "Graffiti.h"
 #import "User.h"
 #import "UIKit-Utility.h"

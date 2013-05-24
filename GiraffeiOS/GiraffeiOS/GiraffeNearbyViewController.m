@@ -9,9 +9,11 @@
 #import "GiraffeNearbyViewController.h"
 #import "GiraffeProfileViewController.h"
 #import "Graffiti.h"
+#import "InstagramGraffiti.h"
 #import "User.h"
 #import "GraffitiCell.h"
 #import "GiraffeClient.h"
+#import "InstagramClient.h"
 #import "LocationManager.h"
 #import "UIKit-Utility.h"
 #import "Toast+UIView.h"
@@ -64,9 +66,13 @@
 - (void)requestGraffitiFromServer
 {
     [self.view makeToastActivity];
+    
+    CGFloat latitude = [LocationManager sharedInstance].latitude;
+    CGFloat longitude = [LocationManager sharedInstance].longitude;
+    
     // Kick off load request
-    [[GiraffeClient sharedClient] beginGraffitiNearbyGetWithLatitude:[LocationManager sharedInstance].latitude
-                                                           longitude:[LocationManager sharedInstance].longitude success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[GiraffeClient sharedClient] beginGraffitiNearbyGetWithLatitude:latitude
+                                                           longitude:longitude success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                                                [self.view hideToastActivity];
                                                                NSLog(@"got response %@", responseObject);
                                                                
@@ -75,6 +81,20 @@
                                                                [self.view hideToastActivity];
                                                                [self.view makeToast:[error localizedDescription] duration:1.5f position:@"top"];
                                                            }];
+    if (latitude && longitude) {
+    [[InstagramClient sharedClient] beginInstagramNearbyGetWithLatitude:[LocationManager sharedInstance].latitude
+                                                              longitude:[LocationManager sharedInstance].longitude
+                                                                success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                                    [self.view hideToastActivity];
+                                                                    NSLog(@"got response %@", responseObject);
+                                                                    
+                                                                    [self instagramRequestFinishedWithDictionary:[responseObject ifIsKindOfClass:[NSDictionary class]]];
+                                                                }
+                                                                failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                                    [self.view hideToastActivity];
+                                                                    [self.view makeToast:[error localizedDescription] duration:1.5f position:@"top"];
+                                                                }];
+    }
 }
 
 - (void)graffitiRequestFinishedWithDictionary:(NSDictionary *)dictionary
@@ -83,6 +103,17 @@
     NSMutableArray *newGraffiti = [NSMutableArray new];
     for (NSDictionary *graffitiDict in graffitiDicts) {
         Graffiti *graffiti = [[Graffiti alloc] initWithDictionary:graffitiDict];
+        [newGraffiti addObject:graffiti];
+    }
+    self.graffiti = newGraffiti;
+}
+
+- (void)instagramRequestFinishedWithDictionary:(NSDictionary *)dictionary
+{
+    NSArray *instagramDicts = [dictionary objectForKey:kParamNameInstagramData];
+    NSMutableArray *newGraffiti = [NSMutableArray arrayWithArray:self.graffiti];
+    for (NSDictionary *instagramDict in instagramDicts) {
+        InstagramGraffiti *graffiti = [[InstagramGraffiti alloc] initWithDictionary:instagramDict];
         [newGraffiti addObject:graffiti];
     }
     self.graffiti = newGraffiti;

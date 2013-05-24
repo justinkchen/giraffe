@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "AFHTTPClient.h"
-#import "AFJSONRequestOperation.h"
 
 @class Graffiti;
 @class User;

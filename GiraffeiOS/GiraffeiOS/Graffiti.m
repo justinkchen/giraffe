@@ -30,6 +30,7 @@ NSString *const kParamNameGraffitiUserUsername = @"username";
 NSString *const kParamNameGraffitiUserAvatarUrl = @"avatarUrl";
 NSString *const kParamNameGraffitiLikes = @"likes";
 NSString *const kParamNameGraffitiIsLiked = @"isLiked";
+NSString *const kParamNameGraffitiPlatform = @"platform";
 
 - (NSDictionary *)parameterDictionary
 {
@@ -93,6 +94,10 @@ NSString *const kParamNameGraffitiIsLiked = @"isLiked";
     
     if ([dictionary objectForKey:kParamNameGraffitiIsLiked]) {
         self.isLiked = [[dictionary objectForKey:kParamNameGraffitiIsLiked] boolValue];
+    }
+    
+    if ([dictionary objectForKey:kParamNameGraffitiPlatform]) {
+        self.platform = [dictionary objectForKey:kParamNameGraffitiPlatform];
     }
 }
 

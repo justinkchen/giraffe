@@ -56,6 +56,11 @@ const CGFloat kGraffitiImageSideLength = 200.0;
     return [self.graffiti.imageUrl length] > 0;
 }
 
+- (BOOL)shouldShowLikeButton
+{
+    return ![self.graffiti.platform isEqualToString:@"instagram"];
+}
+
 const CGFloat kUsernameFontSize = 18.0;
 - (UIFont *)usernameFont
 {
@@ -217,6 +222,8 @@ const CGFloat kGraffitiCellPadding = 8.0;
     if (!self.messageLabel) {
         self.messageLabel = [UILabel new];
         self.messageLabel.font = [self graffitiTextFont];
+        self.messageLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        self.messageLabel.numberOfLines = 0;
         [self.contentView addSubview:self.messageLabel];
     }
     self.messageLabel.text = self.graffiti.message;
@@ -234,36 +241,37 @@ const CGFloat kGraffitiCellPadding = 8.0;
 //    self.likesLabel.frameOriginX = kGraffitiCellPadding;
 //    self.likesLabel.frameOriginY = self.messageLabel.bottomEdge + kGraffitiCellPadding;
     
-    if (!self.likeButton) {
-//        self.likeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        self.likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.likeButton addTarget:nil action:@selector(likeGraffiti:) forControlEvents:UIControlEventTouchUpInside];
-        self.likeButton.titleLabel.font = [self likesFont];
-        if (!self.graffiti.isLiked) {
-            [self.likeButton setTitleColor:[self likeButtonTextColor] forState:UIControlStateNormal];
-            [self.likeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-            [self.likeButton setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor]] forState:UIControlStateNormal];
-            [self.likeButton setBackgroundImage:[UIImage imageWithColor:[self likeButtonHighlightedBackgroundColor]] forState:UIControlStateHighlighted];
-        } else {
-            [self.likeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            [self.likeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-            [self.likeButton setBackgroundImage:[UIImage imageWithColor:[self likeButtonLikedBackgroundColor]] forState:UIControlStateNormal];
-            [self.likeButton setBackgroundImage:[UIImage imageWithColor:[self likeButtonHighlightedBackgroundColor]] forState:UIControlStateHighlighted];
+    if ([self shouldShowLikeButton]) {
+        if (!self.likeButton) {
+            self.likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            [self.likeButton addTarget:nil action:@selector(likeGraffiti:) forControlEvents:UIControlEventTouchUpInside];
+            self.likeButton.titleLabel.font = [self likesFont];
+            if (!self.graffiti.isLiked) {
+                [self.likeButton setTitleColor:[self likeButtonTextColor] forState:UIControlStateNormal];
+                [self.likeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+                [self.likeButton setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor]] forState:UIControlStateNormal];
+                [self.likeButton setBackgroundImage:[UIImage imageWithColor:[self likeButtonHighlightedBackgroundColor]] forState:UIControlStateHighlighted];
+            } else {
+                [self.likeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                [self.likeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+                [self.likeButton setBackgroundImage:[UIImage imageWithColor:[self likeButtonLikedBackgroundColor]] forState:UIControlStateNormal];
+                [self.likeButton setBackgroundImage:[UIImage imageWithColor:[self likeButtonHighlightedBackgroundColor]] forState:UIControlStateHighlighted];
+            }
+            
+            self.likeButton.layer.borderColor = [UIColor blackColor].CGColor;
+            self.likeButton.layer.borderWidth = 0.5f;
+            self.likeButton.layer.cornerRadius = 8.0f;
+            self.likeButton.layer.masksToBounds = YES;
+            
+            [self addSubview:self.likeButton];
         }
         
-        self.likeButton.layer.borderColor = [UIColor blackColor].CGColor;
-        self.likeButton.layer.borderWidth = 0.5f;
-        self.likeButton.layer.cornerRadius = 8.0f;
-        self.likeButton.layer.masksToBounds = YES;
-        
-        [self addSubview:self.likeButton];
+        [self.likeButton setTitle:[self likesText] forState:UIControlStateNormal];
+        self.likeButton.frame = CGRectMake(kGraffitiCellPadding, self.messageLabel.bottomEdge + kGraffitiCellPadding, 100, [[self likesText] sizeWithFont:[self likesFont]].height);
+    } else {
+        [self.likeButton removeFromSuperview];
+        self.likeButton = nil;
     }
-
-    [self.likeButton setTitle:[self likesText] forState:UIControlStateNormal];
-    self.likeButton.frame = CGRectMake(kGraffitiCellPadding, self.messageLabel.bottomEdge + kGraffitiCellPadding, 100, [[self likesText] sizeWithFont:[self likesFont]].height);
-//    [self.likeButton sizeToFit];
-//    self.likeButton.frameOriginX = ;
-//    self.likeButton.frameOriginY = ;
 }
 
 - (CGSize)sizeThatFits:(CGSize)size
@@ -287,7 +295,10 @@ const CGFloat kGraffitiCellPadding = 8.0;
     
     // Add height for text
     height += [self.graffiti.message sizeWithFont:[self graffitiTextFont] constrainedToSize:CGSizeMake(size.width, CGFLOAT_MAX)].height + kGraffitiCellPadding;    
-    height += [[self likesText] sizeWithFont:[self likesFont]].height + kGraffitiCellPadding;
+    
+    if ([self shouldShowLikeButton]) {
+        height += [[self likesText] sizeWithFont:[self likesFont]].height + kGraffitiCellPadding;
+    }
     
     size.height = height;
     

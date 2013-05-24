@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BB29083B174DF901003064AB /* InstagramClient.m in Sources */ = {isa = PBXBuildFile; fileRef = BB29083A174DF901003064AB /* InstagramClient.m */; };
+		BB29083E174EFE4F003064AB /* InstagramGraffiti.m in Sources */ = {isa = PBXBuildFile; fileRef = BB29083D174EFE4F003064AB /* InstagramGraffiti.m */; };
 		BB52B484172896330077591D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB52B483172896330077591D /* UIKit.framework */; };
 		BB52B486172896330077591D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB52B485172896330077591D /* Foundation.framework */; };
 		BB52B488172896330077591D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB52B487172896330077591D /* CoreGraphics.framework */; };
@@ -75,6 +77,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BB290839174DF901003064AB /* InstagramClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstagramClient.h; sourceTree = "<group>"; };
+		BB29083A174DF901003064AB /* InstagramClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstagramClient.m; sourceTree = "<group>"; };
+		BB29083C174EFE4F003064AB /* InstagramGraffiti.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstagramGraffiti.h; sourceTree = "<group>"; };
+		BB29083D174EFE4F003064AB /* InstagramGraffiti.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstagramGraffiti.m; sourceTree = "<group>"; };
 		BB52B480172896330077591D /* GiraffeiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiraffeiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB52B483172896330077591D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		BB52B485172896330077591D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -414,6 +420,8 @@
 				BBAC641A172DF4A4002A5658 /* Graffiti.m */,
 				BBAC641C172DF4B1002A5658 /* User.h */,
 				BBAC641D172DF4B1002A5658 /* User.m */,
+				BB29083C174EFE4F003064AB /* InstagramGraffiti.h */,
+				BB29083D174EFE4F003064AB /* InstagramGraffiti.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -429,6 +437,8 @@
 				F0C10C9E173B584D0093EBB1 /* LocationManager.m */,
 				F0C10CA1173B5BAA0093EBB1 /* Foundation-Utility.h */,
 				F0C10CA2173B5BAA0093EBB1 /* Foundation-Utility.m */,
+				BB290839174DF901003064AB /* InstagramClient.h */,
+				BB29083A174DF901003064AB /* InstagramClient.m */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -597,6 +607,8 @@
 				F06A49A7173E098F00FCA95B /* UserLoginView.m in Sources */,
 				BBCFA30717462A490059E581 /* NSDate+TimeAgo.m in Sources */,
 				BB67F7E4174B14B200684E78 /* Toast+UIView.m in Sources */,
+				BB29083B174DF901003064AB /* InstagramClient.m in Sources */,
+				BB29083E174EFE4F003064AB /* InstagramGraffiti.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
