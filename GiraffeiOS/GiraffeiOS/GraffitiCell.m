@@ -58,7 +58,8 @@ const CGFloat kGraffitiImageSideLength = 200.0;
 
 - (BOOL)shouldShowLikeButton
 {
-    return ![self.graffiti.platform isEqualToString:@"instagram"];
+    return !([self.graffiti.platform isEqualToString:@"instagram"] ||
+             [self.graffiti.platform isEqualToString:@"twitter"]);
 }
 
 const CGFloat kUsernameFontSize = 18.0;
@@ -219,7 +220,7 @@ const CGFloat kGraffitiCellPadding = 8.0;
     self.messageLabel.text = self.graffiti.message;
     self.messageLabel.frameOriginX = kGraffitiCellPadding;
     self.messageLabel.frameOriginY = MAX(MAX(self.detailLabel.bottomEdge, self.userAvatarImage.bottomEdge), self.graffitiImage.bottomEdge) + kGraffitiCellPadding;
-    self.messageLabel.frameSize = [self.graffiti.message sizeWithFont:[self graffitiTextFont] constrainedToSize:CGSizeMake(self.frameWidth, CGFLOAT_MAX)];
+    self.messageLabel.frameSize = [self.graffiti.message sizeWithFont:[self graffitiTextFont] constrainedToSize:CGSizeMake(self.frameWidth/* - 2*kGraffitiCellPadding*/, CGFLOAT_MAX)];
     
 //    if (!self.likesLabel) {
 //        self.likesLabel = [UILabel new];
@@ -236,17 +237,6 @@ const CGFloat kGraffitiCellPadding = 8.0;
             self.likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
             [self.likeButton addTarget:nil action:@selector(likeGraffiti:) forControlEvents:UIControlEventTouchUpInside];
             self.likeButton.titleLabel.font = [self likesFont];
-            if (!self.graffiti.isLiked) {
-                [self.likeButton setTitleColor:[self likeButtonTextColor] forState:UIControlStateNormal];
-                [self.likeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-                [self.likeButton setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor]] forState:UIControlStateNormal];
-                [self.likeButton setBackgroundImage:[UIImage imageWithColor:[self likeButtonHighlightedBackgroundColor]] forState:UIControlStateHighlighted];
-            } else {
-                [self.likeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-                [self.likeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-                [self.likeButton setBackgroundImage:[UIImage imageWithColor:[self likeButtonLikedBackgroundColor]] forState:UIControlStateNormal];
-                [self.likeButton setBackgroundImage:[UIImage imageWithColor:[self likeButtonHighlightedBackgroundColor]] forState:UIControlStateHighlighted];
-            }
             
             self.likeButton.layer.borderColor = [UIColor blackColor].CGColor;
             self.likeButton.layer.borderWidth = 0.5f;
@@ -257,6 +247,17 @@ const CGFloat kGraffitiCellPadding = 8.0;
         }
         
         [self.likeButton setTitle:[self likesText] forState:UIControlStateNormal];
+        if (!self.graffiti.isLiked) {
+            [self.likeButton setTitleColor:[self likeButtonTextColor] forState:UIControlStateNormal];
+            [self.likeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+            [self.likeButton setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor]] forState:UIControlStateNormal];
+            [self.likeButton setBackgroundImage:[UIImage imageWithColor:[self likeButtonHighlightedBackgroundColor]] forState:UIControlStateHighlighted];
+        } else {
+            [self.likeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [self.likeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+            [self.likeButton setBackgroundImage:[UIImage imageWithColor:[self likeButtonLikedBackgroundColor]] forState:UIControlStateNormal];
+            [self.likeButton setBackgroundImage:[UIImage imageWithColor:[self likeButtonHighlightedBackgroundColor]] forState:UIControlStateHighlighted];
+        }
         self.likeButton.frame = CGRectMake(kGraffitiCellPadding, self.messageLabel.bottomEdge + kGraffitiCellPadding, 100, [[self likesText] sizeWithFont:[self likesFont]].height);
     } else {
         [self.likeButton removeFromSuperview];

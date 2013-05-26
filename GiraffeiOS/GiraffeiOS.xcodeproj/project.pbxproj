@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BB06275E175015EF002DD5F0 /* TwitterClient.m in Sources */ = {isa = PBXBuildFile; fileRef = BB06275D175015EF002DD5F0 /* TwitterClient.m */; };
+		BB06276117501A0D002DD5F0 /* TwitterGraffiti.m in Sources */ = {isa = PBXBuildFile; fileRef = BB06276017501A0D002DD5F0 /* TwitterGraffiti.m */; };
 		BB18C0C0174F47610088856A /* RankingAlgorithm.m in Sources */ = {isa = PBXBuildFile; fileRef = BB18C0BF174F47610088856A /* RankingAlgorithm.m */; };
 		BB29083B174DF901003064AB /* InstagramClient.m in Sources */ = {isa = PBXBuildFile; fileRef = BB29083A174DF901003064AB /* InstagramClient.m */; };
 		BB29083E174EFE4F003064AB /* InstagramGraffiti.m in Sources */ = {isa = PBXBuildFile; fileRef = BB29083D174EFE4F003064AB /* InstagramGraffiti.m */; };
@@ -78,6 +80,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BB06275C175015EF002DD5F0 /* TwitterClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterClient.h; sourceTree = "<group>"; };
+		BB06275D175015EF002DD5F0 /* TwitterClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterClient.m; sourceTree = "<group>"; };
+		BB06275F17501A0D002DD5F0 /* TwitterGraffiti.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterGraffiti.h; sourceTree = "<group>"; };
+		BB06276017501A0D002DD5F0 /* TwitterGraffiti.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterGraffiti.m; sourceTree = "<group>"; };
 		BB18C0BE174F47610088856A /* RankingAlgorithm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RankingAlgorithm.h; sourceTree = "<group>"; };
 		BB18C0BF174F47610088856A /* RankingAlgorithm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RankingAlgorithm.m; sourceTree = "<group>"; };
 		BB290839174DF901003064AB /* InstagramClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstagramClient.h; sourceTree = "<group>"; };
@@ -425,6 +431,8 @@
 				BBAC641D172DF4B1002A5658 /* User.m */,
 				BB29083C174EFE4F003064AB /* InstagramGraffiti.h */,
 				BB29083D174EFE4F003064AB /* InstagramGraffiti.m */,
+				BB06275F17501A0D002DD5F0 /* TwitterGraffiti.h */,
+				BB06276017501A0D002DD5F0 /* TwitterGraffiti.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -444,6 +452,8 @@
 				BB29083A174DF901003064AB /* InstagramClient.m */,
 				BB18C0BE174F47610088856A /* RankingAlgorithm.h */,
 				BB18C0BF174F47610088856A /* RankingAlgorithm.m */,
+				BB06275C175015EF002DD5F0 /* TwitterClient.h */,
+				BB06275D175015EF002DD5F0 /* TwitterClient.m */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -615,6 +625,8 @@
 				BB29083B174DF901003064AB /* InstagramClient.m in Sources */,
 				BB29083E174EFE4F003064AB /* InstagramGraffiti.m in Sources */,
 				BB18C0C0174F47610088856A /* RankingAlgorithm.m in Sources */,
+				BB06275E175015EF002DD5F0 /* TwitterClient.m in Sources */,
+				BB06276117501A0D002DD5F0 /* TwitterGraffiti.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

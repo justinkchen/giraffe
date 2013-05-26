@@ -6,4 +6,5 @@
 
 @interface NSDateFormatter (Utility)
 + (NSDateFormatter *)sharedDateFormatter;
++ (NSDateFormatter *)sharedTwitterDateFormatter;
 @end

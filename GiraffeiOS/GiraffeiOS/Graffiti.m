@@ -7,7 +7,6 @@
 //
 
 #import "Graffiti.h"
-#import "User.h"
 #import "LocationManager.h"
 #import "NSDate+TimeAgo.h"
 

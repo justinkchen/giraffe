@@ -10,10 +10,12 @@
 #import "GiraffeProfileViewController.h"
 #import "Graffiti.h"
 #import "InstagramGraffiti.h"
+#import "TwitterGraffiti.h"
 #import "User.h"
 #import "GraffitiCell.h"
 #import "GiraffeClient.h"
 #import "InstagramClient.h"
+#import "TwitterClient.h"
 #import "LocationManager.h"
 #import "RankingAlgorithm.h"
 #import "UIKit-Utility.h"
@@ -83,13 +85,15 @@
                                                                [self.view makeToast:[error localizedDescription] duration:1.5f position:@"top"];
                                                            }];
     if (latitude && longitude) {
-    [[InstagramClient sharedClient] beginInstagramNearbyGetWithLatitude:[LocationManager sharedInstance].latitude
-                                                              longitude:[LocationManager sharedInstance].longitude
+        [self instagramRequestBeginWithLatitude:latitude longitude:longitude];
+        
+        [[TwitterClient sharedClient] beginTwitterNearbyGetWithLatitude:latitude
+                                                              longitude:longitude
                                                                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                                                     [self.view hideToastActivity];
-                                                                    NSLog(@"got response %@", responseObject);
+                                                                    NSLog(@"got twitter response %@", responseObject);
                                                                     
-                                                                    [self instagramRequestFinishedWithDictionary:[responseObject ifIsKindOfClass:[NSDictionary class]]];
+                                                                    [self twitterRequestFinishedWithDictionary:[responseObject ifIsKindOfClass:[NSDictionary class]]];
                                                                 }
                                                                 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                                                     [self.view hideToastActivity];
@@ -109,6 +113,25 @@
     self.graffiti = newGraffiti;
 }
 
+- (void)instagramRequestBeginWithLatitude:(CGFloat)latitude
+                                longitude:(CGFloat)longitude
+{
+    [[InstagramClient sharedClient] beginInstagramNearbyGetWithLatitude:latitude
+                                                              longitude:longitude
+                                                                success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                                    [self.view hideToastActivity];
+                                                                    NSLog(@"got instagram response %@", responseObject);
+                                                                    
+                                                                    [self instagramRequestFinishedWithDictionary:[responseObject ifIsKindOfClass:[NSDictionary class]]];
+                                                                }
+                                                                failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                                    NSLog(@"retrying to connect w/ instagram");
+                                                                    [self instagramRequestBeginWithLatitude:latitude longitude:longitude];
+//                                                                    [self.view hideToastActivity];
+//                                                                    [self.view makeToast:[error localizedDescription] duration:1.5f position:@"top"];
+                                                                     }];
+}
+         
 - (void)instagramRequestFinishedWithDictionary:(NSDictionary *)dictionary
 {
     NSArray *instagramDicts = [dictionary objectForKey:kParamNameInstagramData];
@@ -119,6 +142,19 @@
     }
     self.graffiti = [RankingAlgorithm sortGraffiti:newGraffiti];
 }
+
+- (void)twitterRequestFinishedWithDictionary:(NSDictionary *)dictionary
+{
+    NSArray *twitterDicts = [dictionary objectForKey:kParamNameTwitterResults];
+    NSMutableArray *newGraffiti = [NSMutableArray arrayWithArray:self.graffiti];
+    for (NSDictionary *twitterDict in twitterDicts) {
+        TwitterGraffiti *graffiti = [[TwitterGraffiti alloc] initWithDictionary:twitterDict];
+        [newGraffiti addObject:graffiti];
+    }
+    self.graffiti = [RankingAlgorithm sortGraffiti:newGraffiti];
+}
+
+
 
 - (IBAction)refreshButtonTapped:(UIBarButtonItem *)sender {
     [self requestGraffitiFromServer];

@@ -7,7 +7,6 @@
 //
 
 #import "InstagramGraffiti.h"
-#import "User.h"
 
 NSString *const kParamNameInstagramData = @"data";
 NSString *const kParamNameInstagramId = @"id";
@@ -92,6 +91,8 @@ NSString *const kParamNameInstagramLink = @"link";
     
     // disable this feature until signing in allowed?
     self.isLiked = false;
+    
+    // todo link to instagram page
     
     self.platform = @"instagram";
 }
