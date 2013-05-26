@@ -138,6 +138,7 @@ public class RegisterFragment extends Fragment {
 			try {
 				url = new URL(urlString);
 				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+				MainActivity.addSessionCookie(conn);
 				conn.setDoOutput(true);
 				conn.setRequestMethod("POST");
 				OutputStreamWriter wr = new OutputStreamWriter(conn

@@ -114,6 +114,7 @@ public class LoginFragment extends DialogFragment {
 			try {
 				url = new URL(urlString);
 				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+				MainActivity.addSessionCookie(conn);
 				conn.setDoOutput(true);
 				conn.setRequestMethod("POST");
 				OutputStreamWriter wr = new OutputStreamWriter(conn
@@ -145,9 +146,8 @@ public class LoginFragment extends DialogFragment {
 					cookie.setVersion(0);
 					Log.w("LoginFragment", "Cookie Value: " + cookie.getValue());
 					try {
-						if(MainActivity.getCookieManager().getCookieStore().get(new URI(MainActivity.getBaseServerURI())).size() == 0){
-							MainActivity.getCookieManager().getCookieStore().add(new URI(MainActivity.getBaseServerURI()), cookie);
-						}
+						MainActivity.getCookieManager().getCookieStore().removeAll();
+						MainActivity.getCookieManager().getCookieStore().add(new URI(MainActivity.getBaseServerURI()), cookie);
 					} catch (URISyntaxException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

@@ -231,6 +231,7 @@ public class ProfileFragment extends Fragment {
 			try {
 				url = new URL(urls[0]);
 				conn = (HttpURLConnection) url.openConnection();
+				MainActivity.addSessionCookie(conn);
 				conn.setDoInput(true);
 				conn.setRequestMethod("GET");
 			} catch (ProtocolException e) {
@@ -309,6 +310,7 @@ public class ProfileFragment extends Fragment {
 			try {
 				url = new URL(urls[0]);
 				conn = (HttpURLConnection) url.openConnection();
+				MainActivity.addSessionCookie(conn);
 				conn.setDoOutput(true);
 				conn.setRequestMethod("POST");
 				sb.append("userid=" + URLEncoder.encode(_userid, "UTF-8"));

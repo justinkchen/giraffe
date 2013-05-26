@@ -83,6 +83,7 @@ public class SettingsFragment extends PreferenceFragment {
 				url = new URL(urls[0]);
 				HttpURLConnection conn = (HttpURLConnection) url
 						.openConnection();
+				MainActivity.addSessionCookie(conn);
 				conn.setDoOutput(true);
 				conn.setRequestMethod("POST");
 				conn.connect();

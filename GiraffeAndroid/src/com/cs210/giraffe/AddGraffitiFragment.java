@@ -453,6 +453,7 @@ public class AddGraffitiFragment extends Fragment implements
 					url = new URL(urls[0]);
 					HttpURLConnection conn = (HttpURLConnection) url
 							.openConnection();
+					MainActivity.addSessionCookie(conn);
 					conn.setDoOutput(true);
 					conn.setRequestMethod("POST");
 					OutputStreamWriter wr = new OutputStreamWriter(
@@ -498,6 +499,7 @@ public class AddGraffitiFragment extends Fragment implements
 					URL url = new URL(urls[0]);
 					httpUrlConnection = (HttpURLConnection) url
 							.openConnection();
+					MainActivity.addSessionCookie(httpUrlConnection);
 					httpUrlConnection.setUseCaches(false);
 					httpUrlConnection.setDoOutput(true);
 

@@ -90,6 +90,7 @@ public class ChangePasswordFragment extends DialogFragment{
     			url = new URL(params[0]);
     			HttpURLConnection conn = (HttpURLConnection) url
     					.openConnection();
+    			MainActivity.addSessionCookie(conn);
     			conn.setDoOutput(true);
     			conn.setRequestMethod("PUT");
     			OutputStreamWriter wr = new OutputStreamWriter(

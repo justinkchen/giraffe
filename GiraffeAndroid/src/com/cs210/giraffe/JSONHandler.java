@@ -25,6 +25,7 @@ public class JSONHandler {
 		String urlInputString = "";
 		try {
 			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+			MainActivity.addSessionCookie(urlConnection);
 			InputStream in = urlConnection.getInputStream();
 
 			System.out.println("Response message: " + urlConnection.getResponseMessage());
@@ -49,7 +50,7 @@ public class JSONHandler {
 				Log.w("JSONHandler", "Cookie Value: " + cookie.getValue());
 				
 				try {
-					if(MainActivity.getCookieManager().getCookieStore().get(new URI(MainActivity.getBaseServerURI())).size() == 0){
+					if(MainActivity.getCookieManager().getCookieStore().getCookies().size() == 0){
 						MainActivity.getCookieManager().getCookieStore().add(new URI(MainActivity.getBaseServerURI()), cookie);
 					}
 				} catch (URISyntaxException e) {

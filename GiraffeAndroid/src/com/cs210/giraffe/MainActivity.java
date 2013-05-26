@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.CookieHandler;
 import java.net.CookieManager;
+import java.net.CookiePolicy;
 import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -12,6 +13,7 @@ import java.net.ProtocolException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.List;
 import java.util.Locale;
 
 import org.json.JSONException;
@@ -174,6 +176,8 @@ public class MainActivity extends FragmentActivity implements
 		// }
 		// }
 
+		setPersistentLogin();
+		
 		setContentView(R.layout.activity_main);
 
 		// Set up the action bar.
@@ -257,40 +261,7 @@ public class MainActivity extends FragmentActivity implements
 		locationManager.requestLocationUpdates(bestProvider, 0, 0,
 				locationListener);
 
-		setCookieManager(new CookieManager());
-		CookieHandler.setDefault(cookieManager);
-
 		HttpsTask.setContext(getApplicationContext());
-
-		// Retrieve persistent login stuff
-		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-		String cookieStr = "connect.sid=" + settings.getString("cookie", null);
-		if (settings.getString("cookie", null) != null) {
-			Log.w("MainActivity", "retrieving saved cookie: " + cookieStr);
-			HttpCookie cookie = new HttpCookie(cookieStr.substring(0,
-					cookieStr.indexOf('=')), cookieStr.substring(
-					cookieStr.indexOf('=') + 1, cookieStr.length()));
-			cookie.setDomain(MainActivity.getBaseServerURI());
-			cookie.setPath("/");
-			cookie.setVersion(0);
-			try {
-				MainActivity.getCookieManager().getCookieStore().removeAll();
-				MainActivity.getCookieManager().getCookieStore()
-						.add(new URI(MainActivity.getBaseServerURI()), cookie);
-			} catch (URISyntaxException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		String currentUsername = settings.getString("username", null);
-		if (currentUsername != null) {
-			User currentUser = new User();
-			currentUser.setEmail(settings.getString("email", ""));
-			currentUser.setAvatar(settings.getString("avatar", null));
-			currentUser.setId(settings.getInt("id", 0));
-			currentUser.setUsername(settings.getString("username", ""));
-			MainActivity.setCurrentUser(currentUser);
-		}
 
 
 //		Log.i("Johan", "Checking server cookie");
@@ -778,6 +749,51 @@ public class MainActivity extends FragmentActivity implements
 //				}
 
 			}
+		}
+	}
+	
+	public static void addSessionCookie(HttpURLConnection conn){
+		List <HttpCookie> cookies =
+				MainActivity.getCookieManager().getCookieStore().getCookies();
+		StringBuffer cookieHeaderBuffer = new StringBuffer();
+		for (HttpCookie cookie: cookies) {
+			Log.w("MainActivity", "Number of cookies: " + cookies.size());
+			cookieHeaderBuffer.append(cookie.toString());
+		}
+		conn.setRequestProperty("Cookie", cookieHeaderBuffer.toString());
+	}
+	
+	private void setPersistentLogin(){
+		setCookieManager(new CookieManager(null, CookiePolicy.ACCEPT_NONE));
+		CookieHandler.setDefault(cookieManager);
+		// Retrieve persistent login stuff
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		String cookieStr = "connect.sid=" + settings.getString("cookie", null);
+		if (settings.getString("cookie", null) != null) {
+			Log.w("MainActivity", "retrieving saved cookie: " + cookieStr);
+			HttpCookie cookie = new HttpCookie(cookieStr.substring(0,
+					cookieStr.indexOf('=')), cookieStr.substring(
+					cookieStr.indexOf('=') + 1, cookieStr.length()));
+			cookie.setDomain(MainActivity.getBaseServerURI());
+			cookie.setPath("/");
+			cookie.setVersion(0);
+			try {
+				MainActivity.getCookieManager().getCookieStore().removeAll();
+				MainActivity.getCookieManager().getCookieStore()
+						.add(new URI(MainActivity.getBaseServerURI()), cookie);
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		String currentUsername = settings.getString("username", null);
+		if (currentUsername != null) {
+			User currentUser = new User();
+			currentUser.setEmail(settings.getString("email", ""));
+			currentUser.setAvatar(settings.getString("avatar", null));
+			currentUser.setId(settings.getInt("id", 0));
+			currentUser.setUsername(settings.getString("username", ""));
+			MainActivity.setCurrentUser(currentUser);
 		}
 	}
 

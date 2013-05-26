@@ -106,7 +106,7 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 		holder.getFlagButton().setOnClickListener(new FlagOnClickListener());
 		// System.out.println("item image url: " + item.getImageURL());
 		if (!item.getImageURL().equals("null")) {
-			new DownloadImageTask(holder.getGraffitiImageView()).execute(item
+			new DownloadImageTask(holder.getGraffitiImageView()).execute(MainActivity.getBaseServerURI() + item
 					.getImageURL());
 			// graffitiImage.setOnClickListener(new MessageOnClickListener());
 		}
@@ -194,6 +194,7 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 			try {
 				url = new URL((String) params[0]);
 				conn = (HttpURLConnection) url.openConnection();
+				MainActivity.addSessionCookie(conn);
 				conn.setDoOutput(true);
 				conn.setRequestMethod("POST");
 				OutputStreamWriter wr = new OutputStreamWriter(
