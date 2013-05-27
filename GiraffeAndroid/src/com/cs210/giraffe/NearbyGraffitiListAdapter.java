@@ -40,13 +40,8 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 		ListAdapter {
 
 	private final LayoutInflater _inflater;
-	// private TextView username;
-	// private TextView message;
-	// private ImageView graffitiImage;
 	private Graffiti item;
 	private LinearLayout buttonLayout;
-	// private Button likeButton;
-	// private Button flagButton;
 	private ViewHolder holder;
 
 	public NearbyGraffitiListAdapter(Context context) {
@@ -88,7 +83,7 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 		// username = (TextView) view.findViewById(R.id.username);
 		// message = (TextView) view.findViewById(R.id.message);
 		// graffitiImage = (ImageView) view.findViewById(R.id.graffiti_image);
-
+		holder.setItem(item);
 		holder.getUsernameView().setTypeface(null, Typeface.BOLD);
 		holder.getUsernameView().setText(item.getUsername());
 		holder.getUsernameView().setOnClickListener(
@@ -97,7 +92,7 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 		// message.setOnClickListener(new MessageOnClickListener());
 		buttonLayout = (LinearLayout) view.findViewById(R.id.button_layout);
 
-		if (item.getIsLiked() == 1)
+		if (holder.getItem().getIsLiked() == 1)
 			holder.getLikeButton().setText("Liked");
 		// likeButton.setOnClickListener(new LikeOnClickListener(position));
 		holder.getLikeButton().setOnClickListener(
@@ -105,7 +100,7 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 		// flagButton = (Button) view.findViewById(R.id.flag_button);
 		holder.getFlagButton().setOnClickListener(new FlagOnClickListener());
 		// System.out.println("item image url: " + item.getImageURL());
-		if (!item.getImageURL().equals("null")) {
+		if (!holder.getItem().getImageURL().equals("null")) {
 			new DownloadImageTask(holder.getGraffitiImageView()).execute(MainActivity.getBaseServerURI() + item
 					.getImageURL());
 			// graffitiImage.setOnClickListener(new MessageOnClickListener());
@@ -119,10 +114,10 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 		@Override
 		public void onClick(View v) {
 			Intent intent = new Intent(getContext(), ProfileActivity.class);
-			intent.putExtra("userid", item.getUserid());
-			Log.i("Johan", "Userid for this item:" + item.getUserid());
-			intent.putExtra("username", item.getUsername());
-			intent.putExtra("imagePath", item.getAvatar());
+			intent.putExtra("userid", holder.getItem().getUserid());
+			Log.i("Johan", "Userid for this item:" + holder.getItem().getUserid());
+			intent.putExtra("username", holder.getItem().getUsername());
+			intent.putExtra("imagePath", holder.getItem().getAvatar());
 			getContext().startActivity(intent);
 		}
 	}
@@ -163,7 +158,6 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 				LikeTask loginTask = new LikeTask();
 				loginTask.execute(MainActivity.getBaseServerURI()
 						+ "/graffiti/like", _holder);
-				item.setIsLiked(1 - item.getIsLiked());
 			}
 
 		}
@@ -201,11 +195,11 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 						conn.getOutputStream());
 				// this is were we're adding post data to the request
 				sb.append("id="
-						+ URLEncoder.encode(String.valueOf(item.getId()),
+						+ URLEncoder.encode(String.valueOf(_viewHolder.getItem().getId()),
 								"UTF-8"));
 				sb.append("&isLiked="
 						+ URLEncoder.encode(
-								String.valueOf(1 - item.getIsLiked()), "UTF-8"));
+								String.valueOf(1 - _viewHolder.getItem().getIsLiked()), "UTF-8"));
 				wr.write(sb.toString());
 				wr.flush();
 
@@ -253,6 +247,7 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 
 		protected void onPostExecute(Boolean success) {
 			if (success) {
+				_viewHolder.getItem().setIsLiked(1 - _viewHolder.getItem().getIsLiked());
 				Log.i("Johan", "Like successful");
 				if (_viewHolder.getLikeButton().getText().equals("Like"))
 					_viewHolder.getLikeButton().setText("Liked");

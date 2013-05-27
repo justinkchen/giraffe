@@ -20,15 +20,16 @@
         android:layout_alignBottom="@+id/radiusSeekBar"
         android:layout_toLeftOf="@+id/radiusSeekBar"
         android:text="@string/min_radius" />
-    
+
     <ImageButton
         android:id="@+id/addImageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/graffitiEditText"
         android:layout_marginBottom="3dp"
+        android:background="?android:attr/selectableItemBackground"
         android:src="@drawable/ic_content_attachment" />
-	
+
     <TextView
         android:id="@+id/addedImageText"
         android:layout_width="wrap_content"
@@ -36,7 +37,7 @@
         android:layout_above="@+id/graffitiEditText"
         android:layout_marginBottom="18dp"
         android:layout_toRightOf="@+id/addImageButton" />
-    
+
     <ImageButton
         android:id="@+id/removeImageButton"
         android:layout_width="30dp"
@@ -44,9 +45,10 @@
         android:layout_above="@+id/graffitiEditText"
         android:layout_marginBottom="10dp"
         android:layout_toRightOf="@+id/addedImageText"
+        android:background="?android:attr/selectableItemBackground"
         android:src="@drawable/ic_content_remove"
         android:visibility="gone" />
-    
+
     <Button
         android:id="@+id/submitButton"
         android:layout_width="wrap_content"
@@ -54,10 +56,11 @@
         android:layout_above="@+id/graffitiEditText"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="3dp"
+        android:background="?android:attr/selectableItemBackground"
         android:minWidth="80dip"
         android:text="@string/action_submit" />
 
-    <include 
+    <include
         android:id="@+id/addGraffitiMapFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

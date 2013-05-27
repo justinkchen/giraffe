@@ -10,6 +10,7 @@ public class ViewHolder {
 	private ImageView _graffitiImage;
 	private Button _likeButton;
 	private Button _flagButton;
+	private Graffiti _item;
 	
 	public ViewHolder(){
 		
@@ -53,5 +54,13 @@ public class ViewHolder {
 	
 	public void setFlagButton(Button flagButton) {
 		_flagButton = flagButton;
+	}
+	
+	public Graffiti getItem() {
+		return _item;
+	}
+	
+	public void setItem(Graffiti item) {
+		_item = item;
 	}
 }

@@ -66,10 +66,6 @@
             android:name="com.cs210.giraffe.RegisterActivity"
             android:screenOrientation="portrait" >
         </activity>
-        <activity
-            android:name="com.cs210.giraffe.ErrorActivity"
-            android:screenOrientation="portrait" >
-        </activity>
     </application>
 
 </manifest>
