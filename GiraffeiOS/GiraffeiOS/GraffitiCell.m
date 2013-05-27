@@ -31,6 +31,8 @@ NSString *const kGraffitiCellIdentifier = @"graffitiCell";
 //@property (nonatomic, retain) UILabel *likesLabel;
 @property (nonatomic, retain) UIButton *likeButton;
 
+@property (nonatomic, retain) UIImageView *platformIcon;
+
 @end
 
 @implementation GraffitiCell
@@ -59,7 +61,8 @@ const CGFloat kGraffitiImageSideLength = 200.0;
 - (BOOL)shouldShowLikeButton
 {
     return !([self.graffiti.platform isEqualToString:@"instagram"] ||
-             [self.graffiti.platform isEqualToString:@"twitter"]);
+             [self.graffiti.platform isEqualToString:@"twitter"] ||
+             [self.graffiti.platform isEqualToString:@"facebook"]);
 }
 
 const CGFloat kUsernameFontSize = 18.0;
@@ -141,6 +144,8 @@ const CGFloat kGraffitiTextSize = 16.0;
     return [UIColor colorWithRed:0.22 green:0.33 blue:0.53 alpha:1.0];
 }
 
+const CGFloat kPlatformIconSideLength = 32.0;
+
 const CGFloat kGraffitiCellPadding = 8.0;
 
 - (void)layoutSubviews
@@ -220,7 +225,7 @@ const CGFloat kGraffitiCellPadding = 8.0;
     self.messageLabel.text = self.graffiti.message;
     self.messageLabel.frameOriginX = kGraffitiCellPadding;
     self.messageLabel.frameOriginY = MAX(MAX(self.detailLabel.bottomEdge, self.userAvatarImage.bottomEdge), self.graffitiImage.bottomEdge) + kGraffitiCellPadding;
-    self.messageLabel.frameSize = [self.graffiti.message sizeWithFont:[self graffitiTextFont] constrainedToSize:CGSizeMake(self.frameWidth/* - 2*kGraffitiCellPadding*/, CGFLOAT_MAX)];
+    self.messageLabel.frameSize = [self.graffiti.message sizeWithFont:[self graffitiTextFont] constrainedToSize:CGSizeMake(self.frameWidth - 2*kGraffitiCellPadding, CGFLOAT_MAX)];
     
 //    if (!self.likesLabel) {
 //        self.likesLabel = [UILabel new];
@@ -263,6 +268,16 @@ const CGFloat kGraffitiCellPadding = 8.0;
         [self.likeButton removeFromSuperview];
         self.likeButton = nil;
     }
+    
+    if (!self.platformIcon) {
+        self.platformIcon = [UIImageView new];
+        self.platformIcon.frameSize = CGSizeMake(kPlatformIconSideLength, kPlatformIconSideLength);
+        self.platformIcon.rightEdge = self.contentView.rightEdge - kGraffitiCellPadding;
+        self.platformIcon.frameOriginY = kGraffitiCellPadding;
+        
+        [self.contentView addSubview:self.platformIcon];
+    }
+    [self.platformIcon setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@.png", self.graffiti.platform]]];
 }
 
 - (CGSize)sizeThatFits:(CGSize)size

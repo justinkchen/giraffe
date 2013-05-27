@@ -63,6 +63,12 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionStateChanged:) name:FBSessionStateChangedNotification object:nil];
     
     self.keyboardFrame = CGRectNull;
+    
+    if (FBSession.activeSession.isOpen) {
+        [self.fbButton setTitle:@"FB Logout"];
+    } else {
+        [self.fbButton setTitle:@"FB Login"];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -183,6 +189,11 @@
         [self.transparentView hideToastActivity];
         
         [[User currentUser] logout];
+        
+        // Logout of Facebook as well
+        GiraffeAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        [appDelegate closeSession];
+        
         [self.view endEditing:YES];
         
         self.tabBarController.selectedViewController = [self.tabBarController.viewControllers objectAtIndex:0];
@@ -271,10 +282,8 @@ NSTimeInterval kKeyboardAnimationDuration;
     // If the person is authenticated, log out when the button is clicked.
     // If the person is not authenticated, log in when the button is clicked.
     if (FBSession.activeSession.isOpen) {
-        NSLog(@"close");
         [appDelegate closeSession];
     } else {
-        NSLog(@"open");
         // The person has initiated a login, so call the openSession method
         // and show the login UX if necessary.
         [appDelegate openSessionWithAllowLoginUI:YES];

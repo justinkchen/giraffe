@@ -57,6 +57,11 @@
 		BBAC6418172DF0E3002A5658 /* GiraffeSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBAC6417172DF0E3002A5658 /* GiraffeSettingsViewController.m */; };
 		BBAC641B172DF4A4002A5658 /* Graffiti.m in Sources */ = {isa = PBXBuildFile; fileRef = BBAC641A172DF4A4002A5658 /* Graffiti.m */; };
 		BBAC641E172DF4B1002A5658 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = BBAC641D172DF4B1002A5658 /* User.m */; };
+		BBBAB6D81753298A00EEF814 /* facebook.png in Resources */ = {isa = PBXBuildFile; fileRef = BBBAB6D31753298A00EEF814 /* facebook.png */; };
+		BBBAB6D91753298A00EEF814 /* flickr.png in Resources */ = {isa = PBXBuildFile; fileRef = BBBAB6D41753298A00EEF814 /* flickr.png */; };
+		BBBAB6DA1753298A00EEF814 /* googleplus.png in Resources */ = {isa = PBXBuildFile; fileRef = BBBAB6D51753298A00EEF814 /* googleplus.png */; };
+		BBBAB6DB1753298A00EEF814 /* instagram.png in Resources */ = {isa = PBXBuildFile; fileRef = BBBAB6D61753298A00EEF814 /* instagram.png */; };
+		BBBAB6DC1753298A00EEF814 /* twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = BBBAB6D71753298A00EEF814 /* twitter.png */; };
 		BBCFA30517462A490059E581 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = BBCFA2F217462A490059E581 /* LICENSE */; };
 		BBCFA30617462A490059E581 /* NSDateTimeAgo.strings in Resources */ = {isa = PBXBuildFile; fileRef = BBCFA2F417462A490059E581 /* NSDateTimeAgo.strings */; };
 		BBCFA30717462A490059E581 /* NSDate+TimeAgo.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCFA30217462A490059E581 /* NSDate+TimeAgo.m */; };
@@ -169,6 +174,11 @@
 		BBAC641A172DF4A4002A5658 /* Graffiti.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Graffiti.m; sourceTree = "<group>"; };
 		BBAC641C172DF4B1002A5658 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		BBAC641D172DF4B1002A5658 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		BBBAB6D31753298A00EEF814 /* facebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = facebook.png; path = Images/facebook.png; sourceTree = SOURCE_ROOT; };
+		BBBAB6D41753298A00EEF814 /* flickr.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = flickr.png; path = Images/flickr.png; sourceTree = SOURCE_ROOT; };
+		BBBAB6D51753298A00EEF814 /* googleplus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = googleplus.png; path = Images/googleplus.png; sourceTree = SOURCE_ROOT; };
+		BBBAB6D61753298A00EEF814 /* instagram.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = instagram.png; path = Images/instagram.png; sourceTree = SOURCE_ROOT; };
+		BBBAB6D71753298A00EEF814 /* twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = twitter.png; path = Images/twitter.png; sourceTree = SOURCE_ROOT; };
 		BBCFA2F217462A490059E581 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		BBCFA2F517462A490059E581 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/NSDateTimeAgo.strings; sourceTree = "<group>"; };
 		BBCFA2F617462A490059E581 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/NSDateTimeAgo.strings; sourceTree = "<group>"; };
@@ -396,6 +406,11 @@
 		F02151C71740DCCB007DCF37 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				BBBAB6D31753298A00EEF814 /* facebook.png */,
+				BBBAB6D41753298A00EEF814 /* flickr.png */,
+				BBBAB6D51753298A00EEF814 /* googleplus.png */,
+				BBBAB6D61753298A00EEF814 /* instagram.png */,
+				BBBAB6D71753298A00EEF814 /* twitter.png */,
 				BBD6740A174A214100152940 /* spraycan.png */,
 				BBD6740B174A214100152940 /* upload-photo.png */,
 				BBD673FA174A213900152940 /* camera.png */,
@@ -630,6 +645,11 @@
 				BBD6740C174A214100152940 /* spraycan.png in Resources */,
 				BBD6740D174A214100152940 /* upload-photo.png in Resources */,
 				BB0627651751A0CE002DD5F0 /* FacebookSDKResources.bundle in Resources */,
+				BBBAB6D81753298A00EEF814 /* facebook.png in Resources */,
+				BBBAB6D91753298A00EEF814 /* flickr.png in Resources */,
+				BBBAB6DA1753298A00EEF814 /* googleplus.png in Resources */,
+				BBBAB6DB1753298A00EEF814 /* instagram.png in Resources */,
+				BBBAB6DC1753298A00EEF814 /* twitter.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
