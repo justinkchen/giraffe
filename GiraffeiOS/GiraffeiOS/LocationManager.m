@@ -25,6 +25,8 @@
         self.manager.desiredAccuracy = kCLLocationAccuracyBest;
         self.manager.distanceFilter = kCLDistanceFilterNone;
         [self.manager startUpdatingLocation];
+        
+        self.waitingForLocation = YES;
     }
     return self;
 }
@@ -49,6 +51,11 @@
     self.timestamp = location.timestamp;
     self.latitude = coords.latitude;
     self.longitude = coords.longitude;
+    
+    if (self.waitingForLocation && !(self.latitude == 0 && self.longitude == 0)) {
+        self.waitingForLocation = NO;
+        [self.delegate locationFound];
+    }
 }
 
 @end

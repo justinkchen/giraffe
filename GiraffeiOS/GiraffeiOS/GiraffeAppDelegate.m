@@ -10,6 +10,7 @@
 #import "GiraffeClient.h"
 #import "User.h"
 #import "Toast+UIView.h"
+#import "LocationManager.h"
 
 NSString *const splashImage = @"splash.png";
 
@@ -46,6 +47,9 @@ NSString *const FBSessionStateChangedNotification =
     
     [User loadUser];
     [GiraffeClient loadCookies];
+    
+    // start location manager
+    [LocationManager sharedInstance];
     
     [self connectSession];
     // Facebook connect session
@@ -104,6 +108,8 @@ NSString *const FBSessionStateChangedNotification =
         
         if ([responseObject objectForKey:@"user"]== [NSNull null]) {
             [[User currentUser] logout];
+            // logout of facebook as well
+            [self closeSession];
         } else {
             User *user = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
             

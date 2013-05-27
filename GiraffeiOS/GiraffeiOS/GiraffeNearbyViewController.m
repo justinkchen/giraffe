@@ -25,7 +25,7 @@
 #import "Foundation-Utility.h"
 #import <FacebookSDK/FacebookSDK.h>
 
-@interface GiraffeNearbyViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface GiraffeNearbyViewController () <UITableViewDataSource, UITableViewDelegate, LocationManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) NSArray *graffiti;
@@ -40,6 +40,7 @@
 {
     [super viewDidLoad];
     
+    [LocationManager sharedInstance].delegate = self;
 }
 
 - (void)didReceiveMemoryWarning
@@ -51,8 +52,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    NSLog(@"location %f %f", [LocationManager sharedInstance].latitude, [LocationManager sharedInstance].longitude);
     
     [self requestGraffitiFromServer];
 }
@@ -71,10 +70,13 @@
 
 - (void)requestGraffitiFromServer
 {
-    [self.view makeToastActivity];
-    
     CGFloat latitude = [LocationManager sharedInstance].latitude;
     CGFloat longitude = [LocationManager sharedInstance].longitude;
+    // Find current location
+    
+    if (latitude == 0 && longitude == 0) return;
+    
+    [self.view makeToastActivity];
     
     // Kick off load request
     [[GiraffeClient sharedClient] beginGraffitiNearbyGetWithLatitude:latitude
@@ -241,6 +243,13 @@
     }
     cell.graffiti = [self.graffiti objectAtIndex:indexPath.row];
     return cell;
+}
+
+#pragma mark - LocationManagerDelegate
+
+- (void)locationFound
+{
+    [self requestGraffitiFromServer];
 }
 
 @end

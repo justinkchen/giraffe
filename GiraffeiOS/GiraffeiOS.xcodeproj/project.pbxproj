@@ -62,6 +62,7 @@
 		BBBAB6DA1753298A00EEF814 /* googleplus.png in Resources */ = {isa = PBXBuildFile; fileRef = BBBAB6D51753298A00EEF814 /* googleplus.png */; };
 		BBBAB6DB1753298A00EEF814 /* instagram.png in Resources */ = {isa = PBXBuildFile; fileRef = BBBAB6D61753298A00EEF814 /* instagram.png */; };
 		BBBAB6DC1753298A00EEF814 /* twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = BBBAB6D71753298A00EEF814 /* twitter.png */; };
+		BBBAB6DE17534EB100EEF814 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BBBAB6DD17534EB100EEF814 /* Default@2x.png */; };
 		BBCFA30517462A490059E581 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = BBCFA2F217462A490059E581 /* LICENSE */; };
 		BBCFA30617462A490059E581 /* NSDateTimeAgo.strings in Resources */ = {isa = PBXBuildFile; fileRef = BBCFA2F417462A490059E581 /* NSDateTimeAgo.strings */; };
 		BBCFA30717462A490059E581 /* NSDate+TimeAgo.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCFA30217462A490059E581 /* NSDate+TimeAgo.m */; };
@@ -179,6 +180,7 @@
 		BBBAB6D51753298A00EEF814 /* googleplus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = googleplus.png; path = Images/googleplus.png; sourceTree = SOURCE_ROOT; };
 		BBBAB6D61753298A00EEF814 /* instagram.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = instagram.png; path = Images/instagram.png; sourceTree = SOURCE_ROOT; };
 		BBBAB6D71753298A00EEF814 /* twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = twitter.png; path = Images/twitter.png; sourceTree = SOURCE_ROOT; };
+		BBBAB6DD17534EB100EEF814 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		BBCFA2F217462A490059E581 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		BBCFA2F517462A490059E581 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/NSDateTimeAgo.strings; sourceTree = "<group>"; };
 		BBCFA2F617462A490059E581 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/NSDateTimeAgo.strings; sourceTree = "<group>"; };
@@ -270,6 +272,7 @@
 		BB52B477172896330077591D = {
 			isa = PBXGroup;
 			children = (
+				BBBAB6DD17534EB100EEF814 /* Default@2x.png */,
 				BB67F7DD174B137A00684E78 /* Toast */,
 				BBCFA2F117462A490059E581 /* NSDate-TimeAgo */,
 				BB89347317386DEE0056F035 /* AFNetworking */,
@@ -650,6 +653,7 @@
 				BBBAB6DA1753298A00EEF814 /* googleplus.png in Resources */,
 				BBBAB6DB1753298A00EEF814 /* instagram.png in Resources */,
 				BBBAB6DC1753298A00EEF814 /* twitter.png in Resources */,
+				BBBAB6DE17534EB100EEF814 /* Default@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
