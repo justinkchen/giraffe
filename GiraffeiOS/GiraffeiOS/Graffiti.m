@@ -85,7 +85,7 @@ NSString *const kParamNameGraffitiPlatform = @"platform";
     
     if ([dictionary objectForKey:kParamNameGraffitiDateCreated]) {
         
-        self.dateCreated = [[NSDateFormatter sharedDateFormatter] dateFromString:[dictionary objectForKey:kParamNameGraffitiDateCreated]];
+        self.dateCreated = [[Graffiti sharedDateFormatter] dateFromString:[dictionary objectForKey:kParamNameGraffitiDateCreated]];
     }
     
     if ([dictionary objectForKey:kParamNameGraffitiLikes]) {
@@ -145,6 +145,21 @@ NSString *const kParamNameGraffitiPlatform = @"platform";
     CGFloat score = likeScore + distanceScore + timeScore + promotionScore;
     
     return score;
+}
+
++ (NSDateFormatter *)sharedDateFormatter
+{
+    // Create Singleton
+    static NSDateFormatter *sharedDateFormatter = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedDateFormatter = [[NSDateFormatter alloc] init];
+        [sharedDateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
+        [sharedDateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
+        //        NSLog(@"time zone%@", [NSTimeZone systemTimeZone]);
+    });
+    
+    return sharedDateFormatter;
 }
 
 @end

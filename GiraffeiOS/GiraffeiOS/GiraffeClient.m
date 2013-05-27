@@ -94,7 +94,8 @@ NSString *const kCookiesDataKey = @"cookiesData";
                                    success:(GiraffeClientSuccessBlock)success
                                    failure:(GiraffeClientFailureBlock)failure
 {
-    NSDictionary *parameters = @{kParamNameLatitude : @(latitude), kParamNameLongitude : @(longitude)};
+    NSDictionary *parameters = @{kParamNameLatitude : @(latitude),
+                                 kParamNameLongitude : @(longitude)};
     [self getPath:kGraffitiNearby parameters:parameters success:success failure:failure];
 }
 

@@ -80,7 +80,7 @@ NSString *const kParamNameTwitterRetweets = @"retweets";
     }
     
     if ([dictionary objectForKey:kParamNameTwitterDateCreated]) {
-        self.dateCreated = [[NSDateFormatter sharedTwitterDateFormatter] dateFromString:[dictionary objectForKey:kParamNameTwitterDateCreated]];
+        self.dateCreated = [[TwitterGraffiti sharedDateFormatter] dateFromString:[dictionary objectForKey:kParamNameTwitterDateCreated]];
         
 //        [dateFormatter dateFromString:[currentDict objectForKey:@"created_at"]];
     }
@@ -107,6 +107,21 @@ NSString *const kParamNameTwitterRetweets = @"retweets";
         [self updateWithDictionary:dictionary];
     }
     return self;
+}
+
++ (NSDateFormatter *)sharedDateFormatter
+{
+    // Create Singleton
+    static NSDateFormatter *sharedDateFormatter = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedDateFormatter = [[NSDateFormatter alloc] init];
+        [sharedDateFormatter setDateFormat:@"EEE, dd MMM yyyy HH:mm:ss Z"];
+        [sharedDateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
+        //        NSLog(@"time zone%@", [NSTimeZone systemTimeZone]);
+    });
+    
+    return sharedDateFormatter;
 }
 
 @end

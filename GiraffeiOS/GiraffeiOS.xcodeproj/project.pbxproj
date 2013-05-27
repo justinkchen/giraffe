@@ -9,6 +9,15 @@
 /* Begin PBXBuildFile section */
 		BB06275E175015EF002DD5F0 /* TwitterClient.m in Sources */ = {isa = PBXBuildFile; fileRef = BB06275D175015EF002DD5F0 /* TwitterClient.m */; };
 		BB06276117501A0D002DD5F0 /* TwitterGraffiti.m in Sources */ = {isa = PBXBuildFile; fileRef = BB06276017501A0D002DD5F0 /* TwitterGraffiti.m */; };
+		BB0627631751A091002DD5F0 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB0627621751A091002DD5F0 /* FacebookSDK.framework */; };
+		BB0627651751A0CE002DD5F0 /* FacebookSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BB0627641751A0CE002DD5F0 /* FacebookSDKResources.bundle */; };
+		BB06276B1751A1AD002DD5F0 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB0627661751A1AC002DD5F0 /* Accounts.framework */; };
+		BB06276C1751A1AD002DD5F0 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB0627671751A1AC002DD5F0 /* AdSupport.framework */; };
+		BB06276D1751A1AD002DD5F0 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BB0627681751A1AC002DD5F0 /* libsqlite3.dylib */; };
+		BB06276E1751A1AD002DD5F0 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB0627691751A1AD002DD5F0 /* Security.framework */; };
+		BB06276F1751A1AD002DD5F0 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB06276A1751A1AD002DD5F0 /* Social.framework */; };
+		BB0627721751C164002DD5F0 /* FacebookClient.m in Sources */ = {isa = PBXBuildFile; fileRef = BB0627711751C164002DD5F0 /* FacebookClient.m */; };
+		BB06277617530FB6002DD5F0 /* FacebookGraffiti.m in Sources */ = {isa = PBXBuildFile; fileRef = BB06277517530FB6002DD5F0 /* FacebookGraffiti.m */; };
 		BB18C0C0174F47610088856A /* RankingAlgorithm.m in Sources */ = {isa = PBXBuildFile; fileRef = BB18C0BF174F47610088856A /* RankingAlgorithm.m */; };
 		BB29083B174DF901003064AB /* InstagramClient.m in Sources */ = {isa = PBXBuildFile; fileRef = BB29083A174DF901003064AB /* InstagramClient.m */; };
 		BB29083E174EFE4F003064AB /* InstagramGraffiti.m in Sources */ = {isa = PBXBuildFile; fileRef = BB29083D174EFE4F003064AB /* InstagramGraffiti.m */; };
@@ -84,6 +93,17 @@
 		BB06275D175015EF002DD5F0 /* TwitterClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterClient.m; sourceTree = "<group>"; };
 		BB06275F17501A0D002DD5F0 /* TwitterGraffiti.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterGraffiti.h; sourceTree = "<group>"; };
 		BB06276017501A0D002DD5F0 /* TwitterGraffiti.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterGraffiti.m; sourceTree = "<group>"; };
+		BB0627621751A091002DD5F0 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
+		BB0627641751A0CE002DD5F0 /* FacebookSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKResources.bundle; sourceTree = "<group>"; };
+		BB0627661751A1AC002DD5F0 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		BB0627671751A1AC002DD5F0 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		BB0627681751A1AC002DD5F0 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		BB0627691751A1AD002DD5F0 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		BB06276A1751A1AD002DD5F0 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		BB0627701751C164002DD5F0 /* FacebookClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookClient.h; sourceTree = "<group>"; };
+		BB0627711751C164002DD5F0 /* FacebookClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookClient.m; sourceTree = "<group>"; };
+		BB06277417530FB6002DD5F0 /* FacebookGraffiti.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookGraffiti.h; sourceTree = "<group>"; };
+		BB06277517530FB6002DD5F0 /* FacebookGraffiti.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookGraffiti.m; sourceTree = "<group>"; };
 		BB18C0BE174F47610088856A /* RankingAlgorithm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RankingAlgorithm.h; sourceTree = "<group>"; };
 		BB18C0BF174F47610088856A /* RankingAlgorithm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RankingAlgorithm.m; sourceTree = "<group>"; };
 		BB290839174DF901003064AB /* InstagramClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstagramClient.h; sourceTree = "<group>"; };
@@ -204,18 +224,39 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB06276B1751A1AD002DD5F0 /* Accounts.framework in Frameworks */,
+				BB06276C1751A1AD002DD5F0 /* AdSupport.framework in Frameworks */,
+				BB06276D1751A1AD002DD5F0 /* libsqlite3.dylib in Frameworks */,
+				BB06276E1751A1AD002DD5F0 /* Security.framework in Frameworks */,
+				BB06276F1751A1AD002DD5F0 /* Social.framework in Frameworks */,
 				BB89349317386E5D0056F035 /* SystemConfiguration.framework in Frameworks */,
 				BB89349117386E580056F035 /* MobileCoreServices.framework in Frameworks */,
 				BBD0151D172F3C2B00DB2ACC /* CoreLocation.framework in Frameworks */,
 				BB52B484172896330077591D /* UIKit.framework in Frameworks */,
 				BB52B486172896330077591D /* Foundation.framework in Frameworks */,
 				BB52B488172896330077591D /* CoreGraphics.framework in Frameworks */,
+				BB0627631751A091002DD5F0 /* FacebookSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BB06277317530F85002DD5F0 /* ConnectionClients */ = {
+			isa = PBXGroup;
+			children = (
+				BB0627701751C164002DD5F0 /* FacebookClient.h */,
+				BB0627711751C164002DD5F0 /* FacebookClient.m */,
+				BB06275C175015EF002DD5F0 /* TwitterClient.h */,
+				BB06275D175015EF002DD5F0 /* TwitterClient.m */,
+				BB290839174DF901003064AB /* InstagramClient.h */,
+				BB29083A174DF901003064AB /* InstagramClient.m */,
+				BB89349417386FA30056F035 /* GiraffeClient.h */,
+				BB89349517386FA30056F035 /* GiraffeClient.m */,
+			);
+			name = ConnectionClients;
+			sourceTree = "<group>";
+		};
 		BB52B477172896330077591D = {
 			isa = PBXGroup;
 			children = (
@@ -239,6 +280,13 @@
 		BB52B482172896330077591D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BB0627661751A1AC002DD5F0 /* Accounts.framework */,
+				BB0627671751A1AC002DD5F0 /* AdSupport.framework */,
+				BB0627681751A1AC002DD5F0 /* libsqlite3.dylib */,
+				BB0627691751A1AD002DD5F0 /* Security.framework */,
+				BB06276A1751A1AD002DD5F0 /* Social.framework */,
+				BB0627621751A091002DD5F0 /* FacebookSDK.framework */,
+				BB0627641751A0CE002DD5F0 /* FacebookSDKResources.bundle */,
 				BB89349217386E5D0056F035 /* SystemConfiguration.framework */,
 				BB89349017386E580056F035 /* MobileCoreServices.framework */,
 				BBD0151C172F3C2B00DB2ACC /* CoreLocation.framework */,
@@ -433,6 +481,8 @@
 				BB29083D174EFE4F003064AB /* InstagramGraffiti.m */,
 				BB06275F17501A0D002DD5F0 /* TwitterGraffiti.h */,
 				BB06276017501A0D002DD5F0 /* TwitterGraffiti.m */,
+				BB06277417530FB6002DD5F0 /* FacebookGraffiti.h */,
+				BB06277517530FB6002DD5F0 /* FacebookGraffiti.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -440,20 +490,15 @@
 		F04B9E2117382EBE007B645B /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				BB06277317530F85002DD5F0 /* ConnectionClients */,
 				F04B9E2217382EF6007B645B /* UIKit-Utility.h */,
 				F04B9E2317382EF6007B645B /* UIKit-Utility.m */,
-				BB89349417386FA30056F035 /* GiraffeClient.h */,
-				BB89349517386FA30056F035 /* GiraffeClient.m */,
 				F0C10C9D173B584D0093EBB1 /* LocationManager.h */,
 				F0C10C9E173B584D0093EBB1 /* LocationManager.m */,
 				F0C10CA1173B5BAA0093EBB1 /* Foundation-Utility.h */,
 				F0C10CA2173B5BAA0093EBB1 /* Foundation-Utility.m */,
-				BB290839174DF901003064AB /* InstagramClient.h */,
-				BB29083A174DF901003064AB /* InstagramClient.m */,
 				BB18C0BE174F47610088856A /* RankingAlgorithm.h */,
 				BB18C0BF174F47610088856A /* RankingAlgorithm.m */,
-				BB06275C175015EF002DD5F0 /* TwitterClient.h */,
-				BB06275D175015EF002DD5F0 /* TwitterClient.m */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -584,6 +629,7 @@
 				BBD67409174A213900152940 /* radar.png in Resources */,
 				BBD6740C174A214100152940 /* spraycan.png in Resources */,
 				BBD6740D174A214100152940 /* upload-photo.png in Resources */,
+				BB0627651751A0CE002DD5F0 /* FacebookSDKResources.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -627,6 +673,8 @@
 				BB18C0C0174F47610088856A /* RankingAlgorithm.m in Sources */,
 				BB06275E175015EF002DD5F0 /* TwitterClient.m in Sources */,
 				BB06276117501A0D002DD5F0 /* TwitterGraffiti.m in Sources */,
+				BB0627721751C164002DD5F0 /* FacebookClient.m in Sources */,
+				BB06277617530FB6002DD5F0 /* FacebookGraffiti.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -740,6 +788,10 @@
 		BB52B4B2172896340077591D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GiraffeiOS/GiraffeiOS-Prefix.pch";
 				INFOPLIST_FILE = "GiraffeiOS/GiraffeiOS-Info.plist";
@@ -752,6 +804,10 @@
 		BB52B4B3172896340077591D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GiraffeiOS/GiraffeiOS-Prefix.pch";
 				INFOPLIST_FILE = "GiraffeiOS/GiraffeiOS-Info.plist";

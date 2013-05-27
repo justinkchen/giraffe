@@ -7,9 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Graffiti.h"
 
 @interface RankingAlgorithm : NSObject
 
 + (NSArray *)sortGraffiti:(NSArray *)graffiti;
++ (NSArray *)insertGraffito:(Graffiti *)graffito
+                       into:(NSArray *)graffitiList;
 
 @end

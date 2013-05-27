@@ -11,16 +11,19 @@
 #import "Graffiti.h"
 #import "InstagramGraffiti.h"
 #import "TwitterGraffiti.h"
+#import "FacebookGraffiti.h"
 #import "User.h"
 #import "GraffitiCell.h"
 #import "GiraffeClient.h"
 #import "InstagramClient.h"
 #import "TwitterClient.h"
+#import "FacebookClient.h"
 #import "LocationManager.h"
 #import "RankingAlgorithm.h"
 #import "UIKit-Utility.h"
 #import "Toast+UIView.h"
 #import "Foundation-Utility.h"
+#import <FacebookSDK/FacebookSDK.h>
 
 @interface GiraffeNearbyViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -77,7 +80,7 @@
     [[GiraffeClient sharedClient] beginGraffitiNearbyGetWithLatitude:latitude
                                                            longitude:longitude success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                                                [self.view hideToastActivity];
-                                                               NSLog(@"got response %@", responseObject);
+//                                                               NSLog(@"got response %@", responseObject);
                                                                
                                                                [self graffitiRequestFinishedWithDictionary:[responseObject ifIsKindOfClass:[NSDictionary class]]];
                                                            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -99,6 +102,16 @@
                                                                     [self.view hideToastActivity];
                                                                     [self.view makeToast:[error localizedDescription] duration:1.5f position:@"top"];
                                                                 }];
+        
+        if (FBSession.activeSession.isOpen) {
+            [[FacebookClient sharedClient] beginFacebookNearbyGetWithLatitude:latitude longitude:longitude success:^(FBRequestConnection *connection, id result) {
+//                NSLog(@"facebook post %@", result);
+                [self facebookRequestFinishedWithDictionary:[result ifIsKindOfClass:[NSDictionary class]]];
+            } failure:^(FBRequestConnection *connection, id result, NSError *error) {
+                [self.view hideToastActivity];
+                [self.view makeToast:[error localizedDescription] duration:1.5f position:@"top"];
+            }];
+        }
     }
 }
 
@@ -120,7 +133,7 @@
                                                               longitude:longitude
                                                                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                                                     [self.view hideToastActivity];
-                                                                    NSLog(@"got instagram response %@", responseObject);
+//                                                                    NSLog(@"got instagram response %@", responseObject);
                                                                     
                                                                     [self instagramRequestFinishedWithDictionary:[responseObject ifIsKindOfClass:[NSDictionary class]]];
                                                                 }
@@ -154,7 +167,12 @@
     self.graffiti = [RankingAlgorithm sortGraffiti:newGraffiti];
 }
 
-
+- (void)facebookRequestFinishedWithDictionary:(NSDictionary *)dictionary
+{
+    FacebookGraffiti *graffiti = [[FacebookGraffiti alloc] initWithDictionary:dictionary];
+    
+    self.graffiti = [RankingAlgorithm insertGraffito:graffiti into:self.graffiti];
+}
 
 - (IBAction)refreshButtonTapped:(UIBarButtonItem *)sender {
     [self requestGraffitiFromServer];
@@ -172,7 +190,6 @@
     UIButton *usernameButton = (UIButton *)sender;
     GraffitiCell *cell = (GraffitiCell *)[usernameButton superview];
     
-    NSLog(@"view profile %d", cell.graffiti.user.identifier);
     GiraffeProfileViewController *profileViewController = [[UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"profile"];
     profileViewController.user = cell.graffiti.user;
     

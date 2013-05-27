@@ -58,4 +58,6 @@ extern NSString *const kParamNameGraffitiIsLiked;
 - (CGFloat)distanceFromLatitude:(CGFloat)latitude
                       longitude:(CGFloat)longitude;
 
++ (NSDateFormatter *)sharedDateFormatter;
+
 @end
