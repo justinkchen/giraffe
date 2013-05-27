@@ -50,6 +50,10 @@
     <string name="users_posts">Recent posts:</string>
     <string name="like">Like</string>
     <string name="flag">Flag</string>
+    <string name="no_gps">For full functionality you need to enable location tracking on your phone.</string>
+    <string name="no_connection">Cannot connect to the Internet, check your connection settings.</string>
+    <string name="server_down">Our server seems to be down. We appologize for the inconvenience.</string>
+    <string name="click_to_cancel">Click anywhere in the window to close the app.</string>
     <string name="help_text">Welcome to the Giraffe app!
 \n
 \n

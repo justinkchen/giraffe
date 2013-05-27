@@ -101,7 +101,7 @@ public class ProfileFragment extends Fragment {
 					+ _imagePath);
 		}
 		getProfileStatsTask.execute(MainActivity.getBaseServerURI()
-				+ "/users/stats?userid=" + _userid);
+				+ "/users/stats?id=" + _userid);
 		Log.i("Johan", "Done setting image");
 		return rootView;
 	}
@@ -282,8 +282,8 @@ public class ProfileFragment extends Fragment {
 				try {
 					JSONObject statsObject = (JSONObject) returnJSONObject
 							.get("stats");
-					String posts = statsObject.getString("graffiti");
-					String likes = statsObject.getString("likes");
+					String posts = statsObject.getString("graffitiCount");
+					String likes = statsObject.getString("likeCount");
 					_postsText.setText("Posts: " + posts);
 					_likesText.setText("Likes: " + likes);
 				} catch (JSONException e) {

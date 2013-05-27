@@ -31,6 +31,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Criteria;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -46,6 +48,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,9 +58,10 @@ public class MainActivity extends FragmentActivity implements
 	static final int NUM_TABS = 3;
 	private static GiraffeLocationListener locationListener = null;
 	private static CookieManager cookieManager = null;
-	private static String baseServerURI =  "http://thegiraffeapp.com"; //"http://ec2-54-224-185-156.compute-1.amazonaws.com";
+	private static String baseServerURI = /* "http://thegiraffeapp.com"; */"http://ec2-54-224-185-156.compute-1.amazonaws.com";
 	private static User currentUser = null;
 	private static Menu mainActivityMenu = null;
+	private static boolean noConnection = false;
 
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -177,58 +181,6 @@ public class MainActivity extends FragmentActivity implements
 		// }
 
 		setPersistentLogin();
-		
-		setContentView(R.layout.activity_main);
-
-		// Set up the action bar.
-		final ActionBar actionBar = getActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
-		// Create the adapter that will return a fragment for each of the three
-		// primary sections of the app.
-		mSectionsPagerAdapter = new SectionsPagerAdapter(
-				getSupportFragmentManager());
-
-		// Set up the ViewPager with the sections adapter.
-		mViewPager = (ViewPager) findViewById(R.id.pager);
-		mViewPager.setAdapter(mSectionsPagerAdapter);
-
-		// When swiping between different sections, select the corresponding
-		// tab. We can also use ActionBar.Tab#select() to do this if we have
-		// a reference to the Tab.
-		mViewPager
-				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-					@Override
-					public void onPageSelected(int position) {
-						actionBar.setSelectedNavigationItem(position);
-					}
-				});
-
-		// For each of the sections in the app, add a tab to the action bar.
-		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-			// Create a tab with text corresponding to the page title defined by
-			// the adapter. Also specify this Activity object, which implements
-			// the TabListener interface, as the callback (listener) for when
-			// this tab is selected.
-			actionBar.addTab(actionBar.newTab().setTabListener(this));
-			// .setText(mSectionsPagerAdapter.getPageTitle(i))
-			switch (i) {
-			case 0:
-				actionBar.getTabAt(i).setIcon(
-						R.drawable.ic_collections_view_as_list_holodark);
-				break;
-			case 1:
-				actionBar.getTabAt(i).setIcon(
-						R.drawable.ic_content_new_event_holodark);
-				break;
-			case 2:
-				actionBar.getTabAt(i).setIcon(
-						R.drawable.ic_location_map_holodark);
-				break;
-			default:
-				break;
-			}
-		}
 
 		// Acquire a reference to the system Location Manager
 		LocationManager locationManager = (LocationManager) this
@@ -240,34 +192,92 @@ public class MainActivity extends FragmentActivity implements
 		// updates
 		locationListener = new GiraffeLocationListener(locationManager,
 				bestProvider);
-
-		if (bestProvider == null || !locationListener.isLocationFound()) {
-			new AlertDialog.Builder(this)
-					.setIcon(R.drawable.ic_device_access_location_off)
-					.setTitle("No location provider accessible")
-					.setMessage(
-							"Please turn on GPS location services and try again")
-					.setCancelable(false)
-					.setPositiveButton("Close App",
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									finish();
-								}
-							}).show();
-		}
-
+		boolean hasLocation = checkLocationExists(bestProvider);
 		locationManager.requestLocationUpdates(bestProvider, 0, 0,
 				locationListener);
+		setContentView(R.layout.activity_main);
 
+		boolean hasConnection = checkConnection();
+		if (hasLocation && hasConnection) {
+			setContentView(R.layout.activity_main);
+
+			// Set up the action bar.
+			final ActionBar actionBar = getActionBar();
+			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+			
+			// Create the adapter that will return a fragment for each of the
+			// three
+			// primary sections of the app.
+			mSectionsPagerAdapter = new SectionsPagerAdapter(
+					getSupportFragmentManager());
+
+			// Set up the ViewPager with the sections adapter.
+			mViewPager = (ViewPager) findViewById(R.id.pager);
+			mViewPager.setAdapter(mSectionsPagerAdapter);
+
+			// When swiping between different sections, select the corresponding
+			// tab. We can also use ActionBar.Tab#select() to do this if we have
+			// a reference to the Tab.
+			mViewPager
+					.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+						@Override
+						public void onPageSelected(int position) {
+							actionBar.setSelectedNavigationItem(position);
+						}
+					});
+
+			// For each of the sections in the app, add a tab to the action bar.
+			for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
+				// Create a tab with text corresponding to the page title
+				// defined by
+				// the adapter. Also specify this Activity object, which
+				// implements
+				// the TabListener interface, as the callback (listener) for
+				// when
+				// this tab is selected.
+				actionBar.addTab(actionBar.newTab().setTabListener(this));
+				// .setText(mSectionsPagerAdapter.getPageTitle(i))
+				switch (i) {
+				case 0:
+					actionBar.getTabAt(i).setIcon(
+							R.drawable.ic_collections_view_as_list_holodark);
+					break;
+				case 1:
+					actionBar.getTabAt(i).setIcon(
+							R.drawable.ic_content_new_event_holodark);
+					break;
+				case 2:
+					actionBar.getTabAt(i).setIcon(
+							R.drawable.ic_location_map_holodark);
+					break;
+				default:
+					break;
+				}
+			}
+		} else {
+			setContentView(R.layout.activity_error);
+			LinearLayout errorLayout = (LinearLayout) findViewById(R.id.error_layout);
+			if (!hasLocation)
+				((TextView) findViewById(R.id.no_gps)).setVisibility(0);
+			if (!hasConnection) {
+				((TextView) findViewById(R.id.no_connection)).setVisibility(0);
+				MainActivity.setNoConnection(true);
+			}
+			errorLayout.setOnClickListener(new View.OnClickListener() {
+			    @Override
+			    public void onClick(View v) {
+			        //Inform the user the button has been clicked
+			        finish();
+			    }
+			});
+			
+		}
 		HttpsTask.setContext(getApplicationContext());
 
-
-//		Log.i("Johan", "Checking server cookie");
+		// Log.i("Johan", "Checking server cookie");
 //		GetUserTask getUserTask = new GetUserTask();
 //		getUserTask.execute(getBaseServerURI() + "/session/connect");
-		
+
 	}
 
 	@Override
@@ -283,7 +293,11 @@ public class MainActivity extends FragmentActivity implements
 	public boolean onPrepareOptionsMenu(Menu menu) {
 
 		// Handle disabling or enabling menu based on user login
-		if (!isLoggedIn()) {
+		if (noConnection) {
+			menu.getItem(0).setVisible(false);
+			menu.getItem(1).setVisible(false);
+			menu.getItem(3).setVisible(false);
+		} else if (!isLoggedIn()) {
 			menu.getItem(0).setVisible(false);
 			menu.getItem(1).setVisible(true);
 			menu.getItem(3).setVisible(false);
@@ -677,8 +691,7 @@ public class MainActivity extends FragmentActivity implements
 		}
 	}
 
-	private class GetUserTask extends
-			AsyncTask<String, Void, JSONObject> {
+	private class GetUserTask extends AsyncTask<String, Void, JSONObject> {
 
 		String error_message;
 		boolean success = false;
@@ -699,7 +712,7 @@ public class MainActivity extends FragmentActivity implements
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-
+			addSessionCookie(conn);
 			InputStream myInputStream = null;
 			try {
 				myInputStream = conn.getInputStream();
@@ -738,37 +751,37 @@ public class MainActivity extends FragmentActivity implements
 		protected void onPostExecute(JSONObject returnJSONObject) {
 			if (success) {
 				Log.i("Johan", "Successful cookie get or whatever");
-//				try {
-////					JSONObject statsObject = (JSONObject) returnJSONObject
-////							.get("stats");
-//					
-//				} catch (JSONException e) {
-//					Log.i("Johan", "JSON Exception");
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
+				// try {
+				// // JSONObject statsObject = (JSONObject) returnJSONObject
+				// // .get("stats");
+				//
+				// } catch (JSONException e) {
+				// Log.i("Johan", "JSON Exception");
+				// // TODO Auto-generated catch block
+				// e.printStackTrace();
+				// }
 
 			}
 		}
 	}
-	
-	public static void addSessionCookie(HttpURLConnection conn){
-		List <HttpCookie> cookies =
-				MainActivity.getCookieManager().getCookieStore().getCookies();
+
+	public static void addSessionCookie(HttpURLConnection conn) {
+		List<HttpCookie> cookies = MainActivity.getCookieManager()
+				.getCookieStore().getCookies();
 		StringBuffer cookieHeaderBuffer = new StringBuffer();
-		for (HttpCookie cookie: cookies) {
+		for (HttpCookie cookie : cookies) {
 			Log.w("MainActivity", "Number of cookies: " + cookies.size());
 			cookieHeaderBuffer.append(cookie.toString());
 		}
 		conn.setRequestProperty("Cookie", cookieHeaderBuffer.toString());
 	}
-	
-	private void setPersistentLogin(){
+
+	private void setPersistentLogin() {
 		setCookieManager(new CookieManager(null, CookiePolicy.ACCEPT_NONE));
 		CookieHandler.setDefault(cookieManager);
 		// Retrieve persistent login stuff
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-		String cookieStr = "connect.sid=" + settings.getString("cookie", null);
+		String cookieStr = "connect.sess=" + settings.getString("cookie", null);
 		if (settings.getString("cookie", null) != null) {
 			Log.w("MainActivity", "retrieving saved cookie: " + cookieStr);
 			HttpCookie cookie = new HttpCookie(cookieStr.substring(0,
@@ -795,6 +808,30 @@ public class MainActivity extends FragmentActivity implements
 			currentUser.setUsername(settings.getString("username", ""));
 			MainActivity.setCurrentUser(currentUser);
 		}
+	}
+
+	public boolean checkLocationExists(String bestProvider) {
+
+		if (bestProvider == null || !locationListener.isLocationFound())
+			return false;
+		else
+			return true;
+	}
+	
+	public boolean checkConnection() {
+		ConnectivityManager conMgr =  (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo i = conMgr.getActiveNetworkInfo();
+		  if (i == null)
+		    return false;
+		  if (!i.isConnected())
+		    return false;
+		  if (!i.isAvailable())
+		    return false;
+		  return true;
+	}
+	
+	public static void setNoConnection(boolean noCurrConnection) {
+		noConnection = noCurrConnection;
 	}
 
 }

@@ -7,38 +7,46 @@
     <uses-sdk
         android:minSdkVersion="13"
         android:targetSdkVersion="17" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
-    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION"/>
 
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+
     <permission
         android:name="com.cs210.giraffe.permission.MAPS_RECEIVE"
-        android:protectionLevel="signature"/>
-	<uses-permission android:name="com.cs210.giraffe.permission.MAPS_RECEIVE"/>
-	<uses-feature android:required="true" android:glEsVersion="0x00020000"/>
-	
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.cs210.giraffe.permission.MAPS_RECEIVE" />
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher_giraffe"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
         <!-- Debug Key -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyC7vHHwQ0XsJP6SbF51ZbdYYG_3YVkmnbo"/>
+            android:value="AIzaSyC7vHHwQ0XsJP6SbF51ZbdYYG_3YVkmnbo" />
         <!-- Release Key -->
-        <!-- <meta-data
+        <!--
+             <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-        	android:value="AIzaSyAdgXDyaT7qNAWY2yag1Ta-xbhVVnstIg8"/> -->
+        	android:value="AIzaSyAdgXDyaT7qNAWY2yag1Ta-xbhVVnstIg8"/>
+        -->
         <activity
             android:name="com.cs210.giraffe.MainActivity"
-            android:label="@string/app_name" 
+            android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,14 +54,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.cs210.giraffe.SettingsActivity"
+        <activity
+            android:name="com.cs210.giraffe.SettingsActivity"
             android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.cs210.giraffe.ProfileActivity"
-            android:screenOrientation="portrait" >  
+        <activity
+            android:name="com.cs210.giraffe.ProfileActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:screenOrientation="portrait" android:name="com.cs210.giraffe.RegisterActivity"></activity>
-        
+        <activity
+            android:name="com.cs210.giraffe.RegisterActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.cs210.giraffe.ErrorActivity"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
 
 </manifest>
