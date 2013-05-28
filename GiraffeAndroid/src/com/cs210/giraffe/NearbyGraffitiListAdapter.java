@@ -87,7 +87,7 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 		holder.getUsernameView().setTypeface(null, Typeface.BOLD);
 		holder.getUsernameView().setText(item.getUsername());
 		holder.getUsernameView().setOnClickListener(
-				new ProfileOnClickListener());
+				new ProfileOnClickListener(holder));
 		holder.getMessageView().setText(item.getText());
 		// message.setOnClickListener(new MessageOnClickListener());
 		buttonLayout = (LinearLayout) view.findViewById(R.id.button_layout);
@@ -110,7 +110,13 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 	}
 
 	private class ProfileOnClickListener implements OnClickListener {
-
+		
+		ViewHolder holder;
+		
+		public ProfileOnClickListener (ViewHolder currHolder) {
+			holder = currHolder;
+		}
+		
 		@Override
 		public void onClick(View v) {
 			Intent intent = new Intent(getContext(), ProfileActivity.class);

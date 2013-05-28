@@ -61,7 +61,9 @@ public class MainActivity extends FragmentActivity implements
 	private static String baseServerURI = /* "http://thegiraffeapp.com"; */"http://ec2-54-224-185-156.compute-1.amazonaws.com";
 	private static User currentUser = null;
 	private static Menu mainActivityMenu = null;
-	private static boolean noConnection = false;
+	private static boolean hasLocation = false;
+	private static boolean hasConnection = false;
+	private static boolean serverDown = false;
 
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -192,13 +194,13 @@ public class MainActivity extends FragmentActivity implements
 		// updates
 		locationListener = new GiraffeLocationListener(locationManager,
 				bestProvider);
-		boolean hasLocation = checkLocationExists(bestProvider);
+		hasLocation = checkLocationExists(bestProvider);
 		locationManager.requestLocationUpdates(bestProvider, 0, 0,
 				locationListener);
 		setContentView(R.layout.activity_main);
 
-		boolean hasConnection = checkConnection();
-		if (hasLocation && hasConnection) {
+		hasConnection = checkConnection();
+		if (hasLocation && hasConnection && !serverDown) {
 			setContentView(R.layout.activity_main);
 
 			// Set up the action bar.
@@ -255,28 +257,13 @@ public class MainActivity extends FragmentActivity implements
 				}
 			}
 		} else {
-			setContentView(R.layout.activity_error);
-			LinearLayout errorLayout = (LinearLayout) findViewById(R.id.error_layout);
-			if (!hasLocation)
-				((TextView) findViewById(R.id.no_gps)).setVisibility(0);
-			if (!hasConnection) {
-				((TextView) findViewById(R.id.no_connection)).setVisibility(0);
-				MainActivity.setNoConnection(true);
-			}
-			errorLayout.setOnClickListener(new View.OnClickListener() {
-			    @Override
-			    public void onClick(View v) {
-			        //Inform the user the button has been clicked
-			        finish();
-			    }
-			});
-			
+			showErrorView();
 		}
 		HttpsTask.setContext(getApplicationContext());
 
 		// Log.i("Johan", "Checking server cookie");
-//		GetUserTask getUserTask = new GetUserTask();
-//		getUserTask.execute(getBaseServerURI() + "/session/connect");
+		GetUserTask getUserTask = new GetUserTask();
+		getUserTask.execute(getBaseServerURI() + "/session/connect");
 
 	}
 
@@ -293,7 +280,7 @@ public class MainActivity extends FragmentActivity implements
 	public boolean onPrepareOptionsMenu(Menu menu) {
 
 		// Handle disabling or enabling menu based on user login
-		if (noConnection) {
+		if (!hasConnection || serverDown) {
 			menu.getItem(0).setVisible(false);
 			menu.getItem(1).setVisible(false);
 			menu.getItem(3).setVisible(false);
@@ -718,7 +705,10 @@ public class MainActivity extends FragmentActivity implements
 				myInputStream = conn.getInputStream();
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
+				Log.i("Johan2", "This is where server down pans out");
+				serverDown = true;
 				e1.printStackTrace();
+				return null;
 			}
 			JSONObject returnJSONObject = null;
 			try {
@@ -751,17 +741,9 @@ public class MainActivity extends FragmentActivity implements
 		protected void onPostExecute(JSONObject returnJSONObject) {
 			if (success) {
 				Log.i("Johan", "Successful cookie get or whatever");
-				// try {
-				// // JSONObject statsObject = (JSONObject) returnJSONObject
-				// // .get("stats");
-				//
-				// } catch (JSONException e) {
-				// Log.i("Johan", "JSON Exception");
-				// // TODO Auto-generated catch block
-				// e.printStackTrace();
-				// }
-
-			}
+				serverDown = false;
+			} else 
+				showErrorView();
 		}
 	}
 
@@ -830,8 +812,24 @@ public class MainActivity extends FragmentActivity implements
 		  return true;
 	}
 	
-	public static void setNoConnection(boolean noCurrConnection) {
-		noConnection = noCurrConnection;
-	}
 
+	public void showErrorView () {
+		setContentView(R.layout.activity_error);
+		LinearLayout errorLayout = (LinearLayout) findViewById(R.id.error_layout);
+		if (!hasLocation)
+			((TextView) findViewById(R.id.no_gps)).setVisibility(0);
+		if (!hasConnection) {
+			((TextView) findViewById(R.id.no_connection)).setVisibility(0);
+		}
+		if (serverDown) {
+			((TextView) findViewById(R.id.server_down)).setVisibility(0);
+		}
+		errorLayout.setOnClickListener(new View.OnClickListener() {
+		    @Override
+		    public void onClick(View v) {
+		        //Inform the user the button has been clicked
+		        finish();
+		    }
+		});
+	}
 }
