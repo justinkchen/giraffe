@@ -29,6 +29,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.location.Criteria;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
@@ -40,6 +41,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.NavUtils;
+import android.support.v4.util.LruCache;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Gravity;
@@ -64,6 +66,7 @@ public class MainActivity extends FragmentActivity implements
 	private static boolean hasLocation = false;
 	private static boolean hasConnection = false;
 	private static boolean serverDown = false;
+	private static LruCache<String, Bitmap> memoryBitmapCache;
 
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -162,26 +165,23 @@ public class MainActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		// Get max available VM memory, exceeding this amount will throw an
+	    // OutOfMemory exception. Stored in kilobytes as LruCache takes an
+	    // int in its constructor.
+	    final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+	    // Use 1/8th of the available memory for this memory cache.
+	    final int cacheSize = maxMemory / 8;
+		
+	    setMemoryBitmapCache(new LruCache<String, Bitmap>(cacheSize) {
+	        @Override
+	        protected int sizeOf(String key, Bitmap bitmap) {
+	            // The cache size will be measured in kilobytes rather than
+	            // number of items.
+	            return bitmap.getByteCount() / 1024;
+	        }
+	    });
+	    
 		// Restore preferences
-
-		// SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-		// String cookieStr = settings.getString("cookie", null);
-		// if(cookieStr != null){
-		// HttpCookie cookie = new HttpCookie(cookieStr.substring(0,
-		// cookieStr.indexOf('=')), cookieStr.substring(cookieStr.indexOf('='),
-		// cookieStr.length()));
-		// cookie.setDomain(MainActivity.getBaseServerURI());
-		// cookie.setPath("/");
-		// cookie.setVersion(0);
-		// try {
-		// MainActivity.getCookieManager().getCookieStore().add(new
-		// URI(MainActivity.getBaseServerURI()), cookie);
-		// } catch (URISyntaxException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// }
-
 		setPersistentLogin();
 
 		// Acquire a reference to the system Location Manager
@@ -832,5 +832,23 @@ public class MainActivity extends FragmentActivity implements
 		        finish();
 		    }
 		});
+	}
+
+	public static LruCache<String, Bitmap> getMemoryBitmapCache() {
+		return memoryBitmapCache;
+	}
+
+	public static void setMemoryBitmapCache(LruCache<String, Bitmap> memoryBitmapCache) {
+		MainActivity.memoryBitmapCache = memoryBitmapCache;
+	}
+	
+	public static void addBitmapToMemoryCache(String key, Bitmap bitmap) {
+	    if (getBitmapFromMemCache(key) == null) {
+	        MainActivity.getMemoryBitmapCache().put(key, bitmap);
+	    }
+	}
+
+	public static Bitmap getBitmapFromMemCache(String key) {
+	    return MainActivity.getMemoryBitmapCache().get(key);
 	}
 }
