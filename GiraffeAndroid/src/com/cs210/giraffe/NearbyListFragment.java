@@ -59,6 +59,7 @@ public class NearbyListFragment extends ListFragment implements LoaderManager.Lo
 	@Override
 	public void onLoadFinished(Loader<List<Graffiti>> arg0, List<Graffiti> data) {
 		_adapter.setData(data);
+		_adapter.notifyDataSetChanged();
         System.out.println("NearbyGraffitiListFragment.onLoadFinished");
         // The list should now be shown.
         if (isResumed()) {

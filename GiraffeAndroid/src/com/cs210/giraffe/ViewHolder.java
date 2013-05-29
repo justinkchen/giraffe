@@ -11,6 +11,10 @@ public class ViewHolder {
 	private Button _likeButton;
 	private Button _flagButton;
 	private Graffiti _item;
+	private int _position;
+	
+	private String _imageUrl;
+	
 	
 	public ViewHolder(){
 		
@@ -62,5 +66,21 @@ public class ViewHolder {
 	
 	public void setItem(Graffiti item) {
 		_item = item;
+	}
+
+	public int getPosition() {
+		return _position;
+	}
+
+	public void setPosition(int position) {
+		this._position = position;
+	}
+
+	public String getImageUrl() {
+		return _imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this._imageUrl = imageUrl;
 	}
 }

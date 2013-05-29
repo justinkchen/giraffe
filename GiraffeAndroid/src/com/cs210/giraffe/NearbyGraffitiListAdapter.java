@@ -37,7 +37,7 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
-		ListAdapter {
+ListAdapter {
 
 	private final LayoutInflater _inflater;
 	private Graffiti item;
@@ -72,51 +72,101 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 					.findViewById(R.id.graffiti_image));
 			holder.setLikeButton((Button) view.findViewById(R.id.like_button));
 			holder.setFlagButton((Button) view.findViewById(R.id.flag_button));
-
+			holder.setPosition(position);
+			holder.setItem(getItem(position));
+			holder.setImageUrl(holder.getItem().getImageURL());
+			view.setTag(holder);
 		} else {
 			view = convertView;
 			holder = (ViewHolder) convertView.getTag();
 		}
-		view.setTag(holder);
-		item = getItem(position);
+		item = holder.getItem();
+		Log.w("ListPositions", "text: " + holder.getMessageView().getText() + ", holder position: " + holder.getPosition() + " position: " + position);
 
-		// username = (TextView) view.findViewById(R.id.username);
-		// message = (TextView) view.findViewById(R.id.message);
-		// graffitiImage = (ImageView) view.findViewById(R.id.graffiti_image);
-		holder.setItem(item);
-		holder.getUsernameView().setTypeface(null, Typeface.BOLD);
-		holder.getUsernameView().setText(item.getUsername());
-		holder.getUsernameView().setOnClickListener(
-				new ProfileOnClickListener(holder));
-		holder.getMessageView().setText(item.getText());
-		// message.setOnClickListener(new MessageOnClickListener());
-		buttonLayout = (LinearLayout) view.findViewById(R.id.button_layout);
+		if(holder.getPosition() == position){
+			// username = (TextView) view.findViewById(R.id.username);
+			// message = (TextView) view.findViewById(R.id.message);
+			// graffitiImage = (ImageView) view.findViewById(R.id.graffiti_image);
+			holder.getUsernameView().setTypeface(null, Typeface.BOLD);
+			holder.getUsernameView().setText(item.getUsername());
+			holder.getUsernameView().setOnClickListener(
+					new ProfileOnClickListener(holder));
+			holder.getMessageView().setText(item.getText());
+			// message.setOnClickListener(new MessageOnClickListener());
+			buttonLayout = (LinearLayout) view.findViewById(R.id.button_layout);
 
-		if (holder.getItem().getIsLiked() == 1)
-			holder.getLikeButton().setText("Liked");
-		// likeButton.setOnClickListener(new LikeOnClickListener(position));
-		holder.getLikeButton().setOnClickListener(
-				new LikeOnClickListener(holder));
-		// flagButton = (Button) view.findViewById(R.id.flag_button);
-		holder.getFlagButton().setOnClickListener(new FlagOnClickListener());
-		// System.out.println("item image url: " + item.getImageURL());
-		if (!holder.getItem().getImageURL().equals("null")) {
-			new DownloadImageTask(holder.getGraffitiImageView()).execute(MainActivity.getBaseServerURI() + item
-					.getImageURL());
-			// graffitiImage.setOnClickListener(new MessageOnClickListener());
+			// likeButton.setOnClickListener(new LikeOnClickListener(position));
+			holder.getLikeButton().setOnClickListener(
+					new LikeOnClickListener(holder));
+			// flagButton = (Button) view.findViewById(R.id.flag_button);
+			holder.getFlagButton().setOnClickListener(new FlagOnClickListener());
+			// System.out.println("item image url: " + item.getImageURL());
+
+			//holder.setItem(item);
+			if (holder.getItem().getIsLiked() == 1){
+				holder.getLikeButton().setText("Liked");
+			}
+			if (holder.getImageUrl() != null && !holder.getImageUrl().equals("null")) {
+				new ListViewDownloadImageTask(holder, position).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, MainActivity.getBaseServerURI() + holder.getImageUrl());
+				// graffitiImage.setOnClickListener(new MessageOnClickListener());
+			}
+		}else{
+			holder = new ViewHolder();
+			view = _inflater.inflate(R.layout.nearby_graffiti_item, parent,
+					false);
+			holder.setUsernameView((TextView) view.findViewById(R.id.username));
+			holder.setMessageView((TextView) view.findViewById(R.id.message));
+			holder.setGraffitiImageView((ImageView) view
+					.findViewById(R.id.graffiti_image));
+			holder.setLikeButton((Button) view.findViewById(R.id.like_button));
+			holder.setFlagButton((Button) view.findViewById(R.id.flag_button));
+			holder.setPosition(position);
+			holder.setItem(getItem(position));
+			holder.setImageUrl(getItem(position).getImageURL());
+			view.setTag(holder);
+
+			item = holder.getItem();
+			
+			if(holder.getPosition() == position){
+				// username = (TextView) view.findViewById(R.id.username);
+				// message = (TextView) view.findViewById(R.id.message);
+				// graffitiImage = (ImageView) view.findViewById(R.id.graffiti_image);
+				holder.getUsernameView().setTypeface(null, Typeface.BOLD);
+				holder.getUsernameView().setText(item.getUsername());
+				holder.getUsernameView().setOnClickListener(
+						new ProfileOnClickListener(holder));
+				holder.getMessageView().setText(item.getText());
+				// message.setOnClickListener(new MessageOnClickListener());
+				buttonLayout = (LinearLayout) view.findViewById(R.id.button_layout);
+
+				// likeButton.setOnClickListener(new LikeOnClickListener(position));
+				holder.getLikeButton().setOnClickListener(
+						new LikeOnClickListener(holder));
+				// flagButton = (Button) view.findViewById(R.id.flag_button);
+				holder.getFlagButton().setOnClickListener(new FlagOnClickListener());
+				// System.out.println("item image url: " + item.getImageURL());
+
+				//holder.setItem(item);
+				if (holder.getItem().getIsLiked() == 1){
+					holder.getLikeButton().setText("Liked");
+				}
+				if (holder.getImageUrl() != null && !holder.getImageUrl().equals("null")) {
+					new ListViewDownloadImageTask(holder, position).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, MainActivity.getBaseServerURI() + holder.getImageUrl());
+					// graffitiImage.setOnClickListener(new MessageOnClickListener());
+				}
+			}
 		}
-
 		return view;
 	}
 
 	private class ProfileOnClickListener implements OnClickListener {
-		
+
 		ViewHolder holder;
-		
+
 		public ProfileOnClickListener (ViewHolder currHolder) {
 			holder = currHolder;
 		}
-		
+
 		@Override
 		public void onClick(View v) {
 			Intent intent = new Intent(getContext(), ProfileActivity.class);
