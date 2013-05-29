@@ -78,7 +78,7 @@ public class MainActivity extends FragmentActivity implements
 	/**
 	 * The {@link ViewPager} that will host the section contents.
 	 */
-	ViewPager mViewPager;
+	CustomViewPager mViewPager;
 
 	protected static boolean isLoggedIn() {
 		if (currentUser != null) {
@@ -214,7 +214,8 @@ public class MainActivity extends FragmentActivity implements
 					getSupportFragmentManager());
 
 			// Set up the ViewPager with the sections adapter.
-			mViewPager = (ViewPager) findViewById(R.id.pager);
+			mViewPager = (CustomViewPager) findViewById(R.id.pager);
+			mViewPager.setPagingEnabled(false);
 			mViewPager.setAdapter(mSectionsPagerAdapter);
 
 			// When swiping between different sections, select the corresponding

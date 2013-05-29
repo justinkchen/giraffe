@@ -76,29 +76,32 @@ public class ProfileFragment extends Fragment {
 
 		_userProfilePicture = (ImageView) rootView
 				.findViewById(R.id.userImageView);
-		
+
 		_userid = Integer.toString(((ProfileActivity) getActivity())
 				.getUserid());
-		
+
 		//You can only change your own profile picture
 		if(MainActivity.getCurrentUser() != null){
 			if (_userid.equals(Integer.toString(MainActivity.getCurrentUser().getId()))) {
 				_userProfilePicture.setOnClickListener(new profileImageClickListener());
 			}
 		}
-		
+
 		_username = ((ProfileActivity) getActivity()).getUsername();
 		_imagePath = ((ProfileActivity) getActivity()).getImagePath();
 		Log.i("Johan", "Current userid: " + _userid);
-		User currentUser = MainActivity.getCurrentUser();
-		String username = currentUser.getUsername();
-		String imagePath = currentUser.getAvatar();
 
-		_userText.setText("Name: " + _username);
-		if (imagePath != null) {
-			Log.i("Johan", imagePath);
-			setProfilePictureTask.execute(MainActivity.getBaseServerURI()
-					+ _imagePath);
+		if(MainActivity.getCurrentUser() != null){
+			User currentUser = MainActivity.getCurrentUser();
+			String username = currentUser.getUsername();
+			String imagePath = currentUser.getAvatar();
+
+			_userText.setText("Name: " + _username);
+			if (imagePath != null) {
+				Log.i("Johan", imagePath);
+				setProfilePictureTask.execute(MainActivity.getBaseServerURI()
+						+ _imagePath);
+			}
 		}
 		getProfileStatsTask.execute(MainActivity.getBaseServerURI()
 				+ "/users/stats?id=" + _userid);
@@ -197,7 +200,7 @@ public class ProfileFragment extends Fragment {
 	}
 
 	private class SetProfilePictureTask extends
-			AsyncTask<String, Void, Drawable> {
+	AsyncTask<String, Void, Drawable> {
 
 		@Override
 		protected Drawable doInBackground(String... urls) {
@@ -219,7 +222,7 @@ public class ProfileFragment extends Fragment {
 	}
 
 	private class GetProfileStatsTask extends
-			AsyncTask<String, Void, JSONObject> {
+	AsyncTask<String, Void, JSONObject> {
 
 		String error_message;
 		boolean success = false;
@@ -297,7 +300,7 @@ public class ProfileFragment extends Fragment {
 	}
 
 	private class ClearProfilePictureTask extends
-			AsyncTask<String, Void, Boolean> {
+	AsyncTask<String, Void, Boolean> {
 
 		String error_message;
 		boolean success = false;
@@ -320,7 +323,7 @@ public class ProfileFragment extends Fragment {
 				wr.write(sb.toString());
 				wr.flush();
 
-				
+
 			} catch (ProtocolException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -369,7 +372,7 @@ public class ProfileFragment extends Fragment {
 				MainActivity.getCurrentUser().setAvatar(null);
 				_userProfilePicture.setImageResource(R.drawable.ic_social_person);
 			}
-			
+
 		}
 	}
 
