@@ -7,6 +7,7 @@ import android.widget.TextView;
 public class ViewHolder {
 	private TextView _username;
 	private TextView _message;
+	private ImageView _profileImageView;
 	private ImageView _graffitiImage;
 	private Button _likeButton;
 	private Button _flagButton;
@@ -82,5 +83,13 @@ public class ViewHolder {
 
 	public void setImageUrl(String imageUrl) {
 		this._imageUrl = imageUrl;
+	}
+
+	public ImageView getProfileImageView() {
+		return _profileImageView;
+	}
+
+	public void setProfileImageView(ImageView profileImageView) {
+		this._profileImageView = profileImageView;
 	}
 }

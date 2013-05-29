@@ -70,6 +70,7 @@ ListAdapter {
 			holder.setMessageView((TextView) view.findViewById(R.id.message));
 			holder.setGraffitiImageView((ImageView) view
 					.findViewById(R.id.graffiti_image));
+			holder.setProfileImageView((ImageView) view.findViewById(R.id.profile_image));
 			holder.setLikeButton((Button) view.findViewById(R.id.like_button));
 			holder.setFlagButton((Button) view.findViewById(R.id.flag_button));
 			holder.setPosition(position);
@@ -107,8 +108,11 @@ ListAdapter {
 				holder.getLikeButton().setText("Liked");
 			}
 			if (holder.getImageUrl() != null && !holder.getImageUrl().equals("null")) {
-				new ListViewDownloadImageTask(holder, position).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, MainActivity.getBaseServerURI() + holder.getImageUrl());
+				new ListViewDownloadImageTask(holder, position, holder.getGraffitiImageView()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, MainActivity.getBaseServerURI() + holder.getImageUrl());
 				// graffitiImage.setOnClickListener(new MessageOnClickListener());
+			}
+			if (!holder.getItem().getAvatar().equals("null")){
+				new ListViewDownloadImageTask(holder, position, holder.getProfileImageView()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,  MainActivity.getBaseServerURI() + holder.getItem().getAvatar());
 			}
 		}else{
 			holder = new ViewHolder();
@@ -122,6 +126,7 @@ ListAdapter {
 			holder.setFlagButton((Button) view.findViewById(R.id.flag_button));
 			holder.setPosition(position);
 			holder.setItem(getItem(position));
+			holder.setProfileImageView((ImageView) view.findViewById(R.id.profile_image));
 			holder.setImageUrl(getItem(position).getImageURL());
 			view.setTag(holder);
 
@@ -151,8 +156,11 @@ ListAdapter {
 					holder.getLikeButton().setText("Liked");
 				}
 				if (holder.getImageUrl() != null && !holder.getImageUrl().equals("null")) {
-					new ListViewDownloadImageTask(holder, position).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, MainActivity.getBaseServerURI() + holder.getImageUrl());
+					new ListViewDownloadImageTask(holder, position, holder.getGraffitiImageView()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, MainActivity.getBaseServerURI() + holder.getImageUrl());
 					// graffitiImage.setOnClickListener(new MessageOnClickListener());
+				}
+				if (!holder.getItem().getAvatar().equals("null")){
+					new ListViewDownloadImageTask(holder, position, holder.getProfileImageView()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,  MainActivity.getBaseServerURI() + holder.getItem().getAvatar());
 				}
 			}
 		}

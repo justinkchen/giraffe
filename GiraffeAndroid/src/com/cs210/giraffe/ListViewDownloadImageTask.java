@@ -11,10 +11,12 @@ import android.widget.ImageView;
 public class ListViewDownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 	ViewHolder holder;
 	int position;
+	ImageView img;
 
-	public ListViewDownloadImageTask(ViewHolder holder, int position) {
+	public ListViewDownloadImageTask(ViewHolder holder, int position, ImageView img) {
 		this.holder = holder;
 		this.position = position;
+		this.img = img;
 	}
 
 	protected Bitmap doInBackground(String... urls) {
@@ -36,7 +38,7 @@ public class ListViewDownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 
 	protected void onPostExecute(Bitmap result) {
 		if(holder.getPosition() == this.position){
-			holder.getGraffitiImageView().setImageBitmap(result);
+			img.setImageBitmap(result);
 		}
 	}
 }
