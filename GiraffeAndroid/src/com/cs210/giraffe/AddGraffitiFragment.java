@@ -29,7 +29,9 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -50,6 +52,7 @@ import android.view.LayoutInflater;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -166,19 +169,15 @@ public class AddGraffitiFragment extends Fragment implements
 	@Override
 	public void onPause(){
 		super.onPause();
-//		Log.w("AddGraffitiFragment", "Pausing AddGraffitiFragment");
-//		SupportMapFragment f = (SupportMapFragment) this.getActivity()
-//				.getSupportFragmentManager()
-//				.findFragmentById(R.id.addGraffitiMap);
-//		if (f != null) {
-//			FragmentTransaction ft = this.getActivity().getSupportFragmentManager().beginTransaction();
-////			ft.commitAllowingStateLoss();
-//			ft.remove(f).commit();
-//			_circleOverlayMap = null;
-//			
-//		}
+		Log.w("AddGraffitiFragment", "onPause()");
 	}
 
+	@Override
+	public void onStop(){
+		super.onStop();
+		Log.w("AddGraffitiFragment", "onStop()");
+	}
+	
 	public void setUpMapIfNeeded() {
 		Log.w("AddGraffitiFragment", "Setting up map");
 		// Do a null check to confirm that we have not already instantiated the
@@ -371,9 +370,9 @@ public class AddGraffitiFragment extends Fragment implements
 		            picturePath = cursor.getString(columnIndex);		            
 		            _photo = BitmapFactory.decodeFile(picturePath);
 		            
-		            Log.i("Johan", picturePath);
+		            Log.i("Johan", "Picture Path: " + picturePath);
 		            picturePath = picturePath.substring(picturePath.lastIndexOf('/')+1);
-		            Log.i("Johan", picturePath);
+		            Log.i("Johan", "Picture Path: " + picturePath);
 		            cursor.close();
 
 				} catch (Exception e) {
@@ -718,5 +717,4 @@ public class AddGraffitiFragment extends Fragment implements
 		_addedImageText.setText("");
 		_removeImageButton.setVisibility(8);
 	}
-
 }

@@ -23,6 +23,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -50,6 +51,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -226,6 +228,10 @@ public class MainActivity extends FragmentActivity implements
 						@Override
 						public void onPageSelected(int position) {
 							actionBar.setSelectedNavigationItem(position);
+							if(getCurrentFocus() != null){
+								InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+							    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+							}
 						}
 					});
 
@@ -341,6 +347,7 @@ public class MainActivity extends FragmentActivity implements
 		// When the given tab is selected, switch to the corresponding page in
 		// the ViewPager.
 		mViewPager.setCurrentItem(tab.getPosition());
+		
 	}
 
 	@Override
