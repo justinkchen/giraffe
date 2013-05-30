@@ -584,7 +584,7 @@ public class MainActivity extends FragmentActivity implements
 					cookieValue = MainActivity.getCookieManager()
 							.getCookieStore()
 							.get(new URI(MainActivity.getBaseServerURI()))
-							.get(0).getValue();
+							.get(0).toString();
 					Log.w("MainActivity", "saved cookie value: " + cookieValue);
 					editor.putString("cookie", cookieValue);
 				}
@@ -764,7 +764,7 @@ public class MainActivity extends FragmentActivity implements
 		CookieHandler.setDefault(cookieManager);
 		// Retrieve persistent login stuff
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-		String cookieStr = "connect.sid=" + settings.getString("cookie", null);
+		String cookieStr = settings.getString("cookie", null);
 		if (settings.getString("cookie", null) != null) {
 			Log.w("MainActivity", "retrieving saved cookie: " + cookieStr);
 			HttpCookie cookie = new HttpCookie(cookieStr.substring(0,
