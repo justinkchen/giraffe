@@ -101,7 +101,7 @@ const CGFloat kShareViewPadding = 8.0;
     // Text Label
     if (!self.textLabel) {
         self.textLabel = [UILabel new];
-        self.textLabel.font = [UIFont helveticaNeueCondensedOfSize:18.0 weight:UIFontWeightRegular];
+        self.textLabel.font = [UIFont systemFontOfSize:18.0];
         self.textLabel.backgroundColor = self.backgroundColor;
         self.textLabel.text = kTextLabelText;
         [self addSubview:self.textLabel];
@@ -113,7 +113,7 @@ const CGFloat kShareViewPadding = 8.0;
     // Text View
     if (!self.textView) {
         self.textView = [UITextView new];
-        self.textView.font = [UIFont helveticaNeueCondensedOfSize:18.0 weight:UIFontWeightRegular];
+        self.textView.font = [UIFont systemFontOfSize:18.0];
         self.textView.textColor = [UIColor blackColor];
         self.textView.backgroundColor = [UIColor whiteColor];
         self.textView.layer.cornerRadius = kTextViewCornerRadius;
@@ -163,7 +163,7 @@ const CGFloat kShareViewPadding = 8.0;
     // Radius label
     if (!self.radiusLabel) {
         self.radiusLabel = [UILabel new];
-        self.radiusLabel.font = [UIFont helveticaNeueCondensedOfSize:18.0 weight:UIFontWeightRegular];
+        self.radiusLabel.font = [UIFont systemFontOfSize:18.0];
         self.radiusLabel.backgroundColor = self.backgroundColor;
         [self addSubview:self.radiusLabel];
     }

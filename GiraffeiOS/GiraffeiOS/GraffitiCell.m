@@ -68,19 +68,19 @@ const CGFloat kGraffitiImageSideLength = 200.0;
 const CGFloat kUsernameFontSize = 18.0;
 - (UIFont *)usernameFont
 {
-    return [UIFont helveticaNeueCondensedOfSize:kUsernameFontSize weight:UIFontWeightBold];
+    return [UIFont boldSystemFontOfSize:kUsernameFontSize];
 }
 
 const CGFloat kDetailFontSize = 14.0;
 - (UIFont *)detailFont
 {
-    return [UIFont helveticaNeueCondensedOfSize:kDetailFontSize weight:UIFontWeightLight];
+    return [UIFont italicSystemFontOfSize:kDetailFontSize];
 }
 
 const CGFloat kLikesFontSize = 14.0;
 - (UIFont *)likesFont
 {
-    return [UIFont helveticaNeueCondensedOfSize:kDetailFontSize weight:UIFontWeightLight];
+    return [UIFont italicSystemFontOfSize:kDetailFontSize];
 }
 
 - (NSString *)distanceString
@@ -115,7 +115,7 @@ const CGFloat kLikesFontSize = 14.0;
 const CGFloat kGraffitiTextSize = 16.0;
 - (UIFont *)graffitiTextFont
 {
-    return [UIFont helveticaNeueCondensedOfSize:kGraffitiTextSize weight:UIFontWeightRegular];
+    return [UIFont systemFontOfSize:kGraffitiTextSize];
 }
 
 - (NSString *)likesText
@@ -154,7 +154,7 @@ const CGFloat kGraffitiCellPadding = 8.0;
     if ([self shouldShowUserAvatar]) {
         if (!self.userAvatarImage) {
             self.userAvatarImage = [UIImageView new];
-            self.userAvatarImage.backgroundColor = [UIColor orangeColor];
+            self.userAvatarImage.backgroundColor = self.backgroundColor;
             self.userAvatarImage.frameSize = CGSizeMake(kUserAvatarSideLength, kUserAvatarSideLength);
             self.userAvatarImage.frameOrigin = CGPointMake(kGraffitiCellPadding, kGraffitiCellPadding);
             [self.contentView addSubview:self.userAvatarImage];
@@ -203,7 +203,7 @@ const CGFloat kGraffitiCellPadding = 8.0;
     if ([self shouldShowGraffitiImage]) {
         if (!self.graffitiImage) {
             self.graffitiImage = [UIImageView new];
-            self.graffitiImage.backgroundColor = [UIColor orangeColor];
+            self.graffitiImage.backgroundColor = self.backgroundColor;
             self.graffitiImage.frameSize = CGSizeMake(kGraffitiImageSideLength, kGraffitiImageSideLength);
             self.graffitiImage.frameOrigin = CGPointMake(kGraffitiCellPadding, MAX(self.detailLabel.bottomEdge, self.userAvatarImage.bottomEdge) + kGraffitiCellPadding);
             [self.contentView addSubview:self.graffitiImage];
