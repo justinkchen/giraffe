@@ -45,11 +45,12 @@
         
         <ImageView
             android:id="@+id/graffiti_image"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
             android:contentDescription="@string/loading"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="10dp"
             android:layout_below="@+id/message" />
 
         <LinearLayout
@@ -87,7 +88,7 @@
          android:layout_height="wrap_content"
          android:layout_marginLeft="10dp"
          android:layout_marginTop="10dp"
-         android:layout_below="@+id/graffiti_image"
+         android:layout_below="@+id/content"
          android:layout_alignParentRight="true"
          android:layout_alignParentBottom="true"
          android:text="CS210 Student"
