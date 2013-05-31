@@ -95,7 +95,7 @@ ListAdapter {
 			holder.getUsernameView().setOnClickListener(
 					new ProfileOnClickListener(holder));
 			holder.getMessageView().setText(item.getText());
-			holder.getDistanceView().setText(String.format("%.2f",item.getDistanceFrom()) + " m away");
+			holder.getDistanceView().setText(String.format("%.2f",item.getDistanceFromUser()) + " m away");
 			// message.setOnClickListener(new MessageOnClickListener());
 			buttonLayout = (LinearLayout) view.findViewById(R.id.button_layout);
 
@@ -145,7 +145,7 @@ ListAdapter {
 				holder.getUsernameView().setOnClickListener(
 						new ProfileOnClickListener(holder));
 				holder.getMessageView().setText(item.getText());
-				holder.getDistanceView().setText(String.format("%.2f",item.getDistanceFrom()) + " m away");
+				holder.getDistanceView().setText(String.format("%.2f",item.getDistanceFromUser()) + " m away");
 				// message.setOnClickListener(new MessageOnClickListener());
 				buttonLayout = (LinearLayout) view.findViewById(R.id.button_layout);
 

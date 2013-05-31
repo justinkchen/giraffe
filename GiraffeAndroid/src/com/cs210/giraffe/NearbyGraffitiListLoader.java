@@ -27,7 +27,7 @@ public class NearbyGraffitiListLoader extends AsyncTaskLoader<List<Graffiti>> {
 	public NearbyGraffitiListLoader(Context context, String urlString) {
 		super(context);
 		this.urlString = urlString;
-		System.out.println("NearbyGraffitiListLoader constructed");
+		Log.w("NearbyGraffitiListLoader", "Constructed with url: " + urlString);
 	}
 
 	@Override

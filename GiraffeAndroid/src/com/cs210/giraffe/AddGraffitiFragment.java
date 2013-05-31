@@ -22,6 +22,7 @@ import org.json.JSONObject;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 import com.google.android.gms.maps.UiSettings;
@@ -62,7 +63,7 @@ import android.widget.TextView;
 import android.widget.SeekBar;
 
 public class AddGraffitiFragment extends Fragment implements
-		OnSeekBarChangeListener {
+OnSeekBarChangeListener, OnMyLocationChangeListener {
 
 	private GoogleMap _circleOverlayMap = null;
 	private SeekBar _radiusBar = null;
@@ -73,7 +74,7 @@ public class AddGraffitiFragment extends Fragment implements
 	private Bitmap _photo = null;
 	private ImageButton _removeImageButton;
 	private TextView _addedImageText;
-	
+
 	private static final int MIN_RADIUS = 10; // meters
 	public static final int TAKE_CAMERA_PICTURE = 100;
 	public static final int CHOOSE_GALLERY_PHOTO = 101;
@@ -106,8 +107,8 @@ public class AddGraffitiFragment extends Fragment implements
 				.findViewById(R.id.removeImageButton);
 
 		_removeImageButton
-				.setOnClickListener(new RemoveImageButtonClickListener());
-		
+		.setOnClickListener(new RemoveImageButtonClickListener());
+
 		_addedImageText = (TextView) rootView
 				.findViewById(R.id.addedImageText);
 
@@ -134,7 +135,7 @@ public class AddGraffitiFragment extends Fragment implements
 				}
 			}
 		});
-		
+
 		setMapTransparent((ViewGroup) rootView);
 		return rootView;
 	}
@@ -157,15 +158,15 @@ public class AddGraffitiFragment extends Fragment implements
 					.findFragmentById(R.id.addGraffitiMap);
 			if (f != null) {
 				FragmentTransaction ft = this.getActivity().getSupportFragmentManager().beginTransaction();
-	//			ft.commitAllowingStateLoss();
+				//			ft.commitAllowingStateLoss();
 				ft.remove(f).commit();
 				_circleOverlayMap = null;
-				
+
 			}
 
 		}
 	}
-	
+
 	@Override
 	public void onPause(){
 		super.onPause();
@@ -177,7 +178,7 @@ public class AddGraffitiFragment extends Fragment implements
 		super.onStop();
 		Log.w("AddGraffitiFragment", "onStop()");
 	}
-	
+
 	public void setUpMapIfNeeded() {
 		Log.w("AddGraffitiFragment", "Setting up map");
 		// Do a null check to confirm that we have not already instantiated the
@@ -207,28 +208,10 @@ public class AddGraffitiFragment extends Fragment implements
 					.radius(_radiusBar.getProgress()).fillColor(0x1fff0000)
 					.strokeWidth(5.0f)); // In meters
 			_circleOverlayMap.addMarker(new MarkerOptions().position(myLatLng));
-
-			
-			_circleOverlayMap.setOnMyLocationChangeListener(new OnMyLocationChangeListener(){
-
-				@Override
-				public void onMyLocationChange(Location newLoc) {
-					// TODO Auto-generated method stub
-					LatLng newLatLng = new LatLng(newLoc.getLatitude(), newLoc.getLongitude());
-					_circleOverlayMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newLatLng, 15));
-				}
-			});
-
+			_circleOverlayMap.setMyLocationEnabled(true);
 			_circleOverlayMap.getUiSettings().setZoomControlsEnabled(false);
-			_circleOverlayMap.setOnMyLocationChangeListener(new OnMyLocationChangeListener(){
 
-				@Override
-				public void onMyLocationChange(Location newLoc) {
-					// TODO Auto-generated method stub
-					LatLng newLatLng = new LatLng(newLoc.getLatitude(), newLoc.getLongitude());
-					_circleOverlayMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newLatLng, 15));
-				}
-			});
+			_circleOverlayMap.setOnMyLocationChangeListener(this);
 
 			Log.w("AddGraffitiFragment", "Map settings added in");
 		}
@@ -340,7 +323,7 @@ public class AddGraffitiFragment extends Fragment implements
 	}
 
 	private class RemoveImageButtonClickListener implements
-			View.OnClickListener {
+	View.OnClickListener {
 		public void onClick(View v) {
 			removeAttachedImage();
 		}
@@ -363,17 +346,17 @@ public class AddGraffitiFragment extends Fragment implements
 				Uri targetUri = data.getData();
 				try {
 					Uri selectedImage = data.getData();
-		            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-		            Cursor cursor = getActivity().getContentResolver().query(selectedImage,filePathColumn, null, null, null);
-		            cursor.moveToFirst();
-		            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-		            picturePath = cursor.getString(columnIndex);		            
-		            _photo = BitmapFactory.decodeFile(picturePath);
-		            
-		            Log.i("Johan", "Picture Path: " + picturePath);
-		            picturePath = picturePath.substring(picturePath.lastIndexOf('/')+1);
-		            Log.i("Johan", "Picture Path: " + picturePath);
-		            cursor.close();
+					String[] filePathColumn = { MediaStore.Images.Media.DATA };
+					Cursor cursor = getActivity().getContentResolver().query(selectedImage,filePathColumn, null, null, null);
+					cursor.moveToFirst();
+					int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+					picturePath = cursor.getString(columnIndex);		            
+					_photo = BitmapFactory.decodeFile(picturePath);
+
+					Log.i("Johan", "Picture Path: " + picturePath);
+					picturePath = picturePath.substring(picturePath.lastIndexOf('/')+1);
+					Log.i("Johan", "Picture Path: " + picturePath);
+					cursor.close();
 
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -390,24 +373,24 @@ public class AddGraffitiFragment extends Fragment implements
 		if (_photo != null) {
 			_addedImageText.setText(picturePath);
 			//Rescale if too big
-//			if(_photo.getWidth() > 270 || _photo.getHeight() > 270) {
-//				float widthRatio = (float) 270 / _photo.getWidth();
-//				float heightRatio = (float) 270 / _photo.getHeight();
-//				Log.i("Johan", Integer.toString(_photo.getWidth()));
-//				Log.i("Johan", Integer.toString(_photo.getHeight()));
-//				Log.i("Johan", Float.toString(widthRatio));
-//				Log.i("Johan", Float.toString(heightRatio));
-//				Matrix matrix = new Matrix();
-//			    matrix.postScale(widthRatio, heightRatio);
-//			    _photo = Bitmap.createBitmap(_photo, 0, 0, _photo.getWidth(), _photo.getHeight(), matrix, false);
-//			}
+			//			if(_photo.getWidth() > 270 || _photo.getHeight() > 270) {
+			//				float widthRatio = (float) 270 / _photo.getWidth();
+			//				float heightRatio = (float) 270 / _photo.getHeight();
+			//				Log.i("Johan", Integer.toString(_photo.getWidth()));
+			//				Log.i("Johan", Integer.toString(_photo.getHeight()));
+			//				Log.i("Johan", Float.toString(widthRatio));
+			//				Log.i("Johan", Float.toString(heightRatio));
+			//				Matrix matrix = new Matrix();
+			//			    matrix.postScale(widthRatio, heightRatio);
+			//			    _photo = Bitmap.createBitmap(_photo, 0, 0, _photo.getWidth(), _photo.getHeight(), matrix, false);
+			//			}
 			_removeImageButton.setVisibility(0);
 		}
 		// Do something with photo
 	}
 
 	private class AddGraffitiTask extends
-			AsyncTask<String, Integer, InputStream> {
+	AsyncTask<String, Integer, InputStream> {
 		private boolean success = false;
 		String error_message = null;
 		private String attachmentName = "image";
@@ -472,7 +455,7 @@ public class AddGraffitiFragment extends Fragment implements
 					if (myInputStream != null) {
 						returnJSONObject = new JSONObject(
 								JSONHandler
-										.convertStreamToString(myInputStream));
+								.convertStreamToString(myInputStream));
 						System.out.println("JSONObject Response: "
 								+ returnJSONObject.toString());
 						if (returnJSONObject.has("error")) {
@@ -628,7 +611,7 @@ public class AddGraffitiFragment extends Fragment implements
 						if (myInputStream != null) {
 							returnJSONObject = new JSONObject(
 									JSONHandler
-											.convertStreamToString(myInputStream));
+									.convertStreamToString(myInputStream));
 							System.out.println("JSONObject Response: "
 									+ returnJSONObject.toString());
 							if (returnJSONObject.has("error")) {
@@ -665,30 +648,30 @@ public class AddGraffitiFragment extends Fragment implements
 			if (success) {
 				removeAttachedImage();
 				new AlertDialog.Builder(getActivity())
-						.setIcon(R.drawable.ic_navigation_accept)
-						.setTitle("Success!")
-						.setMessage("Adding Graffiti Successful!")
-						.setCancelable(false)
-						.setPositiveButton("Okay",
-								new DialogInterface.OnClickListener() {
-									@Override
-									public void onClick(DialogInterface dialog,
-											int which) {
-										// Close dialog
-										_messageBox.setText("");
-									}
-								}).show();
+				.setIcon(R.drawable.ic_navigation_accept)
+				.setTitle("Success!")
+				.setMessage("Adding Graffiti Successful!")
+				.setCancelable(false)
+				.setPositiveButton("Okay",
+						new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog,
+							int which) {
+						// Close dialog
+						_messageBox.setText("");
+					}
+				}).show();
 
 			} else {
 				new AlertDialog.Builder(getActivity())
-						.setIcon(R.drawable.ic_navigation_cancel)
-						.setTitle("Failure!")
-						.setMessage(
-								"Adding Graffiti Unsuccessful:\n"
-										+ error_message)
-						.setCancelable(false)
-						.setPositiveButton("Okay",
-								new DialogInterface.OnClickListener() {
+				.setIcon(R.drawable.ic_navigation_cancel)
+				.setTitle("Failure!")
+				.setMessage(
+						"Adding Graffiti Unsuccessful:\n"
+								+ error_message)
+								.setCancelable(false)
+								.setPositiveButton("Okay",
+										new DialogInterface.OnClickListener() {
 									@Override
 									public void onClick(DialogInterface dialog,
 											int which) {
@@ -711,10 +694,23 @@ public class AddGraffitiFragment extends Fragment implements
 			}
 		}
 	}
-	
+
 	private void removeAttachedImage() {
 		_photo = null;
 		_addedImageText.setText("");
 		_removeImageButton.setVisibility(8);
+	}
+
+	@Override
+	public void onMyLocationChange(Location newLoc) {
+		// TODO Auto-generated method stub
+		Log.w("AddGraffitiFragment", "Location changed in AddGraffitiFragment: Lat=" + newLoc.getLatitude() + ", Long=" + newLoc.getLongitude());
+		_circleOverlayMap.clear();
+		LatLng newLatLng = new LatLng(newLoc.getLatitude(), newLoc.getLongitude());
+		_circleOverlayMap.addCircle(new CircleOptions().center(newLatLng)
+				.radius(_radiusBar.getProgress()).fillColor(0x1fff0000)
+				.strokeWidth(5.0f)); // In meters
+		_circleOverlayMap.addMarker(new MarkerOptions().position(newLatLng));
+		_circleOverlayMap.animateCamera(CameraUpdateFactory.newLatLng(newLatLng));
 	}
 }

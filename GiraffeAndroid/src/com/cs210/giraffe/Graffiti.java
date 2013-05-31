@@ -153,16 +153,16 @@ public class Graffiti implements Comparable<Graffiti> {
 		this._isLiked = isLiked;
 	}
 	
-	public float getDistanceFrom(){
+	public float getDistanceFromUser(){
 		Location currLocation = MainActivity.getGiraffeLocationListener().getCurrentLocation();
 		return MainActivity.distFrom(currLocation.getLatitude(), currLocation.getLongitude(), this.getLatitude(), this.getLongitude());
 	}
 
 	@Override
 	public int compareTo(Graffiti another) {
-		if(this.getDistanceFrom() < another.getDistanceFrom()){
+		if(this.getDistanceFromUser() < another.getDistanceFromUser()){
 			return -1;
-		}else if(this.getDistanceFrom() > another.getDistanceFrom()){
+		}else if(this.getDistanceFromUser() > another.getDistanceFromUser()){
 			return 1;
 		}else{
 			return 0;

@@ -25,7 +25,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
 public class GraffitiMapFragment extends Fragment implements
-		LoaderManager.LoaderCallbacks<List<Graffiti>> {
+LoaderManager.LoaderCallbacks<List<Graffiti>>, OnMyLocationChangeListener {
 
 	private GoogleMap _map = null;
 
@@ -40,7 +40,7 @@ public class GraffitiMapFragment extends Fragment implements
 		System.out.println("GraffitiMapFragment.onActivityCreated");
 
 		// getLoaderManager().initLoader(0, null, this);
-		this.getActivity().getSupportLoaderManager().initLoader(0, null, this);
+		this.getActivity().getSupportLoaderManager().initLoader(1, null, this);
 	}
 
 	@Override
@@ -180,19 +180,27 @@ public class GraffitiMapFragment extends Fragment implements
 			// }
 			// });
 			// _map.addMarker(new MarkerOptions().position(myLatLng));
-			if (data != null)
+			if (data != null){
 				for (Graffiti point : data) {
 					System.out.println("Graffiti Map Message: "
 							+ point.getText());
 					LatLng pointLatLng = new LatLng(point.getLatitude(),
 							point.getLongitude());
-					_map.addMarker(new MarkerOptions().position(pointLatLng)
-							.title(point.getText()));
-					_map.addCircle(new CircleOptions().center(pointLatLng)
-							.strokeWidth(1.0f).fillColor(0x0f0000ff)
-							.radius(point.getRadius()));
+					Log.w("GraffitiMapFragment", "Distance from user: " + point.getDistanceFromUser() + ", Radius: " + point.getRadius());
+					if(point.getDistanceFromUser() <= point.getRadius()){
+						
+						_map.addMarker(new MarkerOptions().position(pointLatLng)
+								.title(point.getText()));
+						_map.addCircle(new CircleOptions().center(pointLatLng)
+								.strokeWidth(1.0f).fillColor(0x0f0000ff)
+								.radius(point.getRadius()));
+					}else{
+						_map.addCircle(new CircleOptions().center(pointLatLng)
+								.strokeWidth(1.0f).fillColor(0x0aff0000)
+								.radius(point.getRadius()));
+					}
 				}
-
+			}
 		}
 	}
 
@@ -204,7 +212,8 @@ public class GraffitiMapFragment extends Fragment implements
 		return new NearbyGraffitiListLoader(getActivity(),
 				MainActivity.getBaseServerURI() + "/graffiti/nearby"
 						+ "?latitude=" + currLocation.getLatitude()
-						+ "&longitude=" + currLocation.getLongitude());
+						+ "&longitude=" + currLocation.getLongitude()
+						+ "&all=true");
 	}
 
 	@Override
@@ -218,5 +227,12 @@ public class GraffitiMapFragment extends Fragment implements
 		if (_map != null) {
 			_map.clear();
 		}
+	}
+
+	@Override
+	public void onMyLocationChange(Location newLoc) {
+		// TODO Auto-generated method stub
+		LatLng newLatLng = new LatLng(newLoc.getLatitude(), newLoc.getLongitude());
+		_map.animateCamera(CameraUpdateFactory.newLatLng(newLatLng));
 	}
 }
