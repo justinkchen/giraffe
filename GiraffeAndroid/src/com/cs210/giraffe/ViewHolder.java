@@ -7,6 +7,7 @@ import android.widget.TextView;
 public class ViewHolder {
 	private TextView _username;
 	private TextView _message;
+	private TextView _distance;
 	private ImageView _profileImageView;
 	private ImageView _graffitiImage;
 	private Button _likeButton;
@@ -91,5 +92,13 @@ public class ViewHolder {
 
 	public void setProfileImageView(ImageView profileImageView) {
 		this._profileImageView = profileImageView;
+	}
+
+	public TextView getDistanceView() {
+		return _distance;
+	}
+
+	public void setDistanceView(TextView distance) {
+		this._distance = distance;
 	}
 }

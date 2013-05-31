@@ -20,6 +20,7 @@ import android.graphics.Matrix;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -68,6 +69,7 @@ ListAdapter {
 					false);
 			holder.setUsernameView((TextView) view.findViewById(R.id.username));
 			holder.setMessageView((TextView) view.findViewById(R.id.message));
+			holder.setDistanceView((TextView) view.findViewById(R.id.distance));
 			holder.setGraffitiImageView((ImageView) view
 					.findViewById(R.id.graffiti_image));
 			holder.setProfileImageView((ImageView) view.findViewById(R.id.profile_image));
@@ -93,6 +95,10 @@ ListAdapter {
 			holder.getUsernameView().setOnClickListener(
 					new ProfileOnClickListener(holder));
 			holder.getMessageView().setText(item.getText());
+			
+			Location currLocation = MainActivity.getGiraffeLocationListener().getCurrentLocation();
+			float distFrom = MainActivity.distFrom(currLocation.getLatitude(), currLocation.getLongitude(), item.getLatitude(), item.getLongitude());
+			holder.getDistanceView().setText(String.format("%.2f",distFrom) + " m away");
 			// message.setOnClickListener(new MessageOnClickListener());
 			buttonLayout = (LinearLayout) view.findViewById(R.id.button_layout);
 
@@ -122,6 +128,7 @@ ListAdapter {
 			holder.setMessageView((TextView) view.findViewById(R.id.message));
 			holder.setGraffitiImageView((ImageView) view
 					.findViewById(R.id.graffiti_image));
+			holder.setDistanceView((TextView) view.findViewById(R.id.distance));
 			holder.setLikeButton((Button) view.findViewById(R.id.like_button));
 			holder.setFlagButton((Button) view.findViewById(R.id.flag_button));
 			holder.setPosition(position);
@@ -141,6 +148,10 @@ ListAdapter {
 				holder.getUsernameView().setOnClickListener(
 						new ProfileOnClickListener(holder));
 				holder.getMessageView().setText(item.getText());
+				
+				Location currLocation = MainActivity.getGiraffeLocationListener().getCurrentLocation();
+				float distFrom = MainActivity.distFrom(currLocation.getLatitude(), currLocation.getLongitude(), item.getLatitude(), item.getLongitude());
+				holder.getDistanceView().setText(String.format("%.2f",distFrom) + " m away");
 				// message.setOnClickListener(new MessageOnClickListener());
 				buttonLayout = (LinearLayout) view.findViewById(R.id.button_layout);
 

@@ -57,7 +57,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity implements
-		ActionBar.TabListener {
+ActionBar.TabListener {
 	public static final String PREFS_NAME = "GiraffePrefs";
 	static final int NUM_TABS = 3;
 	private static GiraffeLocationListener locationListener = null;
@@ -168,21 +168,21 @@ public class MainActivity extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 
 		// Get max available VM memory, exceeding this amount will throw an
-	    // OutOfMemory exception. Stored in kilobytes as LruCache takes an
-	    // int in its constructor.
-	    final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-	    // Use 1/8th of the available memory for this memory cache.
-	    final int cacheSize = maxMemory / 8;
-		
-	    setMemoryBitmapCache(new LruCache<String, Bitmap>(cacheSize) {
-	        @Override
-	        protected int sizeOf(String key, Bitmap bitmap) {
-	            // The cache size will be measured in kilobytes rather than
-	            // number of items.
-	            return bitmap.getByteCount() / 1024;
-	        }
-	    });
-	    
+		// OutOfMemory exception. Stored in kilobytes as LruCache takes an
+		// int in its constructor.
+		final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+		// Use 1/8th of the available memory for this memory cache.
+		final int cacheSize = maxMemory / 8;
+
+		setMemoryBitmapCache(new LruCache<String, Bitmap>(cacheSize) {
+			@Override
+			protected int sizeOf(String key, Bitmap bitmap) {
+				// The cache size will be measured in kilobytes rather than
+				// number of items.
+				return bitmap.getByteCount() / 1024;
+			}
+		});
+
 		// Restore preferences
 		setPersistentLogin();
 
@@ -208,7 +208,7 @@ public class MainActivity extends FragmentActivity implements
 			// Set up the action bar.
 			final ActionBar actionBar = getActionBar();
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-			
+
 			// Create the adapter that will return a fragment for each of the
 			// three
 			// primary sections of the app.
@@ -224,16 +224,16 @@ public class MainActivity extends FragmentActivity implements
 			// tab. We can also use ActionBar.Tab#select() to do this if we have
 			// a reference to the Tab.
 			mViewPager
-					.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-						@Override
-						public void onPageSelected(int position) {
-							actionBar.setSelectedNavigationItem(position);
-							if(getCurrentFocus() != null){
-								InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-							    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-							}
-						}
-					});
+			.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+				@Override
+				public void onPageSelected(int position) {
+					actionBar.setSelectedNavigationItem(position);
+					if(getCurrentFocus() != null){
+						InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+						imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+					}
+				}
+			});
 
 			// For each of the sections in the app, add a tab to the action bar.
 			for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
@@ -347,7 +347,7 @@ public class MainActivity extends FragmentActivity implements
 		// When the given tab is selected, switch to the corresponding page in
 		// the ViewPager.
 		mViewPager.setCurrentItem(tab.getPosition());
-		
+
 	}
 
 	@Override
@@ -756,7 +756,7 @@ public class MainActivity extends FragmentActivity implements
 				LogoutTask logoutTask = new LogoutTask();
 				logoutTask.execute(getBaseServerURI() + "/users/logout");
 			}
-			
+
 			if (success) {
 				Log.i("Johan", "Successful cookie get or whatever");
 				serverDown = false;
@@ -787,14 +787,14 @@ public class MainActivity extends FragmentActivity implements
 			Log.w("MainActivity", "retrieving saved cookie: " + cookieStr);
 			HttpCookie cookie = new HttpCookie(cookieStr.substring(0,
 					cookieStr.indexOf('=')), cookieStr.substring(
-					cookieStr.indexOf('=') + 1, cookieStr.length()));
+							cookieStr.indexOf('=') + 1, cookieStr.length()));
 			cookie.setDomain(MainActivity.getBaseServerURI());
 			cookie.setPath("/");
 			cookie.setVersion(0);
 			try {
 				MainActivity.getCookieManager().getCookieStore().removeAll();
 				MainActivity.getCookieManager().getCookieStore()
-						.add(new URI(MainActivity.getBaseServerURI()), cookie);
+				.add(new URI(MainActivity.getBaseServerURI()), cookie);
 			} catch (URISyntaxException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -818,19 +818,19 @@ public class MainActivity extends FragmentActivity implements
 		else
 			return true;
 	}
-	
+
 	public boolean checkConnection() {
 		ConnectivityManager conMgr =  (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo i = conMgr.getActiveNetworkInfo();
-		  if (i == null)
-		    return false;
-		  if (!i.isConnected())
-		    return false;
-		  if (!i.isAvailable())
-		    return false;
-		  return true;
+		if (i == null)
+			return false;
+		if (!i.isConnected())
+			return false;
+		if (!i.isAvailable())
+			return false;
+		return true;
 	}
-	
+
 
 	public void showErrorView () {
 		setContentView(R.layout.activity_error);
@@ -844,11 +844,11 @@ public class MainActivity extends FragmentActivity implements
 			((TextView) findViewById(R.id.server_down)).setVisibility(0);
 		}
 		errorLayout.setOnClickListener(new View.OnClickListener() {
-		    @Override
-		    public void onClick(View v) {
-		        //Inform the user the button has been clicked
-		        finish();
-		    }
+			@Override
+			public void onClick(View v) {
+				//Inform the user the button has been clicked
+				finish();
+			}
 		});
 	}
 
@@ -859,14 +859,30 @@ public class MainActivity extends FragmentActivity implements
 	public static void setMemoryBitmapCache(LruCache<String, Bitmap> memoryBitmapCache) {
 		MainActivity.memoryBitmapCache = memoryBitmapCache;
 	}
-	
+
 	public static void addBitmapToMemoryCache(String key, Bitmap bitmap) {
-	    if (getBitmapFromMemCache(key) == null) {
-	        MainActivity.getMemoryBitmapCache().put(key, bitmap);
-	    }
+		if (getBitmapFromMemCache(key) == null) {
+			MainActivity.getMemoryBitmapCache().put(key, bitmap);
+		}
 	}
 
 	public static Bitmap getBitmapFromMemCache(String key) {
-	    return MainActivity.getMemoryBitmapCache().get(key);
+		return MainActivity.getMemoryBitmapCache().get(key);
+	}
+
+	public static float distFrom(double d, double e, double f, double g) {
+		double earthRadius = 3958.75;
+		double dLat = Math.toRadians(f-d);
+		double dLng = Math.toRadians(g-e);
+		double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+				Math.cos(Math.toRadians(d)) * Math.cos(Math.toRadians(f)) *
+				Math.sin(dLng/2) * Math.sin(dLng/2);
+		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+		double dist = earthRadius * c;
+
+		int meterConversion = 1609;
+		float distance = Float.valueOf((float)dist*meterConversion);
+		Log.w("MainActivity", "Distance from: " + distance);
+		return distance;
 	}
 }
