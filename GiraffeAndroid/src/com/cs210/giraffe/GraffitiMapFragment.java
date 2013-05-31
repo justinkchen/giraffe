@@ -190,7 +190,8 @@ LoaderManager.LoaderCallbacks<List<Graffiti>>, OnMyLocationChangeListener {
 					if(point.getDistanceFromUser() <= point.getRadius()){
 						
 						_map.addMarker(new MarkerOptions().position(pointLatLng)
-								.title(point.getText()));
+								.title(point.getUsername())
+								.snippet(point.getText()));
 						_map.addCircle(new CircleOptions().center(pointLatLng)
 								.strokeWidth(1.0f).fillColor(0x0f0000ff)
 								.radius(point.getRadius()));
