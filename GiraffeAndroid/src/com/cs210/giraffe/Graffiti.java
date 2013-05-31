@@ -1,6 +1,8 @@
 package com.cs210.giraffe;
 
-public class Graffiti {
+import android.location.Location;
+
+public class Graffiti implements Comparable<Graffiti> {
 
 	private int _id;
 	private double _longitude;
@@ -149,6 +151,22 @@ public class Graffiti {
 
 	public void setIsLiked(int isLiked) {
 		this._isLiked = isLiked;
+	}
+	
+	public float getDistanceFrom(){
+		Location currLocation = MainActivity.getGiraffeLocationListener().getCurrentLocation();
+		return MainActivity.distFrom(currLocation.getLatitude(), currLocation.getLongitude(), this.getLatitude(), this.getLongitude());
+	}
+
+	@Override
+	public int compareTo(Graffiti another) {
+		if(this.getDistanceFrom() < another.getDistanceFrom()){
+			return -1;
+		}else if(this.getDistanceFrom() > another.getDistanceFrom()){
+			return 1;
+		}else{
+			return 0;
+		}
 	}
 
 }

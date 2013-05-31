@@ -7,6 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -98,9 +99,8 @@ public class NearbyGraffitiListLoader extends AsyncTaskLoader<List<Graffiti>> {
 				graffitiList.add(newGraffiti);
 			}
 		}
-		// Graffiti testGraffiti = new Graffiti();
-		// testGraffiti.setText("Test Graffiti");
-		// graffitiList.add(testGraffiti);
+
+		Collections.sort(graffitiList);
 		return graffitiList;
 	}
 

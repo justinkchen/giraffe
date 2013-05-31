@@ -95,10 +95,7 @@ ListAdapter {
 			holder.getUsernameView().setOnClickListener(
 					new ProfileOnClickListener(holder));
 			holder.getMessageView().setText(item.getText());
-			
-			Location currLocation = MainActivity.getGiraffeLocationListener().getCurrentLocation();
-			float distFrom = MainActivity.distFrom(currLocation.getLatitude(), currLocation.getLongitude(), item.getLatitude(), item.getLongitude());
-			holder.getDistanceView().setText(String.format("%.2f",distFrom) + " m away");
+			holder.getDistanceView().setText(String.format("%.2f",item.getDistanceFrom()) + " m away");
 			// message.setOnClickListener(new MessageOnClickListener());
 			buttonLayout = (LinearLayout) view.findViewById(R.id.button_layout);
 
@@ -148,10 +145,7 @@ ListAdapter {
 				holder.getUsernameView().setOnClickListener(
 						new ProfileOnClickListener(holder));
 				holder.getMessageView().setText(item.getText());
-				
-				Location currLocation = MainActivity.getGiraffeLocationListener().getCurrentLocation();
-				float distFrom = MainActivity.distFrom(currLocation.getLatitude(), currLocation.getLongitude(), item.getLatitude(), item.getLongitude());
-				holder.getDistanceView().setText(String.format("%.2f",distFrom) + " m away");
+				holder.getDistanceView().setText(String.format("%.2f",item.getDistanceFrom()) + " m away");
 				// message.setOnClickListener(new MessageOnClickListener());
 				buttonLayout = (LinearLayout) view.findViewById(R.id.button_layout);
 
