@@ -390,17 +390,17 @@ public class AddGraffitiFragment extends Fragment implements
 		if (_photo != null) {
 			_addedImageText.setText(picturePath);
 			//Rescale if too big
-			if(_photo.getWidth() > 270 || _photo.getHeight() > 270) {
-				float widthRatio = (float) 270 / _photo.getWidth();
-				float heightRatio = (float) 270 / _photo.getHeight();
-				Log.i("Johan", Integer.toString(_photo.getWidth()));
-				Log.i("Johan", Integer.toString(_photo.getHeight()));
-				Log.i("Johan", Float.toString(widthRatio));
-				Log.i("Johan", Float.toString(heightRatio));
-				Matrix matrix = new Matrix();
-			    matrix.postScale(widthRatio, heightRatio);
-			    _photo = Bitmap.createBitmap(_photo, 0, 0, _photo.getWidth(), _photo.getHeight(), matrix, false);
-			}
+//			if(_photo.getWidth() > 270 || _photo.getHeight() > 270) {
+//				float widthRatio = (float) 270 / _photo.getWidth();
+//				float heightRatio = (float) 270 / _photo.getHeight();
+//				Log.i("Johan", Integer.toString(_photo.getWidth()));
+//				Log.i("Johan", Integer.toString(_photo.getHeight()));
+//				Log.i("Johan", Float.toString(widthRatio));
+//				Log.i("Johan", Float.toString(heightRatio));
+//				Matrix matrix = new Matrix();
+//			    matrix.postScale(widthRatio, heightRatio);
+//			    _photo = Bitmap.createBitmap(_photo, 0, 0, _photo.getWidth(), _photo.getHeight(), matrix, false);
+//			}
 			_removeImageButton.setVisibility(0);
 		}
 		// Do something with photo

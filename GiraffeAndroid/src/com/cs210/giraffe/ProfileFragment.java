@@ -261,6 +261,7 @@ public class ProfileFragment extends Fragment {
 							+ returnJSONObject.toString());
 					if (returnJSONObject.has("error")) {
 						error_message = (String) returnJSONObject.get("error");
+						Log.w("ProfileFragment", "Error: " + error_message);
 						success = false;
 						return returnJSONObject;
 					} else {

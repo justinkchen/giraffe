@@ -329,7 +329,7 @@ public class MainActivity extends FragmentActivity implements
 			startActivity(intent);
 			return true;
 		case R.id.action_logout:
-			// Start settings activity
+			// Start logout activity
 			LogoutTask logoutTask = new LogoutTask();
 			logoutTask.execute(getBaseServerURI() + "/users/logout");
 			return true;
@@ -690,6 +690,7 @@ public class MainActivity extends FragmentActivity implements
 
 		String error_message;
 		boolean success = false;
+		boolean expired = false;
 
 		@Override
 		protected JSONObject doInBackground(String... urls) {
@@ -728,12 +729,14 @@ public class MainActivity extends FragmentActivity implements
 					if (returnJSONObject.has("error")) {
 						error_message = (String) returnJSONObject.get("error");
 						success = false;
-						return returnJSONObject;
 					} else {
-
 						success = true;
-						return returnJSONObject;
 					}
+					Log.w("GetUserTask", "Current User in Session: " + returnJSONObject.getString("user"));
+					if (returnJSONObject.getString("user").equals("null")){
+						expired = true;
+					}
+					return returnJSONObject;
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
@@ -747,11 +750,19 @@ public class MainActivity extends FragmentActivity implements
 		}
 
 		protected void onPostExecute(JSONObject returnJSONObject) {
+			if(expired){
+				// Logout the user
+				Log.w("GetUserTask", "Logging out");
+				LogoutTask logoutTask = new LogoutTask();
+				logoutTask.execute(getBaseServerURI() + "/users/logout");
+			}
+			
 			if (success) {
 				Log.i("Johan", "Successful cookie get or whatever");
 				serverDown = false;
-			} else 
+			} else { 
 				showErrorView();
+			}
 		}
 	}
 
