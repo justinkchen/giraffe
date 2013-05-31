@@ -35,16 +35,44 @@
         </TextView>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/distance"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:text="Distance"
-        android:textSize="12sp" >
-    </TextView>
-    
+        android:layout_marginRight="3dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="Distance"
+            android:textSize="12sp" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/date_created"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="-3dp"
+            android:text="Date"
+            android:textSize="12sp" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/time_created"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="-3dp"
+            android:text="Time"
+            android:textSize="12sp" >
+        </TextView>
+    </LinearLayout>
+
     <TextView
         android:id="@+id/topdivider"
         android:layout_width="400dp"
@@ -88,11 +116,11 @@
             android:id="@+id/button_layout"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
             android:layout_below="@+id/graffiti_image"
             android:orientation="horizontal"
-            android:layout_alignParentRight="true"
             android:visibility="gone" >
-        
+
             <Button
                 android:id="@+id/like_button"
                 android:layout_width="50dp"
@@ -126,7 +154,5 @@
             android:layout_marginTop="5dp"
             android:text="" />
     </RelativeLayout>
-
-
 
 </RelativeLayout>

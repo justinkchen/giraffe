@@ -20,6 +20,7 @@ public class Graffiti implements Comparable<Graffiti> {
 	private int _userid;
 	private int _likes;
 	private int _isLiked;
+	private String _dateCreated;
 	
 	public Graffiti() {
 		// TODO Auto-generated constructor stub
@@ -151,6 +152,14 @@ public class Graffiti implements Comparable<Graffiti> {
 
 	public void setIsLiked(int isLiked) {
 		this._isLiked = isLiked;
+	}
+	
+	public String getDateCreated() {
+		return _dateCreated;
+	}
+	
+	public void setDateCreated(String dateCreated) {
+		this._dateCreated = dateCreated;
 	}
 	
 	public float getDistanceFromUser(){

@@ -8,6 +8,8 @@ public class ViewHolder {
 	private TextView _username;
 	private TextView _message;
 	private TextView _distance;
+	private TextView _dateCreated;
+	private TextView _timeCreated;
 	private ImageView _profileImageView;
 	private ImageView _graffitiImage;
 	private Button _likeButton;
@@ -100,5 +102,21 @@ public class ViewHolder {
 
 	public void setDistanceView(TextView distance) {
 		this._distance = distance;
+	}
+	
+	public TextView getDateCreatedView() {
+		return _dateCreated;
+	}
+
+	public void setDateCreatedView(TextView dateCreated) {
+		this._dateCreated = dateCreated;
+	}
+	
+	public TextView getTimeCreatedView() {
+		return _timeCreated;
+	}
+	
+	public void setTimeCreatedView(TextView timeCreated) {
+		this._timeCreated = timeCreated;
 	}
 }
