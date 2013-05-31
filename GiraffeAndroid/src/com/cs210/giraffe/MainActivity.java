@@ -468,24 +468,6 @@ ActionBar.TabListener {
 		}
 	}
 
-	// We need an Editor object to make preference changes.
-	// All objects are from android.context.Context
-
-	// SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-	// SharedPreferences.Editor editor = settings.edit();
-	//
-	// String value;
-	// try {
-	// value = MainActivity.getCookieManager().getCookieStore().get(new
-	// URI(MainActivity.getBaseServerURI())).get(0).toString();
-	// editor.putString("cookie", value);
-	// } catch (URISyntaxException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	// // Commit the edits!
-	// editor.commit();
-
 	private void showHelp() {
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
@@ -506,70 +488,6 @@ ActionBar.TabListener {
 		// show it
 		alertDialog.show();
 	}
-
-	// SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-	// SharedPreferences.Editor editor = settings.edit();
-	//
-	// String value;
-	// try {
-	// value = MainActivity.getCookieManager().getCookieStore().get(new
-	// URI(MainActivity.getBaseServerURI())).get(0).toString();
-	// editor.putString("cookie", value);
-	// } catch (URISyntaxException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	// // Commit the edits!
-	// editor.commit();
-
-	// SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-	// SharedPreferences.Editor editor = settings.edit();
-	//
-	// String cookieValue;
-	// if(!MainActivity.isLoggedIn()){
-	// editor.clear();
-	// }else{
-	// try {
-	// if(MainActivity.getCookieManager().getCookieStore().get(new
-	// URI(MainActivity.getBaseServerURI())).size() > 0){
-	// Log.w("MainActivity", "Saving cookie");
-	// cookieValue = MainActivity.getCookieManager().getCookieStore().get(new
-	// URI(MainActivity.getBaseServerURI())).get(0).getValue();
-	// Log.w("MainActivity", "saved cookie value: " + cookieValue);
-	// editor.putString("cookie", cookieValue);
-	// }
-	// } catch (URISyntaxException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	//
-	// Log.w("MainActivity", "Saving user");
-	// editor.putInt("id", MainActivity.getCurrentUser().getId());
-	// editor.putString("email", MainActivity.getCurrentUser().getEmail());
-	// editor.putString("username",
-	// MainActivity.getCurrentUser().getUsername());
-	// if(MainActivity.getCurrentUser().getAvatar() != null){
-	// editor.putString("avatar", MainActivity.getCurrentUser().getAvatar());
-	// }
-	//
-	// }
-	// // Commit the edits!
-	// editor.commit();
-
-	// SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-	// SharedPreferences.Editor editor = settings.edit();
-	//
-	// String value;
-	// try {
-	// value = MainActivity.getCookieManager().getCookieStore().get(new
-	// URI(MainActivity.getBaseServerURI())).get(0).toString();
-	// editor.putString("cookie", value);
-	// } catch (URISyntaxException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	// // Commit the edits!
-	// editor.commit();
 
 	@Override
 	protected void onStop() {
@@ -639,6 +557,7 @@ ActionBar.TabListener {
 				url = new URL(urls[0]);
 				HttpURLConnection conn = (HttpURLConnection) url
 						.openConnection();
+				MainActivity.addSessionCookie(conn);
 				conn.setDoOutput(true);
 				conn.setRequestMethod("POST");
 				conn.connect();
@@ -682,6 +601,11 @@ ActionBar.TabListener {
 				menu.getItem(0).setVisible(false);
 				menu.getItem(1).setVisible(true);
 				menu.getItem(3).setVisible(false);
+				
+				NearbyListFragment nearbyListFrag = (NearbyListFragment) getSupportFragmentManager()
+						.findFragmentById(R.id.nearbyListFragment);
+			
+				getSupportLoaderManager().restartLoader(0, null, nearbyListFrag);
 			} else {
 			}
 		}

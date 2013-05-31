@@ -86,6 +86,7 @@ ListAdapter {
 		item = holder.getItem();
 		Log.w("ListPositions", "text: " + holder.getMessageView().getText() + ", holder position: " + holder.getPosition() + " position: " + position);
 
+		
 		if(holder.getPosition() == position){
 			// username = (TextView) view.findViewById(R.id.username);
 			// message = (TextView) view.findViewById(R.id.message);
@@ -103,13 +104,18 @@ ListAdapter {
 			holder.getLikeButton().setOnClickListener(
 					new LikeOnClickListener(holder));
 			// flagButton = (Button) view.findViewById(R.id.flag_button);
-			holder.getFlagButton().setOnClickListener(new FlagOnClickListener());
+			holder.getFlagButton().setOnClickListener(new FlagOnClickListener(holder));
 			// System.out.println("item image url: " + item.getImageURL());
 
 			//holder.setItem(item);
 			if (holder.getItem().getIsLiked() == 1){
-				holder.getLikeButton().setText("Liked");
+				//holder.getLikeButton().setText("Liked");
+				holder.getLikeButton().setBackgroundResource(R.drawable.heart);
+			}else{
+				//holder.getLikeButton().setText("Like");
+				holder.getLikeButton().setBackgroundResource(R.drawable.blackheart);					
 			}
+			holder.getLikeButton().setText(String.valueOf(holder.getItem().getLikes()));
 			if (holder.getImageUrl() != null && !holder.getImageUrl().equals("null")) {
 				new ListViewDownloadImageTask(holder, position, holder.getGraffitiImageView()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, MainActivity.getBaseServerURI() + holder.getImageUrl());
 				// graffitiImage.setOnClickListener(new MessageOnClickListener());
@@ -153,13 +159,18 @@ ListAdapter {
 				holder.getLikeButton().setOnClickListener(
 						new LikeOnClickListener(holder));
 				// flagButton = (Button) view.findViewById(R.id.flag_button);
-				holder.getFlagButton().setOnClickListener(new FlagOnClickListener());
+				holder.getFlagButton().setOnClickListener(new FlagOnClickListener(holder));
 				// System.out.println("item image url: " + item.getImageURL());
 
 				//holder.setItem(item);
 				if (holder.getItem().getIsLiked() == 1){
-					holder.getLikeButton().setText("Liked");
+					//holder.getLikeButton().setText("Liked");
+					holder.getLikeButton().setBackgroundResource(R.drawable.heart);
+				}else{
+					//holder.getLikeButton().setText("Like");
+					holder.getLikeButton().setBackgroundResource(R.drawable.blackheart);					
 				}
+				holder.getLikeButton().setText(String.valueOf(holder.getItem().getLikes()));
 				if (holder.getImageUrl() != null && !holder.getImageUrl().equals("null")) {
 					new ListViewDownloadImageTask(holder, position, holder.getGraffitiImageView()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, MainActivity.getBaseServerURI() + holder.getImageUrl());
 					// graffitiImage.setOnClickListener(new MessageOnClickListener());
@@ -216,16 +227,10 @@ ListAdapter {
 
 		@Override
 		public void onClick(View v) {
-			// §View view = v.findViewWithTag(_position);
-			// if (_holder.getLikeButton().getText().equals("Like"))
-			// _holder.getLikeButton().setText("Liked");
-			// else
-			// _holder.getLikeButton().setText("Like");
-
 			Log.i("Johan", "Clicked Like Button");
 			if (MainActivity.isLoggedIn()) {
-				LikeTask loginTask = new LikeTask();
-				loginTask.execute(MainActivity.getBaseServerURI()
+				LikeTask likeTask = new LikeTask();
+				likeTask.execute(MainActivity.getBaseServerURI()
 						+ "/graffiti/like", _holder);
 			}
 
@@ -234,10 +239,21 @@ ListAdapter {
 
 	private class FlagOnClickListener implements OnClickListener {
 
+		private ViewHolder _holder;
+		
+		public FlagOnClickListener(ViewHolder holder) {
+			_holder = holder;
+		}
+		
 		@Override
 		public void onClick(View v) {
 			Log.i("Johan", "Clicked Flag Button");
-
+			if (MainActivity.isLoggedIn()){
+				// TODO: FlagTask
+				FlagTask flagTask = new FlagTask();
+				flagTask.execute(MainActivity.getBaseServerURI()
+						+ "/graffiti/flag", _holder);
+			}
 		}
 
 	}
@@ -316,14 +332,61 @@ ListAdapter {
 
 		protected void onPostExecute(Boolean success) {
 			if (success) {
-				_viewHolder.getItem().setIsLiked(1 - _viewHolder.getItem().getIsLiked());
 				Log.i("Johan", "Like successful");
-				if (_viewHolder.getLikeButton().getText().equals("Like"))
-					_viewHolder.getLikeButton().setText("Liked");
-				else
-					_viewHolder.getLikeButton().setText("Like");
+				if (_viewHolder.getItem().getIsLiked() == 0){
+					_viewHolder.getItem().setLikes(_viewHolder.getItem().getLikes() + 1);
+					_viewHolder.getLikeButton().setBackgroundResource(R.drawable.heart);
+				} else {
+					_viewHolder.getItem().setLikes(_viewHolder.getItem().getLikes() - 1);
+					_viewHolder.getLikeButton().setBackgroundResource(R.drawable.blackheart);
+				}
+				_viewHolder.getItem().setIsLiked(1 - _viewHolder.getItem().getIsLiked());
+				_viewHolder.getLikeButton().setText(String.valueOf(_viewHolder.getItem().getLikes()));
 			}
+			
+		}
+	}
+	
+	private class FlagTask extends AsyncTask<Object, Void, Boolean> {
+		// TODO: Implement this on server and client side
+		String error_message;
+		boolean success = false;
+		private ViewHolder _viewHolder;
 
+		@Override
+		protected Boolean doInBackground(Object... params) {
+			// TODO: implement this
+			_viewHolder = (ViewHolder) params[1];
+			URL url;
+			HttpURLConnection conn = null;
+			StringBuilder sb = new StringBuilder();
+			try {
+				url = new URL((String) params[0]);
+				conn = (HttpURLConnection) url.openConnection();
+				MainActivity.addSessionCookie(conn);
+				conn.setDoOutput(true);
+				conn.setRequestMethod("POST");
+				OutputStreamWriter wr = new OutputStreamWriter(
+						conn.getOutputStream());
+				wr.write(sb.toString());
+				//wr.flush();
+			} catch (ProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			success = true;
+			return success;
+		}
+
+		protected void onPostExecute(Boolean success) {
+			if (success) {
+				Log.i("Johan", "Flag successful");
+				_viewHolder.getFlagButton().setBackgroundResource(R.drawable.thumbsdown);
+			}
+			
 		}
 	}
 

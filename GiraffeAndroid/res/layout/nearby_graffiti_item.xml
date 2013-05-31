@@ -36,6 +36,16 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="Distance"
+        android:textSize="12sp" >
+    </TextView>
+    
+    <TextView
         android:id="@+id/topdivider"
         android:layout_width="400dp"
         android:layout_height="wrap_content"
@@ -76,19 +86,21 @@
 
         <LinearLayout
             android:id="@+id/button_layout"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_below="@+id/graffiti_image"
             android:orientation="horizontal"
+            android:layout_alignParentRight="true"
             android:visibility="gone" >
-
+        
             <Button
                 android:id="@+id/like_button"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginLeft="10dp"
-                android:background="@drawable/ic_rating_favorite"
-                android:text="@string/like"
+                android:background="@drawable/blackheart"
+                android:text=""
+                android:textColor="#ffffff"
                 android:textSize="15sp" />
 
             <Button
@@ -96,8 +108,9 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginLeft="10dp"
-                android:background="@drawable/ic_alerts_and_states_warning"
-                android:text="@string/flag"
+                android:background="@drawable/blackthumbsdown"
+                android:text=""
+                android:textColor="#ffffff"
                 android:textSize="15sp" />
         </LinearLayout>
 
@@ -114,14 +127,6 @@
             android:text="" />
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/distance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:text="Distance"
-        android:textSize="12sp" >
-    </TextView>
+
 
 </RelativeLayout>

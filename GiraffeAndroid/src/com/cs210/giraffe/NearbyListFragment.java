@@ -16,39 +16,41 @@ import android.widget.ListView;
 public class NearbyListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<List<Graffiti>>{
 
 	NearbyGraffitiListAdapter _adapter;
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState){
 		super.onActivityCreated(savedInstanceState);
-		
+
 		System.out.println("NearbyListFragment.onActivityCreated");
-		
+
 		setEmptyText("No nearby graffiti");
-		
+
 		_adapter = new NearbyGraffitiListAdapter(getActivity());
 		setListAdapter(_adapter);
-		
+
 		setListShown(false);
-		
-//		getLoaderManager().initLoader(0, null, this);
+
+		//		getLoaderManager().initLoader(0, null, this);
 		this.getActivity().getSupportLoaderManager().initLoader(0, null, this);
 	}
 
 	@Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        // Insert desired behavior here.
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		// Insert desired behavior here.
 		Log.i("Johan", "Item clicked: " + id);
-        Log.i("NearbyListFragment", "Item clicked: " + id);
-        if (v.findViewById(R.id.button_layout).getVisibility() == 0)
-        	v.findViewById(R.id.button_layout).setVisibility(8);
-        else {
-        	v.findViewById(R.id.button_layout).setVisibility(0);
-        	//Apparently you need to set unfocusable in code and not xml because Android
-        	v.findViewById(R.id.like_button).setFocusable(false);
-        	v.findViewById(R.id.flag_button).setFocusable(false);
-        }
-    }
-	
+		Log.i("NearbyListFragment", "Item clicked: " + id);
+		if (MainActivity.isLoggedIn()) {
+			if (v.findViewById(R.id.button_layout).getVisibility() == View.VISIBLE)
+				v.findViewById(R.id.button_layout).setVisibility(View.GONE);
+			else {
+				v.findViewById(R.id.button_layout).setVisibility(View.VISIBLE);
+				//Apparently you need to set unfocusable in code and not xml because Android
+				v.findViewById(R.id.like_button).setFocusable(false);
+				v.findViewById(R.id.flag_button).setFocusable(false);
+			}
+		}
+	}
+
 	@Override
 	public Loader<List<Graffiti>> onCreateLoader(int arg0, Bundle arg1) {
 		System.out.println("NearbyListFragment.onCreateLoader");
@@ -60,13 +62,13 @@ public class NearbyListFragment extends ListFragment implements LoaderManager.Lo
 	public void onLoadFinished(Loader<List<Graffiti>> arg0, List<Graffiti> data) {
 		_adapter.setData(data);
 		_adapter.notifyDataSetChanged();
-        System.out.println("NearbyGraffitiListFragment.onLoadFinished");
-        // The list should now be shown.
-        if (isResumed()) {
-            setListShown(true);
-        } else {
-            setListShownNoAnimation(true);
-        }
+		System.out.println("NearbyGraffitiListFragment.onLoadFinished");
+		// The list should now be shown.
+		if (isResumed()) {
+			setListShown(true);
+		} else {
+			setListShownNoAnimation(true);
+		}
 	}
 
 	@Override
