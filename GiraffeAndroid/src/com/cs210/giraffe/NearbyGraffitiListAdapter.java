@@ -130,6 +130,18 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 			}
 			holder.getLikeButton().setText(
 					String.valueOf(holder.getItem().getLikes()));
+			
+			if (holder.getItem().getIsFlagged() == 1) {
+				holder.getFlagButton().setBackgroundResource(
+						R.drawable.thumbsdown);
+			} else {
+				holder.getFlagButton().setBackgroundResource(
+						R.drawable.blackthumbsdown);
+			}
+			
+			holder.getFlagButton().setText(
+					String.valueOf(holder.getItem().getFlags()));
+			
 			if (holder.getImageUrl() != null
 					&& !holder.getImageUrl().equals("null")) {
 				new ListViewDownloadImageTask(holder, position,
@@ -155,8 +167,10 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 			holder.setGraffitiImageView((ImageView) view
 					.findViewById(R.id.graffiti_image));
 			holder.setDistanceView((TextView) view.findViewById(R.id.distance));
-			holder.setDateCreatedView((TextView) view.findViewById(R.id.date_created));
-			holder.setTimeCreatedView((TextView) view.findViewById(R.id.time_created));
+			holder.setDateCreatedView((TextView) view
+					.findViewById(R.id.date_created));
+			holder.setTimeCreatedView((TextView) view
+					.findViewById(R.id.time_created));
 			holder.setLikeButton((Button) view.findViewById(R.id.like_button));
 			holder.setFlagButton((Button) view.findViewById(R.id.flag_button));
 			holder.setPosition(position);
@@ -208,6 +222,18 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 				}
 				holder.getLikeButton().setText(
 						String.valueOf(holder.getItem().getLikes()));
+
+				if (holder.getItem().getIsFlagged() == 1) {
+					holder.getFlagButton().setBackgroundResource(
+							R.drawable.thumbsdown);
+				} else {
+					holder.getFlagButton().setBackgroundResource(
+							R.drawable.blackthumbsdown);
+				}
+				
+				holder.getFlagButton().setText(
+						String.valueOf(holder.getItem().getFlags()));
+
 				if (holder.getImageUrl() != null
 						&& !holder.getImageUrl().equals("null")) {
 					new ListViewDownloadImageTask(holder, position,
@@ -410,7 +436,6 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 
 		@Override
 		protected Boolean doInBackground(Object... params) {
-			// TODO: implement this
 			_viewHolder = (ViewHolder) params[1];
 			URL url;
 			HttpURLConnection conn = null;
@@ -423,8 +448,17 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 				conn.setRequestMethod("POST");
 				OutputStreamWriter wr = new OutputStreamWriter(
 						conn.getOutputStream());
+				// this is were we're adding post data to the request
+				sb.append("id="
+						+ URLEncoder.encode(
+								String.valueOf(_viewHolder.getItem().getId()),
+								"UTF-8"));
+				sb.append("&isFlagged="
+						+ URLEncoder.encode(String.valueOf(1 - _viewHolder
+								.getItem().getIsFlagged()), "UTF-8"));
 				wr.write(sb.toString());
-				// wr.flush();
+				wr.flush();
+
 			} catch (ProtocolException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -432,15 +466,59 @@ public class NearbyGraffitiListAdapter extends ArrayAdapter<Graffiti> implements
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			success = true;
+
+			InputStream myInputStream = null;
+			try {
+				myInputStream = conn.getInputStream();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			JSONObject returnJSONObject = null;
+			try {
+				if (myInputStream != null) {
+					returnJSONObject = new JSONObject(
+							JSONHandler.convertStreamToString(myInputStream));
+					System.out.println("JSONObject: "
+							+ returnJSONObject.toString());
+					if (returnJSONObject.has("error")) {
+						error_message = (String) returnJSONObject.get("error");
+						success = false;
+						return success;
+					} else {
+
+						success = true;
+						return success;
+					}
+				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			return success;
 		}
 
 		protected void onPostExecute(Boolean success) {
 			if (success) {
 				Log.i("Johan", "Flag successful");
-				_viewHolder.getFlagButton().setBackgroundResource(
-						R.drawable.thumbsdown);
+				if (_viewHolder.getItem().getIsFlagged() == 0) {
+					_viewHolder.getItem().setFlags(
+							_viewHolder.getItem().getFlags() + 1);
+					_viewHolder.getFlagButton().setBackgroundResource(
+							R.drawable.thumbsdown);
+				} else {
+					_viewHolder.getItem().setFlags(
+							_viewHolder.getItem().getFlags() - 1);
+					_viewHolder.getFlagButton().setBackgroundResource(
+							R.drawable.blackthumbsdown);
+				}
+				_viewHolder.getItem().setIsFlagged(
+						1 - _viewHolder.getItem().getIsFlagged());
+				_viewHolder.getFlagButton().setText(
+						String.valueOf(_viewHolder.getItem().getFlags()));
 			}
 
 		}

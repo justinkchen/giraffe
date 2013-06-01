@@ -79,6 +79,10 @@ public class NearbyGraffitiListLoader extends AsyncTaskLoader<List<Graffiti>> {
 							.getInt("likes");
 					int graffitiisLiked = ((JSONObject) graffitiJSONArray
 							.get(i)).getInt("isLiked");
+					int graffitiFlags = ((JSONObject) graffitiJSONArray.get(i))
+							.getInt("flags");
+					int graffitiisFlagged = ((JSONObject) graffitiJSONArray
+							.get(i)).getInt("isFlagged");
 					String graffitiDateCreated = ((JSONObject) graffitiJSONArray
 							.get(i)).getString("dateCreated");
 					newGraffiti.setId(graffitiId);
@@ -93,6 +97,8 @@ public class NearbyGraffitiListLoader extends AsyncTaskLoader<List<Graffiti>> {
 					Log.i("Johan", "Is liked? " + graffitiisLiked);
 					Log.i("Johan", "Likes? " + graffitiLikes);
 					newGraffiti.setIsLiked(graffitiisLiked);
+					newGraffiti.setFlags(graffitiFlags);
+					newGraffiti.setIsFlagged(graffitiisFlagged);
 					newGraffiti.setAvatar(graffitiAvatar);
 					newGraffiti.setDateCreated(graffitiDateCreated);
 				} catch (JSONException e) {

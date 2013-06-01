@@ -20,6 +20,8 @@ public class Graffiti implements Comparable<Graffiti> {
 	private int _userid;
 	private int _likes;
 	private int _isLiked;
+	private int _flags;
+	private int _isFlagged;
 	private String _dateCreated;
 	
 	public Graffiti() {
@@ -152,6 +154,22 @@ public class Graffiti implements Comparable<Graffiti> {
 
 	public void setIsLiked(int isLiked) {
 		this._isLiked = isLiked;
+	}
+	
+	public int getFlags() {
+		return _flags;
+	}
+	
+	public void setFlags(int flags) {
+		this._flags = flags;
+	}
+	
+	public int getIsFlagged() {
+		return _isFlagged;
+	}
+	
+	public void setIsFlagged(int isFlagged) {
+		this._isFlagged = isFlagged;
 	}
 	
 	public String getDateCreated() {
