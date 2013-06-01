@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -63,7 +64,7 @@ import android.widget.TextView;
 import android.widget.SeekBar;
 
 public class AddGraffitiFragment extends Fragment implements
-OnSeekBarChangeListener, OnMyLocationChangeListener {
+		OnSeekBarChangeListener, OnMyLocationChangeListener {
 
 	private GoogleMap _circleOverlayMap = null;
 	private SeekBar _radiusBar = null;
@@ -107,10 +108,9 @@ OnSeekBarChangeListener, OnMyLocationChangeListener {
 				.findViewById(R.id.removeImageButton);
 
 		_removeImageButton
-		.setOnClickListener(new RemoveImageButtonClickListener());
+				.setOnClickListener(new RemoveImageButtonClickListener());
 
-		_addedImageText = (TextView) rootView
-				.findViewById(R.id.addedImageText);
+		_addedImageText = (TextView) rootView.findViewById(R.id.addedImageText);
 
 		final Button submitButton = (Button) rootView
 				.findViewById(R.id.submitButton);
@@ -127,7 +127,8 @@ OnSeekBarChangeListener, OnMyLocationChangeListener {
 					_newGraffiti.setLatitude(myLocation.getLatitude());
 					_newGraffiti.setLongitude(myLocation.getLongitude());
 					_newGraffiti.setRadius(_currentProgress);
-					String uri = MainActivity.getBaseServerURI() + "/graffiti/new";
+					String uri = MainActivity.getBaseServerURI()
+							+ "/graffiti/new";
 					new AddGraffitiTask().execute(uri);
 				} else {
 					_loginFragment = new LoginSupportFragment();
@@ -151,14 +152,15 @@ OnSeekBarChangeListener, OnMyLocationChangeListener {
 	public void onDestroyView() {
 		super.onDestroyView();
 
-		if(!getActivity().isFinishing()){
+		if (!getActivity().isFinishing()) {
 			Log.w("AddGraffitiFragment", "Destroying View");
 			SupportMapFragment f = (SupportMapFragment) this.getActivity()
 					.getSupportFragmentManager()
 					.findFragmentById(R.id.addGraffitiMap);
 			if (f != null) {
-				FragmentTransaction ft = this.getActivity().getSupportFragmentManager().beginTransaction();
-				//			ft.commitAllowingStateLoss();
+				FragmentTransaction ft = this.getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				// ft.commitAllowingStateLoss();
 				ft.remove(f).commit();
 				_circleOverlayMap = null;
 
@@ -168,13 +170,13 @@ OnSeekBarChangeListener, OnMyLocationChangeListener {
 	}
 
 	@Override
-	public void onPause(){
+	public void onPause() {
 		super.onPause();
 		Log.w("AddGraffitiFragment", "onPause()");
 	}
 
 	@Override
-	public void onStop(){
+	public void onStop() {
 		super.onStop();
 		Log.w("AddGraffitiFragment", "onStop()");
 	}
@@ -256,7 +258,8 @@ OnSeekBarChangeListener, OnMyLocationChangeListener {
 					+ URLEncoder.encode(
 							String.valueOf(newGraffiti.getRadius()), "UTF-8"));
 			sb.append("&userid="
-					+ URLEncoder.encode(String.valueOf(MainActivity.getCurrentUser().getId()), "UTF-8"));
+					+ URLEncoder.encode(String.valueOf(MainActivity
+							.getCurrentUser().getId()), "UTF-8"));
 		} catch (UnsupportedEncodingException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -323,7 +326,7 @@ OnSeekBarChangeListener, OnMyLocationChangeListener {
 	}
 
 	private class RemoveImageButtonClickListener implements
-	View.OnClickListener {
+			View.OnClickListener {
 		public void onClick(View v) {
 			removeAttachedImage();
 		}
@@ -347,14 +350,16 @@ OnSeekBarChangeListener, OnMyLocationChangeListener {
 				try {
 					Uri selectedImage = data.getData();
 					String[] filePathColumn = { MediaStore.Images.Media.DATA };
-					Cursor cursor = getActivity().getContentResolver().query(selectedImage,filePathColumn, null, null, null);
+					Cursor cursor = getActivity().getContentResolver().query(
+							selectedImage, filePathColumn, null, null, null);
 					cursor.moveToFirst();
 					int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-					picturePath = cursor.getString(columnIndex);		            
+					picturePath = cursor.getString(columnIndex);
 					_photo = BitmapFactory.decodeFile(picturePath);
 
 					Log.i("Johan", "Picture Path: " + picturePath);
-					picturePath = picturePath.substring(picturePath.lastIndexOf('/')+1);
+					picturePath = picturePath.substring(picturePath
+							.lastIndexOf('/') + 1);
 					Log.i("Johan", "Picture Path: " + picturePath);
 					cursor.close();
 
@@ -372,25 +377,26 @@ OnSeekBarChangeListener, OnMyLocationChangeListener {
 
 		if (_photo != null) {
 			_addedImageText.setText(picturePath);
-			//Rescale if too big
-			//			if(_photo.getWidth() > 270 || _photo.getHeight() > 270) {
-			//				float widthRatio = (float) 270 / _photo.getWidth();
-			//				float heightRatio = (float) 270 / _photo.getHeight();
-			//				Log.i("Johan", Integer.toString(_photo.getWidth()));
-			//				Log.i("Johan", Integer.toString(_photo.getHeight()));
-			//				Log.i("Johan", Float.toString(widthRatio));
-			//				Log.i("Johan", Float.toString(heightRatio));
-			//				Matrix matrix = new Matrix();
-			//			    matrix.postScale(widthRatio, heightRatio);
-			//			    _photo = Bitmap.createBitmap(_photo, 0, 0, _photo.getWidth(), _photo.getHeight(), matrix, false);
-			//			}
+			// Rescale if too big
+			// if(_photo.getWidth() > 270 || _photo.getHeight() > 270) {
+			// float widthRatio = (float) 270 / _photo.getWidth();
+			// float heightRatio = (float) 270 / _photo.getHeight();
+			// Log.i("Johan", Integer.toString(_photo.getWidth()));
+			// Log.i("Johan", Integer.toString(_photo.getHeight()));
+			// Log.i("Johan", Float.toString(widthRatio));
+			// Log.i("Johan", Float.toString(heightRatio));
+			// Matrix matrix = new Matrix();
+			// matrix.postScale(widthRatio, heightRatio);
+			// _photo = Bitmap.createBitmap(_photo, 0, 0, _photo.getWidth(),
+			// _photo.getHeight(), matrix, false);
+			// }
 			_removeImageButton.setVisibility(0);
 		}
 		// Do something with photo
 	}
 
 	private class AddGraffitiTask extends
-	AsyncTask<String, Integer, InputStream> {
+			AsyncTask<String, Integer, InputStream> {
 		private boolean success = false;
 		String error_message = null;
 		private String attachmentName = "image";
@@ -399,6 +405,13 @@ OnSeekBarChangeListener, OnMyLocationChangeListener {
 		private String twoHyphens = "--";
 		private String boundary = "*****";
 		private byte[] bytes;
+		private ProgressDialog progress;
+
+		protected void onPreExecute() {
+			progress = new ProgressDialog(getActivity());
+			progress.setMessage("\tPosting graffiti!");
+			progress.show();
+		}
 
 		protected InputStream doInBackground(String... urls) {
 			InputStream myInputStream = null;
@@ -422,7 +435,8 @@ OnSeekBarChangeListener, OnMyLocationChangeListener {
 									String.valueOf(_newGraffiti.getRadius()),
 									"UTF-8"));
 					sb.append("&userid="
-							+ URLEncoder.encode(String.valueOf(MainActivity.getCurrentUser().getId()), "UTF-8"));
+							+ URLEncoder.encode(String.valueOf(MainActivity
+									.getCurrentUser().getId()), "UTF-8"));
 				} catch (UnsupportedEncodingException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -455,7 +469,7 @@ OnSeekBarChangeListener, OnMyLocationChangeListener {
 					if (myInputStream != null) {
 						returnJSONObject = new JSONObject(
 								JSONHandler
-								.convertStreamToString(myInputStream));
+										.convertStreamToString(myInputStream));
 						System.out.println("JSONObject Response: "
 								+ returnJSONObject.toString());
 						if (returnJSONObject.has("error")) {
@@ -611,7 +625,7 @@ OnSeekBarChangeListener, OnMyLocationChangeListener {
 						if (myInputStream != null) {
 							returnJSONObject = new JSONObject(
 									JSONHandler
-									.convertStreamToString(myInputStream));
+											.convertStreamToString(myInputStream));
 							System.out.println("JSONObject Response: "
 									+ returnJSONObject.toString());
 							if (returnJSONObject.has("error")) {
@@ -645,33 +659,34 @@ OnSeekBarChangeListener, OnMyLocationChangeListener {
 		}
 
 		protected void onPostExecute(InputStream responseStream) {
+			progress.dismiss();
 			if (success) {
 				removeAttachedImage();
 				new AlertDialog.Builder(getActivity())
-				.setIcon(R.drawable.ic_navigation_accept)
-				.setTitle("Success!")
-				.setMessage("Adding Graffiti Successful!")
-				.setCancelable(false)
-				.setPositiveButton("Okay",
-						new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog,
-							int which) {
-						// Close dialog
-						_messageBox.setText("");
-					}
-				}).show();
+						.setIcon(R.drawable.ic_navigation_accept)
+						.setTitle("Success!")
+						.setMessage("Adding Graffiti Successful!")
+						.setCancelable(false)
+						.setPositiveButton("Okay",
+								new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										// Close dialog
+										_messageBox.setText("");
+									}
+								}).show();
 
 			} else {
 				new AlertDialog.Builder(getActivity())
-				.setIcon(R.drawable.ic_navigation_cancel)
-				.setTitle("Failure!")
-				.setMessage(
-						"Adding Graffiti Unsuccessful:\n"
-								+ error_message)
-								.setCancelable(false)
-								.setPositiveButton("Okay",
-										new DialogInterface.OnClickListener() {
+						.setIcon(R.drawable.ic_navigation_cancel)
+						.setTitle("Failure!")
+						.setMessage(
+								"Adding Graffiti Unsuccessful:\n"
+										+ error_message)
+						.setCancelable(false)
+						.setPositiveButton("Okay",
+								new DialogInterface.OnClickListener() {
 									@Override
 									public void onClick(DialogInterface dialog,
 											int which) {
@@ -680,8 +695,9 @@ OnSeekBarChangeListener, OnMyLocationChangeListener {
 									}
 								}).show();
 			}
-		}	
+		}
 	}
+
 	private void setMapTransparent(ViewGroup group) {
 		int childCount = group.getChildCount();
 		for (int i = 0; i < childCount; i++) {
@@ -704,13 +720,18 @@ OnSeekBarChangeListener, OnMyLocationChangeListener {
 	@Override
 	public void onMyLocationChange(Location newLoc) {
 		// TODO Auto-generated method stub
-		Log.w("AddGraffitiFragment", "Location changed in AddGraffitiFragment: Lat=" + newLoc.getLatitude() + ", Long=" + newLoc.getLongitude());
+		Log.w("AddGraffitiFragment",
+				"Location changed in AddGraffitiFragment: Lat="
+						+ newLoc.getLatitude() + ", Long="
+						+ newLoc.getLongitude());
 		_circleOverlayMap.clear();
-		LatLng newLatLng = new LatLng(newLoc.getLatitude(), newLoc.getLongitude());
+		LatLng newLatLng = new LatLng(newLoc.getLatitude(),
+				newLoc.getLongitude());
 		_circleOverlayMap.addCircle(new CircleOptions().center(newLatLng)
 				.radius(_radiusBar.getProgress()).fillColor(0x1fff0000)
 				.strokeWidth(5.0f)); // In meters
 		_circleOverlayMap.addMarker(new MarkerOptions().position(newLatLng));
-		_circleOverlayMap.animateCamera(CameraUpdateFactory.newLatLng(newLatLng));
+		_circleOverlayMap.animateCamera(CameraUpdateFactory
+				.newLatLng(newLatLng));
 	}
 }
