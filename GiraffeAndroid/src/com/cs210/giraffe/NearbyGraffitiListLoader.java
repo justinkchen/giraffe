@@ -42,6 +42,7 @@ public class NearbyGraffitiListLoader extends AsyncTaskLoader<List<Graffiti>> {
 			// URL("http://ec2-54-243-69-6.compute-1.amazonaws.com/graffiti/nearby?latitude=37.4280040&longitude=-122.1706350");
 		} catch (MalformedURLException e1) {
 			// TODO Auto-generated catch block
+			System.out.println("MalformedURL Exception");
 			e1.printStackTrace();
 		}
 		Log.w("NearbyGraffitiListLoader", "Loading in background");
@@ -102,14 +103,15 @@ public class NearbyGraffitiListLoader extends AsyncTaskLoader<List<Graffiti>> {
 					newGraffiti.setAvatar(graffitiAvatar);
 					newGraffiti.setDateCreated(graffitiDateCreated);
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
+					System.out.println("JSON Exception");
 					e.printStackTrace();
 				}
 				graffitiList.add(newGraffiti);
 			}
+			Collections.sort(graffitiList);
 		}
 
-		Collections.sort(graffitiList);
+		
 		return graffitiList;
 	}
 

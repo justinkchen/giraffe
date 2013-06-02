@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/addImageButton"
         android:layout_marginBottom="5dp"
+        android:layout_marginRight="3dp"
         android:orientation="horizontal" >
 
         <TextView
@@ -22,7 +23,7 @@
 
         <SeekBar
             android:id="@+id/radiusSeekBar"
-            android:layout_width="300dp"
+            android:layout_width="293dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:indeterminate="false"
@@ -31,7 +32,6 @@
 
         <TextView
             android:id="@+id/maxRadius"
-            android:layout_marginTop="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:lineSpacingExtra="-5dp"
@@ -44,9 +44,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/graffitiEditText"
-        android:contentDescription="@string/loading"
         android:layout_marginBottom="3dp"
         android:background="?android:attr/selectableItemBackground"
+        android:contentDescription="@string/loading"
         android:src="@drawable/ic_content_attachment" />
 
     <TextView
@@ -55,7 +55,6 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/graffitiEditText"
         android:layout_marginBottom="18dp"
-        
         android:layout_toRightOf="@+id/addImageButton" />
 
     <ImageButton
@@ -65,8 +64,8 @@
         android:layout_above="@+id/graffitiEditText"
         android:layout_marginBottom="10dp"
         android:layout_toRightOf="@+id/addedImageText"
-        android:contentDescription="@string/loading"
         android:background="?android:attr/selectableItemBackground"
+        android:contentDescription="@string/loading"
         android:src="@drawable/ic_content_remove"
         android:visibility="gone" />
 
@@ -76,6 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/graffitiEditText"
         android:layout_alignParentRight="true"
+        android:layout_marginRight="3dp"
         android:background="?android:attr/selectableItemBackground"
         android:minWidth="60dip"
         android:text="@string/action_submit" />
