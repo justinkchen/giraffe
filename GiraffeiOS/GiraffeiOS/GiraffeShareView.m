@@ -131,7 +131,7 @@ const CGFloat kShareViewPadding = 8.0;
         self.webView = [UIWebView new];
         self.webView.delegate = self;
         self.webView.frameWidth = contentFrame.size.width;
-        self.webView.frameHeight = 0.6 * self.webView.frameWidth;
+        self.webView.frameHeight = 0.5 * self.webView.frameWidth;
         self.webView.userInteractionEnabled = NO;
         [self addSubview:self.webView];
     }
