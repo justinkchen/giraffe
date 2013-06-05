@@ -10,6 +10,7 @@
 #import "GiraffeProfileViewController.h"
 #import "GiraffeGraffitiViewController.h"
 #import "Graffiti.h"
+#import "SharedGraffitiData.h"
 #import "InstagramGraffiti.h"
 #import "TwitterGraffiti.h"
 #import "FacebookGraffiti.h"
@@ -29,7 +30,7 @@
 @interface GiraffeNearbyViewController () <UITableViewDataSource, UITableViewDelegate, LocationManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (nonatomic, retain) NSArray *graffiti;
+//@property (nonatomic, retain) NSArray *graffiti;
 
 @end
 
@@ -61,8 +62,8 @@
 
 - (void)setGraffiti:(NSMutableArray *)graffiti
 {
-    if (![_graffiti isEqualToArray:graffiti]) {
-        _graffiti = graffiti;
+    if (![[SharedGraffitiData sharedData] isEqualToArray:graffiti]) {
+        [[SharedGraffitiData sharedData] setArray:graffiti];
         [self.tableView reloadData];
     }
 }
@@ -151,30 +152,35 @@
 - (void)instagramRequestFinishedWithDictionary:(NSDictionary *)dictionary
 {
     NSArray *instagramDicts = [dictionary objectForKey:kParamNameInstagramData];
-    NSMutableArray *newGraffiti = [NSMutableArray arrayWithArray:self.graffiti];
+    NSMutableArray *newGraffiti = [NSMutableArray arrayWithArray:[SharedGraffitiData sharedData]];
     for (NSDictionary *instagramDict in instagramDicts) {
         InstagramGraffiti *graffiti = [[InstagramGraffiti alloc] initWithDictionary:instagramDict];
         [newGraffiti addObject:graffiti];
     }
-    self.graffiti = [RankingAlgorithm sortGraffiti:newGraffiti];
+    
+    [[SharedGraffitiData sharedData] setArray:[RankingAlgorithm sortGraffiti:newGraffiti]];
+    [self.tableView reloadData];
 }
 
 - (void)twitterRequestFinishedWithDictionary:(NSDictionary *)dictionary
 {
     NSArray *twitterDicts = [dictionary objectForKey:kParamNameTwitterResults];
-    NSMutableArray *newGraffiti = [NSMutableArray arrayWithArray:self.graffiti];
+    NSMutableArray *newGraffiti = [NSMutableArray arrayWithArray:[SharedGraffitiData sharedData]];
     for (NSDictionary *twitterDict in twitterDicts) {
         TwitterGraffiti *graffiti = [[TwitterGraffiti alloc] initWithDictionary:twitterDict];
         [newGraffiti addObject:graffiti];
     }
-    self.graffiti = [RankingAlgorithm sortGraffiti:newGraffiti];
+    
+    [[SharedGraffitiData sharedData] setArray:[RankingAlgorithm sortGraffiti:newGraffiti]];
+    [self.tableView reloadData];
 }
 
 - (void)facebookRequestFinishedWithDictionary:(NSDictionary *)dictionary
 {
     FacebookGraffiti *graffiti = [[FacebookGraffiti alloc] initWithDictionary:dictionary];
     
-    self.graffiti = [RankingAlgorithm insertGraffito:graffiti into:self.graffiti];
+    [[SharedGraffitiData sharedData] setArray:[RankingAlgorithm insertGraffito:graffiti into:[SharedGraffitiData sharedData]]];
+    [self.tableView reloadData];
 }
 
 - (IBAction)refreshButtonTapped:(UIBarButtonItem *)sender {
@@ -243,7 +249,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.graffiti count];
+    return [[SharedGraffitiData sharedData] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -252,7 +258,7 @@
     if (!cell) {
         cell = [[GraffitiCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kGraffitiCellIdentifier];
     }
-    cell.graffiti = [self.graffiti objectAtIndex:indexPath.row];
+    cell.graffiti = [[SharedGraffitiData sharedData] objectAtIndex:indexPath.row];
     return cell;
 }
 

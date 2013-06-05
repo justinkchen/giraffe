@@ -8,9 +8,13 @@
 
 #import "GiraffeMapViewController.h"
 #import "LocationManager.h"
+#import <MapKit/MapKit.h>
+#import "Graffiti.h"
+#import "SharedGraffitiData.h"
 
-@interface GiraffeMapViewController () <UIWebViewDelegate>
+@interface GiraffeMapViewController ()
 
+@property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (nonatomic, retain) UIWebView *webView;
 
 @property (nonatomic, assign) float latitude;
@@ -26,9 +30,9 @@
 {
     [super viewDidLoad];
     
-    self.webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
-    self.webView.delegate = self;
-    [self.view addSubview:self.webView];
+//    self.webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
+//    self.webView.delegate = self;
+//    [self.view addSubview:self.webView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -37,7 +41,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-NSString *const kHeatmapUrlFormat = @"http://ec2-54-243-69-6.compute-1.amazonaws.com/graffitimap.html?latitude=%f&longitude=%f";
+//NSString *const kHeatmapUrlFormat = @"http://ec2-54-243-69-6.compute-1.amazonaws.com/graffitimap.html?latitude=%f&longitude=%f";
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -57,10 +61,32 @@ NSString *const kHeatmapUrlFormat = @"http://ec2-54-243-69-6.compute-1.amazonaws
     
     if (newLatitude != self.latitude ||
         newLongitude != self.longitude) {
-        NSString *urlString = [NSString stringWithFormat:kHeatmapUrlFormat, [LocationManager sharedInstance].latitude, [LocationManager sharedInstance].longitude];
-        NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
-        [self.webView loadRequest:request];
+        self.mapView.showsUserLocation = YES;
         
+        CLLocationCoordinate2D coordinates = (CLLocationCoordinate2D){newLatitude, newLongitude};
+        MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(coordinates, 500.0, 500.0);
+//        MKCoordinateRegion adjustedRegion = [self.mapView regionThatFits:viewRegion];
+        [self.mapView setRegion:viewRegion];
+        
+        // Add annotations
+        NSMutableArray *annotations = [NSMutableArray array];
+        
+        for (NSUInteger i = 0; i < [[SharedGraffitiData sharedData] count]; i++) {
+            Graffiti *graffito = [[SharedGraffitiData sharedData] objectAtIndex:i];
+            
+            if (graffito.latitude && graffito.longitude) {
+                MKPointAnnotation *point = [[MKPointAnnotation alloc] init];
+                
+                point.coordinate = (CLLocationCoordinate2D){graffito.latitude, graffito.longitude};
+                point.title = graffito.user.username;
+                point.subtitle = graffito.message;
+                
+                [annotations addObject:point];
+            }
+        }
+        
+        [self.mapView addAnnotations:annotations];
+         
         self.latitude = newLatitude;
         self.longitude = newLongitude;
     }

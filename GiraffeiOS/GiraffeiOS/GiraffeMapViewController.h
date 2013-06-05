@@ -8,16 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol MapViewDataSource;
-
 @interface GiraffeMapViewController : UIViewController
-
-@property (nonatomic, assign) id<MapViewDataSource> dataSource;
-
-@end
-
-@protocol MapViewDataSource <NSObject>
-
-- (NSArray *)getGraffitiList;
 
 @end

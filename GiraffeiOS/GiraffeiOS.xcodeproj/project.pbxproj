@@ -24,6 +24,7 @@
 		BB2FEB3B175E9EDB00CC5CC4 /* GiraffeGraffitiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB2FEB3A175E9EDB00CC5CC4 /* GiraffeGraffitiViewController.m */; };
 		BB2FEB3E175EB3B300CC5CC4 /* GiraffeGraffitiView.m in Sources */ = {isa = PBXBuildFile; fileRef = BB2FEB3D175EB3B300CC5CC4 /* GiraffeGraffitiView.m */; };
 		BB2FEB41175EB9AF00CC5CC4 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB2FEB40175EB9AF00CC5CC4 /* MapKit.framework */; };
+		BB2FEB44175F157000CC5CC4 /* SharedGraffitiData.m in Sources */ = {isa = PBXBuildFile; fileRef = BB2FEB43175F157000CC5CC4 /* SharedGraffitiData.m */; };
 		BB52B484172896330077591D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB52B483172896330077591D /* UIKit.framework */; };
 		BB52B486172896330077591D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB52B485172896330077591D /* Foundation.framework */; };
 		BB52B488172896330077591D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB52B487172896330077591D /* CoreGraphics.framework */; };
@@ -121,6 +122,8 @@
 		BB2FEB3C175EB3B300CC5CC4 /* GiraffeGraffitiView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GiraffeGraffitiView.h; sourceTree = "<group>"; };
 		BB2FEB3D175EB3B300CC5CC4 /* GiraffeGraffitiView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GiraffeGraffitiView.m; sourceTree = "<group>"; };
 		BB2FEB40175EB9AF00CC5CC4 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		BB2FEB42175F157000CC5CC4 /* SharedGraffitiData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharedGraffitiData.h; sourceTree = "<group>"; };
+		BB2FEB43175F157000CC5CC4 /* SharedGraffitiData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharedGraffitiData.m; sourceTree = "<group>"; };
 		BB52B480172896330077591D /* GiraffeiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiraffeiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB52B483172896330077591D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		BB52B485172896330077591D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -519,6 +522,8 @@
 				BB06276017501A0D002DD5F0 /* TwitterGraffiti.m */,
 				BB06277417530FB6002DD5F0 /* FacebookGraffiti.h */,
 				BB06277517530FB6002DD5F0 /* FacebookGraffiti.m */,
+				BB2FEB42175F157000CC5CC4 /* SharedGraffitiData.h */,
+				BB2FEB43175F157000CC5CC4 /* SharedGraffitiData.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -703,6 +708,7 @@
 				BB06277617530FB6002DD5F0 /* FacebookGraffiti.m in Sources */,
 				BB2FEB3B175E9EDB00CC5CC4 /* GiraffeGraffitiViewController.m in Sources */,
 				BB2FEB3E175EB3B300CC5CC4 /* GiraffeGraffitiView.m in Sources */,
+				BB2FEB44175F157000CC5CC4 /* SharedGraffitiData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
