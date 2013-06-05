@@ -8,6 +8,7 @@
 
 #import "GiraffeGraffitiViewController.h"
 #import "GiraffeGraffitiView.h"
+#import "UIKit-Utility.h"
 #import <MapKit/MapKit.h>
 
 @interface GiraffeGraffitiViewController () <UIScrollViewDelegate>
@@ -31,6 +32,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.view.frameHeight = self.navigationController.view.frame.size.height - self.tabBarController.tabBar.frame.size.height;
     
     self.graffitiView = [GiraffeGraffitiView new];
     self.graffitiView.backgroundColor = [UIColor whiteColor];
