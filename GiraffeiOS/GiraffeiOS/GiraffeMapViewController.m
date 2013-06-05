@@ -7,12 +7,25 @@
 //
 
 #import "GiraffeMapViewController.h"
+#import "GiraffeGraffitiViewController.h"
 #import "LocationManager.h"
 #import <MapKit/MapKit.h>
 #import "Graffiti.h"
 #import "SharedGraffitiData.h"
 
-@interface GiraffeMapViewController ()
+// Custom Map Pin Annotation with disclosure button
+// Stores associated graffito
+@interface GiraffeMapPinAnnotation : MKPointAnnotation
+
+@property (nonatomic, retain) Graffiti *graffito;
+
+@end
+
+@implementation GiraffeMapPinAnnotation
+
+@end
+
+@interface GiraffeMapViewController () <MKMapViewDelegate>
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (nonatomic, retain) UIWebView *webView;
@@ -30,6 +43,7 @@
 {
     [super viewDidLoad];
     
+    [self.mapView setDelegate:self];
 //    self.webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
 //    self.webView.delegate = self;
 //    [self.view addSubview:self.webView];
@@ -75,11 +89,12 @@
             Graffiti *graffito = [[SharedGraffitiData sharedData] objectAtIndex:i];
             
             if (graffito.latitude && graffito.longitude) {
-                MKPointAnnotation *point = [[MKPointAnnotation alloc] init];
+                GiraffeMapPinAnnotation *point = [[GiraffeMapPinAnnotation alloc] init];
                 
                 point.coordinate = (CLLocationCoordinate2D){graffito.latitude, graffito.longitude};
                 point.title = graffito.user.username;
                 point.subtitle = graffito.message;
+                point.graffito = graffito;
                 
                 [annotations addObject:point];
             }
@@ -90,6 +105,31 @@
         self.latitude = newLatitude;
         self.longitude = newLongitude;
     }
+}
+
+#pragma mark - MKMapViewDelegate
+
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
+    if ([annotation isKindOfClass:[MKUserLocation class]]) return nil;
+    
+    MKAnnotationView *annotationView = [mapView dequeueReusableAnnotationViewWithIdentifier:@"MapPin"];
+    if(!annotationView) {
+        annotationView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"MapPin"];
+        annotationView.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+    }
+    
+    annotationView.enabled = YES;
+    annotationView.canShowCallout = YES;
+    
+    return annotationView;
+}
+
+- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control {
+    // Go to edit view
+    GiraffeGraffitiViewController *graffitiViewController = [GiraffeGraffitiViewController new];
+    graffitiViewController.graffiti = ((GiraffeMapPinAnnotation *)view.annotation).graffito;
+    [self.navigationController pushViewController:graffitiViewController animated:YES];
 }
 
 @end
