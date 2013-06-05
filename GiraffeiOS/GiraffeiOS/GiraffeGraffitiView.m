@@ -1,58 +1,64 @@
 //
-//  GraffitiCell.m
+//  GiraffeGraffitiView.m
 //  GiraffeiOS
 //
-//  Created by Kurtis Horimoto on 5/6/13.
+//  Created by Bryan Cheng on 6/4/13.
 //  Copyright (c) 2013 Unsamsung Heroes. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <math.h>
-#import "GraffitiCell.h"
-#import "Graffiti.h"
-#import "User.h"
+#import "GiraffeGraffitiView.h"
+#import <MapKit/MapKit.h>
 #import "GiraffeClient.h"
 #import "LocationManager.h"
 #import "UIKit-Utility.h"
-#import "UIImageView+AFNetworking.h"
 #import "NSDate+TimeAgo.h"
+#import "UIImageView+AFNetworking.h"
 #import <QuartzCore/QuartzCore.h>
 
-NSString *const kGraffitiCellIdentifier = @"graffitiCell";
+@interface GiraffeGraffitiView ()
 
-@interface GraffitiCell ()
-
+// Views
 @property (nonatomic, retain) UIImageView *userAvatarImage;
-@property (nonatomic, retain) UILabel *usernameLabel;
 @property (nonatomic, retain) UIButton *usernameButton;
 @property (nonatomic, retain) UILabel *detailLabel;
 @property (nonatomic, retain) UIImageView *graffitiImage;
 @property (nonatomic, retain) UILabel *messageLabel;
-//@property (nonatomic, retain) UILabel *likesLabel;
 @property (nonatomic, retain) UIButton *likeButton;
-
+@property (nonatomic, retain) MKMapView *mapView;
 @property (nonatomic, retain) UIImageView *platformIcon;
+
+// Util
+@property (nonatomic, readonly) CGRect contentFrame;
 
 @end
 
-@implementation GraffitiCell
+@implementation GiraffeGraffitiView
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (id)initWithFrame:(CGRect)frame
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    self = [super initWithFrame:frame];
     if (self) {
-        [self setSelectionStyle:UITableViewCellSelectionStyleNone];
+        // Initialization code
     }
     return self;
 }
 
-const CGFloat kUserAvatarSideLength = 45.0;
+/*
+// Only override drawRect: if you perform custom drawing.
+// An empty implementation adversely affects performance during animation.
+- (void)drawRect:(CGRect)rect
+{
+    // Drawing code
+}
+*/
+
+const CGFloat kUserAvatarSideLength1 = 45.0;
 - (BOOL)shouldShowUserAvatar
 {
     return [self.graffiti.user.avatarUrl length] > 0;
 }
 
-const CGFloat kGraffitiImageSideLength = 200.0;
+const CGFloat kGraffitiImageSideLength1 = 200.0;
 - (BOOL)shouldShowGraffitiImage
 {
     return [self.graffiti.imageUrl length] > 0;
@@ -65,22 +71,22 @@ const CGFloat kGraffitiImageSideLength = 200.0;
              [self.graffiti.platform isEqualToString:@"facebook"]);
 }
 
-const CGFloat kUsernameFontSize = 18.0;
+const CGFloat kUsernameFontSize1 = 18.0;
 - (UIFont *)usernameFont
 {
-    return [UIFont boldSystemFontOfSize:kUsernameFontSize];
+    return [UIFont boldSystemFontOfSize:kUsernameFontSize1];
 }
 
-const CGFloat kDetailFontSize = 14.0;
+const CGFloat kDetailFontSize1 = 14.0;
 - (UIFont *)detailFont
 {
-    return [UIFont italicSystemFontOfSize:kDetailFontSize];
+    return [UIFont italicSystemFontOfSize:kDetailFontSize1];
 }
 
-const CGFloat kLikesFontSize = 14.0;
+const CGFloat kLikesFontSize1 = 14.0;
 - (UIFont *)likesFont
 {
-    return [UIFont italicSystemFontOfSize:kDetailFontSize];
+    return [UIFont italicSystemFontOfSize:kDetailFontSize1];
 }
 
 - (NSString *)distanceString
@@ -105,17 +111,17 @@ const CGFloat kLikesFontSize = 14.0;
         detailText = [NSString stringWithFormat:@"Posted %@ away at %@", [self distanceString], [self.graffiti.dateCreated timeAgo]];
     } else if (self.graffiti.dateCreated) {
         detailText = [NSString stringWithFormat:@"Posted at %@", [self.graffiti.dateCreated timeAgo]];
-            // TODO convert to timeago
+        // TODO convert to timeago
     } else if (self.graffiti.latitude && self.graffiti.longitude) {
         detailText = [NSString stringWithFormat:@"Posted %@ away", [self distanceString]];
     }
     return detailText;
 }
 
-const CGFloat kGraffitiTextSize = 16.0;
+const CGFloat kGraffitiTextSize1 = 16.0;
 - (UIFont *)graffitiTextFont
 {
-    return [UIFont systemFontOfSize:kGraffitiTextSize];
+    return [UIFont systemFontOfSize:kGraffitiTextSize1];
 }
 
 - (NSString *)likesText
@@ -144,9 +150,9 @@ const CGFloat kGraffitiTextSize = 16.0;
     return [UIColor colorWithRed:0.22 green:0.33 blue:0.53 alpha:1.0];
 }
 
-const CGFloat kPlatformIconSideLength = 32.0;
+const CGFloat kPlatformIconSideLength1 = 32.0;
 
-const CGFloat kGraffitiCellPadding = 8.0;
+const CGFloat kGraffitiCellPadding1 = 8.0;
 
 - (void)layoutSubviews
 {
@@ -155,9 +161,9 @@ const CGFloat kGraffitiCellPadding = 8.0;
         if (!self.userAvatarImage) {
             self.userAvatarImage = [UIImageView new];
             self.userAvatarImage.backgroundColor = self.backgroundColor;
-            self.userAvatarImage.frameSize = CGSizeMake(kUserAvatarSideLength, kUserAvatarSideLength);
-            self.userAvatarImage.frameOrigin = CGPointMake(kGraffitiCellPadding, kGraffitiCellPadding);
-            [self.contentView addSubview:self.userAvatarImage];
+            self.userAvatarImage.frameSize = CGSizeMake(kUserAvatarSideLength1, kUserAvatarSideLength1);
+            self.userAvatarImage.frameOrigin = CGPointMake(kGraffitiCellPadding1, kGraffitiCellPadding1);
+            [self addSubview:self.userAvatarImage];
         }
         [self.userAvatarImage setImageWithURL:[NSURL URLWithString:self.graffiti.user.avatarUrl relativeToURL:[NSURL URLWithString:kBaseURL]] placeholderImage:[UIImage imageNamed:kAvatarImagePlaceholderFilename]];
     } else {
@@ -165,28 +171,19 @@ const CGFloat kGraffitiCellPadding = 8.0;
         self.userAvatarImage = nil;
     }
     
-    // User username label
-    if (!self.usernameLabel) {
-        self.usernameLabel = [UILabel new];
-        self.usernameLabel.font = [self usernameFont];
-        self.usernameLabel.frameOriginY = kGraffitiCellPadding;
-//        [self.contentView addSubview:self.usernameLabel];
-    }
-    self.usernameLabel.text = self.graffiti.user.username;
-    [self.usernameLabel sizeToFit];
-    self.usernameLabel.frameOriginX = self.userAvatarImage.rightEdge + kGraffitiCellPadding;
-    
     // User username button
     if (!self.usernameButton) {
         self.usernameButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.usernameButton addTarget:nil action:@selector(viewProfile:) forControlEvents:UIControlEventTouchUpInside];
         self.usernameButton.titleLabel.font = [self usernameFont];
-        [self.usernameButton setTitleColor:self.usernameLabel.textColor forState:UIControlStateNormal];
+        [self.usernameButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        self.usernameButton.frameOriginY = kGraffitiCellPadding1;
         [self addSubview:self.usernameButton];
     }
     [self.usernameButton setTitle:self.graffiti.user.username forState:UIControlStateNormal];
     [self.usernameButton sizeToFit];
-    self.usernameButton.frame = self.usernameLabel.frame;
+    self.usernameButton.frameOriginX = self.userAvatarImage.rightEdge + kGraffitiCellPadding1;
+//    self.usernameButton.frame = self.usernameLabel.frame;
     if ([self isNative]) {
         self.usernameButton.enabled = YES;
     } else {
@@ -197,21 +194,21 @@ const CGFloat kGraffitiCellPadding = 8.0;
     if (!self.detailLabel) {
         self.detailLabel = [UILabel new];
         self.detailLabel.font = [self detailFont];
-        [self.contentView addSubview:self.detailLabel];
+        [self addSubview:self.detailLabel];
     }
     self.detailLabel.text = [self detailText];
     [self.detailLabel sizeToFit];
-    self.detailLabel.frameOriginY = self.usernameLabel.bottomEdge + kGraffitiCellPadding;
-    self.detailLabel.frameOriginX = self.usernameLabel.frameOriginX;
+    self.detailLabel.frameOriginY = self.usernameButton.bottomEdge + kGraffitiCellPadding1;
+    self.detailLabel.frameOriginX = self.usernameButton.frameOriginX;
     
     // Graffiti Image
     if ([self shouldShowGraffitiImage]) {
         if (!self.graffitiImage) {
             self.graffitiImage = [UIImageView new];
             self.graffitiImage.backgroundColor = self.backgroundColor;
-            self.graffitiImage.frameSize = CGSizeMake(kGraffitiImageSideLength, kGraffitiImageSideLength);
-            self.graffitiImage.frameOrigin = CGPointMake(kGraffitiCellPadding, MAX(self.detailLabel.bottomEdge, self.userAvatarImage.bottomEdge) + kGraffitiCellPadding);
-            [self.contentView addSubview:self.graffitiImage];
+            self.graffitiImage.frameSize = CGSizeMake(kGraffitiImageSideLength1, kGraffitiImageSideLength1);
+            self.graffitiImage.frameOrigin = CGPointMake(kGraffitiCellPadding1, MAX(self.detailLabel.bottomEdge, self.userAvatarImage.bottomEdge) + kGraffitiCellPadding1);
+            [self addSubview:self.graffitiImage];
         }
         [self.graffitiImage setImageWithURL:[NSURL URLWithString:self.graffiti.imageUrl relativeToURL:[NSURL URLWithString:kBaseURL]] placeholderImage:[UIImage imageNamed:kAvatarImagePlaceholderFilename]];
     } else {
@@ -225,22 +222,12 @@ const CGFloat kGraffitiCellPadding = 8.0;
         self.messageLabel.font = [self graffitiTextFont];
         self.messageLabel.lineBreakMode = NSLineBreakByWordWrapping;
         self.messageLabel.numberOfLines = 0;
-        [self.contentView addSubview:self.messageLabel];
+        [self addSubview:self.messageLabel];
     }
     self.messageLabel.text = self.graffiti.message;
-    self.messageLabel.frameOriginX = kGraffitiCellPadding;
-    self.messageLabel.frameOriginY = MAX(MAX(self.detailLabel.bottomEdge, self.userAvatarImage.bottomEdge), self.graffitiImage.bottomEdge) + kGraffitiCellPadding;
-    self.messageLabel.frameSize = [self.graffiti.message sizeWithFont:[self graffitiTextFont] constrainedToSize:CGSizeMake(self.frameWidth - 2*kGraffitiCellPadding, CGFLOAT_MAX)];
-    
-//    if (!self.likesLabel) {
-//        self.likesLabel = [UILabel new];
-//        self.likesLabel.font = [self likesFont];
-//        [self.contentView addSubview:self.likesLabel];
-//    }
-//    self.likesLabel.text = [self likesText];
-//    [self.likesLabel sizeToFit];
-//    self.likesLabel.frameOriginX = kGraffitiCellPadding;
-//    self.likesLabel.frameOriginY = self.messageLabel.bottomEdge + kGraffitiCellPadding;
+    self.messageLabel.frameOriginX = kGraffitiCellPadding1;
+    self.messageLabel.frameOriginY = MAX(MAX(self.detailLabel.bottomEdge, self.userAvatarImage.bottomEdge), self.graffitiImage.bottomEdge) + kGraffitiCellPadding1;
+    self.messageLabel.frameSize = [self.graffiti.message sizeWithFont:[self graffitiTextFont] constrainedToSize:CGSizeMake(self.frameWidth - 2*kGraffitiCellPadding1, CGFLOAT_MAX)];
     
     if ([self isNative]) {
         if (!self.likeButton) {
@@ -268,7 +255,7 @@ const CGFloat kGraffitiCellPadding = 8.0;
             [self.likeButton setBackgroundImage:[UIImage imageWithColor:[self likeButtonLikedBackgroundColor]] forState:UIControlStateNormal];
             [self.likeButton setBackgroundImage:[UIImage imageWithColor:[self likeButtonHighlightedBackgroundColor]] forState:UIControlStateHighlighted];
         }
-        self.likeButton.frame = CGRectMake(kGraffitiCellPadding, self.messageLabel.bottomEdge + kGraffitiCellPadding, 100, [[self likesText] sizeWithFont:[self likesFont]].height);
+        self.likeButton.frame = CGRectMake(kGraffitiCellPadding1, self.messageLabel.bottomEdge + kGraffitiCellPadding1, 100, [[self likesText] sizeWithFont:[self likesFont]].height);
     } else {
         [self.likeButton removeFromSuperview];
         self.likeButton = nil;
@@ -276,44 +263,18 @@ const CGFloat kGraffitiCellPadding = 8.0;
     
     if (!self.platformIcon) {
         self.platformIcon = [UIImageView new];
-        self.platformIcon.frameSize = CGSizeMake(kPlatformIconSideLength, kPlatformIconSideLength);
-        self.platformIcon.rightEdge = self.contentView.rightEdge - kGraffitiCellPadding;
-        self.platformIcon.frameOriginY = kGraffitiCellPadding;
+        self.platformIcon.frameSize = CGSizeMake(kPlatformIconSideLength1, kPlatformIconSideLength1);
+        self.platformIcon.rightEdge = self.rightEdge - kGraffitiCellPadding1;
+        self.platformIcon.frameOriginY = kGraffitiCellPadding1;
         
-        [self.contentView addSubview:self.platformIcon];
+        [self addSubview:self.platformIcon];
     }
     [self.platformIcon setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@.png", self.graffiti.platform]]];
-}
-
-- (CGSize)sizeThatFits:(CGSize)size
-{
-    CGFloat height = kGraffitiCellPadding;
     
-    if ([self shouldShowUserAvatar]) {
-        // User avatar is taller than labels
-        height += kUserAvatarSideLength + kGraffitiCellPadding;
-    } else {
-        // User name label
-        height += [self.graffiti.user.username sizeWithFont:[self usernameFont]].height + kGraffitiCellPadding;
-        
-        // Metadata
-        height += [[self detailText] sizeWithFont:[self detailFont]].height + kGraffitiCellPadding;
+    if (!self.mapView) {
+        self.mapView = [MKMapView new];
+        // todo mapview init
     }
-    
-    if ([self shouldShowGraffitiImage]) {
-        height += kGraffitiImageSideLength + kGraffitiCellPadding;
-    }
-    
-    // Add height for text
-    height += [self.graffiti.message sizeWithFont:[self graffitiTextFont] constrainedToSize:CGSizeMake(size.width, CGFLOAT_MAX)].height + kGraffitiCellPadding;    
-    
-    if ([self isNative]) {
-        height += [[self likesText] sizeWithFont:[self likesFont]].height + kGraffitiCellPadding;
-    }
-    
-    size.height = height;
-    
-    return size;
 }
 
 @end

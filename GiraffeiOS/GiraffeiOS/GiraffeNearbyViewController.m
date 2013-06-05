@@ -8,6 +8,7 @@
 
 #import "GiraffeNearbyViewController.h"
 #import "GiraffeProfileViewController.h"
+#import "GiraffeGraffitiViewController.h"
 #import "Graffiti.h"
 #import "InstagramGraffiti.h"
 #import "TwitterGraffiti.h"
@@ -185,6 +186,16 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return [[self tableView:tableView cellForRowAtIndexPath:indexPath] sizeThatFits:tableView.frameSize].height;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    GraffitiCell *cell = (GraffitiCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
+    
+    GiraffeGraffitiViewController *graffitiViewController = [GiraffeGraffitiViewController new];
+    graffitiViewController.graffiti = cell.graffiti;
+    
+    [self.navigationController pushViewController:graffitiViewController animated:YES];
 }
 
 - (void)viewProfile:(id)sender
