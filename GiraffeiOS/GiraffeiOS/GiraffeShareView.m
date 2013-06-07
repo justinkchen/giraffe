@@ -23,7 +23,6 @@
 @property (nonatomic, retain) UISlider *radiusSlider;
 @property (nonatomic, retain) UIButton *postButton;
 @property (nonatomic, retain) UIButton *imageButton;
-@property (nonatomic, retain) UIControl *firstResponderControl;
 
 // Util
 @property (nonatomic, readonly) CGRect contentFrame;
@@ -59,7 +58,7 @@ const CGFloat kContentInset = 8.0;
 - (Graffiti *)graffitiFromInput
 {
     if (![self.textView.text length]) {
-        NSLog(@"message cannot be blank");
+        [self.delegate shareView:self displayMessage:@"Message cannot be blank."];
         return nil;
     }
     
@@ -102,7 +101,7 @@ const CGFloat kShareViewPadding = 8.0;
     // Text Label
     if (!self.textLabel) {
         self.textLabel = [UILabel new];
-        self.textLabel.font = [UIFont helveticaNeueCondensedOfSize:18.0 weight:UIFontWeightRegular];
+        self.textLabel.font = [UIFont systemFontOfSize:18.0];
         self.textLabel.backgroundColor = self.backgroundColor;
         self.textLabel.text = kTextLabelText;
         [self addSubview:self.textLabel];
@@ -114,7 +113,7 @@ const CGFloat kShareViewPadding = 8.0;
     // Text View
     if (!self.textView) {
         self.textView = [UITextView new];
-        self.textView.font = [UIFont helveticaNeueCondensedOfSize:18.0 weight:UIFontWeightRegular];
+        self.textView.font = [UIFont systemFontOfSize:18.0];
         self.textView.textColor = [UIColor blackColor];
         self.textView.backgroundColor = [UIColor whiteColor];
         self.textView.layer.cornerRadius = kTextViewCornerRadius;
@@ -132,13 +131,22 @@ const CGFloat kShareViewPadding = 8.0;
         self.webView = [UIWebView new];
         self.webView.delegate = self;
         self.webView.frameWidth = contentFrame.size.width;
-        self.webView.frameHeight = 0.6 * self.webView.frameWidth;
+        self.webView.frameHeight = 0.5 * self.webView.frameWidth;
         self.webView.userInteractionEnabled = NO;
         [self addSubview:self.webView];
     }
     self.webView.frameOriginX = contentFrame.origin.x;
     self.webView.frameOriginY = self.textView.bottomEdge + kShareViewPadding;
     self.webView.alpha = [self keyboardVisible] ? 0.0 : 1.0;
+    
+    // Image temp view
+    if (!self.imageView) {
+        self.imageView = [UIImageView new];
+        self.imageView.frame = self.webView.frame;
+        [self addSubview:self.imageView];
+    }
+    self.imageView.frame = self.webView.frame;
+    self.imageView.alpha = [self keyboardVisible] ? 0.0 : 1.0;
     
     // Radius Slider
     if (!self.radiusSlider) {
@@ -155,7 +163,7 @@ const CGFloat kShareViewPadding = 8.0;
     // Radius label
     if (!self.radiusLabel) {
         self.radiusLabel = [UILabel new];
-        self.radiusLabel.font = [UIFont helveticaNeueCondensedOfSize:18.0 weight:UIFontWeightRegular];
+        self.radiusLabel.font = [UIFont systemFontOfSize:18.0];
         self.radiusLabel.backgroundColor = self.backgroundColor;
         [self addSubview:self.radiusLabel];
     }

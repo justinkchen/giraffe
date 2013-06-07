@@ -93,39 +93,39 @@
 {
     if (self.loginType == UserLoginTypeLogin) {
         if (![self.usernameField.text length]) {
-            [self makeToast:@"Username or email field cannot be blank." duration:1.5f position:@"top"];
+            [self.delegate userLoginView:self displayMessage:@"Username or email field cannot be blank."];
             return NO;
         }
         
         if (![self.passwordField.text length]) {
-            [self makeToast:@"Password field cannot be blank." duration:1.5f position:@"top"];
+            [self.delegate userLoginView:self displayMessage:@"Password field cannot be blank."];
             return NO;
         }
         
         return YES;
     } else if (self.loginType == UserLoginTypeSignup) {
         if (![self.usernameField.text length]) {
-            [self makeToast:@"Username field cannot be blank." duration:1.5f position:@"top"];
+            [self.delegate userLoginView:self displayMessage:@"Username field cannot be blank."];
             return NO;
         }
         
         if (![self.emailField.text length]) {
-            [self makeToast:@"Email field cannot be blank." duration:1.5f position:@"top"];
+            [self.delegate userLoginView:self displayMessage:@"Email field cannot be blank."];
             return NO;
         }
         
         if (![self.passwordField.text length]) {
-            [self makeToast:@"Password field cannot be blank." duration:1.5f position:@"top"];
+            [self.delegate userLoginView:self displayMessage:@"Password field cannot be blank."];
             return NO;
         }
         
         if (![self.passwordConfirmField.text length]) {
-            [self makeToast:@"Password confirm field cannot be blank." duration:1.5f position:@"top"];
+            [self.delegate userLoginView:self displayMessage:@"Password confirm field cannot be blank."];
             return NO;
         }
         
         if (![self.passwordField.text isEqualToString:self.passwordConfirmField.text]) {
-            [self makeToast:@"Passwords do not match." duration:1.5f position:@"top"];
+            [self.delegate userLoginView:self displayMessage:@"Passwords do not match."];
             return NO;
         }
         
@@ -217,7 +217,7 @@ NSString *const kSwitchToSignupButtonTitle = @"Don't have an account?";
         self.usernameField.borderStyle = UITextBorderStyleBezel;
         self.usernameField.backgroundColor = self.backgroundColor;
         self.usernameField.textColor = [UIColor blackColor];
-        self.usernameField.font = [UIFont helveticaNeueCondensedOfSize:18.0 weight:UIFontWeightRegular];
+        self.usernameField.font = [UIFont systemFontOfSize:18.0];
         self.usernameField.layer.cornerRadius = 4.0;
         self.usernameField.autocorrectionType = UITextAutocorrectionTypeNo;
         [self addSubview:self.usernameField];
@@ -246,7 +246,7 @@ NSString *const kSwitchToSignupButtonTitle = @"Don't have an account?";
             self.emailField.backgroundColor = self.backgroundColor;
             self.emailField.textColor = [UIColor blackColor];
             self.emailField.placeholder = kEmailPlaceholderString;
-            self.emailField.font = [UIFont helveticaNeueCondensedOfSize:18.0 weight:UIFontWeightRegular];
+            self.emailField.font = [UIFont systemFontOfSize:18.0];
             self.emailField.layer.cornerRadius = 4.0;
             self.emailField.autocorrectionType = UITextAutocorrectionTypeNo;
             [self addSubview:self.emailField];
@@ -266,7 +266,7 @@ NSString *const kSwitchToSignupButtonTitle = @"Don't have an account?";
         self.passwordField.backgroundColor = self.backgroundColor;
         self.passwordField.textColor = [UIColor blackColor];
         self.passwordField.placeholder = kPasswordPlaceholderString;
-        self.passwordField.font = [UIFont helveticaNeueCondensedOfSize:18.0 weight:UIFontWeightRegular];
+        self.passwordField.font = [UIFont systemFontOfSize:18.0];
         self.passwordField.layer.cornerRadius = 4.0;
         self.passwordField.secureTextEntry = YES;
         self.passwordField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -286,7 +286,7 @@ NSString *const kSwitchToSignupButtonTitle = @"Don't have an account?";
             self.passwordConfirmField.backgroundColor = self.backgroundColor;
             self.passwordConfirmField.textColor = [UIColor blackColor];
             self.passwordConfirmField.placeholder = kPasswordConfirmPlaceholderString;
-            self.passwordConfirmField.font = [UIFont helveticaNeueCondensedOfSize:18.0 weight:UIFontWeightRegular];
+            self.passwordConfirmField.font = [UIFont systemFontOfSize:18.0];
             self.passwordConfirmField.layer.cornerRadius = 4.0;
             self.passwordConfirmField.secureTextEntry = YES;
             self.passwordConfirmField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -303,7 +303,7 @@ NSString *const kSwitchToSignupButtonTitle = @"Don't have an account?";
     if (!self.switchTypeButton) {
         self.switchTypeButton = [UIButton new];
         self.switchTypeButton.backgroundColor = self.backgroundColor;
-        self.switchTypeButton.titleLabel.font = [UIFont helveticaNeueCondensedOfSize:16.0 weight:UIFontWeightLight];
+        self.switchTypeButton.titleLabel.font = [UIFont italicSystemFontOfSize:16.0];
         [self.switchTypeButton setTitleColor:[UIColor linkTextColor] forState:UIControlStateNormal];
         [self.switchTypeButton addTarget:self action:@selector(switchTypeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.switchTypeButton];
@@ -368,6 +368,11 @@ NSString *const kSwitchToSignupButtonTitle = @"Don't have an account?";
             self.loginType = UserLoginTypeLogin;
             break;
     }
+}
+
+- (void)backgroundTapped
+{
+    [self endEditing:YES];
 }
 
 //#pragma mark - Action sheet

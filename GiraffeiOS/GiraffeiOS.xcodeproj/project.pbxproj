@@ -7,6 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BB06275E175015EF002DD5F0 /* TwitterClient.m in Sources */ = {isa = PBXBuildFile; fileRef = BB06275D175015EF002DD5F0 /* TwitterClient.m */; };
+		BB06276117501A0D002DD5F0 /* TwitterGraffiti.m in Sources */ = {isa = PBXBuildFile; fileRef = BB06276017501A0D002DD5F0 /* TwitterGraffiti.m */; };
+		BB0627631751A091002DD5F0 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB0627621751A091002DD5F0 /* FacebookSDK.framework */; };
+		BB0627651751A0CE002DD5F0 /* FacebookSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BB0627641751A0CE002DD5F0 /* FacebookSDKResources.bundle */; };
+		BB06276B1751A1AD002DD5F0 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB0627661751A1AC002DD5F0 /* Accounts.framework */; };
+		BB06276C1751A1AD002DD5F0 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB0627671751A1AC002DD5F0 /* AdSupport.framework */; };
+		BB06276D1751A1AD002DD5F0 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BB0627681751A1AC002DD5F0 /* libsqlite3.dylib */; };
+		BB06276E1751A1AD002DD5F0 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB0627691751A1AD002DD5F0 /* Security.framework */; };
+		BB06276F1751A1AD002DD5F0 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB06276A1751A1AD002DD5F0 /* Social.framework */; };
+		BB0627721751C164002DD5F0 /* FacebookClient.m in Sources */ = {isa = PBXBuildFile; fileRef = BB0627711751C164002DD5F0 /* FacebookClient.m */; };
+		BB06277617530FB6002DD5F0 /* FacebookGraffiti.m in Sources */ = {isa = PBXBuildFile; fileRef = BB06277517530FB6002DD5F0 /* FacebookGraffiti.m */; };
+		BB18C0C0174F47610088856A /* RankingAlgorithm.m in Sources */ = {isa = PBXBuildFile; fileRef = BB18C0BF174F47610088856A /* RankingAlgorithm.m */; };
+		BB29083B174DF901003064AB /* InstagramClient.m in Sources */ = {isa = PBXBuildFile; fileRef = BB29083A174DF901003064AB /* InstagramClient.m */; };
+		BB29083E174EFE4F003064AB /* InstagramGraffiti.m in Sources */ = {isa = PBXBuildFile; fileRef = BB29083D174EFE4F003064AB /* InstagramGraffiti.m */; };
+		BB2FEB3B175E9EDB00CC5CC4 /* GiraffeGraffitiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB2FEB3A175E9EDB00CC5CC4 /* GiraffeGraffitiViewController.m */; };
+		BB2FEB3E175EB3B300CC5CC4 /* GiraffeGraffitiView.m in Sources */ = {isa = PBXBuildFile; fileRef = BB2FEB3D175EB3B300CC5CC4 /* GiraffeGraffitiView.m */; };
+		BB2FEB41175EB9AF00CC5CC4 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB2FEB40175EB9AF00CC5CC4 /* MapKit.framework */; };
+		BB2FEB44175F157000CC5CC4 /* SharedGraffitiData.m in Sources */ = {isa = PBXBuildFile; fileRef = BB2FEB43175F157000CC5CC4 /* SharedGraffitiData.m */; };
+		BB2FEB471761D00200CC5CC4 /* GiraffeFilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB2FEB461761D00200CC5CC4 /* GiraffeFilterViewController.m */; };
 		BB52B484172896330077591D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB52B483172896330077591D /* UIKit.framework */; };
 		BB52B486172896330077591D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB52B485172896330077591D /* Foundation.framework */; };
 		BB52B488172896330077591D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB52B487172896330077591D /* CoreGraphics.framework */; };
@@ -43,6 +62,12 @@
 		BBAC6418172DF0E3002A5658 /* GiraffeSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBAC6417172DF0E3002A5658 /* GiraffeSettingsViewController.m */; };
 		BBAC641B172DF4A4002A5658 /* Graffiti.m in Sources */ = {isa = PBXBuildFile; fileRef = BBAC641A172DF4A4002A5658 /* Graffiti.m */; };
 		BBAC641E172DF4B1002A5658 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = BBAC641D172DF4B1002A5658 /* User.m */; };
+		BBBAB6D81753298A00EEF814 /* facebook.png in Resources */ = {isa = PBXBuildFile; fileRef = BBBAB6D31753298A00EEF814 /* facebook.png */; };
+		BBBAB6D91753298A00EEF814 /* flickr.png in Resources */ = {isa = PBXBuildFile; fileRef = BBBAB6D41753298A00EEF814 /* flickr.png */; };
+		BBBAB6DA1753298A00EEF814 /* googleplus.png in Resources */ = {isa = PBXBuildFile; fileRef = BBBAB6D51753298A00EEF814 /* googleplus.png */; };
+		BBBAB6DB1753298A00EEF814 /* instagram.png in Resources */ = {isa = PBXBuildFile; fileRef = BBBAB6D61753298A00EEF814 /* instagram.png */; };
+		BBBAB6DC1753298A00EEF814 /* twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = BBBAB6D71753298A00EEF814 /* twitter.png */; };
+		BBBAB6DE17534EB100EEF814 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BBBAB6DD17534EB100EEF814 /* Default@2x.png */; };
 		BBCFA30517462A490059E581 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = BBCFA2F217462A490059E581 /* LICENSE */; };
 		BBCFA30617462A490059E581 /* NSDateTimeAgo.strings in Resources */ = {isa = PBXBuildFile; fileRef = BBCFA2F417462A490059E581 /* NSDateTimeAgo.strings */; };
 		BBCFA30717462A490059E581 /* NSDate+TimeAgo.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCFA30217462A490059E581 /* NSDate+TimeAgo.m */; };
@@ -62,19 +87,46 @@
 		F02151CA1740DCDF007DCF37 /* avatarImagePlaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = F02151C91740DCDF007DCF37 /* avatarImagePlaceholder.png */; };
 		F04B9E15173825B7007B645B /* GraffitiCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F04B9E14173825B7007B645B /* GraffitiCell.m */; };
 		F04B9E2417382EF6007B645B /* UIKit-Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = F04B9E2317382EF6007B645B /* UIKit-Utility.m */; };
-		F04B9E2C173830F9007B645B /* HelveticaNeueLTW1G-ThCn.otf in Resources */ = {isa = PBXBuildFile; fileRef = F04B9E27173830C7007B645B /* HelveticaNeueLTW1G-ThCn.otf */; };
-		F04B9E2D173830FC007B645B /* HelveticaNeueLTW1G-LtCn.otf in Resources */ = {isa = PBXBuildFile; fileRef = F04B9E28173830C7007B645B /* HelveticaNeueLTW1G-LtCn.otf */; };
-		F04B9E2E17383100007B645B /* HelveticaNeueLTW1G-Cn.otf in Resources */ = {isa = PBXBuildFile; fileRef = F04B9E29173830C7007B645B /* HelveticaNeueLTW1G-Cn.otf */; };
-		F04B9E2F17383103007B645B /* HelveticaNeueLTW1G-MdCn.otf in Resources */ = {isa = PBXBuildFile; fileRef = F04B9E2A173830C7007B645B /* HelveticaNeueLTW1G-MdCn.otf */; };
-		F04B9E3017383107007B645B /* HelveticaNeueLTW1G-BdCn.otf in Resources */ = {isa = PBXBuildFile; fileRef = F04B9E2B173830C7007B645B /* HelveticaNeueLTW1G-BdCn.otf */; };
 		F06A49A2173E087400FCA95B /* UserLoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06A49A1173E087400FCA95B /* UserLoginController.m */; };
 		F06A49A7173E098F00FCA95B /* UserLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = F06A49A6173E098F00FCA95B /* UserLoginView.m */; };
+		F09B1EF817572A3200BCDFE1 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F09B1EF717572A3100BCDFE1 /* Icon.png */; };
+		F09B1EFA17572A3800BCDFE1 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F09B1EF917572A3800BCDFE1 /* Icon@2x.png */; };
 		F0C10C9F173B584D0093EBB1 /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C10C9E173B584D0093EBB1 /* LocationManager.m */; };
 		F0C10CA3173B5BAA0093EBB1 /* Foundation-Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C10CA2173B5BAA0093EBB1 /* Foundation-Utility.m */; };
 		F0C10CA6173B7D470093EBB1 /* GiraffeShareView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C10CA5173B7D470093EBB1 /* GiraffeShareView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BB06275C175015EF002DD5F0 /* TwitterClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterClient.h; sourceTree = "<group>"; };
+		BB06275D175015EF002DD5F0 /* TwitterClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterClient.m; sourceTree = "<group>"; };
+		BB06275F17501A0D002DD5F0 /* TwitterGraffiti.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterGraffiti.h; sourceTree = "<group>"; };
+		BB06276017501A0D002DD5F0 /* TwitterGraffiti.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterGraffiti.m; sourceTree = "<group>"; };
+		BB0627621751A091002DD5F0 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
+		BB0627641751A0CE002DD5F0 /* FacebookSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKResources.bundle; sourceTree = "<group>"; };
+		BB0627661751A1AC002DD5F0 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		BB0627671751A1AC002DD5F0 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		BB0627681751A1AC002DD5F0 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		BB0627691751A1AD002DD5F0 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		BB06276A1751A1AD002DD5F0 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		BB0627701751C164002DD5F0 /* FacebookClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookClient.h; sourceTree = "<group>"; };
+		BB0627711751C164002DD5F0 /* FacebookClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookClient.m; sourceTree = "<group>"; };
+		BB06277417530FB6002DD5F0 /* FacebookGraffiti.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookGraffiti.h; sourceTree = "<group>"; };
+		BB06277517530FB6002DD5F0 /* FacebookGraffiti.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookGraffiti.m; sourceTree = "<group>"; };
+		BB18C0BE174F47610088856A /* RankingAlgorithm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RankingAlgorithm.h; sourceTree = "<group>"; };
+		BB18C0BF174F47610088856A /* RankingAlgorithm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RankingAlgorithm.m; sourceTree = "<group>"; };
+		BB290839174DF901003064AB /* InstagramClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstagramClient.h; sourceTree = "<group>"; };
+		BB29083A174DF901003064AB /* InstagramClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstagramClient.m; sourceTree = "<group>"; };
+		BB29083C174EFE4F003064AB /* InstagramGraffiti.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstagramGraffiti.h; sourceTree = "<group>"; };
+		BB29083D174EFE4F003064AB /* InstagramGraffiti.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstagramGraffiti.m; sourceTree = "<group>"; };
+		BB2FEB39175E9EDB00CC5CC4 /* GiraffeGraffitiViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GiraffeGraffitiViewController.h; sourceTree = "<group>"; };
+		BB2FEB3A175E9EDB00CC5CC4 /* GiraffeGraffitiViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GiraffeGraffitiViewController.m; sourceTree = "<group>"; };
+		BB2FEB3C175EB3B300CC5CC4 /* GiraffeGraffitiView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GiraffeGraffitiView.h; sourceTree = "<group>"; };
+		BB2FEB3D175EB3B300CC5CC4 /* GiraffeGraffitiView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GiraffeGraffitiView.m; sourceTree = "<group>"; };
+		BB2FEB40175EB9AF00CC5CC4 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		BB2FEB42175F157000CC5CC4 /* SharedGraffitiData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharedGraffitiData.h; sourceTree = "<group>"; };
+		BB2FEB43175F157000CC5CC4 /* SharedGraffitiData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharedGraffitiData.m; sourceTree = "<group>"; };
+		BB2FEB451761D00200CC5CC4 /* GiraffeFilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GiraffeFilterViewController.h; sourceTree = "<group>"; };
+		BB2FEB461761D00200CC5CC4 /* GiraffeFilterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GiraffeFilterViewController.m; sourceTree = "<group>"; };
 		BB52B480172896330077591D /* GiraffeiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiraffeiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB52B483172896330077591D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		BB52B485172896330077591D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -134,6 +186,12 @@
 		BBAC641A172DF4A4002A5658 /* Graffiti.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Graffiti.m; sourceTree = "<group>"; };
 		BBAC641C172DF4B1002A5658 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		BBAC641D172DF4B1002A5658 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		BBBAB6D31753298A00EEF814 /* facebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = facebook.png; path = Images/facebook.png; sourceTree = SOURCE_ROOT; };
+		BBBAB6D41753298A00EEF814 /* flickr.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = flickr.png; path = Images/flickr.png; sourceTree = SOURCE_ROOT; };
+		BBBAB6D51753298A00EEF814 /* googleplus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = googleplus.png; path = Images/googleplus.png; sourceTree = SOURCE_ROOT; };
+		BBBAB6D61753298A00EEF814 /* instagram.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = instagram.png; path = Images/instagram.png; sourceTree = SOURCE_ROOT; };
+		BBBAB6D71753298A00EEF814 /* twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = twitter.png; path = Images/twitter.png; sourceTree = SOURCE_ROOT; };
+		BBBAB6DD17534EB100EEF814 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		BBCFA2F217462A490059E581 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		BBCFA2F517462A490059E581 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/NSDateTimeAgo.strings; sourceTree = "<group>"; };
 		BBCFA2F617462A490059E581 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/NSDateTimeAgo.strings; sourceTree = "<group>"; };
@@ -167,15 +225,12 @@
 		F04B9E14173825B7007B645B /* GraffitiCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GraffitiCell.m; sourceTree = "<group>"; };
 		F04B9E2217382EF6007B645B /* UIKit-Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIKit-Utility.h"; sourceTree = "<group>"; };
 		F04B9E2317382EF6007B645B /* UIKit-Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIKit-Utility.m"; sourceTree = "<group>"; };
-		F04B9E27173830C7007B645B /* HelveticaNeueLTW1G-ThCn.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "HelveticaNeueLTW1G-ThCn.otf"; sourceTree = "<group>"; };
-		F04B9E28173830C7007B645B /* HelveticaNeueLTW1G-LtCn.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "HelveticaNeueLTW1G-LtCn.otf"; sourceTree = "<group>"; };
-		F04B9E29173830C7007B645B /* HelveticaNeueLTW1G-Cn.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "HelveticaNeueLTW1G-Cn.otf"; sourceTree = "<group>"; };
-		F04B9E2A173830C7007B645B /* HelveticaNeueLTW1G-MdCn.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "HelveticaNeueLTW1G-MdCn.otf"; sourceTree = "<group>"; };
-		F04B9E2B173830C7007B645B /* HelveticaNeueLTW1G-BdCn.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "HelveticaNeueLTW1G-BdCn.otf"; sourceTree = "<group>"; };
 		F06A49A0173E087400FCA95B /* UserLoginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserLoginController.h; sourceTree = "<group>"; };
 		F06A49A1173E087400FCA95B /* UserLoginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserLoginController.m; sourceTree = "<group>"; };
 		F06A49A5173E098F00FCA95B /* UserLoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserLoginView.h; sourceTree = "<group>"; };
 		F06A49A6173E098F00FCA95B /* UserLoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserLoginView.m; sourceTree = "<group>"; };
+		F09B1EF717572A3100BCDFE1 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		F09B1EF917572A3800BCDFE1 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		F0C10C9D173B584D0093EBB1 /* LocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationManager.h; sourceTree = "<group>"; };
 		F0C10C9E173B584D0093EBB1 /* LocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationManager.m; sourceTree = "<group>"; };
 		F0C10CA1173B5BAA0093EBB1 /* Foundation-Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Foundation-Utility.h"; sourceTree = "<group>"; };
@@ -189,21 +244,57 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB2FEB41175EB9AF00CC5CC4 /* MapKit.framework in Frameworks */,
+				BB06276B1751A1AD002DD5F0 /* Accounts.framework in Frameworks */,
+				BB06276C1751A1AD002DD5F0 /* AdSupport.framework in Frameworks */,
+				BB06276D1751A1AD002DD5F0 /* libsqlite3.dylib in Frameworks */,
+				BB06276E1751A1AD002DD5F0 /* Security.framework in Frameworks */,
+				BB06276F1751A1AD002DD5F0 /* Social.framework in Frameworks */,
 				BB89349317386E5D0056F035 /* SystemConfiguration.framework in Frameworks */,
 				BB89349117386E580056F035 /* MobileCoreServices.framework in Frameworks */,
 				BBD0151D172F3C2B00DB2ACC /* CoreLocation.framework in Frameworks */,
 				BB52B484172896330077591D /* UIKit.framework in Frameworks */,
 				BB52B486172896330077591D /* Foundation.framework in Frameworks */,
 				BB52B488172896330077591D /* CoreGraphics.framework in Frameworks */,
+				BB0627631751A091002DD5F0 /* FacebookSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BB06277317530F85002DD5F0 /* ConnectionClients */ = {
+			isa = PBXGroup;
+			children = (
+				BB0627701751C164002DD5F0 /* FacebookClient.h */,
+				BB0627711751C164002DD5F0 /* FacebookClient.m */,
+				BB06275C175015EF002DD5F0 /* TwitterClient.h */,
+				BB06275D175015EF002DD5F0 /* TwitterClient.m */,
+				BB290839174DF901003064AB /* InstagramClient.h */,
+				BB29083A174DF901003064AB /* InstagramClient.m */,
+				BB89349417386FA30056F035 /* GiraffeClient.h */,
+				BB89349517386FA30056F035 /* GiraffeClient.m */,
+			);
+			name = ConnectionClients;
+			sourceTree = "<group>";
+		};
+		BB2FEB3F175EB3C200CC5CC4 /* Graffiti */ = {
+			isa = PBXGroup;
+			children = (
+				BB2FEB39175E9EDB00CC5CC4 /* GiraffeGraffitiViewController.h */,
+				BB2FEB3A175E9EDB00CC5CC4 /* GiraffeGraffitiViewController.m */,
+				BB2FEB3C175EB3B300CC5CC4 /* GiraffeGraffitiView.h */,
+				BB2FEB3D175EB3B300CC5CC4 /* GiraffeGraffitiView.m */,
+			);
+			name = Graffiti;
+			sourceTree = "<group>";
+		};
 		BB52B477172896330077591D = {
 			isa = PBXGroup;
 			children = (
+				F09B1EF917572A3800BCDFE1 /* Icon@2x.png */,
+				F09B1EF717572A3100BCDFE1 /* Icon.png */,
+				BBBAB6DD17534EB100EEF814 /* Default@2x.png */,
 				BB67F7DD174B137A00684E78 /* Toast */,
 				BBCFA2F117462A490059E581 /* NSDate-TimeAgo */,
 				BB89347317386DEE0056F035 /* AFNetworking */,
@@ -224,12 +315,20 @@
 		BB52B482172896330077591D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BB0627661751A1AC002DD5F0 /* Accounts.framework */,
+				BB0627671751A1AC002DD5F0 /* AdSupport.framework */,
+				BB0627681751A1AC002DD5F0 /* libsqlite3.dylib */,
+				BB0627691751A1AD002DD5F0 /* Security.framework */,
+				BB06276A1751A1AD002DD5F0 /* Social.framework */,
+				BB0627621751A091002DD5F0 /* FacebookSDK.framework */,
+				BB0627641751A0CE002DD5F0 /* FacebookSDKResources.bundle */,
 				BB89349217386E5D0056F035 /* SystemConfiguration.framework */,
 				BB89349017386E580056F035 /* MobileCoreServices.framework */,
 				BBD0151C172F3C2B00DB2ACC /* CoreLocation.framework */,
 				BB52B483172896330077591D /* UIKit.framework */,
 				BB52B485172896330077591D /* Foundation.framework */,
 				BB52B487172896330077591D /* CoreGraphics.framework */,
+				BB2FEB40175EB9AF00CC5CC4 /* MapKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -241,6 +340,7 @@
 				BB52B493172896340077591D /* GiraffeAppDelegate.m */,
 				BB52B49B172896340077591D /* MainStoryboard_iPhone.storyboard */,
 				BB52B49E172896340077591D /* MainStoryboard_iPad.storyboard */,
+				BB2FEB3F175EB3C200CC5CC4 /* Graffiti */,
 				F04B9E1817382628007B645B /* Nearby */,
 				F04B9E1917382644007B645B /* Map */,
 				F04B9E1B17382664007B645B /* Profile */,
@@ -333,6 +433,11 @@
 		F02151C71740DCCB007DCF37 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				BBBAB6D31753298A00EEF814 /* facebook.png */,
+				BBBAB6D41753298A00EEF814 /* flickr.png */,
+				BBBAB6D51753298A00EEF814 /* googleplus.png */,
+				BBBAB6D61753298A00EEF814 /* instagram.png */,
+				BBBAB6D71753298A00EEF814 /* twitter.png */,
 				BBD6740A174A214100152940 /* spraycan.png */,
 				BBD6740B174A214100152940 /* upload-photo.png */,
 				BBD673FA174A213900152940 /* camera.png */,
@@ -364,6 +469,8 @@
 				BB52B4A1172896340077591D /* GiraffeNearbyViewController.h */,
 				BB52B4A2172896340077591D /* GiraffeNearbyViewController.m */,
 				F04B9E1717382616007B645B /* Table View */,
+				BB2FEB451761D00200CC5CC4 /* GiraffeFilterViewController.h */,
+				BB2FEB461761D00200CC5CC4 /* GiraffeFilterViewController.m */,
 			);
 			name = Nearby;
 			sourceTree = "<group>";
@@ -414,6 +521,14 @@
 				BBAC641A172DF4A4002A5658 /* Graffiti.m */,
 				BBAC641C172DF4B1002A5658 /* User.h */,
 				BBAC641D172DF4B1002A5658 /* User.m */,
+				BB29083C174EFE4F003064AB /* InstagramGraffiti.h */,
+				BB29083D174EFE4F003064AB /* InstagramGraffiti.m */,
+				BB06275F17501A0D002DD5F0 /* TwitterGraffiti.h */,
+				BB06276017501A0D002DD5F0 /* TwitterGraffiti.m */,
+				BB06277417530FB6002DD5F0 /* FacebookGraffiti.h */,
+				BB06277517530FB6002DD5F0 /* FacebookGraffiti.m */,
+				BB2FEB42175F157000CC5CC4 /* SharedGraffitiData.h */,
+				BB2FEB43175F157000CC5CC4 /* SharedGraffitiData.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -421,14 +536,15 @@
 		F04B9E2117382EBE007B645B /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				BB06277317530F85002DD5F0 /* ConnectionClients */,
 				F04B9E2217382EF6007B645B /* UIKit-Utility.h */,
 				F04B9E2317382EF6007B645B /* UIKit-Utility.m */,
-				BB89349417386FA30056F035 /* GiraffeClient.h */,
-				BB89349517386FA30056F035 /* GiraffeClient.m */,
 				F0C10C9D173B584D0093EBB1 /* LocationManager.h */,
 				F0C10C9E173B584D0093EBB1 /* LocationManager.m */,
 				F0C10CA1173B5BAA0093EBB1 /* Foundation-Utility.h */,
 				F0C10CA2173B5BAA0093EBB1 /* Foundation-Utility.m */,
+				BB18C0BE174F47610088856A /* RankingAlgorithm.h */,
+				BB18C0BF174F47610088856A /* RankingAlgorithm.m */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -437,21 +553,8 @@
 			isa = PBXGroup;
 			children = (
 				F02151C71740DCCB007DCF37 /* Images */,
-				F04B9E26173830AF007B645B /* Fonts */,
 			);
 			name = Resources;
-			sourceTree = "<group>";
-		};
-		F04B9E26173830AF007B645B /* Fonts */ = {
-			isa = PBXGroup;
-			children = (
-				F04B9E27173830C7007B645B /* HelveticaNeueLTW1G-ThCn.otf */,
-				F04B9E28173830C7007B645B /* HelveticaNeueLTW1G-LtCn.otf */,
-				F04B9E29173830C7007B645B /* HelveticaNeueLTW1G-Cn.otf */,
-				F04B9E2A173830C7007B645B /* HelveticaNeueLTW1G-MdCn.otf */,
-				F04B9E2B173830C7007B645B /* HelveticaNeueLTW1G-BdCn.otf */,
-			);
-			name = Fonts;
 			sourceTree = "<group>";
 		};
 		F06A49A4173E097500FCA95B /* User Login */ = {
@@ -538,11 +641,6 @@
 				BB52B4A7172896340077591D /* first@2x.png in Resources */,
 				BB52B4AC172896340077591D /* second.png in Resources */,
 				BB52B4AE172896340077591D /* second@2x.png in Resources */,
-				F04B9E2C173830F9007B645B /* HelveticaNeueLTW1G-ThCn.otf in Resources */,
-				F04B9E2D173830FC007B645B /* HelveticaNeueLTW1G-LtCn.otf in Resources */,
-				F04B9E2E17383100007B645B /* HelveticaNeueLTW1G-Cn.otf in Resources */,
-				F04B9E2F17383103007B645B /* HelveticaNeueLTW1G-MdCn.otf in Resources */,
-				F04B9E3017383107007B645B /* HelveticaNeueLTW1G-BdCn.otf in Resources */,
 				F02151CA1740DCDF007DCF37 /* avatarImagePlaceholder.png in Resources */,
 				BBCFA30517462A490059E581 /* LICENSE in Resources */,
 				BBCFA30617462A490059E581 /* NSDateTimeAgo.strings in Resources */,
@@ -559,6 +657,15 @@
 				BBD67409174A213900152940 /* radar.png in Resources */,
 				BBD6740C174A214100152940 /* spraycan.png in Resources */,
 				BBD6740D174A214100152940 /* upload-photo.png in Resources */,
+				BB0627651751A0CE002DD5F0 /* FacebookSDKResources.bundle in Resources */,
+				BBBAB6D81753298A00EEF814 /* facebook.png in Resources */,
+				BBBAB6D91753298A00EEF814 /* flickr.png in Resources */,
+				BBBAB6DA1753298A00EEF814 /* googleplus.png in Resources */,
+				BBBAB6DB1753298A00EEF814 /* instagram.png in Resources */,
+				BBBAB6DC1753298A00EEF814 /* twitter.png in Resources */,
+				BBBAB6DE17534EB100EEF814 /* Default@2x.png in Resources */,
+				F09B1EF817572A3200BCDFE1 /* Icon.png in Resources */,
+				F09B1EFA17572A3800BCDFE1 /* Icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -597,6 +704,17 @@
 				F06A49A7173E098F00FCA95B /* UserLoginView.m in Sources */,
 				BBCFA30717462A490059E581 /* NSDate+TimeAgo.m in Sources */,
 				BB67F7E4174B14B200684E78 /* Toast+UIView.m in Sources */,
+				BB29083B174DF901003064AB /* InstagramClient.m in Sources */,
+				BB29083E174EFE4F003064AB /* InstagramGraffiti.m in Sources */,
+				BB18C0C0174F47610088856A /* RankingAlgorithm.m in Sources */,
+				BB06275E175015EF002DD5F0 /* TwitterClient.m in Sources */,
+				BB06276117501A0D002DD5F0 /* TwitterGraffiti.m in Sources */,
+				BB0627721751C164002DD5F0 /* FacebookClient.m in Sources */,
+				BB06277617530FB6002DD5F0 /* FacebookGraffiti.m in Sources */,
+				BB2FEB3B175E9EDB00CC5CC4 /* GiraffeGraffitiViewController.m in Sources */,
+				BB2FEB3E175EB3B300CC5CC4 /* GiraffeGraffitiView.m in Sources */,
+				BB2FEB44175F157000CC5CC4 /* SharedGraffitiData.m in Sources */,
+				BB2FEB471761D00200CC5CC4 /* GiraffeFilterViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -710,11 +828,16 @@
 		BB52B4B2172896340077591D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GiraffeiOS/GiraffeiOS-Prefix.pch";
 				INFOPLIST_FILE = "GiraffeiOS/GiraffeiOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -722,11 +845,16 @@
 		BB52B4B3172896340077591D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GiraffeiOS/GiraffeiOS-Prefix.pch";
 				INFOPLIST_FILE = "GiraffeiOS/GiraffeiOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

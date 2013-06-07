@@ -7,6 +7,7 @@
 //
 
 #import "GiraffeSettingsViewController.h"
+#import "GiraffeAppDelegate.h"
 #import "User.h"
 #import "UserLoginController.h"
 #import "Toast+UIView.h"
@@ -22,6 +23,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *oldPasswordField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordField;
 @property (weak, nonatomic) IBOutlet UITextField *confirmPasswordField;
+
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *fbButton;
 
 @property (nonatomic, assign) CGRect keyboardFrame;
 @property (nonatomic, retain) UIView *viewToCenter;
@@ -57,13 +60,23 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionStateChanged:) name:FBSessionStateChangedNotification object:nil];
+    
     self.keyboardFrame = CGRectNull;
+    
+    if (FBSession.activeSession.isOpen) {
+        [self.fbButton setTitle:@"FB Logout"];
+    } else {
+        [self.fbButton setTitle:@"FB Login"];
+    }
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -176,6 +189,11 @@
         [self.transparentView hideToastActivity];
         
         [[User currentUser] logout];
+        
+        // Logout of Facebook as well
+        GiraffeAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        [appDelegate closeSession];
+        
         [self.view endEditing:YES];
         
         self.tabBarController.selectedViewController = [self.tabBarController.viewControllers objectAtIndex:0];
@@ -189,7 +207,6 @@
 }
 
 - (IBAction)backgroundTouched:(UIControl *)sender {
-    NSLog(@"frame origin value %f", self.settingsView.frameOriginY);
     [self.view endEditing:YES];
 }
 
@@ -255,6 +272,30 @@ NSTimeInterval kKeyboardAnimationDuration;
     self.viewToCenter = nil;
     [self centerOnViewForKeyboard];
     self.keyboardFrame = CGRectNull;
+}
+
+#pragma mark - Facebook
+
+- (IBAction)facebookLogin:(UIBarButtonItem *)sender {
+    GiraffeAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    
+    // If the person is authenticated, log out when the button is clicked.
+    // If the person is not authenticated, log in when the button is clicked.
+    if (FBSession.activeSession.isOpen) {
+        [appDelegate closeSession];
+    } else {
+        // The person has initiated a login, so call the openSession method
+        // and show the login UX if necessary.
+        [appDelegate openSessionWithAllowLoginUI:YES];
+    }
+}
+
+- (void)sessionStateChanged:(NSNotification*)notification {
+    if (FBSession.activeSession.isOpen) {
+        [self.fbButton setTitle:@"FB Logout"];
+    } else {
+        [self.fbButton setTitle:@"FB Login"];
+    }
 }
 
 @end

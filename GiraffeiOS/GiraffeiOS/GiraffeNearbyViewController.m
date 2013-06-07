@@ -7,19 +7,30 @@
 //
 
 #import "GiraffeNearbyViewController.h"
+#import "GiraffeProfileViewController.h"
+#import "GiraffeGraffitiViewController.h"
 #import "Graffiti.h"
+#import "SharedGraffitiData.h"
+#import "InstagramGraffiti.h"
+#import "TwitterGraffiti.h"
+#import "FacebookGraffiti.h"
 #import "User.h"
 #import "GraffitiCell.h"
 #import "GiraffeClient.h"
+#import "InstagramClient.h"
+#import "TwitterClient.h"
+#import "FacebookClient.h"
 #import "LocationManager.h"
+#import "RankingAlgorithm.h"
 #import "UIKit-Utility.h"
 #import "Toast+UIView.h"
 #import "Foundation-Utility.h"
+#import <FacebookSDK/FacebookSDK.h>
 
-@interface GiraffeNearbyViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface GiraffeNearbyViewController () <UITableViewDataSource, UITableViewDelegate, LocationManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (nonatomic, retain) NSMutableArray *graffiti;
+//@property (nonatomic, retain) NSArray *graffiti;
 
 @end
 
@@ -31,6 +42,7 @@
 {
     [super viewDidLoad];
     
+    [LocationManager sharedInstance].delegate = self;
 }
 
 - (void)didReceiveMemoryWarning
@@ -43,8 +55,6 @@
 {
     [super viewWillAppear:animated];
     
-    NSLog(@"location %f %f", [LocationManager sharedInstance].latitude, [LocationManager sharedInstance].longitude);
-    
     [self requestGraffitiFromServer];
 }
 
@@ -52,8 +62,8 @@
 
 - (void)setGraffiti:(NSMutableArray *)graffiti
 {
-    if (![_graffiti isEqualToArray:graffiti]) {
-        _graffiti = graffiti;
+    if (![[SharedGraffitiData sharedData] isEqualToArray:graffiti]) {
+        [[SharedGraffitiData sharedData] setArray:graffiti];
         [self.tableView reloadData];
     }
 }
@@ -62,12 +72,42 @@
 
 - (void)requestGraffitiFromServer
 {
+    CGFloat latitude = [LocationManager sharedInstance].latitude;
+    CGFloat longitude = [LocationManager sharedInstance].longitude;
+    // Find current location
+    
+    if (latitude == 0 && longitude == 0) return;
+    
     [self.view makeToastActivity];
+    
+    if (latitude && longitude) {
+        [[SharedGraffitiData sharedData] setArray:[NSArray new]];
+        [self giraffeRequestBeginWithLatitude:latitude longitude:longitude];
+        
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        if ([userDefaults objectForKey:@"instagramFeed"] != nil ? [userDefaults boolForKey:@"instagramFeed"] : YES) {
+            [self instagramRequestBeginWithLatitude:latitude longitude:longitude];
+        }
+        
+        if ([userDefaults objectForKey:@"twitterFeed"] != nil ? [userDefaults boolForKey:@"twitterFeed"] : YES) {
+            [self twitterRequestBeginWithLatitude:latitude longitude:longitude];
+        }
+        
+        
+        if ([userDefaults objectForKey:@"facebookFeed"] != nil ? [userDefaults boolForKey:@"facebookFeed"] : YES) {
+            [self facebookRequestBeginWithLatitude:latitude longitude:longitude];
+        }
+    }
+}
+
+- (void)giraffeRequestBeginWithLatitude:(CGFloat)latitude
+                              longitude:(CGFloat)longitude
+{
     // Kick off load request
-    [[GiraffeClient sharedClient] beginGraffitiNearbyGetWithLatitude:[LocationManager sharedInstance].latitude
-                                                           longitude:[LocationManager sharedInstance].longitude success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[GiraffeClient sharedClient] beginGraffitiNearbyGetWithLatitude:latitude
+                                                           longitude:longitude success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                                                [self.view hideToastActivity];
-                                                               NSLog(@"got response %@", responseObject);
+                                                               //                                                               NSLog(@"got response %@", responseObject);
                                                                
                                                                [self graffitiRequestFinishedWithDictionary:[responseObject ifIsKindOfClass:[NSDictionary class]]];
                                                            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -79,13 +119,116 @@
 - (void)graffitiRequestFinishedWithDictionary:(NSDictionary *)dictionary
 {
     NSArray *graffitiDicts = [dictionary objectForKey:kParamNameGraffiti];
-    if ([graffitiDicts count] > 0) {
-        NSMutableArray *newGraffiti = [NSMutableArray new];
-        for (NSDictionary *graffitiDict in graffitiDicts) {
-            Graffiti *graffiti = [[Graffiti alloc] initWithDictionary:graffitiDict];
+    NSMutableArray *newGraffiti = [NSMutableArray arrayWithArray:[SharedGraffitiData sharedData]];
+    for (NSDictionary *graffitiDict in graffitiDicts) {
+        Graffiti *graffiti = [[Graffiti alloc] initWithDictionary:graffitiDict];
+        
+        // filter response
+        NSString *query = [[NSUserDefaults standardUserDefaults] objectForKey:@"queryFilter"];
+        if (query == nil || [query isEqualToString:@""] || [graffiti.message rangeOfString:query options:NSCaseInsensitiveSearch].location != NSNotFound) {
             [newGraffiti addObject:graffiti];
         }
-        self.graffiti = newGraffiti;
+    }
+    
+    [[SharedGraffitiData sharedData] setArray:[RankingAlgorithm sortGraffiti:newGraffiti]];
+    [self.tableView reloadData];
+}
+
+- (void)instagramRequestBeginWithLatitude:(CGFloat)latitude
+                                longitude:(CGFloat)longitude
+{
+    [[InstagramClient sharedClient] beginInstagramNearbyGetWithLatitude:latitude
+                                                              longitude:longitude
+                                                                success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                                    [self.view hideToastActivity];
+//                                                                    NSLog(@"got instagram response %@", responseObject);
+                                                                    
+                                                                    [self instagramRequestFinishedWithDictionary:[responseObject ifIsKindOfClass:[NSDictionary class]]];
+                                                                }
+                                                                failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                                    NSLog(@"retrying to connect w/ instagram");
+                                                                    [self instagramRequestBeginWithLatitude:latitude longitude:longitude];
+//                                                                    [self.view hideToastActivity];
+//                                                                    [self.view makeToast:[error localizedDescription] duration:1.5f position:@"top"];
+                                                                     }];
+}
+         
+- (void)instagramRequestFinishedWithDictionary:(NSDictionary *)dictionary
+{
+    NSArray *instagramDicts = [dictionary objectForKey:kParamNameInstagramData];
+    NSMutableArray *newGraffiti = [NSMutableArray arrayWithArray:[SharedGraffitiData sharedData]];
+    for (NSDictionary *instagramDict in instagramDicts) {
+        InstagramGraffiti *graffiti = [[InstagramGraffiti alloc] initWithDictionary:instagramDict];
+        
+        // filter response
+        NSString *query = [[NSUserDefaults standardUserDefaults] objectForKey:@"queryFilter"];
+        if (query == nil || [query isEqualToString:@""] || (graffiti.message != nil && [graffiti.message rangeOfString:query options:NSCaseInsensitiveSearch].location != NSNotFound)) {
+            [newGraffiti addObject:graffiti];
+        }
+    }
+    
+    [[SharedGraffitiData sharedData] setArray:[RankingAlgorithm sortGraffiti:newGraffiti]];
+    [self.tableView reloadData];
+}
+
+- (void)twitterRequestBeginWithLatitude:(CGFloat)latitude
+                              longitude:(CGFloat)longitude
+{
+    [[TwitterClient sharedClient] beginTwitterNearbyGetWithLatitude:latitude
+                                                          longitude:longitude
+                                                            success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                                [self.view hideToastActivity];
+                                                                NSLog(@"got twitter response %@", responseObject);
+                                                                
+                                                                [self twitterRequestFinishedWithDictionary:[responseObject ifIsKindOfClass:[NSDictionary class]]];
+                                                            }
+                                                            failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                                [self.view hideToastActivity];
+                                                                [self.view makeToast:[error localizedDescription] duration:1.5f position:@"top"];
+                                                            }];
+}
+
+- (void)twitterRequestFinishedWithDictionary:(NSDictionary *)dictionary
+{
+    NSArray *twitterDicts = [dictionary objectForKey:kParamNameTwitterResults];
+    NSMutableArray *newGraffiti = [NSMutableArray arrayWithArray:[SharedGraffitiData sharedData]];
+    for (NSDictionary *twitterDict in twitterDicts) {
+        TwitterGraffiti *graffiti = [[TwitterGraffiti alloc] initWithDictionary:twitterDict];
+        
+        // filter response
+        NSString *query = [[NSUserDefaults standardUserDefaults] objectForKey:@"queryFilter"];
+        if (query == nil || [query isEqualToString:@""] || [graffiti.message rangeOfString:query options:NSCaseInsensitiveSearch].location != NSNotFound) {
+            [newGraffiti addObject:graffiti];
+        }
+    }
+    
+    [[SharedGraffitiData sharedData] setArray:[RankingAlgorithm sortGraffiti:newGraffiti]];
+    [self.tableView reloadData];
+}
+
+- (void)facebookRequestBeginWithLatitude:(CGFloat)latitude
+                               longitude:(CGFloat)longitude
+{
+    if (FBSession.activeSession.isOpen) {
+        [[FacebookClient sharedClient] beginFacebookNearbyGetWithLatitude:latitude longitude:longitude success:^(FBRequestConnection *connection, id result) {
+            //                NSLog(@"facebook post %@", result);
+            [self facebookRequestFinishedWithDictionary:[result ifIsKindOfClass:[NSDictionary class]]];
+        } failure:^(FBRequestConnection *connection, id result, NSError *error) {
+            [self.view hideToastActivity];
+            [self.view makeToast:[error localizedDescription] duration:1.5f position:@"top"];
+        }];
+    }
+}
+
+- (void)facebookRequestFinishedWithDictionary:(NSDictionary *)dictionary
+{
+    FacebookGraffiti *graffiti = [[FacebookGraffiti alloc] initWithDictionary:dictionary];
+    
+    // filter response
+    NSString *query = [[NSUserDefaults standardUserDefaults] objectForKey:@"queryFilter"];
+    if (query == nil || [query isEqualToString:@""] || [graffiti.message rangeOfString:query options:NSCaseInsensitiveSearch].location != NSNotFound) {
+        [[SharedGraffitiData sharedData] setArray:[RankingAlgorithm insertGraffito:graffiti into:[SharedGraffitiData sharedData]]];
+        [self.tableView reloadData];
     }
 }
 
@@ -100,12 +243,25 @@
     return [[self tableView:tableView cellForRowAtIndexPath:indexPath] sizeThatFits:tableView.frameSize].height;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    GraffitiCell *cell = (GraffitiCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
+    
+    GiraffeGraffitiViewController *graffitiViewController = [GiraffeGraffitiViewController new];
+    graffitiViewController.graffiti = cell.graffiti;
+    
+    [self.navigationController pushViewController:graffitiViewController animated:YES];
+}
+
 - (void)viewProfile:(id)sender
 {
     UIButton *usernameButton = (UIButton *)sender;
     GraffitiCell *cell = (GraffitiCell *)[usernameButton superview];
     
-    NSLog(@"view profile %d", cell.graffiti.user.identifier);
+    GiraffeProfileViewController *profileViewController = [[UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"profile"];
+    profileViewController.user = cell.graffiti.user;
+    
+    [self.navigationController pushViewController:profileViewController animated:YES];
 }
 
 - (void)likeGraffiti:(id)sender
@@ -142,7 +298,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.graffiti count];
+    return [[SharedGraffitiData sharedData] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -151,8 +307,15 @@
     if (!cell) {
         cell = [[GraffitiCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kGraffitiCellIdentifier];
     }
-    cell.graffiti = [self.graffiti objectAtIndex:indexPath.row];
+    cell.graffiti = [[SharedGraffitiData sharedData] objectAtIndex:indexPath.row];
     return cell;
+}
+
+#pragma mark - LocationManagerDelegate
+
+- (void)locationFound
+{
+    [self requestGraffitiFromServer];
 }
 
 @end

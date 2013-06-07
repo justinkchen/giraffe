@@ -27,6 +27,8 @@ typedef enum {
 
 - (BOOL)validateInput;
 
+- (void)backgroundTapped;
+
 @end
 
 @protocol UserLoginViewDelegate <NSObject>
@@ -34,5 +36,6 @@ typedef enum {
 //- (void)userLoginView:(UserLoginView *)loginView showImagePicker:(UIImagePickerController *)imagePicker;
 - (void)userLoginView:(UserLoginView *)loginView shouldCenterAroundView:(UIView *)viewToCenter;
 - (void)userLoginView:(UserLoginView *)loginView didChooseLoginType:(UserLoginType)loginType;
+- (void)userLoginView:(UserLoginView *)loginView displayMessage:(NSString *)message;
 
 @end

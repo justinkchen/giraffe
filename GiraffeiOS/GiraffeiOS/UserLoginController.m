@@ -15,6 +15,7 @@
 
 @interface UserLoginController () <UserLoginViewDelegate>
 
+//@property (nonatomic, retain) UIControl *view;
 @property (nonatomic, retain) UserLoginView *loginView;
 @property (nonatomic, assign) CGRect keyboardFrame;
 @property (nonatomic, retain) UIView *viewToCenter;
@@ -33,7 +34,7 @@ NSString *const kUserLoginControllerSignupTitle = @"Sign Up";
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
         
-        self.title = kUserLoginControllerSignupTitle; // Default is signup
+        self.title = kUserLoginControllerLoginTitle; // Default is login
         
         self.keyboardFrame = CGRectNull;
     }
@@ -62,7 +63,15 @@ NSString *const kUserLoginControllerSignupTitle = @"Sign Up";
 {
     [super viewDidLoad];
     
+    // add gesture recognizer
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc]
+                                         initWithTarget:self
+                                         action:@selector(handleBackgroundTapped:)];
+    [singleTap setNumberOfTapsRequired:1];
+    self.view.userInteractionEnabled = YES;
+    [self.view addGestureRecognizer:singleTap];
     
     // Create login view
     self.loginView = [UserLoginView new];
@@ -87,6 +96,11 @@ NSString *const kUserLoginControllerSignupTitle = @"Sign Up";
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)handleBackgroundTapped:(UIGestureRecognizer*)recognizer
+{
+    [self.loginView backgroundTapped];
 }
 
 - (void)displayUserLoginViewController
@@ -115,6 +129,11 @@ NSString *const kUserLoginControllerSignupTitle = @"Sign Up";
 - (void)userLoginView:(UserLoginView *)loginView didChooseLoginType:(UserLoginType)loginType
 {
     [self updateTitleForLoginType:loginType];
+}
+
+- (void)userLoginView:(UserLoginView *)loginView displayMessage:(NSString *)message
+{
+    [self.view makeToast:message duration:1.5f position:@"top"];
 }
 
 #pragma mark - Navigation Buttons

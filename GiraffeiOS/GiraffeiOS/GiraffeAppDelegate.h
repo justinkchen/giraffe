@@ -7,9 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <FacebookSDK/FacebookSDK.h>
 
 @interface GiraffeAppDelegate : UIResponder <UIApplicationDelegate>
 
+extern NSString *const FBSessionStateChangedNotification;
+
 @property (strong, nonatomic) UIWindow *window;
+
+// Facebook
+- (BOOL)openSessionWithAllowLoginUI:(BOOL)allowLoginUI;
+- (void) closeSession;
 
 @end

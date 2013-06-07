@@ -69,21 +69,28 @@
     }
     
     [self.view makeToastActivity];
+    
+    // disable post button
+    sender.enabled = NO;
+    // dismiss keyboard
+    [self.shareView.firstResponderControl sendActionsForControlEvents:UIControlEventTouchUpInside];
+    
     // Post graffiti to server
     [[GiraffeClient sharedClient] beginGraffitiNewPostWithGraffiti:graffiti image:self.graffitiImage success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self.view hideToastActivity];
         [self.view makeToast:@"Graffiti Successfully posted." duration:1.5f position:@"top"];
         
         self.graffitiImage = nil;
-        
-        // TODO hide keyboard and resign first responder
+        sender.enabled = YES;
         
         [[self.view.subviews objectAtIndex:0] resetView];
         
         // Navigate to the 1st tab
         self.tabBarController.selectedViewController = [self.tabBarController.viewControllers objectAtIndex:0];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        // todo display error message
+        [self.view hideToastActivity];
+        [self.view makeToast:[error localizedDescription] duration:1.5f position:@"top"];
+        sender.enabled = YES;
     }];
 }
 
@@ -106,7 +113,7 @@
     [actionSheet showInView:self.parentViewController.tabBarController.view];
 }
 
-#pragma mark - GiraffeLgoinViewController
+#pragma mark - GiraffeLoginViewController
 
 - (void)showUserLogin
 {
@@ -115,6 +122,11 @@
     loginController.delegate = self;
     
     [loginController displayUserLoginViewController];
+}
+
+- (void)shareView:(GiraffeShareView *)loginView displayMessage:(NSString *)message
+{
+    [self.view makeToast:message duration:1.5f position:@"top"];
 }
 
 #pragma mark - Action sheet
@@ -145,6 +157,8 @@
         
         // TODO mark image included
         NSLog(@"image attached %@", self.graffitiImage);
+        
+        [self.shareView.imageView setImage:self.graffitiImage];
         
         [picker dismissViewControllerAnimated:YES completion:^{
             // do nothing

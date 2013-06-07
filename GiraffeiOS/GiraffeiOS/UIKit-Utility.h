@@ -30,20 +30,6 @@
 
 @end
 
-@interface UIFont (Utility)
-
-typedef enum {
-    UIFontWeightThin,
-    UIFontWeightLight,
-    UIFontWeightRegular,
-    UIFontWeightMedium,
-    UIFontWeightBold
-} UIFontWeight;
-
-+ (UIFont *)helveticaNeueCondensedOfSize:(CGFloat)size weight:(UIFontWeight)weight;
-
-@end
-
 @interface UIColor (Utility)
 
 + (UIColor *)linkTextColor;
@@ -53,5 +39,6 @@ typedef enum {
 @interface UIImage (Utility)
 
 + (UIImage *)imageWithColor:(UIColor *)color;
+- (UIImage*)scaleToSize:(CGSize)size;
 
 @end

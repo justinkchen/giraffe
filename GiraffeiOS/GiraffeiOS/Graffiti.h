@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "User.h"
 
 @class User;
 
@@ -46,9 +47,17 @@ extern NSString *const kParamNameGraffitiIsLiked;
 @property (nonatomic, retain) User *user;
 @property (nonatomic, assign) int likes;
 @property (nonatomic, assign) BOOL isLiked;
+@property (nonatomic, retain) NSString *platform;
+
+@property (nonatomic, readonly) CGFloat score;
 
 - (NSDictionary *)parameterDictionary;
 - (void)updateWithDictionary:(NSDictionary *)dictionary;
 - (id)initWithDictionary:(NSDictionary *)dictionary;
+
+- (CGFloat)distanceFromLatitude:(CGFloat)latitude
+                      longitude:(CGFloat)longitude;
+
++ (NSDateFormatter *)sharedDateFormatter;
 
 @end

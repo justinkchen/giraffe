@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "AFHTTPClient.h"
-#import "AFJSONRequestOperation.h"
 
 @class Graffiti;
 @class User;
@@ -23,7 +22,7 @@ extern NSString *const kBaseURL;
 + (void)loadCookies;
 
 typedef void (^GiraffeClientSuccessBlock)(AFHTTPRequestOperation *operation, id responseObject);
-typedef void (^GiraffeClientFailureBlock) (AFHTTPRequestOperation *operation, NSError *error);
+typedef void (^GiraffeClientFailureBlock)(AFHTTPRequestOperation *operation, NSError *error);
 
 // Session
 - (void)beginSessionConnectGetWithSuccess:(GiraffeClientSuccessBlock)success
