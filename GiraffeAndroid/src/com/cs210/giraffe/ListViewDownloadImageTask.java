@@ -14,7 +14,7 @@ public class ListViewDownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 	ViewHolder holder;
 	int position;
 	ImageView img;
-
+	
 	public ListViewDownloadImageTask(ViewHolder holder, int position,
 			ImageView img) {
 		this.holder = holder;

@@ -346,7 +346,7 @@ public class AddGraffitiFragment extends Fragment implements
 
 		case CHOOSE_GALLERY_PHOTO:
 			if (resultCode == RESULT_OK) {
-				Uri targetUri = data.getData();
+				
 				try {
 					Uri selectedImage = data.getData();
 					String[] filePathColumn = { MediaStore.Images.Media.DATA };
@@ -355,7 +355,30 @@ public class AddGraffitiFragment extends Fragment implements
 					cursor.moveToFirst();
 					int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
 					picturePath = cursor.getString(columnIndex);
-					_photo = BitmapFactory.decodeFile(picturePath);
+					
+					
+					final BitmapFactory.Options options = new BitmapFactory.Options();
+					options.inJustDecodeBounds = true;
+
+					BitmapFactory.decodeFile(picturePath, options);
+
+					if (options.outWidth > 500 || options.outHeight > 500) {
+						float widthRatio = (float) options.outWidth / 500;
+						float heightRatio = (float) options.outHeight / 500;
+						float inratio = (widthRatio <= heightRatio) ? heightRatio
+								: widthRatio;
+						Log.i("ListViewDownloadImage",
+								Integer.toString(options.outWidth));
+						Log.i("ListViewDownloadImage",
+								Integer.toString(options.outHeight));
+						Log.i("ListViewDownloadImage", Float.toString(widthRatio));
+						Log.i("ListViewDownloadImage", Float.toString(heightRatio));
+						Log.i("ListViewDownloadImage", Float.toString(inratio));
+						options.inSampleSize = Math.round(inratio);
+					}
+
+					options.inJustDecodeBounds = false;
+					_photo = BitmapFactory.decodeFile(picturePath, options);
 
 					Log.i("Johan", "Picture Path: " + picturePath);
 					picturePath = picturePath.substring(picturePath
