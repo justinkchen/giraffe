@@ -782,6 +782,8 @@ public class AddGraffitiFragment extends Fragment implements
 	@Override
 	public void onMyLocationChange(Location newLoc) {
 		// TODO Auto-generated method stub
+		MainActivity.getGiraffeLocationListener().setCurrentLocation(newLoc);
+		
 		Log.w("AddGraffitiFragment",
 				"Location changed in AddGraffitiFragment: Lat="
 						+ newLoc.getLatitude() + ", Long="

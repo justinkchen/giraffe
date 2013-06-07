@@ -63,7 +63,7 @@ ActionBar.TabListener {
 	static final int NUM_TABS = 3;
 	private static GiraffeLocationListener locationListener = null;
 	private static CookieManager cookieManager = null;
-	private static String baseServerURI = /*"http://thegiraffeapp.com";  */"http://ec2-54-224-185-156.compute-1.amazonaws.com";
+	private static String baseServerURI = "http://thegiraffeapp.com";  /*"http://ec2-54-224-185-156.compute-1.amazonaws.com";*/
 	private static User currentUser = null;
 	private static Menu mainActivityMenu = null;
 	private static boolean hasLocation = false;

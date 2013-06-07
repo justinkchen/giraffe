@@ -29,7 +29,7 @@ public class Graffiti implements Comparable<Graffiti> {
 	private int _flags;
 	private int _isFlagged;
 	private String _dateCreated;
-	
+
 	public Graffiti() {
 		// TODO Auto-generated constructor stub
 	}
@@ -41,7 +41,7 @@ public class Graffiti implements Comparable<Graffiti> {
 	public void setId(int id) {
 		this._id = id;
 	}
-	
+
 	public double getLongitude() {
 		return _longitude;
 	}
@@ -105,7 +105,7 @@ public class Graffiti implements Comparable<Graffiti> {
 	public void setAvatar(String _avatar) {
 		this._avatar = _avatar;
 	}
-	
+
 	public int getLikeCount() {
 		return _likeCount;
 	}
@@ -137,7 +137,7 @@ public class Graffiti implements Comparable<Graffiti> {
 	public void setUsername(String username) {
 		this._username = username;
 	}
-	
+
 	public int getUserid() {
 		return _userid;
 	}
@@ -145,7 +145,7 @@ public class Graffiti implements Comparable<Graffiti> {
 	public void setUserid(int userid) {
 		this._userid = userid;
 	}
-	
+
 	public int getLikes() {
 		return _likes;
 	}
@@ -153,7 +153,7 @@ public class Graffiti implements Comparable<Graffiti> {
 	public void setLikes(int likes) {
 		this._likes = likes;
 	}
-	
+
 	public int getIsLiked() {
 		return _isLiked;
 	}
@@ -161,31 +161,31 @@ public class Graffiti implements Comparable<Graffiti> {
 	public void setIsLiked(int isLiked) {
 		this._isLiked = isLiked;
 	}
-	
+
 	public int getFlags() {
 		return _flags;
 	}
-	
+
 	public void setFlags(int flags) {
 		this._flags = flags;
 	}
-	
+
 	public int getIsFlagged() {
 		return _isFlagged;
 	}
-	
+
 	public void setIsFlagged(int isFlagged) {
 		this._isFlagged = isFlagged;
 	}
-	
+
 	public String getDateCreated() {
 		return _dateCreated;
 	}
-	
+
 	public void setDateCreated(String dateCreated) {
 		this._dateCreated = dateCreated;
 	}
-	
+
 	public float getDistanceFromUser(){
 		Location currLocation = MainActivity.getGiraffeLocationListener().getCurrentLocation();
 		return MainActivity.distFrom(currLocation.getLatitude(), currLocation.getLongitude(), this.getLatitude(), this.getLongitude());
@@ -203,12 +203,26 @@ public class Graffiti implements Comparable<Graffiti> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if(date1.after(date2)){
-			return -1;
-		}else if(date2.after(date1)){
-			return 1;
+
+		float totalScore1 = this.getDistanceFromUser();
+		float totalScore2 = another.getDistanceFromUser();
+		// If distance less than 10 meters, go by dates, otherwise go by distance
+		if(Math.abs(totalScore1 - totalScore2) < 10){
+			if(date1.after(date2)){
+				return -1;
+			}else if(date2.after(date1)){
+				return 1;
+			}else{
+				return 0;
+			}
 		}else{
-			return 0;
+			if(totalScore1 < totalScore2){
+				return -1;
+			}else if(totalScore1 > totalScore2){
+				return 1;
+			}else{
+				return 0;
+			}
 		}
 	}
 

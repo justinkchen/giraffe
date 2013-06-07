@@ -56,6 +56,10 @@ public class GiraffeLocationListener implements LocationListener {
 		return currentLocation;
 	}
 	
+	public void setCurrentLocation(Location newLoc){
+		currentLocation = newLoc;
+	}
+	
 	public boolean isLocationFound(){
 		return locationFound;
 	}

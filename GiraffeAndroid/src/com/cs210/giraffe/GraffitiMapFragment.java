@@ -12,6 +12,7 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import android.app.ProgressDialog;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,7 +29,8 @@ public class GraffitiMapFragment extends Fragment implements
 LoaderManager.LoaderCallbacks<List<Graffiti>>, OnMyLocationChangeListener {
 
 	private GoogleMap _map = null;
-
+	private ProgressDialog progress;
+	
 	public GraffitiMapFragment() {
 		// TODO Auto-generated constructor stub
 	}
@@ -210,6 +212,11 @@ LoaderManager.LoaderCallbacks<List<Graffiti>>, OnMyLocationChangeListener {
 		System.out.println("GraffitiMapFragment.onCreateLoader");
 		Location currLocation = MainActivity.getGiraffeLocationListener()
 				.getCurrentLocation();
+		
+		progress = new ProgressDialog(getActivity());
+		progress.setMessage("\tLoading nearby graffiti!");
+		progress.show();
+		
 		return new NearbyGraffitiListLoader(getActivity(),
 				MainActivity.getBaseServerURI() + "/graffiti/nearby"
 						+ "?latitude=" + currLocation.getLatitude()
@@ -221,6 +228,7 @@ LoaderManager.LoaderCallbacks<List<Graffiti>>, OnMyLocationChangeListener {
 	public void onLoadFinished(Loader<List<Graffiti>> arg0, List<Graffiti> data) {
 		System.out.println("GraffitiFragment.onLoadFinished");
 		setUpMapIfNeeded(data);
+		progress.dismiss();
 	}
 
 	@Override
@@ -233,6 +241,8 @@ LoaderManager.LoaderCallbacks<List<Graffiti>>, OnMyLocationChangeListener {
 	@Override
 	public void onMyLocationChange(Location newLoc) {
 		// TODO Auto-generated method stub
+		MainActivity.getGiraffeLocationListener().setCurrentLocation(newLoc);
+		
 		LatLng newLatLng = new LatLng(newLoc.getLatitude(), newLoc.getLongitude());
 		_map.animateCamera(CameraUpdateFactory.newLatLng(newLatLng));
 	}
