@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -75,6 +76,7 @@ public class AddGraffitiFragment extends Fragment implements
 	private Bitmap _photo = null;
 	private ImageButton _removeImageButton;
 	private TextView _addedImageText;
+	private File outputFile = null;
 
 	private static final int MIN_RADIUS = 10; // meters
 	public static final int TAKE_CAMERA_PICTURE = 100;
@@ -302,6 +304,13 @@ public class AddGraffitiFragment extends Fragment implements
 						// Use the camer
 						Intent cameraIntent = new Intent(
 								android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+
+//						String outputDirPath = getActivity().getCacheDir()
+//								.getPath() + "/temp.bmp";
+//						outputFile = new File(outputDirPath);
+//
+//						cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+//								outputFile);
 						startActivityForResult(cameraIntent,
 								TAKE_CAMERA_PICTURE);
 						break;
@@ -339,14 +348,41 @@ public class AddGraffitiFragment extends Fragment implements
 
 		case TAKE_CAMERA_PICTURE:
 			if (resultCode == RESULT_OK) {
+//				Log.i("Johan2", "Camera ok");
+//
+//				final BitmapFactory.Options options = new BitmapFactory.Options();
+//				options.inJustDecodeBounds = true;
+//
+//				BitmapFactory.decodeFile(outputFile.getName(), options);
+//
+//				if (options.outWidth > 500 || options.outHeight > 500) {
+//					float widthRatio = (float) options.outWidth / 500;
+//					float heightRatio = (float) options.outHeight / 500;
+//					float inratio = (widthRatio <= heightRatio) ? heightRatio
+//							: widthRatio;
+//					Log.i("ListViewDownloadImage",
+//							Integer.toString(options.outWidth));
+//					Log.i("ListViewDownloadImage",
+//							Integer.toString(options.outHeight));
+//					Log.i("ListViewDownloadImage", Float.toString(widthRatio));
+//					Log.i("ListViewDownloadImage", Float.toString(heightRatio));
+//					Log.i("ListViewDownloadImage", Float.toString(inratio));
+//					options.inSampleSize = Math.round(inratio);
+//				}
+//
+//				options.inJustDecodeBounds = false;
+//				_photo = BitmapFactory
+//						.decodeFile(outputFile.getName(), options);
 				_photo = (Bitmap) data.getExtras().get("data");
 				picturePath = "Camera picture added";
+			} else {
+				Log.i("Johan2", "Not ok from camera");
 			}
 			break;
 
 		case CHOOSE_GALLERY_PHOTO:
 			if (resultCode == RESULT_OK) {
-				
+
 				try {
 					Uri selectedImage = data.getData();
 					String[] filePathColumn = { MediaStore.Images.Media.DATA };
@@ -355,8 +391,7 @@ public class AddGraffitiFragment extends Fragment implements
 					cursor.moveToFirst();
 					int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
 					picturePath = cursor.getString(columnIndex);
-					
-					
+
 					final BitmapFactory.Options options = new BitmapFactory.Options();
 					options.inJustDecodeBounds = true;
 
@@ -371,8 +406,10 @@ public class AddGraffitiFragment extends Fragment implements
 								Integer.toString(options.outWidth));
 						Log.i("ListViewDownloadImage",
 								Integer.toString(options.outHeight));
-						Log.i("ListViewDownloadImage", Float.toString(widthRatio));
-						Log.i("ListViewDownloadImage", Float.toString(heightRatio));
+						Log.i("ListViewDownloadImage",
+								Float.toString(widthRatio));
+						Log.i("ListViewDownloadImage",
+								Float.toString(heightRatio));
 						Log.i("ListViewDownloadImage", Float.toString(inratio));
 						options.inSampleSize = Math.round(inratio);
 					}
@@ -414,6 +451,8 @@ public class AddGraffitiFragment extends Fragment implements
 			// _photo.getHeight(), matrix, false);
 			// }
 			_removeImageButton.setVisibility(0);
+		} else {
+			Log.i("Johan2", "Photo is null");
 		}
 		// Do something with photo
 	}

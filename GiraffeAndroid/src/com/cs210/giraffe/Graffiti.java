@@ -1,6 +1,12 @@
 package com.cs210.giraffe;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import android.location.Location;
+import android.util.Log;
 
 public class Graffiti implements Comparable<Graffiti> {
 
@@ -187,9 +193,19 @@ public class Graffiti implements Comparable<Graffiti> {
 
 	@Override
 	public int compareTo(Graffiti another) {
-		if(this.getDistanceFromUser() < another.getDistanceFromUser()){
+		Date date1 = null;
+		Date date2 = null;
+		Log.i("Johan2", this.getDateCreated());
+		try {
+			date1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH).parse(this.getDateCreated());
+			date2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH).parse(another.getDateCreated());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(date1.after(date2)){
 			return -1;
-		}else if(this.getDistanceFromUser() > another.getDistanceFromUser()){
+		}else if(date2.after(date1)){
 			return 1;
 		}else{
 			return 0;
