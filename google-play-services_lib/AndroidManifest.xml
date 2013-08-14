@@ -4,6 +4,6 @@
     android:versionCode="3025110"
     android:versionName="3.0.25 (585905-10)" >
 
-    <uses-sdk android:minSdkVersion="8"/>
+    <uses-sdk android:minSdkVersion="15"/>
 
 </manifest>

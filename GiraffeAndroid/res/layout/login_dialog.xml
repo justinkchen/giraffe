@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+    
+    <Button 
+   	    android:id="@+id/registerbutton"
+   	    android:layout_width="fill_parent"
+       	android:layout_height="wrap_content"
+       	android:text="@string/notregisteredyet"
+       	style="?android:attr/borderlessButtonStyle"/>
+    
+    <TextView
+        android:id="@+id/usernametext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="@string/usernameemailtext"/>
+    
+    <EditText
+        android:id="@+id/username"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="23dp"
+        android:hint="@string/usernameemailhint" />
+    
+   	<TextView
+        android:id="@+id/passwordtext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/passwordtext"/>
+    
+    <EditText
+        android:id="@+id/password"
+        android:inputType="textPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="23dp"
+        android:fontFamily="sans-serif"
+        android:hint="@string/passwordhint"/>
+    
+    <TextView
+        android:id="@+id/errormessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""/>
+    
+    <LinearLayout 
+	    android:orientation="horizontal"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:baselineAligned="false">
+	    
+    	<LinearLayout 
+    	    android:orientation="vertical"
+   			 android:layout_width="fill_parent"
+   			 android:layout_height="fill_parent"
+   			 android:layout_weight="1">
+	    	<Button 
+	    	    android:id="@+id/cancelbutton"
+	    	    android:layout_width="fill_parent"
+	        	android:layout_height="wrap_content"
+	        	android:text="@string/cancel"
+	        	style="?android:attr/borderlessButtonStyle"/>
+    	</LinearLayout>
+    	
+    	<LinearLayout 
+    	    android:orientation="vertical"
+   			 android:layout_width="fill_parent"
+   			 android:layout_height="fill_parent"
+   			 android:layout_weight="1">
+	    	<Button 
+	    	    android:id="@+id/loginbutton"
+	    	    android:layout_width="fill_parent"
+	        	android:layout_height="wrap_content"
+	        	android:text="@string/login"
+	        	style="?android:attr/borderlessButtonStyle"/>
+	    </LinearLayout>
+    	
+    </LinearLayout>
+</LinearLayout>

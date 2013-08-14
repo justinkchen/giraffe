@@ -8,5 +8,68 @@
     <string name="action_addgraffiti">Add Graffiti</string>
     <string name="action_profile">Profile</string>
     <string name="action_help">Help</string>
-
+    <string name="min_radius">10</string>
+    <string name="max_radius">300</string>
+    <string name="action_add_image">Add Image</string>
+    <string name="action_submit">Submit</string>
+    <string name="user">Username</string>
+    <string name="change_password">Change Password</string>
+    <string name="oldpassword">\tOld Password:</string>
+    <string name="newpassword1">\tNew Password:</string>
+    <string name="newpassword2">\tNew Password (repeat):</string>
+    <string name="oldpasswordhint">Old Password</string>
+    <string name="newpasswordhint">New Password</string>
+    <string name="submit">Submit</string>
+    <string name="cancel">Cancel</string>
+    <string name="subsetting">Subsettings</string>
+    <string name="change_profile_image">Change Profile Image</string>
+    <string name="action_camera">Camera</string>
+    <string name="action_gallery">Gallery</string>
+    <string name="action_files">Files</string>
+    <string name="usernameemailtext">\tUsername/Email:</string>
+    <string name="usernameemailhint">Username or Email</string>
+    <string name="passwordtext">\tPassword:</string>
+    <string name="passwordhint">Password</string>
+    <string name="login">Login</string>
+    <string name="notloggedin">…Not Logged In…\nPlease Login or Register below</string>
+    <string name="register">Register</string>
+    <string name="action_register">Register</string>
+    <string name="password2text">\tConfirm Password:</string>
+    <string name="password2hint">Confirm Password</string>
+    <string name="usernametext">\tUsername:</string>
+    <string name="usernamehint">Username</string>
+    <string name="emailtext">\tEmail:</string>
+    <string name="emailhint">Email</string>
+    <string name="notregisteredyet">Not registered yet? Click here!</string>
+    <string name="useroptions">User Options</string>
+    <string name="refresh">Refresh</string>
+    <string name="logout">Logout</string>
+    <string name="action_login">Login</string>
+    <string name="action_logout">Logout</string>
+    <string name="addgraffiti_hint">Enter message here…</string>
+    <string name="users_posts">Recent posts:</string>
+    <string name="like">Like</string>
+    <string name="flag">Flag</string>
+    <string name="no_gps">For full functionality you need to enable location tracking on your phone.</string>
+    <string name="no_connection">Cannot connect to the Internet, check your connection settings.</string>
+    <string name="server_down">Our server seems to be down. We appologize for the inconvenience.</string>
+    <string name="click_to_cancel">Click anywhere in the window to close the app.</string>
+    <string name="help_text">Welcome to the Giraffe app!
+\n
+\n
+You can see three different tabs on the top of your screen. The first tab will show you the most recent posts you are in range of, check them out!
+\n
+\n
+The second tab will let you post graffiti of your own, you can add an image if you want to as well. The map at the top will show you how far your graffiti will be broadcast, set it using the slider underneath. Max it out if you want to be heard, or minimize it to leave a more concentrated gem!
+\n
+\n    
+The third tab will let you view a heat map of your surroundings, showing you the concentration of hot graffiti near you!
+\n
+\n
+Up to your right you have your profile icon if you are logged in, click it to see your posts and stats!
+\n
+\n
+Finally you have the options menu which lead you to this dialog, there you can change some settings, login or even logout, not that you\'d ever want to!
+</string>
+    <string name="loading">Loading...</string>
 </resources>

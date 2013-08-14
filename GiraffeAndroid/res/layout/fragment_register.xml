@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+    
+    <TextView
+        android:id="@+id/usernametext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="@string/usernametext"/>
+    
+    <EditText
+        android:id="@+id/username"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="23dp"
+        android:hint="@string/usernamehint" />
+
+    <TextView
+        android:id="@+id/emailtext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/emailtext"/>
+    
+    <EditText
+        android:id="@+id/email"
+        android:inputType="textEmailAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="23dp"
+        android:hint="@string/emailhint" />
+    
+   	<TextView
+        android:id="@+id/passwordtext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/passwordtext"/>
+    
+    <EditText
+        android:id="@+id/password"
+        android:inputType="textPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="23dp"
+        android:fontFamily="sans-serif"
+        android:hint="@string/passwordhint"/>
+
+    <TextView
+        android:id="@+id/password2text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/password2text"/>
+    
+    <EditText
+        android:id="@+id/password2"
+        android:inputType="textPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="23dp"
+        android:fontFamily="sans-serif"
+        android:hint="@string/password2hint"/>
+    
+    <TextView
+        android:id="@+id/errormessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""/>
+    
+    <LinearLayout 
+	    android:orientation="horizontal"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:baselineAligned="false">
+    	
+	    <Button 
+    	    android:id="@+id/registerbutton"
+    	    android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:text="@string/register"/>
+
+    	
+    </LinearLayout>
+</LinearLayout>

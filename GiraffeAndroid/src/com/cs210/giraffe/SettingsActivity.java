@@ -1,24 +1,49 @@
 package com.cs210.giraffe;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.preference.ListPreference;
+import android.preference.Preference;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
-public class SettingsActivity extends Activity {
+public class SettingsActivity extends PreferenceActivity {
 
+	private SettingsFragment _sf;
+	private NotLoggedInFragment _notLoggedInFragment;
+	
 	public SettingsActivity() {
 		// TODO Auto-generated constructor stub
 	}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getFragmentManager().beginTransaction()
-    		.replace(android.R.id.content, new SettingsFragment())
-    		.commit();
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+    	getActionBar().setTitle(R.string.action_settings);
+    	super.onCreate(savedInstanceState);
+    	getActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+    
+    @Override
+    protected void onResume(){
+    	super.onResume();
+    	if(MainActivity.isLoggedIn()){
+	    	_sf = new SettingsFragment();
+	        
+	        getFragmentManager().beginTransaction()
+	    		.replace(android.R.id.content, _sf)
+	    		.commit();
+    	}else{
+    		_notLoggedInFragment = new NotLoggedInFragment();
+	        getFragmentManager().beginTransaction()
+	    		.replace(android.R.id.content, _notLoggedInFragment)
+	    		.commit();
+    	}
     }
     
     @Override
@@ -38,4 +63,11 @@ public class SettingsActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
     
+    public void cancelPasswordDialog(View v) {
+    	_sf.df.dismiss();
+    }
+	
+	public void submitPasswordDialog(View v) {
+		_sf.df.submitChangePassword();
+	}
 }
